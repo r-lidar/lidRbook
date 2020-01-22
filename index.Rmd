@@ -1,6 +1,6 @@
 --- 
 title: "The `lidR` package"
-author: "Jean-Romain Roussel, Tristan Goodbody, Piotr Tompalski"
+author: "Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -9,11 +9,25 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: rstudio/bookdown-demo
-description: "A book about the `lidR` package"
+description: "A guide to the `lidR` package"
 ---
 
 # Introduction
 
-Tristan deleted and updated text in the introduction document
+`lidR` is an R package for manipulation and visualization of airborne lidar data for forestry applications. Key functionality of the package includes functions to:
+
+* Read and write `.las` and `.laz` files
+* Plot point clouds and customize visualization
+* Generate standard lidar outputs such as Digital Terrain Models, Digital Surface Models, and Canopy Height Models
+* Manipulate point clouds including point classification, normalization, filtering, & thinning
+* Compute standard and user-defined statistical metrics for forest modelling using an area-based approach
+* Manage processing for sets of lidar files - referred to as a `LAScatalog`
+* Facilitate user defined processing streams for research and development.
+
+This guide has been written to help both the lidar novice, aswell as seasoned point cloud processing veterans.
+
+Development of the `lidR` package between 2015 and 2018 was made possible thanks to the financial support of the AWARE project [NSERC CRDPJ 462973-14](https://aware.forestry.ubc.ca/); grantee [Prof. Nicholas C. Coops](https://profiles.forestry.ubc.ca/person/nicholas-coops/).
+
+Development of the `lidR` package between 2018 and 2019 was made possible thanks to the financial support of the Ministère des Forêts, de la Faune et des Parcs of Québec.
 
 
