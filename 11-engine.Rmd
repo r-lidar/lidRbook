@@ -1,0 +1,3 @@
+# LAScatalog processing engine
+
+This is basically the vignette I'm writting

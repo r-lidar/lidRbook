@@ -1,0 +1,13 @@
+# Area based approache
+
+## Basics
+
+## Applying a predictive model
+
+This is more or less the begining of the Wiki page you wrote
+
+## Make your own custum metrics
+
+### Simple ones
+
+### Complex ones

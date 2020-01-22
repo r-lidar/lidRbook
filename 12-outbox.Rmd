@@ -1,0 +1,16 @@
+# thinking out of the box
+
+## New complex metrics
+
+### Rumple index
+
+### Distance between returns
+
+## Adding attribute data into each file
+
+Normalization retaining both absolute and relative elevations
+
+## Multispectral coloring
+
+
+

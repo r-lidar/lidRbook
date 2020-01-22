@@ -1,0 +1,5 @@
+# Height normalization
+
+## From a DTM
+
+## From a point cloud

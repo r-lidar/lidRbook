@@ -1,0 +1,9 @@
+# Predictive model building
+
+This is more or less the begining of the Wiki page you wrote
+
+## Clip the plot
+
+## Compute the metrics
+
+## Make a model

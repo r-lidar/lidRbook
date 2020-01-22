@@ -1,0 +1,11 @@
+# Point based approach
+
+## Lake segmentation
+
+## Wire segmentation
+
+## Roof segmentation
+
+## Multispectral coloring 
+
+This section may belong in a later section
