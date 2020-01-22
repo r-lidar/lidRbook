@@ -14,4 +14,6 @@ description: "A book about the `lidR` package"
 
 # Introduction
 
+This the Tristan introduction
+
 
