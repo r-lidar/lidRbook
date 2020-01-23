@@ -12,7 +12,7 @@ github-repo: rstudio/bookdown-demo
 description: "A guide to the `lidR` package"
 ---
 
-# Introduction
+# Title 
 
 `lidR` is an R package for manipulating and visualizating airborne lidar data for forestry applications. This guide has been written to help both the lidar novice, aswell as seasoned point cloud processing veterans. Key functionality of the package includes functions to:
 
