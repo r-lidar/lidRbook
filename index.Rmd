@@ -34,3 +34,4 @@ Development of the `lidR` package between 2018 and 2019 was made possible thanks
 Piotr content modified again
 
 
+
