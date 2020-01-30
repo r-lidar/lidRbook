@@ -1,1 +1,24 @@
-# Read, write, plot and validate las/laz files
+```{r vis_startup,echo=FALSE,message=FALSE,warning=FALSE}
+library(lidR)
+```
+
+# Reading, Querying, Validating {-#my-section}
+
+## Reading lidar data {-#my-section}
+
+The first step to working with lidar data in R is understanding how to read a file using the `lidR`package. We will be demonstrating using the `Megaplot.laz` example file that is included within `lidR` on installation, as well as how you would read a file on a local disc. To read a lidar file into a format that `lidR` understands, we use the `readLAS` function.
+
+```{r}
+#Define Megaplot.laz the file we want to read
+LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+
+#Read LASfile
+las <- readLAS(LASfile)
+```
+
+Once the file has been read (this should take just a second or two) we can query the contents of our newly loaded lidar file named `las` using the `print` function.
+
+```{r}
+print(las)
+```
+
