@@ -4,21 +4,52 @@ library(lidR)
 
 # Reading, Querying, Validating {-#my-section}
 
-## Reading lidar data {-#my-section}
+## Reading and inspecting lidar data {-#my-section}
 
-The first step to working with lidar data in R is understanding how to read a file using the `lidR`package. We will be demonstrating using the `Megaplot.laz` example file that is included within `lidR` on installation, as well as how you would read a file on a local disc. To read a lidar file into a format that `lidR` understands, we use the `readLAS` function.
+The first step to working with lidar data in R is understanding how to read a file using the `lidR`package. Here we demonstrate how to read the `Megaplot.laz` file using the `readLAS` function.
 
 ```{r}
-#Define Megaplot.laz the file we want to read
+#Read Megaplot.laz from within the lidar package
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
 
-#Read LASfile
+#Read a .las file from a local disc
+# `LAS`file <- read`LAS`("PathToYourFile.las")
+
+#Read `LAS`file
 las <- readLAS(LASfile)
+
+#print the content summary of the las file
+print(las)
 ```
 
-Once the file has been read (this should take just a second or two) we can query the contents of our newly loaded lidar file named `las` using the `print` function.
+## Basic structure of `LAS` objects {-#my-section}
+
+For the purposes of this review we will briefly go over the primary contents of a `LAS` object. For a thorough description of `LAS` data structure see section ____.
+
+A `LAS` object is composed of four slots: 
+
+* `@data`  - a `data.table`containing the `X,Y,Z` coordinates and attributes for all points within a file
+* `@header` - a `LAS` file header that summarizes key file details
+* `@proj4string` - Object that stores the coordinate reference system (`CRS`) of the las file
+* `@bbox` - a matrix object that stores the `XY` bounding box of the point cloud inherited from the `Spatial` from the `sp` package
+
+For the purposes of this section we will focus on the contents of the `@data` slot. To query the contents we use the following code:
 
 ```{r}
-print(las)
+# print the first 6 rows (points) of the lidar data
+head(las@data)
+
+```
+
+This provides us with a subset of the `data.table` summarizing the `X,Y,Z` coordinates of each point, as well as other key information such as `ReturnNumber` and `Intensity`.
+
+## Validating lidar data {-#my-section}
+
+An important first step in lidar data processing is ensuring that your data is complete and valid. Users commonly report bugs about their point cloud being invalid. This is why we introduced the `lascheck` function to perform a deep inspection of `LAS` objects. This function checks if a `LAS` object meets specifications and whether it is invalid for processing. 
+
+A simple example that happens fairly often is that a `LAS` file contains duplicate points. This may lead to trees being detected twice, to invalid metrics, or to errors in DTM generation, and so on… Always make sure to run the `lascheck` function before digging deep into your data.
+
+```{r}
+lascheck(las)
 ```
 
