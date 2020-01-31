@@ -11,13 +11,10 @@ The first step to working with lidar data in R is understanding how to read a fi
 ```{r,}
 #Read Megaplot.laz from within the lidar package
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
-
 #Read a .las file from a local disc
 # `LAS`file <- readLAS("PathToYourFile.las")
-
 #Read `LAS`file
 las <- readLAS(LASfile)
-
 #print the content summary of the las file
 print(las)
 ```
@@ -28,10 +25,8 @@ To save memory, `readLAS` can take an optional parameter `select` which enables 
 
 ```{r}
 las <-  readLAS(LASfile, select = "xyz")
-
 # load XYZ and intensity data only
 #las = readLAS(las, select = "xyzi")
-
 #load all data except for intensity and user data
 #las = readLAS(las, select = "* -i -u") # Negation works too
 ```
@@ -43,7 +38,6 @@ While `select` enables the user to select "columns" (or attributes) while readin
 ```{r}
 # filter LASfile for first returns only
 las <-  readLAS(LASfile, filter = "-keep_first")
-
 #filter LASfile for first returns only & drop all points <= 5 & >= 50
 #las <-  readLAS(LASfile, select = "xyzi", filter = "-keep_first -drop_z_below 5 -drop_z_above 50")
 ```
@@ -59,7 +53,7 @@ plot(las)
 
 <center>
 
-![](images/plot_standard.png)
+![](images/intro/plot_standard.png)
 
 </center>
 
@@ -68,14 +62,13 @@ The `color` parameter expects the name of the attribute you want to use to color
 ```r
 # Plot las object by return number, make the background grey, and display XYZ axis
 plot(las,color="ReturnNumber",bg="white",axis=T)
-
 # If your file contains RGB data the string "RGB" is supported:
 # plot(las, color ="RGB")
 ```
 
 <center>
 
-![](images/plot_returnnum.png)
+![](images/intro/plot_returnnum.png)
 
 </center>
 
@@ -88,7 +81,7 @@ plot(las, color = "Intensity", trim = 50,bg="white")
 
 <center>
 
-![](images/plot_trim.png)
+![](images/intro/plot_trim.png)
 
 </center>
 
