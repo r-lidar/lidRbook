@@ -2,7 +2,7 @@
 library(lidR)
 ```
 
-# Reading, Querying, Validating {-#my-section}
+# Reading, Plotting, Querying, Validating {-#my-section}
 
 ## Reading and inspecting lidar data {-#my-section}
 
@@ -22,9 +22,36 @@ las <- readLAS(LASfile)
 print(las)
 ```
 
+## Plotting {-#my-section}
+
+The `lidR` package employs a built in `PointCloudViewer`.
+
+```{r}
+#plot las object using default settings
+plot(las)
+```
+
+<center>
+
+![](images/plot_standard.png)
+
+</center>
+
+
+```{r}
+#plot las object by return number, make the background grey, and display XYZ axis
+plot(las,color="ReturnNumber",bg="grey",axis=T)
+```
+
+<center>
+
+![](images/plot_returnnum.png)
+
+</center>
+
 ## Basic structure of `LAS` objects {-#my-section}
 
-For the purposes of this review we will briefly go over the primary contents of a `LAS` object. For a thorough description of `LAS` data structure see section ____.
+For the purposes of this review we will briefly go over the primary contents of a `LAS` object. 
 
 A `LAS` object is composed of four slots: 
 
@@ -33,7 +60,9 @@ A `LAS` object is composed of four slots:
 * `@proj4string` - Object that stores the coordinate reference system (`CRS`) of the las file
 * `@bbox` - a matrix object that stores the `XY` bounding box of the point cloud inherited from the `Spatial` from the `sp` package
 
-For the purposes of this section we will focus on the contents of the `@data` slot. To query the contents we use the following code:
+For the purposes of this section we will focus on the contents of the `@data` slot.For a thorough description of the other three `LAS` object slots see section ____. 
+
+To query the contents of the `@data` slot we use the following code:
 
 ```{r}
 # print the first 6 rows (points) of the lidar data
