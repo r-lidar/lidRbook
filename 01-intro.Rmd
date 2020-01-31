@@ -13,7 +13,7 @@ The first step to working with lidar data in R is understanding how to read a fi
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
 
 #Read a .las file from a local disc
-# `LAS`file <- read`LAS`("PathToYourFile.las")
+# `LAS`file <- readLAS("PathToYourFile.las")
 
 #Read `LAS`file
 las <- readLAS(LASfile)
