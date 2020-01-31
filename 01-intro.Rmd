@@ -2,13 +2,13 @@
 library(lidR)
 ```
 
-# Reading, Plotting, Querying, Validating {-#my-section}
+# Reading, Plotting, Querying & Validating {-#my-section}
 
-## Reading and inspecting lidar data {-#my-section}
+## Reading lidar data using `readLAS` {-#my-section}
 
 The first step to working with lidar data in R is understanding how to read a file using the `lidR`package. Here we demonstrate how to read the `Megaplot.laz` file using the `readLAS` function.
 
-```{r}
+```{r,}
 #Read Megaplot.laz from within the lidar package
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
 
@@ -22,11 +22,37 @@ las <- readLAS(LASfile)
 print(las)
 ```
 
+### Parameter `select` {-#my-section}
+
+To save memory, `readLAS` can take an optional parameter `select` which enables the user to selectively load the data of interest. For example, one can choose to only load only the `X Y Z` fields.
+
+```{r}
+las <-  readLAS(LASfile, select = "xyz")
+
+# load XYZ and intensity data only
+#las = readLAS(las, select = "xyzi")
+
+#load all data except for intensity and user data
+#las = readLAS(las, select = "* -i -u") # Negation works too
+```
+
+### Parameter `filter` {-#my-section}
+
+While `select` enables the user to select "columns" (or attributes) while reading files, `filter` allows selection of "rows" (or points) while reading. Removing data at reading time that is superfluous for your purposes saves memory and decreases computation time.
+
+```{r}
+# filter LASfile for first returns only
+las <-  readLAS(LASfile, filter = "-keep_first")
+
+#filter LASfile for first returns only & drop all points <= 5 & >= 50
+#las <-  readLAS(LASfile, select = "xyzi", filter = "-keep_first -drop_z_below 5 -drop_z_above 50")
+```
+
 ## Plotting {-#my-section}
 
 The `lidR` package employs a built in `PointCloudViewer`.
 
-```{r}
+```r
 #plot las object using default settings
 plot(las)
 ```
@@ -37,15 +63,32 @@ plot(las)
 
 </center>
 
+The `color` parameter expects the name of the attribute you want to use to colorize points. Default is `Z`. The background colour of the viewer can also be changed by inputing a color into the `bg` parameter.
 
-```{r}
-#plot las object by return number, make the background grey, and display XYZ axis
-plot(las,color="ReturnNumber",bg="grey",axis=T)
+```r
+# Plot las object by return number, make the background grey, and display XYZ axis
+plot(las,color="ReturnNumber",bg="white",axis=T)
+
+# If your file contains RGB data the string "RGB" is supported:
+# plot(las, color ="RGB")
 ```
 
 <center>
 
 ![](images/plot_returnnum.png)
+
+</center>
+
+The `trim` parameter enables trimming of values when outliers break the color palette range. For example, Intensity often contains large outliers. The palette range would be too large and most of the values will be considered as "very low", so everything will appear in the same color.
+
+```r
+#Plot color by intensity, trim the palette to 50 colors, and display background as white
+plot(las, color = "Intensity", trim = 50,bg="white")
+```
+
+<center>
+
+![](images/plot_trim.png)
 
 </center>
 
