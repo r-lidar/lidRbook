@@ -22,7 +22,6 @@ The function `catalog` builds a `LAScatalog` object from a folder. `LAScatalog` 
 
 ```r
 ctg <- catalog("F:\\petawawa\\ALS_Petawawa\\ALS2012\\ALS2012_norm_nobuff_filtered")
-
 # See details of the catalog object
 ctg
 ```
@@ -110,7 +109,6 @@ Set `opt_output_files` option to write the results on disc. This is an important
 ```r
 # Write files to disc
 opt_output_files(ctg) <- paste0(tempdir(), "/{PlotID}")
-
 # Ignore points with elevations less than 0
 opt_filter(ctg) <- "-drop_z_below 0"
 ```
