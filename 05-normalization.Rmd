@@ -1,4 +1,11 @@
 ```{r vis_startup,echo=FALSE,message=FALSE,warning=FALSE}
+r3dDefaults = rgl::r3dDefaults
+m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
+-0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
+rgl::setupKnitr()
+r3dDefaults$FOV = 50
+r3dDefaults$userMatrix = m
+r3dDefaults$zoom = 0.75
 library(lidR)
 ```
 
@@ -15,117 +22,71 @@ Two normalization approaches are most commonly used (both are implemented within
 
 `lidR` can implement both methods, and has three implemented algorithms that can perform this method of point cloud normalization:
 
-* `kriging` - Interpolation is done using a k-nearest neighbour (KNN) approach with an inverse distance weighting (IDW). This is a fast but basic method for spatial data interpolation.
+* `knnidw` - Interpolation is done using a k-nearest neighbour (KNN) approach with an inverse distance weighting (IDW). This is a fast but basic method for spatial data interpolation.
 
 * `delauney` - Interpolation based on Delaunay triangulation. It makes a linear interpolation within each triangle. Note that with this method no extrapolation is done outside of the convex hull determined by the ground points.
 
-* `knnidw` - Interpolation is done by universal kriging using the krige function. This method combines the KNN approach with the kriging approach. For each point of interest it kriges the terrain using the k-nearest neighbour ground points. This method is more difficult to manipulate but it is also the most advanced method for interpolating spatial data.
+* `kriging` - Interpolation is done by universal kriging using the krige function. This method combines the KNN approach with the kriging approach. For each point of interest it kriges the terrain using the k-nearest neighbour ground points. This method is more difficult to manipulate but it is also the most advanced method for interpolating spatial data.
 
 __When using the `knnidw` and `kriging` methods, the user must specify the number of nearest neighbours (parameter `k`) that the algorithm should use for interpolation.__ MAYBE REMOVE THIS?
 
 As before we need to read in our lidar data
 
-```{r}
-#Read Megaplot.laz from within the lidar package
+```{r, rgl=TRUE}
+# Read Topography.laz from within the lidar package
 LASfile <- system.file("extdata", "Topography.laz", package="lidR")
-#Read `LAS`file
 las <- readLAS(LASfile)
+plot(las, size = 3)
 ```
-
-```{r,eval=F}
-#Plot Topography.laz
-plot(las)
-```
-
-<center>
-
-![](images/norm/plot_terrainlaz.png)
-
-</center>
 
 We can see in the image that these data are not normalized as the slope of the terrain is still visible. To get a better idea of what the terrain looks like lets remove all non-ground points.
 
-```{r}
-#Use lasfilter to keep only points classified as ground (class 2)
-las_grnd <- lasfilter(las,Classification==2)
+```{r, rgl = TRUE}
+las_grnd <- lasfilter(las, Classification == 2L)
+plot(las_grnd, size = 3)
 ```
-
-```{r,eval=F}
-#Plot the ground points
-plot(las_grnd)
-```
-
-<center>
-
-![](images/norm/plot_terrainground.png)
-
-</center>
 
 We can ensure that these points are ground points by colorizing the points based on classification. We should only see 1 colour.
 
-```{r,eval=F}
-plot(las_grnd,color="Classification")
+
+```{r, rgl = TRUE}
+plot(las_grnd, color = "Classification", size = 3)
 ```
-
-<center>
-
-![](images/norm/plot_terrainclass.png)
-
-</center>
 
 ## DTM normalization
 
-To normalize points using a DTM we first need to create the DTM itself. For this we use the `grid_terrain` function. We have chosen to use a grid resolution of 1 m and to use the `knnidw()` algorithm with default parameters.
+To normalize points using a DTM we first need to create the DTM itself. For this we use the `grid_terrain()` function. We have chosen to use a grid resolution of 1 m and to use the `knnidw()` algorithm with default parameters.
 
-
-```{r}
-#Compute a 1m reoslution DTM
+```{r, fig.height=5.85, fig.width=6}
+# Compute a 1m reoslution DTM
 dtm = grid_terrain(las, 1, knnidw())
-#Note that dtm is a RasterLayer
+# Note that dtm is a RasterLayer
 class(dtm)
-#Plot the DTM raster to visualize elevation changes
-plot(dtm)
+# Plot the DTM raster to visualize elevation changes
+plot(dtm, col = gray.colors(50, 0, 1))
 ```
+
 `lidR` also allows us to visualize rasterized DTM layers in 3d using the `plot_dtm3d()` function
-```{r,eval=F}
+
+```{r,rgl = TRUE}
 plot_dtm3d(dtm)
 ```
 
-<center>
-
-![](images/norm/plot_dtm.png)
-
-</center>
-
 We are also able to combine the DTM surface with the lidar plot layer using `adddtm3d()` function
 
-```{r,eval=F}
-x <- plot(las)
+```{r,rgl = TRUE, echo = FALSE}
+x <- plot(las, size = 3)
 add_dtm3d(x, dtm)
 ```
-
-<center>
-
-![](images/norm/plot_dtmadd3d.png)
-
-</center>
 
 We can see that the DTM surface matches very well with the ground points - which it should!
 
 Now that we have our surface and are satisfied with it we can use it to normalize our pointcloud using the `lasnormalize` function.
 
-```{r,eval=F}
-#Normalize Terrain.laz using the 1 m DTM raster
+```{r, rgl = TRUE}
 nlas <- lasnormalize(las,dtm)
-#Visualize the normalized point cloud
-plot(nlas)
+plot(nlas, size = 3)
 ```
-
-<center>
-
-![](images/norm/plot_norm.png)
-
-</center>
 
 We can see that the ground points of the point cloud have been normalized, making the point cloud appeach much flatter. All above ground vegetation are now comparable.
 
@@ -133,15 +94,15 @@ We can see that the ground points of the point cloud have been normalized, makin
 
 Point cloud normalization without a DTM  utilises all returns, where ground points are interpolated to the exact position beneath non-ground points.
 
-```{r}
+```{r, rgl = TRUE}
 nlas = lasnormalize(las, knnidw())
 #nlas = lasnormalize(las, kriging())
 #nlas = lasnormalize(las, delauney())
-plot(nlas)
+plot(nlas, size = 3)
 ```
 
-
 ## Reversing normalization
+
 `lidR` also has the capacity to reverse normalization using the `lasunnormalize` function. This reverts the normalized point cloud to its pre-normalized state.
 
 ```{r,eval=F}
