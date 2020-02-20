@@ -1,4 +1,12 @@
 ```{r vis_startup,echo=FALSE,message=FALSE,warning=FALSE}
+r3dDefaults = rgl::r3dDefaults
+m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
+-0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
+rgl::setupKnitr()
+r3dDefaults$FOV = 50
+r3dDefaults$userMatrix = m
+r3dDefaults$zoom = 0.75
+
 library(lidR)
 ```
 
@@ -8,7 +16,7 @@ library(lidR)
 
 The first step to working with lidar data in R is understanding how to read a file using the `lidR`package. Here we demonstrate how to read the `Megaplot.laz` file using the `readLAS` function.
 
-```{r,}
+```{r}
 #Read Megaplot.laz from within the lidar package
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
 #Read a .las file from a local disc
@@ -23,7 +31,7 @@ print(las)
 
 To save memory, `readLAS` can take an optional parameter `select` which enables the user to selectively load the data of interest. For example, one can choose to only load only the `X Y Z` fields.
 
-```{r}
+```r
 las <-  readLAS(LASfile, select = "xyz")
 # load XYZ and intensity data only
 #las = readLAS(las, select = "xyzi")
@@ -46,44 +54,26 @@ las <-  readLAS(LASfile, filter = "-keep_first")
 
 The `lidR` package employs a built in `PointCloudViewer`.
 
-```r
-#plot las object using default settings
-plot(las)
+```{r, rgl = TRUE}
+# plot las object using default settings
+plot(las, size = 3)
 ```
-
-<center>
-
-![](images/intro/plot_standard.png)
-
-</center>
 
 The `color` parameter expects the name of the attribute you want to use to colorize points. Default is `Z`. The background colour of the viewer can also be changed by inputing a color into the `bg` parameter.
 
-```r
+```{r, rgl = TRUE}
 # Plot las object by return number, make the background grey, and display XYZ axis
-plot(las,color="ReturnNumber",bg="white",axis=T)
+plot(las, color = "ScanAngleRank", bg = "white", axis = T, size = 3)
 # If your file contains RGB data the string "RGB" is supported:
-# plot(las, color ="RGB")
+# plot(las, color ="RGB", size = 3)
 ```
-
-<center>
-
-![](images/intro/plot_returnnum.png)
-
-</center>
 
 The `trim` parameter enables trimming of values when outliers break the color palette range. For example, Intensity often contains large outliers. The palette range would be too large and most of the values will be considered as "very low", so everything will appear in the same color.
 
-```r
+```{r, rgl = TRUE}
 #Plot color by intensity, trim the palette to 50 colors, and display background as white
-plot(las, color = "Intensity", trim = 50,bg="white")
+plot(las, color = "Intensity", trim = 50, bg = "white", size = 3)
 ```
-
-<center>
-
-![](images/intro/plot_trim.png)
-
-</center>
 
 ## Basic structure of `LAS` objects {-#my-section}
 
