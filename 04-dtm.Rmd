@@ -1,1 +1,89 @@
 # Digital terrain modelling 
+
+This is work in progress - PT
+
+
+```{r}
+LASfile <- system.file("extdata", "Topography.laz", package="lidR")
+las <- readLAS(LASfile)
+
+```
+
+## KNNIDW
+
+
+`knnidw()` description here
+
+```{r}
+dtm1 = grid_terrain(las, algorithm = knnidw(k = 6L, p = 2))
+```
+
+
+```{r}
+plot(dtm1)
+```
+
+
+```{r, eval=F}
+plot_dtm3d(dtm1) #visualiziation with rgl - still not sure how to do this in rmarkdown
+```
+
+
+Assessing the interpolation result on a crossection - plotting a crossection of a point cloud and of the raster surface model together on one plot.
+
+```{r}
+
+#function to compare interpolation results
+plot_crossection_DTM <- function(las, dtm,  
+                                 p1 = c(273420, 5274455), 
+                                 p2 = c(273570, 5274456),
+                                 width = 1) {
+  
+  dtm_crop <- crop(dtm,extent(p1[1],p2[1],p1[2],p2[2]))
+  dtm_crop <- as.data.frame(dtm_crop, xy=T)
+  las_clipped <- clip_transect(las, p1, p2, width = width)
+  
+  p <- ggplot(data=NULL) + 
+    geom_point(data=las_clipped@data, aes(X,Z, color=factor(Classification))) + 
+    geom_line(data=dtm_crop, aes(x, Z)) +
+    coord_equal() + 
+    theme_bw() +
+    theme(legend.position = "none")
+  
+  return(p)
+}
+
+
+
+```
+
+
+```{r}
+plot_crossection_DTM(las, dtm1)
+
+
+```
+
+```{r}
+# plot a point cloud and multiple interpolation results
+
+
+dtm1_crop <- as.data.frame(crop(dtm1,extent(p1[1],p2[1],p1[2],p2[2])), xy=T)
+dtm2_crop <- as.data.frame(crop(dtm2,extent(p1[1],p2[1],p1[2],p2[2])), xy=T)
+las_clipped <- clip_transect(las, p1, p2, width = 1)
+
+
+ggplot(data=NULL) + 
+  geom_point(data=las_clipped@data, aes(X,Z, color=factor(Classification))) + 
+  geom_line(data=dtm1_crop, aes(x, Z), color="blue") +
+  geom_line(data=dtm2_crop, aes(x, Z), color="darkgreen") +
+  coord_equal() + 
+  theme_bw() +
+  theme(legend.position = "none")
+
+```
+
+## TIN
+
+## KRIGING
+
