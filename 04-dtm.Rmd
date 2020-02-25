@@ -1,15 +1,62 @@
-# Digital terrain modelling 
+```{r vis_startup,echo=FALSE,message=FALSE,warning=FALSE}
+library(lidR)
+library(ggplot2)
+library(rgl)
 
-This is work in progress - PT
+```
 
+# Digital terrain model 
+
+Generating a Digital Terrain Model (DTM) usually follows the classification of ground points as the second step of point cloud data analyses. Put simply, a DTM can be described as an “image” of the ground. Over the past decades, methods to generate DTMs have been intensively studied and several algorithms have been proposed for various terrain situations. DTMs are used for a variety of purposes in practice, such as determination of the catchment basins of water retention and stream flow, or the identification of drivable roads to access resources. It also enables users to normalize the point cloud i.e. subtract the local terrain from the elevation of points to allow a manipulation of point clouds as if they were acquired on a flat surface.
+
+The construction of a DTM is simply a spatial interpolation of the ground points at unsampled locations. The accuracy of the DTM is very important since errors in the DTM will result in errors of tree height estimation, or more generally in inaccuracies in the measurement of the relative height of any given point relatively to the ground.
+
+There is a wide range of methods that can be used to make spatial interpolation of points, which result from decades of research in mathematics and algorithmic sciences. All such methods are applicable to ALS data but they vary in difficulty of use and they are not necessarily available in dedicated software. Below we present three interpolation methods that are implremented in the `lidR` package and can be used to create a DTM. 
+
+
+## Triangular irregular network (TIN)
+
+This method is based on triangular tessellation of the ground point data to derive a bivariate function for each triangle, which is then used to estimate the values at unsampled locations (between the ground points). A first source of variation in the DTM comes from the several ways in which such triangulation can be computed. Yet, as seen in figure XXX, no interpolation has been performed at this stage. The ground points have been meshed but there is no new data at unsampled locations. Hence, a second source of variation in the DTM comes from the several interpolation options that can be applied. When describing a method used to derive a DTM two pieces of information are therefore required (approach used to perfomr triangulation and interpolation).
+
+(((insert figure 5 from the original version of the lidR paper here)))
+
+Linear interpolation uses planar facets of each triangle to create the interpolation. Used with a Delaunay triangulation, this is the most simple and trivial solution because it involves no parameters. Indeed, the Delaunay triangulation is unique and the linear interpolation is parameter-free. The drawbacks of the method are that it creates a non-smooth DTM and that it cannot extrapolate the terrain outside the convex hull delimited by the ground points since there is no triangle facets outside the convex hull.
+
+Non-linear functions use additional continuity conditions in first-order, or both first- and second-order derivatives, thus ensuring a smooth connection of triangles as well as the differentiability of the resulting surface. The drawback is that it involves a more complex parametrization of the algorithm with possibly several non-trivial parameters to choose. There are many ways to fit non-linear functions and to choose parameters. 
+
+The spatial interpolation implemented in `lidR` is based on a Delaunay triangulation, which performs a linear interpolation within each triangle. For areas outside the convex hull determined by the ground points (edge of the dataset), extrapolation is performed using the nearest neighbour approach.
+
+To perfom ground interpolation in `lidR` the `grid_terrain()` function is used with parameters specifying the interpolation method. Example below demonstrates ground interpolation using the TIN approach.
+
+The example will be based on the `Topography.laz` datasets included in the `lidR` package. The point cloud was already classified and contains points classified as "ground".
 
 ```{r}
 LASfile <- system.file("extdata", "Topography.laz", package="lidR")
 las <- readLAS(LASfile)
-
 ```
 
+To generate a DTM model with the TIN algorithm, we use the `grid_terrain()` as follows:
+```{r}
+dtm_tin = grid_terrain(las, res = 1, algorithm = tin())
+```
+
+The output (`dtm_tin`) is a raster (object of class `RasterLayer`) that can be visualized with the `plot()` function.
+```{r}
+plot(dtm_tin)
+```
+
+
 ## KNNIDW
+
+Invertse distance weighting (IDW) is one of the simplest and most readily available methods that can be applied to create DTM. It is based on an assumption that the value at an unsampled point can be approximated as a weighted average of values at points within a certain cut-off distance d , or from a given number k of closest neighbours (Mitas and Mitasova, 1999). Weights are usually inversely proportional to a power p of the distance between the location and the neighbour, which leads to the computing of an estimator.
+
+Therefore, the method can be summarized by the definition of two easily explainable parameters (i.e. k or d). While this basic method is easy to implement and available in almost any geographic information system (GIS), it has some well-known shortcomings that limit its practical applications. The method often does not reproduce the local shape evidenced by the data and it produces noticeable artefacts, such as local extrema at the location of the data points.
+
+But more important, while a Delaunay triangulation with linear interpolation provides a unique DTM, IDW algorithms can return many different DTMs depending on the neighbourhood definition and the chosen power function p (see fig. 6). Thus, stating that the DTM was interpolated using an IDW without stating how the neighbourhood was defined and how the weights were computed is not much better than a complete absence of information. 
+
+
+
+
 
 
 `knnidw()` description here
@@ -31,7 +78,7 @@ plot_dtm3d(dtm1) #visualiziation with rgl - still not sure how to do this in rma
 
 Assessing the interpolation result on a crossection - plotting a crossection of a point cloud and of the raster surface model together on one plot.
 
-```{r}
+```{r, eval=F}
 
 #function to compare interpolation results
 plot_crossection_DTM <- function(las, dtm,  
@@ -58,13 +105,13 @@ plot_crossection_DTM <- function(las, dtm,
 ```
 
 
-```{r}
+```{r, eval=F}
 plot_crossection_DTM(las, dtm1)
 
 
 ```
 
-```{r}
+```{r, eval=F}
 # plot a point cloud and multiple interpolation results
 
 

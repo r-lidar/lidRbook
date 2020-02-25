@@ -1,6 +1,13 @@
 ```{r vis_startup,echo=FALSE,message=FALSE,warning=FALSE}
 library(lidR)
 library(ggplot2)
+library(rgl)
+
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rgl::setupKnitr()
 ```
 
 # Ground classification
@@ -33,7 +40,7 @@ las_1 <- lasground(las, algorithm = pmf(ws = 5, th = 3))
 
 We can now visualize the result:
 
-```{r, eval=F}
+```{r rgl=TRUE, dev='png', width=500}
 plot(las_1, color = "Classification") 
 ```
 
