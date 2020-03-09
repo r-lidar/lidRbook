@@ -2,6 +2,15 @@
 library(lidR)
 library(ggplot2)
 library(rgl)
+library(forcats)
+
+r3dDefaults = rgl::r3dDefaults
+m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
+-0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
+rgl::setupKnitr()
+r3dDefaults$FOV = 50
+r3dDefaults$userMatrix = m
+r3dDefaults$zoom = 0.75
 
 ```
 
@@ -18,7 +27,11 @@ There is a wide range of methods that can be used to make spatial interpolation 
 
 This method is based on triangular tessellation of the ground point data to derive a bivariate function for each triangle, which is then used to estimate the values at unsampled locations (between the ground points). A first source of variation in the DTM comes from the several ways in which such triangulation can be computed. Yet, as seen in figure XXX, no interpolation has been performed at this stage. The ground points have been meshed but there is no new data at unsampled locations. Hence, a second source of variation in the DTM comes from the several interpolation options that can be applied. When describing a method used to derive a DTM two pieces of information are therefore required (approach used to perfomr triangulation and interpolation).
 
-(((insert figure 5 from the original version of the lidR paper here)))
+<center>
+
+![](images/DTM/TINDTM.svg)
+
+</center>
 
 Linear interpolation uses planar facets of each triangle to create the interpolation. Used with a Delaunay triangulation, this is the most simple and trivial solution because it involves no parameters. Indeed, the Delaunay triangulation is unique and the linear interpolation is parameter-free. The drawbacks of the method are that it creates a non-smooth DTM and that it cannot extrapolate the terrain outside the convex hull delimited by the ground points since there is no triangle facets outside the convex hull.
 
@@ -44,7 +57,9 @@ The output (`dtm_tin`) is a raster (object of class `RasterLayer`) that can be v
 ```{r}
 plot(dtm_tin)
 ```
-
+```{r, rgl = TRUE}
+plot_dtm3d(dtm_tin) 
+```
 
 ## KNNIDW
 
@@ -62,75 +77,140 @@ But more important, while a Delaunay triangulation with linear interpolation pro
 `knnidw()` description here
 
 ```{r}
-dtm1 = grid_terrain(las, algorithm = knnidw(k = 6L, p = 2))
+dtm_idw = grid_terrain(las, algorithm = knnidw(k = 6L, p = 2))
 ```
 
 
 ```{r}
-plot(dtm1)
+plot(dtm_idw)
 ```
 
 
-```{r, eval=F}
-plot_dtm3d(dtm1) #visualiziation with rgl - still not sure how to do this in rmarkdown
+```{r, rgl = TRUE}
+plot_dtm3d(dtm_idw) 
+```
+
+## Kriging
+
+Kriging is the most advanced approach and utilises advanced geostatistical interpolation methods that take into account the relationships between the returns and their respective distances from each other (Oliver and Webster, 1990). In lidR a universal kriging method is used that is implemented in the package gstat (Gräler et al., 2016). This allows the user to have a full control of the underling variogram model and the parameters. Users can specify which model type is used in the variogram, with the spherical model used by default. Users can also modify the number of k-nearest neighbours used in the interpolation (default = 10).
+
+
+
+```{r, message=F, warning=F}
+dtm_kriging = grid_terrain(las, algorithm = kriging())
+```
+
+```{r, rgl = TRUE}
+plot_dtm3d(dtm_kriging) 
 ```
 
 
-Assessing the interpolation result on a crossection - plotting a crossection of a point cloud and of the raster surface model together on one plot.
 
-```{r, eval=F}
+## Comparing interpolation methods
 
-#function to compare interpolation results
-plot_crossection_DTM <- function(las, dtm,  
-                                 p1 = c(273420, 5274455), 
-                                 p2 = c(273570, 5274456),
-                                 width = 1) {
-  
-  dtm_crop <- crop(dtm,extent(p1[1],p2[1],p1[2],p2[2]))
-  dtm_crop <- as.data.frame(dtm_crop, xy=T)
-  las_clipped <- clip_transect(las, p1, p2, width = width)
-  
-  p <- ggplot(data=NULL) + 
-    geom_point(data=las_clipped@data, aes(X,Z, color=factor(Classification))) + 
-    geom_line(data=dtm_crop, aes(x, Z)) +
-    coord_equal() + 
-    theme_bw() +
-    theme(legend.position = "none")
-  
-  return(p)
+To compare the three ground surface interpolation methods we will use two separate visualization methods. First a hillshade will be create for each surface, which will highlight the similarities and differences between the DTMs. Second, a side view of each DTM will be plotted on crossection.
+
+Generating a hillshade layer in R is relatively straighforward and is done using function from the 'raster' package. These two function: 'terrain()' and 'hillShade()' can be combined into a single function that will take the DTM raster layers as input and return a hillshade raster:
+
+```{r}
+
+#function to generate a hillshade (combines two functions from the reaster package)
+make_hillshade <- function(dtm) {
+  dtm_prod <- terrain(dtm, opt=c("slope", "aspect"))
+  return(hillShade(slope = dtm_prod$slope, aspect = dtm_prod$aspect))
 }
 
 
+```
+
+We can then use this function to generate three hillshade rasters, one for each of the DTMs:
+
+```{r}
+dtm_tin_hillshade <- make_hillshade(dtm_tin)
+dtm_idw_hillshade <- make_hillshade(dtm_idw)
+dtm_krigin_hillshade <- make_hillshade(dtm_kriging)
 
 ```
 
+The hillshade layers can be visualized as follows:
 
-```{r, eval=F}
-plot_crossection_DTM(las, dtm1)
+```{r}
+par(mfrow=c(1,3)) #defining the number of panel in the plot
 
-
+plot(dtm_tin_hillshade, col=grey(0:100/100), legend=FALSE, main='TIN')
+plot(dtm_idw_hillshade, col=grey(0:100/100), legend=FALSE, main='KNNIDW')
+plot(dtm_krigin_hillshade, col=grey(0:100/100), legend=FALSE, main='Kriging')
 ```
 
-```{r, eval=F}
-# plot a point cloud and multiple interpolation results
 
 
-dtm1_crop <- as.data.frame(crop(dtm1,extent(p1[1],p2[1],p1[2],p2[2])), xy=T)
-dtm2_crop <- as.data.frame(crop(dtm2,extent(p1[1],p2[1],p1[2],p2[2])), xy=T)
+To assess the interpolation result on a crossection the DTM layers need to be cropped to the extent of the crossection line - in this case the crossection will be 50 m long, and 1 m wide. The beginning and end of the crossection are defined with two variables: 'p1' and 'p2':
+
+```{r}
+p1 = c(273420, 5274455)
+p2 = c(273570, 5274456)
+```
+
+Each DTM can then be cropped using 'p1' and 'p2' to define the extent of the subset:
+
+```{r}
+dtm_tin_crop <- crop(dtm_tin,extent(p1[1],p2[1],p1[2],p2[2]))
+```
+
+For visualization purposes it is easier to convert the 'RasterLayer' object returned by the 'crop()' function to a 'data.frame'. To preserve the coordinates 'xy' argument needs to be set to 'TRUE'
+
+```{r}
+dtm_tin_crop <- as.data.frame(dtm_tin_crop, xy=T)
+```
+
+To distinguish between the different DTMs an additional attribute is added. This attribute ('type') allows to identify the source raster of each value in the data frame and is crucial in the following steps.
+```{r}
+dtm_tin_crop$type <- "TIN"
+```
+
+
+When converted to a 'data.frame' the cropped layer has a following structure
+```{r}
+head(dtm_tin_crop)
+```
+
+The whole operation can be then repeated for the two remaining DTMs:
+
+```{r}
+dtm_idw_crop <- crop(dtm_idw,extent(p1[1],p2[1],p1[2],p2[2]))
+dtm_idw_crop <- as.data.frame(dtm_idw_crop, xy=T)
+dtm_idw_crop$type <- "IDW"
+
+dtm_kriging_crop <- crop(dtm_kriging,extent(p1[1],p2[1],p1[2],p2[2]))
+dtm_kriging_crop <- as.data.frame(dtm_kriging_crop, xy=T)
+dtm_kriging_crop$type <- "Kriging"
+```
+
+The three data frames are combined into one. The 'type' attribute is converted to a factor with levels kept in order in which they appear in the data:
+
+```{r}
+dtm_crop <- rbind(dtm_tin_crop, dtm_idw_crop, dtm_kriging_crop)
+dtm_crop$type <- fct_inorder(dtm_crop$type)
+```
+
+In addition to the interpolated elevations the point cloud will be plotted as well.
+```{r}
 las_clipped <- clip_transect(las, p1, p2, width = 1)
+```
 
 
-ggplot(data=NULL) + 
+
+Finally the plot is created
+
+```{r}
+ggplot(data=dtm_crop, aes(x, Z)) + 
+  geom_line() +
   geom_point(data=las_clipped@data, aes(X,Z, color=factor(Classification))) + 
-  geom_line(data=dtm1_crop, aes(x, Z), color="blue") +
-  geom_line(data=dtm2_crop, aes(x, Z), color="darkgreen") +
   coord_equal() + 
   theme_bw() +
-  theme(legend.position = "none")
-
+  theme(legend.position = "none")+
+  facet_grid(type~.)
+  
 ```
 
-## TIN
-
-## KRIGING
 
