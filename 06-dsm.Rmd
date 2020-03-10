@@ -1,7 +1,229 @@
-# Digital surface model
+```{r vis_startup,echo=FALSE,message=FALSE,warning=FALSE}
+r3dDefaults = rgl::r3dDefaults
+m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
+-0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
+rgl::setupKnitr()
+r3dDefaults$FOV = 50
+r3dDefaults$userMatrix = m
+r3dDefaults$zoom = 0.75
+library(lidR)
+library(ggplot2)
+library(forcats)
 
-## Digital surface model from raw data
 
-## Digital canopy model from raw data + dtm
 
-## Digital canopy model from normalized data
+```
+
+```{r}
+plot_crossection <- function(data, 
+                             p1 = c(273420, 5274455), 
+                             p2 = c(273570, 5274460),
+                             width = 2) {
+  
+  #clip pointcloud using the provided coordinates
+  data_clip <- clip_transect(data, 
+                          p1 = p1, 
+                          p2 = p2, 
+                          width = width)
+  
+  #generate the plot
+  p <- ggplot(data_clip@data, aes(X,Z, color=factor(Classification))) + 
+    geom_point() + 
+    coord_equal() + 
+    theme_bw() +
+    theme(legend.position = "none")
+  
+  return(p)
+}
+```
+
+# Digital Surface Model and Canopy Height model
+
+
+Contrary to DTM, both Digital Surface Model (DSM) and Canopy Height Model (CHM) are raster layers that represent the highest elevation of lidar returns. In case of a normalized point cloud the derived surface represents the relative canopy height (for vegetated areas) and is refered to as CHM. When the original point cloud is used ("un-normalized"), the derived layer represents the elevation of the top of the canopy above sea level, and is refered to as DSM. Therefore, both surface models are derived using the same algorithms, with the only difference being the elevation values of the point cloud.
+
+Differnt methods exist to create DSM and CHM. In the most simple case, a grid can be created with user-defined pixel size and elevation of the highest point can be assigned to in each grid cell. 
+
+
+Three algorihtms of creating DSM or CHM are implemented in 'lidR':
+
+* Point-to-raster (`p2r()`)
+
+* Based on Delaunay driangulation (`dsmtin()`)
+
+* Pit-free algorithm developed by [Khosravipour et al. (2014)](https://www.ingentaconnect.com/content/asprs/pers/2014/00000080/00000009/art00003?crawler=true) (`pitfree()`)
+
+
+## Point-to-raster `p2r()`
+
+Point-to-raster algorithms are conceptually simple, consisting of establishing a grid at a user defined resolution and attributing the elevation of the highest point to each pixel. Algorithmic implementations are computationally simple and fast.
+
+One drawback of the point-to-raster method is that some pixels can be empty if the grid resolution is too fine for the available point density. Some pixels may then fall within a location that does not contain any points,  and as a result the value is not defined. 
+
+
+The algorimthms will be presented on normalized point cloud that we load below:
+
+```{r}
+LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
+las <- readLAS(LASfile)
+```
+
+To ensure the point cloud is normalized we can plot a crossection: 
+```{r}
+plot_crossection(data = las, 
+                 p1 = c(min(las@data$X), mean(las@data$Y)),  
+                 p2 = c(max(las@data$X), mean(las@data$Y)), 
+                 width = 1)
+```
+
+To create a CHM `grid_canopy()` function is used. This functions requires three arguments to be specified by the user: the input point cloud datasets, resolution (pixel size) of the created surface model, and the algorithm used to compute the surface model.
+
+In the first example we will set the pixel size to `1` and use `p2r()` algorithm.
+
+
+```{r}
+chm <- grid_canopy(las, res = 1, algorithm = p2r())
+```
+
+The output is a `RasterLayer` object that we can visualize with the `plot()` function. We will replace the default color pallete (`height.colors()` instead of `terrain.colors()`) to enhance the visual representation of the created CHM.
+
+
+```{r}
+col <- height.colors(50)
+plot(chm, col = col)
+```
+
+In the second example we will use the exact same method, but increase the level of detail by changing the pixel size to 0.5 m:
+
+```{r}
+chm <- grid_canopy(las, res = 0.5, algorithm = p2r())
+plot(chm, col = col)
+```
+We can clearly see that there are a lot of white pixels in the derived surface that correspond to NoData areas in the point cloud. The level of detail was increased, however the CHM contains to many voids. 
+
+One option to reduce the number of voids in the surface model is to replace every point in the point cloud with a disk of a know diameter (e.g. 20 cm). This opertaion is meant to simulate the fact that the laser footprint is not a point, but rather a circular area.
+
+```{r}
+chm <- grid_canopy(las, res = 0.5, algorithm = p2r(subcircle = 0.2))
+plot(chm, col = col)
+```
+
+The `p2r()` function contains one additional argument that allows to interpolate the remaining NoData pixels. Empty pixels are interpolated using one of the three methods: `tin()`, `knnidw()`, and `kriging()`. Each of the methods are described in detail in chapter \@ref(digital-terrain-model).
+
+```{r, warning=F, message=F}
+chm <- grid_canopy(las, res = 0.5, p2r(0.2, na.fill = tin()))
+plot(chm, col = col)
+```
+
+
+## Triangulation
+
+
+
+
+
+Triangulation algorithm (Delaunay) works by first creating a TIN using first returns only, followed by interpolation within each triangle to compute an elevation value for each pixel of a raster. In its simplest form, this method consists of a strict 2-D triangulation of first returns. Despite being more complex compared to the point-to-raster algorithm, an advantage of the triangulation approach is that it does not output empty pixels, regardless of the resolution of the output raster (i.e. the entire area is interpolated). However, like the point-to-raster method, it can lead to gaps and other noise in the surface when the number of points is abnormally low compared to neighbouring areas, and so-called “pits” attributable to first returns that penetrated deep into the canopy. Pits can make individual tree segmentation more difficult and change the texture of the canopy in a non realistic way. To avoid this issue the DCM is often smoothed, in an attempt to produce a more realistic surface with fewer pits and less noise.
+
+To create a surface model using triangulation we use the `dsmtin()` algorithm. The only argument in this algorithm is `max_edge` which defines the maximum edge of a triangle in the Delaunay triangulation. By default this argument is set to `0` meaning that no triangles are removed.
+
+```{r}
+chm <- grid_canopy(las, res = 0.5, dsmtin())
+plot(chm, col = col)
+```
+If set, the `max_edge` argument may help limit the areas where interpolation is performed, however this leads to creating data gaps, e.g.:
+
+```{r}
+chm <- grid_canopy(las, res = 0.5, dsmtin(max_edge = 1))
+plot(chm, col = col)
+```
+
+
+## Pit-free algorithm
+
+
+More advanced algorithms have also been designed that avoid pits during the triangulation step instead of requiring a post-processing step. [Khosravipour et al. (2014)](https://www.ingentaconnect.com/content/asprs/pers/2014/00000080/00000009/art00003?crawler=true) proposed a ‘pit-free’ algorithm, which consists of a series of Delaunay triangulations made sequentially using points with values higher than a set of specified thresholds. For each threshold, the triangulation network is cleaned of TIN’s that are too wide, and is then rasterized. The triangulations and rasters are therefore considered to be “partial”. In a final step, the partial rasters are stacked and only the highest pixels of each raster are retained (figure below). The output is a DCM that is natively free of pits without using any post-processing or correction methods. 
+
+<center>
+
+![](images/DSM/pitfree.svg)
+
+</center>
+
+The algorithm requires the three optional arguments to be specified. `thresholds` is a numeric vector of threshold heights at which the separate triangulations are performed. `max_edge` defines the maximum edge length values in the two triangulation steps - the first value is the threshold value in the clasical triangulation, the second is the threshold for the pit-free algorithm. Triangles with edges longer than the threshold values are removed. Finally, the `subcircle` argument allows to replace each return with a circle of given radius.
+
+To generate a pit-free CHM with a pixel size of 0.5 m we use the following command:
+
+```{r}
+chm <- grid_canopy(las, res = 0.5, pitfree())
+plot(chm, col = col)
+```
+
+We can the now how the different arguments influence the produced CHM. First the `thresholds` are modified to consist of only two values: `c(2, 10)`. A CHM produced in this way will contain pixels with values above 2 m:
+
+```{r}
+chm <- grid_canopy(las, res = 0.5, pitfree(thresholds = c(2,  10)))
+plot(chm, col = col)
+```
+
+By increasing the `max_edge` argument for the pit-free triangulation part from `1` to `1.5` the produced CHM becomes smoother:
+
+```{r}
+chm <- grid_canopy(las, res = 0.5, pitfree(max_edge = c(0, 1.5)))
+plot(chm, col = col)
+```
+
+
+## Comparing methods to create surface models
+
+To demonstrate the differences between different methods we will create three separate CHMs and visualize them together on one plot. The plot will be created following the same routine as in chapter \@ref(digital-terrain-model). 
+
+```{r}
+
+# Create CHMs using three different algorithms
+chm_p2r <- grid_canopy(las, res = 0.5, algorithm = p2r())
+chm_tin <- grid_canopy(las, res = 0.5, dsmtin())
+chm_pitfree <- grid_canopy(las, res = 0.5, pitfree())
+
+# define crossection start and end point
+p1 = c(min(las@data$X), mean(las@data$Y))
+p2 = c(max(las@data$X), mean(las@data$Y)+0.5)
+
+# crop CHM rasters
+chm_p2r_crop <- crop(chm_p2r,extent(p1[1],p2[1],p1[2],p2[2]))
+chm_tin_crop <- crop(chm_tin,extent(p1[1],p2[1],p1[2],p2[2]))
+chm_pitfree_crop <- crop(chm_pitfree,extent(p1[1],p2[1],p1[2],p2[2]))
+
+# convert rasters to data frames
+chm_p2r_crop <- as.data.frame(chm_p2r_crop, xy=T)
+chm_tin_crop <- as.data.frame(chm_tin_crop, xy=T)
+chm_pitfree_crop <- as.data.frame(chm_pitfree_crop, xy=T)
+
+# add type attribute
+chm_p2r_crop$type <- "p2r"
+chm_tin_crop$type <- "tin"
+chm_pitfree_crop$type <- "pit-free"
+
+# combine data frames into one
+chm_crop <- rbind(chm_p2r_crop, chm_tin_crop, chm_pitfree_crop)
+
+# reorder factors
+chm_crop$type <- fct_inorder(chm_crop$type) 
+
+# clip point cloud
+las_clipped <- clip_transect(las, p1, p2, width = 0.5)
+
+# create a plot
+ggplot(chm_crop, aes(x, Z)) +
+  geom_point(color="#4575b4", size=2)+
+  geom_line(color="#4575b4")+
+  geom_point(data=las_clipped@data, aes(X, Z), size=0.5)+
+  facet_grid(type~.)+
+  coord_equal() + 
+  theme_bw()
+```
+
+Blue points and lines represent CHM pixels. Black points represent the section of the point cloud that the CHM is derived for. 
+
+
+
+
