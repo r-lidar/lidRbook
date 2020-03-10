@@ -3,11 +3,17 @@ library(lidR)
 library(ggplot2)
 library(rgl)
 
+r3dDefaults = rgl::r3dDefaults
+m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
+-0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
+rgl::setupKnitr()
+r3dDefaults$FOV = 50
+r3dDefaults$userMatrix = m
+r3dDefaults$zoom = 0.75
 ```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-rgl::setupKnitr()
 ```
 
 # Ground classification
@@ -22,6 +28,13 @@ Two ground classification algorithms are currently implemented in `lidR`: Progre
 ## PMF
 
 The implementation of PMF algorithm in `lidR` is based on the method described in [Zhang et al. (2003) ](https://ieeexplore.ieee.org/document/1202973). In this approach an initial raster surface is created based on the lowest point within each pixel. Morphological opening is then performed using a user defined window size. The resulting raster surface is compared with the initial one and all differences that exceed user-defined threshold value are removed. The operation is then repeated several times, resulting in further filtering of the initial raster surface. The remaining pixels represent lowest points and are used to classify them as "ground".
+
+
+<center>
+
+![](images/GroundClassification/PMF.svg)
+
+</center>
 
 The `pmf()` function requires to input parameters to be defined: `ws` (window size or sequence of window sizes), and `th` (threshold size or sequence of threshold heights). More experienced user may experiment with these parameters to achieve best classification accuracy, however `lidR` contains `util_makeZhangParam()` function that includes the default paramter values described in [Zhang et al. (2003) ](https://ieeexplore.ieee.org/document/1202973).
 
@@ -40,7 +53,7 @@ las_1 <- lasground(las, algorithm = pmf(ws = 5, th = 3))
 
 We can now visualize the result:
 
-```{r rgl=TRUE, dev='png', width=500}
+```{r rgl=TRUE}
 plot(las_1, color = "Classification") 
 ```
 
@@ -114,6 +127,13 @@ plot_crossection(las_2)
 
 
 Cloth simulation filtering (CSF) is based on a simulating a piece of cloth placed on top of a reversed point cloud [Zhang et al 2016](http://www.mdpi.com/2072-4292/8/6/501/htm). In this method the point cloud is turned upside down and then a  cloth is dropped on the inverted surface. Ground points are determined by analyzing the interations between the nodes of the cloth and the inverted surface. The cloth simulation itself is based on a grid that consists of particles with mass and interconnections that together determine the three-dimensional position and shape of the cloth.
+
+<center>
+
+![](images/GroundClassification/CSF.svg)
+
+</center>
+
 
 The `csf()` algorithm works in several steps. After the point cloud is inverted, an intitial cloth grid is generated and set above the highest point and displacement of each particle is calculated under the influence of gravity. Particles that were moved under the point cloud are moved on the ground and set as unmovable. The movable particles are processed futher and moved according to forces produced by neighbour particles.
 
