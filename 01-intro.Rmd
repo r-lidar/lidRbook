@@ -25,7 +25,7 @@ las <- readLAS(LASfile)
 
 ## Reading lidar data using `readLAS`
 
-The function `readLAS()` reads a LAS or LAZ files an return an object of class `LAS`. The `LAS` format class is documented in depth in a [dedicated vignette]() and the follwing chapter is likely to repeat some information given is the mentionned document. 
+The function `readLAS()` reads a LAS or LAZ files and returns an object of class `LAS`. The `LAS` formal class is documented in depth in a [dedicated vignette]().
 
 ```r
 las <- readLAS("files.las")
@@ -73,14 +73,17 @@ Both outputs are strictly identical but the first one is faster and more memory 
 Several filter commands can be associated. The full list of avaible commands is given by `rlas::lasfilterusage()`.
 
 ```r
-las <-  readLAS("file.las", select = "xyzi", filter = "-keep_first -drop_z_below 5 -drop_z_above 50")
+las <-  readLAS("file.las", filter = "-keep_first -drop_z_below 5 -drop_z_above 50")
 ```
 
 ## Plotting
 
+The `lidR` package takes advantage of the `rgl` package to provide a versatile and interactive 3D viewer with point colored by default by their Z coordinates and displayed on a black background. Being based on `rgl` this viewer is extremely versatile but it also uses a lot of memory and has difficulties at displaying too big point clouds.
+
 ### Basic plots
 
-The `lidR` package take advantage of the `rgl` package to provide a versatile and interactive 3D viewer with point colored by default by their Z coordinates and displayed on a black background.
+The very basic way to render a point cloud is the function `plot()`.
+
 
 ```{r, rgl = TRUE}
 plot(las)
@@ -107,7 +110,7 @@ plot(las, color = "Intensity", trim = 50, bg = "white")
 
 ### Advanced plots
 
-In the previous section we have seen how to display a single point cloud and nothing else. This section shows how to make more advanced rendering overprinting additionnal objects. Being based on `rgl` it is easy to add objects in the main redering. However `lidR` introduced a difficulty because it does not displays the points with their actual coordinates. Usually ALS data XY coordinates are accurate big numbers such as `58130112.282` and because `rgl` uses `float` (decimal numbers on 32 bitS) instead of `double` (decimal numbers on 64 bits) the accuracy is lost and the rendering may look ugly and wrong while. This is why the point are shifted to be rendering close to (0, 0). When `plot()` is use it returns invisibly the shift values that can be used later to realign other objects.
+In the previous section we have seen how to display a single point cloud and nothing else. This section shows how to make more advanced rendering overprinting additionnal objects. Being based on `rgl` it is easy to add objects in the main redering. However `lidR` introduced a difficulty because it does not displays the points with their actual coordinates. Usually ALS data XY coordinates are accurate big numbers such as `58130112.282` and because `rgl` uses `float` (decimal numbers on 32 bitS) instead of `double` (decimal numbers on 64 bits) the accuracy is lost and the rendering may look ugly and wrong. This is why the points are shifted to be rendered close to (0, 0). When `plot()` is used it returns invisibly the shift values that can be used later to realign other objects.
 
 ```{r}
 offsets = plot(las)
@@ -165,7 +168,7 @@ A simple example that happens fairly often is that a `LAS` file contains duplica
 las_check(las)
 ```
 
-A check is performed at read time anyway. But the read time check does not go as deep as `las_check()` for computation time reasons.
+A check is performed at read time anyway. But the read time check does not go as deep as `las_check()` for computation time reasons. For example duplicated points are not checked at read time.
 
 ```{r, warning = TRUE}
 las = readLAS("data/chap1/corrupted.laz")
