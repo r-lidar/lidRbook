@@ -1,0 +1,26 @@
+[general]
+creator=R package 'raster'
+created=2020-03-12 08:33:37
+[georeference]
+nrows=188
+ncols=160
+xmin=706875
+ymin=5011095
+xmax=709275
+ymax=5013915
+projection=NA
+[data]
+datatype=FLT4S
+byteorder=little
+nbands=1
+bandorder=BIL
+categorical=FALSE
+minvalue=1
+maxvalue=10
+nodatavalue=-3.4e+38
+[legend]
+legendtype=
+values=
+color=
+[description]
+layername=V1
