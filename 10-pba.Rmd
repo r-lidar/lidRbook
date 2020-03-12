@@ -122,7 +122,7 @@ again `lidR` has a dedicated function for this specific task because we believe 
 las <- segment_shape(las, shp_line(th = 8, k = 15), "linear")
 ```
 
-## Multispectral coloring 
+## Multispectral coloring {#sec:pba-mscoloring}
 
 `point_metrics()` is not limited to eigen value related metrics. It is only limited by user's imagination. In the following we will demonstrate how it an be used to attribute false color to a multispectral point cloud.
 
