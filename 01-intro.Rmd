@@ -25,7 +25,7 @@ las <- readLAS(LASfile)
 
 ## Reading lidar data using `readLAS`
 
-The function `readLAS()` reads a LAS or LAZ files and returns an object of class `LAS`. The `LAS` formal class is documented in depth in a [dedicated vignette]().
+The function `readLAS()` reads a LAS or LAZ files and returns an object of class `LAS`. The `LAS` formal class is documented in depth in a [dedicated vignette](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAS-class.html).
 
 ```r
 las <- readLAS("files.las")
