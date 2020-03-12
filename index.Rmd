@@ -11,7 +11,7 @@ link-citations: yes
 github-repo: rstudio/bookdown-demo
 description: "A guide to the `lidR` package"
 ---
-# Introduction {-#my-section}
+# Introduction
 
 `lidR` is an R package for manipulating and visualizating airborne lidar data for forestry applications. This guide has been written to help both the lidar novice, aswell as seasoned point cloud processing veterans. Key functionality of the package includes functions to:
 
@@ -26,7 +26,7 @@ description: "A guide to the `lidR` package"
 
 The current release version of `lidR` can be found on [CRAN](https://cran.r-project.org/web/packages/lidR/) and is hosted on [GitHub](https://github.com/Jean-Romain/lidR)
 
-## Support {-#my-section}
+## Support
 Development of the `lidR` package between 2015 and 2018 was made possible thanks to the financial support of the AWARE project [NSERC CRDPJ 462973-14](https://aware.forestry.ubc.ca/); grantee [Prof. Nicholas C. Coops](https://profiles.forestry.ubc.ca/person/nicholas-coops/).
 
 Development of the `lidR` package between 2018 and 2019 was made possible thanks to the financial support of the Ministère des Forêts, de la Faune et des Parcs of Québec.
