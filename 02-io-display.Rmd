@@ -1,7 +1,7 @@
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 r3dDefaults = rgl::r3dDefaults
 m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
--0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
+                -0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
 rgl::setupKnitr()
 r3dDefaults$FOV = 50
 r3dDefaults$userMatrix = m
@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
   fig.align = "center")
 
 library(lidR)
+library(ggplot2)
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
 las <- readLAS(LASfile)
 ```
@@ -154,6 +155,78 @@ veg = filter_poi(las, Classification == LASHIGHVEGETATION)
 x = plot(nonveg, color = "Classification", bg = "white", size = 3)
 plot(veg, add = x)
 ```
+
+### Crossections
+
+```{r, echo=F}
+LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+las <- readLAS(LASfile)
+```
+
+
+To better visualize the vertical structure of the point cloud, investigate classification results, or compare results of different interpolation routines, we may plot a crossection of the point cloud. To do that we need to decide where the crossection is located (i.e. define the beginning and the end location of the crossection) and specify it's width. The point cloud can then be clipped and the `X` and `Z` coordinates used to create the plot.
+
+For example, to create a 50 m long crossection we may define the beggining and the end as:
+
+
+```{r}
+p1 = c(684800, 5017900)
+p2 = c(684850, 5017900)
+
+```
+We can then use `clip_transect()` function to subset the point cloud.
+
+
+```{r}
+las_tr <- clip_transect(las, 
+                        p1 = p1, 
+                        p2 = p2, 
+                        width = 2)
+```
+
+To visualize the crossection we plot the `Z` coordinate on the y-axis.
+```{r}
+ggplot(las_tr@data, aes(X,Z)) + 
+  geom_point() + 
+  coord_equal() + 
+  theme_bw()
+```
+
+Points may be colored by e.g. return number 
+```{r}
+ggplot(las_tr@data, aes(X, Z, color=factor(ReturnNumber))) + 
+  geom_point() + 
+  coord_equal() + 
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+Or classification:
+
+```{r}
+ggplot(las_tr@data, aes(X, Z, color=factor(Classification))) + 
+  geom_point() + 
+  coord_equal() + 
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+
+The two steps required to create a crossection, i.e. clipping the point cloud and plotting may be combined. Below we create a simple function that will become handy at multiple occasions throughout this book. To make this function even easier to use we will specify the default values for `p1` and `p2` so that the crossection is located in the centre of the point cloud, along the X-axis. The default width will be 2 m.
+
+```{r, code=readLines("function_plot_crossection.R")}
+
+```
+
+
+```{r}
+plot_crossection(las)
+```
+
+```{r}
+plot_crossection(las, colour_by = factor(Classification))
+```
+
 
 
 ## Validating lidar data

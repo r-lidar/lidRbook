@@ -10,32 +10,11 @@ library(lidR)
 library(ggplot2)
 library(forcats)
 
-
+source("function_plot_crossection.R")
 
 ```
 
-```{r}
-plot_crossection <- function(data, 
-                             p1 = c(273420, 5274455), 
-                             p2 = c(273570, 5274460),
-                             width = 2) {
-  
-  #clip pointcloud using the provided coordinates
-  data_clip <- clip_transect(data, 
-                          p1 = p1, 
-                          p2 = p2, 
-                          width = width)
-  
-  #generate the plot
-  p <- ggplot(data_clip@data, aes(X,Z, color=factor(Classification))) + 
-    geom_point() + 
-    coord_equal() + 
-    theme_bw() +
-    theme(legend.position = "none")
-  
-  return(p)
-}
-```
+
 
 # Digital Surface Model and Canopy Height model
 
@@ -70,10 +49,7 @@ las <- readLAS(LASfile)
 
 To ensure the point cloud is normalized we can plot a crossection: 
 ```{r}
-plot_crossection(data = las, 
-                 p1 = c(min(las@data$X), mean(las@data$Y)),  
-                 p2 = c(max(las@data$X), mean(las@data$Y)), 
-                 width = 1)
+plot_crossection(data = las, width = 1)
 ```
 
 To create a CHM `grid_canopy()` function is used. This functions requires three arguments to be specified by the user: the input point cloud datasets, resolution (pixel size) of the created surface model, and the algorithm used to compute the surface model.
