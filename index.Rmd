@@ -5,34 +5,27 @@ date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
-bibliography: [book.bib, packages.bib]
-biblio-style: apalike
-link-citations: yes
-github-repo: rstudio/bookdown-demo
 description: "A guide to the `lidR` package"
 ---
+
 # Introduction
 
-`lidR` is an R package for manipulating and visualizating airborne lidar data for forestry applications. This guide has been written to help both the lidar novice, aswell as seasoned point cloud processing veterans. Key functionality of the package includes functions to:
+`lidR` is an R package for manipulating and visualizating airborne laser scanning (ALS) data for forestry applications that is integrated within the geospatial R ecosytem (i.e. `raster`, `sp`, `sf`, `rgdal` and so on). This guide has been written to help both the LiDAR novice, as well as seasoned point cloud processing veterans. Key functionality of the package includes functions to:
 
 * Read and write `.las` and `.laz` files
 * Plot point clouds and customize visualization
-* Generate standard lidar outputs such as Digital Terrain Models, Digital Surface Models, and Canopy Height Models
-* Process point cloud data - including point classification, normalization, filtering, & thinning
-* Compute standard and user-defined statistical metrics for forest modelling 
-* Guidelines for implementing area-based approaches to forest modelling using ALS lidar data
-* Manage processing for sets of lidar files - referred to as a `LAScatalog`
-* Facilitate user defined processing streams for research and development.
+* Generate standard ALS outputs such as digital terrain models (DTM), digital surface models (DSM), and canopy height models (CHM)
+* Process point clouds including point classification, normalization, filtering & thinning
+* Compute standard and user-defined statistical metrics for forest modelling at different level of regularisation
+* Guidelines for implementing area-based approaches to forest modelling using ALS LiDAR data
+* Manage processing for sets of point cloud files - referred to as a `LAScatalog`
+* Facilitate user-defined processing streams for research and development.
 
-The current release version of `lidR` can be found on [CRAN](https://cran.r-project.org/web/packages/lidR/) and is hosted on [GitHub](https://github.com/Jean-Romain/lidR)
+The current release version of `lidR` can be found on [CRAN](https://cran.r-project.org/web/packages/lidR/) and is hosted on [GitHub](https://github.com/Jean-Romain/lidR). 
 
-## Support
 Development of the `lidR` package between 2015 and 2018 was made possible thanks to the financial support of the AWARE project [NSERC CRDPJ 462973-14](https://aware.forestry.ubc.ca/); grantee [Prof. Nicholas C. Coops](https://profiles.forestry.ubc.ca/person/nicholas-coops/).
 
-Development of the `lidR` package between 2018 and 2019 was made possible thanks to the financial support of the Ministère des Forêts, de la Faune et des Parcs of Québec.
-
-<center>
+Development of the `lidR` package between 2018 and 2020 was made possible thanks to the financial support of the Ministère des Forêts, de la Faune et des Parcs of Québec.
 
 ![](images/logo.png)
 
-</center>

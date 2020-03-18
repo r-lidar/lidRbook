@@ -1,3 +1,3 @@
 # LAScatalog processing engine
 
-This is basically the vignette I'm writting
+So far we have essentially seen how to process a point cloud after reading a file with readLAS(). In practice coverage are made of hundreds or thouthands of files and it is not possible to load them all at once in memory. This is why we introduced a structure to hold a collection of file named LAScatalog. The `LAScatalog` formal class is documented in depth in a [dedicated vignette](). The class is accompagned by a versatile engine capable of processing such a collection of file.

@@ -22,9 +22,15 @@ las <- readLAS(LASfile)
 
 # Reading, Plotting, Querying & Validating
 
-## Reading lidar data using `readLAS`
+Discrete return ALS sensors record positional data in three dimensions as well as an intensity value for each point, the position of each point in the return sequence, or the beam incidence of each point. Reading, writing and storing these ALS data is a critical preliminary step before any subsequent analysis. 
 
-The function `readLAS()` reads a LAS or LAZ files and returns an object of class `LAS`. The `LAS` formal class is documented in depth in a [dedicated vignette](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAS-class.html).
+ALS data is most commonly distributed in LAS format, which is specifically designed to store LiDAR data that is standardized, and officially and publicly documented and maintained by the American Society for Photogrammetry & Remote Sensing.  However LAS files require a large amount of memory to be stored because they are not compressed. The LAZ format has become the standard compression scheme, because it is free and open-source.
+
+As a consequence of the open nature of the LAS and LAZ formats, their widespread use in the community and their adequacy with processing requirements, the `lidR` package is designed to process LAS and LAZ files both as input and output, taking advantage of the LASlib and LASzip C++ libraries via the `rlas` package.
+
+## Reading LiDAR data using `readLAS`
+
+The function `readLAS()` reads a LAS or LAZ files and returns an object of class `LAS`. The `LAS` formal class is documented in depth in a [dedicated vignette](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAS-class.html). In summary a LAS file is made of two parts: (1) the header that stores some summary informations about the content including the bounding box of the file, the coordinates reference system, the point format and (2) the payload i.e. the point cloud itself. The function `readLAS()` reads and creates an object that contains both the header and the payload.
 
 ```r
 las <- readLAS("files.las")
@@ -40,9 +46,9 @@ For a more in-depth print of the data one can use the function `summary()` inste
 
 ### Parameter `select`
 
-A LAS file stores the X Y Z coordinates of each point as well as many other data for each point such as the intensity, the incidence angle, the position of the point in the return sequence and so on. We called these data: *attributes*. In pratice many attributes are not actually useful but they are loaded anyway by default and this take a lot of processing memory because R is a language that does not allows for data chosing storage modes (the the vignette for more details).
+A LAS file stores the X Y Z coordinates of each point as well as many other data for each point such as the intensity, the incidence angle, the position of the point in the return sequence and so on. We called these data: *attributes*. In pratice many attributes are not actually useful but they are loaded anyway by default and this take a lot of processing memory because R is a language that does not allows for choosing data storage modes (see [the vignette]((https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAS-class.html)) for more details).
 
-To save memory, `readLAS` can take an optional parameter `select` which enables the user to selectively load the attributes of interest. For example, one can choose to only load only the `X Y Z` fields.
+To save memory, `readLAS()` can take an optional parameter `select` which enables the user to selectively load the attributes of interest. For example, one can choose to only load only the `X Y Z` attributes.
 
 ```r
 las <- readLAS("file.las", select = "xyz")  # load XYZ only
@@ -77,15 +83,18 @@ las <-  readLAS("file.las", filter = "-keep_first -drop_z_below 5 -drop_z_above 
 
 ## Plotting
 
-The `lidR` package takes advantage of the `rgl` package to provide a versatile and interactive 3D viewer with point colored by default by their Z coordinates and displayed on a black background. Being based on `rgl` this viewer is extremely versatile but it also uses a lot of memory and has difficulties at displaying too big point clouds.
+The `lidR` package takes advantage of the `rgl` package to provide a versatile and interactive 3D viewer with point colored by default by their Z coordinates and displayed on a black background.
 
 ### Basic plots
 
 The very basic way to render a point cloud is the function `plot()`.
 
-
-```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
+```r
 plot(las)
+```
+
+```{r, echo = FALSE, rgl = TRUE, fig.width = 4, fig.height = 3}
+plot(las, size = 3)
 ```
 
 Users can change the attributes used for coloring by providing the name of the attribute used to colorize the points. The background color of the viewer can also be changed by inputing a color into the `bg` parameter. Axis can also be added and point size can be changed.
