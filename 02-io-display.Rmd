@@ -241,7 +241,7 @@ for (i in 1:length(ttops))
 }
 ```
 
-### Crossections 2D rendering
+### Crossections 2D rendering {#crossection}
 
 ```{r, echo=F}
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
