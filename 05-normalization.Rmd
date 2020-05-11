@@ -7,105 +7,95 @@ r3dDefaults$FOV = 50
 r3dDefaults$userMatrix = m
 r3dDefaults$zoom = 0.75
 library(lidR)
+
+knitr::opts_chunk$set(
+  comment =  "#>", 
+  collapse = TRUE,
+  fig.align = "center")
 ```
 
 # Height normalization
 
-The purpose of the DTM, apart from using it as a stand alone product, is to facilitate terrain normalization. 
+The purpose of the DTM, apart from using it as a stand alone product for water drainage, archeology or road planning is to facilitate terrain normalization. Described simply, point cloud normalization removes the influence of terrain on above ground measurements. This makes comparison of above ground vegetation heights possible and simplifies analyses accross acquisition areas. When reading a non normalized file:
 
-Described simply, point cloud normalization removes the influence of terrain on above ground measurements. This makes comparison of above ground vegetation heights possible and simplifies analyses accross acquisition areas.
+```{r, rgl=TRUE}
+LASfile <- system.file("extdata", "Topography.laz", package="lidR")
+las <- readLAS(LASfile)
+plot(las, size = 3, bg = "white")
+```
 
-Two normalization approaches are most commonly used (both are implemented within `lidR`):
+we can see the terrain variation are visible. To get a better idea of what the terrain looks like lets remove all non-ground points.
+
+```{r, rgl = TRUE}
+las_grnd <- filter_ground(las)
+plot(las_grnd, size = 3, bg = "white", color = "Classification")
+```
+
+The goal of normalization is to get a flat terrain. Two normalization approaches are most commonly used:
 
 * Subtract the derived raster DTM elevation from all non-ground returns 
 * Interpolate ground points directly and subtract beneath the non-ground returns
 
-`lidR` can implement both methods, and has three implemented algorithms that can perform this method of point cloud normalization:
-
-* `knnidw` - Interpolation is done using a k-nearest neighbour (KNN) approach with an inverse distance weighting (IDW). This is a fast but basic method for spatial data interpolation.
-
-* `delauney` - Interpolation based on Delaunay triangulation. It makes a linear interpolation within each triangle. Note that with this method no extrapolation is done outside of the convex hull determined by the ground points.
-
-* `kriging` - Interpolation is done by universal kriging using the krige function. This method combines the KNN approach with the kriging approach. For each point of interest it kriges the terrain using the k-nearest neighbour ground points. This method is more difficult to manipulate but it is also the most advanced method for interpolating spatial data.
-
-__When using the `knnidw` and `kriging` methods, the user must specify the number of nearest neighbours (parameter `k`) that the algorithm should use for interpolation.__ MAYBE REMOVE THIS?
-
-As before we need to read in our lidar data
-
-```{r, rgl=TRUE}
-# Read Topography.laz from within the lidar package
-LASfile <- system.file("extdata", "Topography.laz", package="lidR")
-las <- readLAS(LASfile)
-plot(las, size = 3)
-```
-
-We can see in the image that these data are not normalized as the slope of the terrain is still visible. To get a better idea of what the terrain looks like lets remove all non-ground points.
-
-```{r, rgl = TRUE}
-las_grnd <- lasfilter(las, Classification == 2L)
-plot(las_grnd, size = 3)
-```
-
-We can ensure that these points are ground points by colorizing the points based on classification. We should only see 1 colour.
-
-
-```{r, rgl = TRUE}
-plot(las_grnd, color = "Classification", size = 3)
-```
+`lidR` implements both methods in the function `normalize_elevation()`.
 
 ## DTM normalization
 
-To normalize points using a DTM we first need to create the DTM itself. For this we use the `grid_terrain()` function. We have chosen to use a grid resolution of 1 m and to use the `knnidw()` algorithm with default parameters.
+To normalize points using a DTM we first need to create the DTM itself. For this we use the `grid_terrain()` function (see section \@ref(dtm)). For this example we chosed to use a grid resolution of 1 m and to use the `knnidw()` algorithm with default parameters.
 
 ```{r, fig.height=5.85, fig.width=6}
-# Compute a 1m reoslution DTM
-dtm = grid_terrain(las, 1, knnidw())
-# Note that dtm is a RasterLayer
-class(dtm)
-# Plot the DTM raster to visualize elevation changes
+dtm <- grid_terrain(las, 1, knnidw())
 plot(dtm, col = gray.colors(50, 0, 1))
 ```
 
-`lidR` also allows us to visualize rasterized DTM layers in 3d using the `plot_dtm3d()` function
-
-```{r,rgl = TRUE}
-plot_dtm3d(dtm)
-```
-
-We are also able to combine the DTM surface with the lidar plot layer using `adddtm3d()` function
-
-```{r,rgl = TRUE, echo = FALSE}
-x <- plot(las, size = 3)
-add_dtm3d(x, dtm)
-```
-
-We can see that the DTM surface matches very well with the ground points - which it should!
-
-Now that we have our surface and are satisfied with it we can use it to normalize our pointcloud using the `lasnormalize` function.
+Now we have our surface and are satisfied with it we can use it to normalize our point-cloud using the minus function.
 
 ```{r, rgl = TRUE}
-nlas <- lasnormalize(las,dtm)
-plot(nlas, size = 3)
+nlas <- las - dtm
+plot(nlas, size = 4, bg = "white")
 ```
 
-We can see that the ground points of the point cloud have been normalized, making the point cloud appeach much flatter. All above ground vegetation are now comparable.
+We can see that the point cloud have been normalized, making the point cloud appear flat i.e. all the elevation are given reletatively to the ground including the fact that ground points are thus expected to be at Z = 0 by definition. But are they? Let look at the distribution of ground points
+
+```{r, fig.height=4, fig.width=4}
+hist(filter_ground(nlas)$Z, breaks = seq(-0.45, 0.45, 0.01), main = "", xlab = "Elevation")
+```
+
+We can see that the ground point are not all at 0 and may belong up to 40 cm above of below 0. This appended because the DTM is a discretized raster: the location of the pixels do not match with the locations of the ground points. Let assume with have two ground points with elevation of 257.5 and 258 meters respectivly in a given pixel at 257.9 m. After normalization their respective elevation will be -0.4 m and 0.1 m because each pixel has a single value meaning that all the points within a given pixel get normalized with the exact same elevation value. In a raster the elevations are a succession of flat areas with discontinuities at each pixel. Thus a simple substraction of the raster gives visually good results but in practice lead to many innacuracies because of the discretixed nature of the storage format.
+
+One option to get something smoother is to interpolate the value of the digital terrain model. In this case the simpliflied statement `las - dtm` is not sufficient and we must use the expended version using the function `normalize_elevation()` which allows to pass some option to the `raster` package such as `method = "bilinenar"` to interpolation each point from the values of the four nearest raster cells.
+
+```{r, fig.height=4, fig.width=4}
+nlas <- normalize_elevation(las, dtm, method = "bilinear")
+hist(filter_ground(nlas)$Z, breaks = seq(-0.45, 0.45, 0.01), main = "", xlab = "Elevation")
+```
+
+But, in this case at least, it does not help. Actually it is maybe worst. This is the limit of the raster-based method. It does not come from how the DTM has been built but how the DTM has been stored. A raster is a discretized storage mode, a DTM is a continuous structure. Storing the last in the first implies information loss.
 
 ## Point cloud normalization
 
-Point cloud normalization without a DTM  utilises all returns, where ground points are interpolated to the exact position beneath non-ground points.
+Point cloud normalization without a DTM interpolates the elevation of every single point locations using ground points. It no longer uses elevations at discrete predefined locations. Thus the methods is exact, **computationally speaking** (all interpolation methods are interpolation and by definition make guesses). To compute the exact normalization, we can feed `normalize_elevation()` with an algorithm for spatial interpolation instead of a `RasterLayer`.
 
 ```{r, rgl = TRUE}
-nlas = lasnormalize(las, knnidw())
-#nlas = lasnormalize(las, kriging())
-#nlas = lasnormalize(las, delauney())
-plot(nlas, size = 3)
+nlas = normalize_elevation(las, knnidw())
 ```
+
+The method being exact all the ground points should be exactly 0. Let check it:
+
+```{r, fig.height=4, fig.width=4}
+hist(filter_ground(nlas)$Z, breaks = seq(-0.45, 0.45, 0.01), main = "", xlab = "Elevation")
+```
+
+One can reproduce this with other algorithm such as `tin()`
+
+## Pros and cons
+
+Point-cloud based normalization is superior in term of accuracy. However they are pros and cons to use it mainly because it is compuationnaly intensive compared to a raster-based method. In addition raster DTM are storable on disk and can be loaded quicky to be used to normalize different dataset while point-cloud-based methods need to be recomputed for each poitn cloud. It is up-to-the user to choose which method suit best to its needs. `lidR` provides the options.
 
 ## Reversing normalization
 
-`lidR` also has the capacity to reverse normalization using the `lasunnormalize` function. This reverts the normalized point cloud to its pre-normalized state.
+`lidR` also has the capacity to reverse normalization using the `unnormalize_elevation` function. This reverts the normalized point cloud to its pre-normalized state.
 
 ```{r,eval=F}
-las <- lasunnormalize(las)
+las <- unnormalize_elevation(nlas)
 ```
 
