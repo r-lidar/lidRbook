@@ -16,7 +16,7 @@ r3dDefaults$zoom = 0.75
 
 ```
 
-# Digital terrain model 
+# Digital terrain model {#dtm}
 
 Generating a Digital Terrain Model (DTM) usually follows the classification of ground points as the second step of point cloud data analyses. Put simply, a DTM can be described as an “image” of the ground. Over the past decades, methods to generate DTMs have been intensively studied and several algorithms have been proposed for various terrain situations. DTMs are used for a variety of purposes in practice, such as determination of the catchment basins of water retention and stream flow, or the identification of drivable roads to access resources. It also enables users to normalize the point cloud i.e. subtract the local terrain from the elevation of points to allow a manipulation of point clouds as if they were acquired on a flat surface.
 

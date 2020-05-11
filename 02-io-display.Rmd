@@ -27,7 +27,7 @@ las <- readLAS(LASfile)
 * Contains a comprehensive header that describes the content of the file including its bounding box. 
 * Compressed LAZ format is supported
 
-Discrete return ALS sensors record a number of pieces of data. First and foremost, positional data in three dimensions (X,Y,Z), followed by additional information like the intensity for each point, the position of each point in the return sequence, or the beam incidence of each point. Reading, writing, and efficient stoage of these ALS data is a critical step prior to any subsequent analysis. 
+Discrete return ALS sensors record a number of pieces of data. First and foremost, positional data in three dimensions (X,Y,Z), followed by additional information like the intensity for each point, the position of each point in the return sequence, or the beam incidence of each point. Reading, writing, and efficient storage of these ALS data is a critical step prior to any subsequent analysis. 
 
 ALS data is most commonly distributed in LAS format, which is specifically designed to store LiDAR data that is standardized, and officially and publicly documented and maintained by the American Society for Photogrammetry & Remote Sensing (ASPRS).  LAS files do however require a large amount of memory because they are not compressed. The LAZ format has become the standard compression scheme, because it is free and open-source.
 
@@ -54,6 +54,60 @@ print(las)
 
 For a more in-depth print out of the data use the function `summary()` instead of `print()`.
 
+### Parameter `select`
+
+A LAS file stores the `X Y Z` coordinates of each point as well as many other data such as intensity, incidence angle, position of the point in the return sequence and so on. We called these data: *attributes*. In pratice many attributes are not actually useful but they are loaded anyway by default. This can take up a lot of processing memory because R is a language that does not allow for choosing data storage modes (see [this vignette]((https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAS-class.html)) for more details).
+
+To save memory, `readLAS()` can take an optional parameter `select` which enables the user to selectively load the attributes of interest. For example, one can choose to load only the `X Y Z` attributes.
+
+```r
+las <- readLAS("file.las", select = "xyz")  # load XYZ only
+las <- readLAS("file.las", select = "xyzi") # load XYZ and intensity only
+```
+Examples of other commonly used attribute abbreviates are:
+
+* `t` - gpstime
+* `a` - scan angle
+* `n` - number of returns
+* `r` - return number
+* `c` - classification
+* `s` - synthetic flag
+* `k` - keypoint flag
+* `w` - withheld flag
+* `o` - overlap flag (format 6+)
+* `u` - user data
+* `p` - point source ID
+* `e` - edge of flight line flag
+* `d` - direction of scan flag
+
+### Parameter `filter`
+
+While `select` enables the user to select "columns" (or attributes) while reading files, `filter` allows selection of "rows" (or points) while reading. Removing data at reading time that is superfluous saves memory and decreases computation time. For example, it's common pratice in forestry to process using first returns.
+
+```r
+las <- readLAS("file.las", filter = "-keep_first") # Read only first returns
+```
+
+It is important to understand that the option `filter` in `readLAS()` keeps or discards point **at read time** i.e. while reading at the C++ level without implying any R code. For exemple the R function to filter points of interest (POI) is `filter_poi()` may return the exact same output than the `filter` option in `readLAS()`: 
+
+
+```r
+las1 <- readLAS("file.las", filter = "-keep_first")
+
+las2 <- readLAS("file.las",)
+las2 <- filter_poi(las2, ReturnNumber == 1L)
+```
+
+In the previous example we are (1) reading only the first returns and (2) reading all the points then filtering the first return. Both outputs are strictly identical but the first one is faster and more memory efficient mainly because it does not load the whole file in R.
+
+Several filter commands can be associated.
+
+```r
+las <-  readLAS("file.las", filter = "-keep_first -drop_z_below 5 -drop_z_above 50")
+```
+
+The full list of avaible commands is given by `rlas::lasfilterusage()`. Users of `LAStools` may recognize these commands because both `LAStools` and `lidR` use the same library (LASlib and LASzip) to read and write LAS and LAZ files.
+
 ## Validating lidar data
 
 An important first step in lidar data processing is ensuring that your data is complete and valid. Users commonly report bugs about their point cloud being invalid. This is why we introduced the `las_check()` function to perform a deep inspection of `LAS` objects. This function checks if a `LAS` object meets specifications and whether it is invalid for processing. 
@@ -70,64 +124,11 @@ A check is performed at read time anyway. But the read time check does not go as
 las = readLAS("data/chap1/corrupted.laz")
 ```
 
-### Parameter `select`
-
-A LAS file stores the `X Y Z` coordinates of each point as well as many other data such as intensity, incidence angle, position of the point in the return sequence and so on. We called these data: *attributes*. In pratice many attributes are not actually useful but they are loaded anyway by default. This can take up a lot of processing memory because R is a language that does not allow for choosing data storage modes (see [this vignette]((https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAS-class.html)) for more details).
-
-To save memory, `readLAS()` can take an optional parameter `select` which enables the user to selectively load the attributes of interest. For example, one can choose to load only the `X Y Z` attributes.
-
-```r
-las <- readLAS("file.las", select = "xyz")  # load XYZ only
-las <- readLAS("file.las", select = "xyzi") # load XYZ and intensity only
-```
-Examples of other commonly used attribute abbreviates are:
-* `t` - gpstime
-* `a` - scan angle
-* `n` - number of returns
-* `r` - return number
-* `c` - classification
-* `s` - synthetic flag
-* `k` - keypoint flag
-* `w` - withheld flag
-* `o` - overlap flag (format6+)
-* `u` - user data
-* `p` - point source ID
-* `e` - edge of flight line flag
-* `d` - direction of scan flag
-
-### Parameter `filter`
-
-While `select` enables the user to select "columns" (or attributes) while reading files, `filter` allows selection of "rows" (or points) while reading. Removing data at reading time that is superfluous saves memory and decreases computation time. For example, it's common pratice in forestry to process using first returns.
-
-```r
-las <- readLAS("file.las", filter = "-keep_first") # Read only first returns
-```
-
-It is important to understand that the option `filter` in `readLAS()` keeps or discards point **at read time** i.e. while reading at the C++ level independently of R. Some users have already reported misunderstanding of the behavior of this options because it is different from other `filter` functions users may have encountered in other packages and that work at the R level.
-
-For exemple the R function to filter points of interest (POI) is `filter_poi()`. In the following example we are (1) reading only the first returns and (2) reading all the points then filtering the first return.
-
-
-```r
-las <- readLAS("file.las", filter = "-keep_first")
-
-las <- readLAS("file.las", filter = "-keep_first")
-las <- filter_poi(las, ReturnNumber == 1L)
-```
-
-Both outputs are strictly identical but the first one is faster and more memory efficient. We will also see that it is the only way to load only some POI in some cases in the chapter about `LAScatalog`. - **are the last 2 paragraphs really needed in this? Seems overkill for this**
-
-Several filter commands can be associated. The full list of avaible commands is given by `rlas::lasfilterusage()`.
-
-```r
-las <-  readLAS("file.las", filter = "-keep_first -drop_z_below 5 -drop_z_above 50")
-```
-
 ## Plotting
 
 The `lidR` package takes advantage of the `rgl` package to provide a versatile and interactive 3D viewer with points colored by Z coordinates on a black background as default.
 
-### Basic plots
+### Basic 3D rendering
 
 The very basic way to render a point cloud is the function `plot()`.
 
@@ -158,19 +159,7 @@ The `trim` parameter enables trimming of values when outliers break the color pa
 plot(las, color = "Intensity", trim = 50, bg = "white")
 ```
 
-### Advanced plots
-
-In the previous section we have seen how to display a single point cloud and nothing else. This section shows how to make more advanced rendering such as overlaying additional objects. Being based on `rgl` it is easy to add objects in the main rendering. 
-
-
-**CAN THIS BE SIMPLIFIED??** -- However `lidR` introduced a difficulty because it does not displays the points with their actual coordinates. Usually ALS data XY coordinates are accurate big numbers such as `58130112.282` and because `rgl` uses `float` (decimal numbers on 32 bitS) instead of `double` (decimal numbers on 64 bits) the accuracy is lost and the rendering may look ugly and wrong. This is why the points are shifted to be rendered close to (0, 0). When `plot()` is used it returns invisibly the shift values that can be used later to realign other objects. --
-
-```{r}
-offsets = plot(las)
-print(offsets)
-```
-
-`lidR` provides some easy to use functions for common overlay. For example `add_dtm3d()` to add a digital terrain model (**ADD LINK TO SECTION** see dedicated section) and `add_treetops3d()` to visualize the output of an individual tree detection (**ADD LINK TO SECTION** see dedicated section)
+`lidR` also provides some easy to use functions for common overlay. For example `add_dtm3d()` to add a digital terrain model (section \@ref(dtm)) and `add_treetops3d()` to visualize the output of an individual tree detection (section \@ref(itd))
 
 ```{r, echo = FALSE}
 LASfile <- system.file("extdata", "Topography.laz", package="lidR")
@@ -196,7 +185,7 @@ x = plot(las, bg = "white", size = 3)
 add_treetops3d(x, ttops)
 ```
 
-It is also possible to combine two point clouds with different color palettes. In the following example were are using a previously classified point cloud. We first separate the vegetation and non vegetation points using `filter_poi()` and then plot both on top of each other with different color schemes using `add` options in `plot()`
+It is also possible to combine two point clouds with different color palettes. In the following example we are using a previously classified point cloud. We first separate the vegetation and non vegetation points using `filter_poi()` and then plot both on top of each other with different color schemes using `add` options in `plot()`
 
 ```{r, echo = FALSE}
 r3dDefaults$zoom = 0.3
@@ -211,7 +200,48 @@ x = plot(nonveg, color = "Classification", bg = "white", size = 3)
 plot(veg, add = x)
 ```
 
-### Crossections
+### Advanced 3D rendering
+
+Being based on `rgl` it is easy to add objects in the main rendering using `rgl` function such as `rgl::point3d`, `rgl::text()`, `rgl::surface3d()` and so on.  However `lidR` introduced an additionnal difficulty because it does not displays the points with their actual coordinates. The points are shifted to be rendered close to (0, 0) (a matter of accuracy because `rgl` uses `float` (decimal numbers on 32 bits) instead of `double` (decimal numbers on 64 bits)). When `plot()` is used it returns invisibly the shift values that can be used later to realign other objects.
+
+```{r}
+offsets = plot(las)
+print(offsets)
+```
+
+The coordinates of the objects must corrected in `rgl` functions to align with the point cloud. In the following we will add lines to render the trucks
+
+```{r, echo=FALSE}
+r3dDefaults = rgl::r3dDefaults
+m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
+                -0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
+rgl::setupKnitr()
+r3dDefaults$FOV = 50
+r3dDefaults$userMatrix = m
+r3dDefaults$zoom = 0.75
+```
+
+```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
+LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
+las <- readLAS(LASfile, select = "xyzc")
+ttops <- find_trees(las, lmf(ws = 5))
+
+x = coordinates(ttops)[,1]
+y = coordinates(ttops)[,2]
+z = ttops$Z
+
+offsets = plot(las, bg = "white", size = 3)
+add_treetops3d(offsets, ttops)
+for (i in 1:length(ttops))  
+{
+  X = c(x[i], x[i]) - offsets[1]
+  Y = c(y[i], y[i]) - offsets[2]
+  Z = c(0, z[i])
+  rgl::segments3d(X, Y, Z, col = "black", lwd = 2)
+}
+```
+
+### Crossections 2D rendering
 
 ```{r, echo=F}
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
@@ -221,61 +251,35 @@ las <- readLAS(LASfile)
 
 To better visualize the vertical structure of a point cloud, investigate classification results, or compare results of different interpolation routines, a crossection can be plotted. To do that we first need to decide where the crossection is located (i.e. define the beginning and the end location of the crossection) and specify it's width. The point cloud can then be clipped and the `X` and `Z` coordinates used to create the plot.
 
-For example, to create a 50 m long crossection we may define the beggining and the end as:
+For example, to create a 100 m long crossection we may define the beggining and the end and then use `clip_transect()` function to subset the point cloud.
 
-```{r}
-p1 = c(684800, 5017900)
-p2 = c(684850, 5017900)
-
+```{r, echo = FALSE}
+LASfile <- system.file("extdata", "Topography.laz", package="lidR")
+las <- readLAS(LASfile)
 ```
 
-We can then use `clip_transect()` function to subset the point cloud.
-
 ```{r}
-las_tr <- clip_transect(las, 
-                        p1 = p1, 
-                        p2 = p2, 
-                        width = 2)
+p1 <- c(273357, y = 5274357)
+p2 <- c(273542, y = 5274542)
+las_tr <- clip_transect(las, p1, p2, width = 4, xz = TRUE)
 ```
 
-To visualize the crossection we plot the `Z` coordinate on the y-axis.
-```{r}
-ggplot(las_tr@data, aes(X,Z)) + 
-  geom_point() + 
+Rendering can be achieved with base plot or `ggplot2`
+
+```{r, fig.height=1.5, fig.width=8}
+ggplot(las_tr@data, aes(X,Z, color = Z)) + 
+  geom_point(size = 0.5) + 
   coord_equal() + 
-  theme_bw()
+  theme_minimal() +
+  scale_color_gradientn(colours = height.colors(50))
 ```
 
-Points may be colored by e.g. return number 
-```{r}
-ggplot(las_tr@data, aes(X, Z, color=factor(ReturnNumber))) + 
-  geom_point() + 
-  coord_equal() + 
-  theme_bw() +
-  theme(legend.position = "bottom")
-```
-
-Or classification:
-
-```{r}
-ggplot(las_tr@data, aes(X, Z, color=factor(Classification))) + 
-  geom_point() + 
-  coord_equal() + 
-  theme_bw() +
-  theme(legend.position = "bottom")
-```
-
-The two steps required to create a crossection, i.e. clipping the point cloud and plotting may be combined. Below we create a simple function that will become handy at multiple occasions throughout this book. To make this function even easier to use we will specify the default values for `p1` and `p2` so that the crossection is located in the centre of the point cloud, along the X-axis. The default width will be 2 m.
+The two steps required to create a crossection, i.e. clipping the point cloud and plotting may be combined. Below we create a simple function that will become handy at multiple occasions throughout this book. To make this function even easier to use we will specify the default values for `p1` and `p2` so that the crossection is located in the centre of the point cloud, along the X-axis. The default width will be 4 m.
 
 ```{r, code=readLines("function_plot_crossection.R")}
 
 ```
 
-
-```{r}
-plot_crossection(las)
-```
-
-```{r}
+```{r, fig.height=1.5, fig.width=8}
 plot_crossection(las, colour_by = factor(Classification))
 ```

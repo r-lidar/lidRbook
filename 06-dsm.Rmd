@@ -48,8 +48,9 @@ las <- readLAS(LASfile)
 ```
 
 To ensure the point cloud is normalized we can plot a crossection: 
+
 ```{r}
-plot_crossection(data = las, width = 1)
+plot_crossection(las, width = 1)
 ```
 
 To create a CHM `grid_canopy()` function is used. This functions requires three arguments to be specified by the user: the input point cloud datasets, resolution (pixel size) of the created surface model, and the algorithm used to compute the surface model.

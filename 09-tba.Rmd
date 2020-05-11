@@ -1,6 +1,6 @@
 # Tree based approach
 
-## Individual tree detection
+## Individual tree detection {#itd}
 
 ### On a raster
 
