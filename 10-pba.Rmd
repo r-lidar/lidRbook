@@ -5,7 +5,7 @@ r3dDefaults$FOV = 50
 r3dDefaults$zoom = 0.5
 library(lidR)
 ```
-# Point based approach
+# Point Based Approach
 
 Area-based approach (ABA) consists in computing metrics at the pixel level and tree-based apprach (TBA) consists in computing metrics at the tree level. Both are well known approches used in forestry to process point clouds. `lidR` provides tools to compute any user-defined metrics both in ABA, TBA as seen in previous sections. We have also seen that `lidR` extended the idea to voxel-based approach (VBA) but we also extended the metrics concept to the point-based apprach (PBA).
 

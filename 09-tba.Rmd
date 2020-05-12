@@ -1,4 +1,4 @@
-# Tree based approach
+# Tree Based Approach
 
 ## Individual tree detection {#itd}
 
