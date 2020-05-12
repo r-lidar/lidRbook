@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Ground classification
+# Ground classification {#gnd}
 
 Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows to not only create a continous model of terrain elevation (or Digital Terrain Model, DTM), but is also crucial for some of the following processing steps. 
 

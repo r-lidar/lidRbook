@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
   fig.align = "center")
 ```
 
-# lidR plugin system
+# lidR plugin system {#plugins}
 
 We have seen that `lidR` has many functions to process a collection of file such as `grid_terrain()` that is capable of producing a continuous digital terrain model. Most of these function support more than one agorithm to achieve a given task. `grid_terrain()` supports `tin()`, `knnidw()`, `kriging()` ; `grid_canopy()` supports `p2r()`, `dsmtin()`, `pitfree()` and so on. What if a user want to create a new algorithm? For example a algorithm to generate a digitial terrain model using a bicubic spline interpolation.
 
