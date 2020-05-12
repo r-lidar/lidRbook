@@ -37,9 +37,9 @@ plot(las, size = 4, bg = "white")
 
 This method is based on triangular irregular of the ground point data to derive a bivariate function for each triangle, which is then used to estimate the values at unsampled locations (between the ground points). 
 
-```{r, rgl = TRUE, cache = TRUE, echo = FALSE}
+```{r, rgl = TRUE, echo = FALSE}
 dxyz <- with(las@data, deldir::deldir(X, Y, z = Z, suppressMsge = TRUE))
-col <- with(las@data, terrain.colors(20)[1 + round(19*(Z - min(Z))/diff(range(Z)))])
+col <- with(las@data, height.colors(20)[1 + round(19*(Z - min(Z))/diff(range(Z)))])
 rgl::persp3d(dxyz, col = col, smooth = FALSE, add = T, front="lines", axes = F)
 rgl::axes3d(c("x-", "y+", "z-"))
 rgl::grid3d(side=c('x-', 'y+', 'z-'), col="gray")
