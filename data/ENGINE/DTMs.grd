@@ -1,0 +1,25 @@
+[general]
+creator=R package 'raster'
+created=2020-05-14 11:13:59
+[georeference]
+nrows=1000
+ncols=1000
+xmin=338000
+ymin=5238500
+xmax=338500
+ymax=5239000
+projection=+init=epsg:26917 +proj=utm +zone=17 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0
+[data]
+datatype=FLT4S
+byteorder=little
+nbands=2
+bandorder=BIL
+minvalue=0.2:0.2
+maxvalue=0.999979589216874:0.999876065922211
+nodatavalue=-3.4e+38
+[legend]
+legendtype=
+values=
+color=
+[description]
+layername=Incorrect:Correct

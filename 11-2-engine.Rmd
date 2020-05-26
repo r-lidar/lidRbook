@@ -1,0 +1,244 @@
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+library(lidR)
+
+r3dDefaults = rgl::r3dDefaults
+m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
+                -0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
+rgl::setupKnitr()
+r3dDefaults$FOV = 50
+r3dDefaults$userMatrix = m
+r3dDefaults$zoom = 0.75
+
+
+knitr::opts_chunk$set(
+  comment =  "#>", 
+  collapse = TRUE,
+  fig.align = "center")
+```
+
+# LAScatalog processing engine (2/2) {#engine2}
+
+In the chapter \@ref(engine) we have seen how to use the LASctalog processing engine to apply `lidR`'s functions on a collection of files loading a buffer, saving the output on disk, parallelizing the tasks and so on. All we have seen so far was limited to the existing functions provided with the `lidR` package. The power of the engine goes beyond those limited used case and allows developpers to design their own applications. 
+
+Lest's imagine we want to normalize a dataset **and** colorise it with RGB color from satellite data. According to the previous chapters we could do something like:
+
+```r
+opt_output_files(ctg) <- paste0(tempdir(), "/{*}_dtm")
+dtm <- grid_terrain(ctg, 1, tin())
+
+opt_output_files(ctg) <- paste0(tempdir(), "/{*}_normalized")
+ctg_norm <- normalize_elevation(ctg, dtm)
+
+for (file in ctg$filename)
+{
+  newname <-  tools::file_path_sans_ext(basename(file))
+  newname <- paste0("folder/, newname, "_colored.laz")
+  las <- readLAS(file)
+  las <- merge_spatial(las, rgb)
+  writeLAS(las, newname)
+}
+```
+
+But this is far from optimal. First, it implies to read 3 times **the whole** point cloud. The first time to create the DTM, the second for the normalization and the third one for the colorization. This will take a lot of time. Second it implies to create 3 copies of the whole collection of files. This will take a lot of disk storage. To finish it implies a custom `for` loop because this function `merge_spatial()` does not applies on a `LAScatalog`. What if we were able to do that in a single run?
+
+In this chapter we will study the function `catalog_apply()` that is used under the hood in every single functions seen in the previous chapter and we will learn how to leverage its versatility to design tools that do not exist yet taking the example of the DTM + normalization + colorization function. This example will allows us to understand the function `catalog_apply()` to futher develop completly new applications.
+
+Again, the `LAScatalog` class and the `LAScatalog` engine are deeply documented in a two dedicated vignettes available [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-class.html) and [here](). The purpose of this book is to propose an alternative documentation with more illustrated examples and real use cases. 
+
+In this chapter we will use the same 9 files used in chapter \@ref(engine1) and a RGB raster that encompasses the collection of file.
+
+```{r, fig.height=4, fig.width=4}
+ctg = readLAScatalog("data/ENGINE/catalog/")
+plot(ctg)
+```
+
+```{r, echo=FALSE}
+opt_progress(ctg) <- FALSE
+```
+
+The satellite images can be downloaded [here](data/ENGINE/catalog/rgb.tif).
+
+```{r, fig.height=8, fig.width=8}
+rgbmap = stack("data/ENGINE/catalog/rgb.tif")
+plotRGB(rgbmap)
+```
+
+## Create a function that does the job on a point cloud
+
+First we need to create a function that performs the DTM + normalization + colorization in one call. Let's call it `dtm_norm_color()`. It is very easy to write and it implies only 3 functions.
+
+```{r}
+dtm_norm_color <- function(las, rgbmap)
+{
+  dtm <- grid_terrain(las, 1, tin())
+  nlas <- normalize_elevation(las, dtm)
+  colorized <- merge_spatial(nlas, rgbmap)
+  return(colorized)
+}
+```
+
+Let's try it on a sample plot.
+
+```{r, rgl = TRUE}
+las <- clip_disc(ctg, 338800, 5238500, 40)
+nlasrgb <- dtm_norm_color(las, rgbmap)
+
+plot(nlasrgb, color = "RGB", bg = "white", size = 6)
+```
+
+It works! We have a workable function that performs on a point cloud. Sadly the 2D rendering in this book is hugly and looks black but the 3D rendering is actually nicer. The function `dtm_norm_color()` is just an example. It could be anything such as a new algorithm for individual tree detection, a method to sample point of interest using a special method or anything else the reader can imagine. So far it works only with a `LAS` object. Let's make it working with a `LAScatalog`.
+
+## Create an intermediate function for `catalog_apply()`
+
+The core engine is the function `catalog_apply()` but this function does not work with any user-defined function. User-defined function must respect a specific template and is expected to perform some specific tasks. First it must receive as first argument a chunk of the catalog and inside the function, the function must read the chunk and check if it is not empty and only then it can perform the computation.
+
+A valid function is the following:
+
+```{r}
+dtm_norm_color_chunk <- function(chunk, rgbmap)
+{
+  las <- readLAS(chunk)                  # Read the chunk
+  if (is.empty(las)) return(NULL)        # Check if it actually contain points
+  nlasrgb <- dtm_norm_color(las, rgbmap) # Apply computation of interest
+  return(nlasrgb)
+}
+```
+
+This create and additional level of complexity that is very important. First the function will be fed sequentially with portions of the catalog, each portion is read inside the user's function and all the processing options are automatically respected such as `filter`, `select`, `chunk_size`, `chunk_buffer`. The `las` variable in the above code snipet is a point-cloud extracted from the catalog that contain the chunks + a buffer. It is important to check that the loaded portion of the collection is not empty otherwise subsequent code will fail. It may happen in many cases depending on the size of the chunk and the `filter` chosen. Then the actual task is performed. 
+
+This function is `catalog_apply()` compatible and we can apply it over the entiere coverage. The output is a point-cloud so we must pay attention at providing a path to write the outputs otherwise the whole point cloud will eventually be loaded in memory and R will crash. At this stage there is no security.
+
+```{r, echo=FALSE}
+# I'm adding that juste to compute faster in the example where we do not look at the point cloud anyway
+opt_filter(ctg) <- "-keep_class 2"
+```
+
+```{r}
+opt_output_files(ctg) <- paste0(tempdir(), "/{*}_norm_rgb")
+output <- catalog_apply(ctg, dtm_norm_color_chunk, rgbmap = rgbmap)
+output
+```
+
+We can see that the output is a `list` with the name of each file written on disk. This is the default behavior of the engine. It returns a `list` with one element per chunk. This is not really convenient. We have seen in chapter \@ref(engine) that in the case of LAS files we can return a `LAScatalog` which is more convenient. We can use the option `automerge` so `catalog_apply()` will automically merge the list into something that makes sense.
+
+```{r, fig.height=4, fig.width=4}
+opt_output_files(ctg) <- paste0(tempdir(), "/{*}_norm_rgb")
+options <- list(automerge = TRUE)
+output <- catalog_apply(ctg, dtm_norm_color_chunk, rgbmap = rgbmap, .options = options)
+output
+plot(output)
+```
+
+We still have a problem here. The files are overlapping because we read each file with a buffer and then the outputs have been written **with their buffer**. It is important to alway remove the buffer after the computation. In this specific case the output is a LAS file. When `readLAS()` reads a chunks of the catalog the points in the buffer are flagged so they can receive a special treatment. Here we need to remove those point. It is always the role of the user to remove the buffer of the output.
+
+```{r, fig.height=4, fig.width=4}}
+dtm_norm_color_chunk <- function(chunk, rgbmap)
+{
+  las <- readLAS(chunk)
+  if (is.empty(las)) return(NULL)
+  nlasrgb <- dtm_norm_color(las, rgbmap)
+  nlasrgb <- filter_poi(nlasrgb, buffer == 0)
+  return(nlasrgb)
+}
+
+opt_output_files(ctg) <- paste0(tempdir(), "/{*}_norm_rgb")
+options <- list(automerge = TRUE)
+output <- catalog_apply(ctg, dtm_norm_color_chunk, rgbmap = rgbmap, .options = options)
+plot(output)
+```
+
+When the output are `Spatial*` or `Raster*` they can be cropped using the bounding box of the chunk accessible via `raster::extent(chunk)` or `sp::bbox(chunk)`.
+
+Here we are. We created a custom function and `dtm_norm_color()` and we upscaled its definition to an entiere coverage made of hundreds of files. Every options seen so far are available such as paralellization, chunk size control, buffer size control and so on. For example we can do:
+
+```r
+library(future)
+plan(multisession)
+opt_filter(ctg) <- "-keep_class 2"
+opt_chunk_size(ctg) <- 300
+opt_chunk_buffer(ctg) <- 40
+opt_output_files(ctg) <- paste0(tempdir(), "/{*}_norm_rgb")
+options <- list(automerge = TRUE)
+output <- catalog_apply(ctg, dtm_norm_color_chunk, rgbmap = rgbmap, .options = options)
+```
+
+We can check that it worked by loading a sample somewhere in our new catalog. We are expecting to get normalized (we normalized), colored (we merged satellite image), ground points (we used `-keep_class 2`).
+
+```{r, rgl = TRUE}
+opt_output_files(output) <- ""
+las <- clip_disc(output, 338800, 5238500, 40)
+plot(las, color = "RGB", size = 6, bg = "white")
+```
+
+## Make a user-friendly function for third party users
+
+When designing a tools that will be used by third party user we would like to hide `catalog_apply()` and intermediate functions inside a more user-friendly function similarly to `lid`R's functions that work the same both with a `LAS` or a `LAScatalog`. Moreover we would like to make the function safer for the users. To to this we can create 3 functions `dtm_norm_color()` with a [S3 dispatch](http://adv-r.had.co.nz/S3.html) as a function of the input. This is not the only way to do that but this is the style used in all the code of the package.
+
+```{r}
+# Create a generic method
+dtm_norm_color <- function(las, rgbmap)
+{
+  UseMethod("dtm_norm_color", las)
+}
+
+# Create a method for LAS objects
+dtm_norm_color.LAS <- function(las, rgbmap)
+{
+  dtm <- grid_terrain(las, 1, tin())
+  nlas <- normalize_elevation(las, dtm)
+  colorized <- merge_spatial(nlas, rgbmap)
+  return(colorized)
+}
+
+# Create a method for LAScluster objects (chunk)
+dtm_norm_color.LAScluster <- function(las, rgbmap)
+{
+  x <- readLAS(las)
+  if (is.empty(x)) return(NULL)
+  nlasrgb <- dtm_norm_color(x, rgbmap)
+  nlasrgb <- filter_poi(nlasrgb, buffer == 0)
+  return(nlasrgb)
+}
+
+# Create a method for LAScatalog objects
+dtm_norm_color.LAScatalog <- function(las, rgbmap)
+{
+  options <- list(automerge = TRUE)
+  output <- catalog_apply(ctg, dtm_norm_color_chunk, rgbmap = rgbmap, .options = options)
+  return(output)
+}
+```
+
+We now have a single function that can be used seamlessly on a `LAS` or a `LAScatalog`.
+
+```r
+las_norm_colored <-  dtm_norm_color(las, rgbmap)
+
+opt_output_files(ctg) <- paste0(tempdir(), "/{*}_norm_rgb")
+ctg_norm_colored <-  dtm_norm_color(ctg, rgbmap)
+```
+
+## Make a safe function for third party users
+
+At this stage our function is almost finished. However it is not safe. What if the user of this new function does not provide any output path template. The point cloud in each chunk will be loaded in memory and will be retained in memory until the processing memory eventually become full and R crashes. We must prevent the use of the function if no path to the disk is given. Also the computation of a DTM requires a buffer. If user setting are a 0 m buffer the output of this function will be inccorect. We must prevent the use of the function if a buffer of 0 is given. This two cases are covered by the engine with the options `need_output_file = TRUE` and `need_buffer = TRUE`. To finish we would like to disable the ability to tune the `select` option to ensure to do not loose any attribute. We can overwrite it.
+
+```{r}
+dtm_norm_color.LAScatalog <- function(las, rgbmap)
+{
+  opt_select(las) <- "*"
+  options <- list(automerge = TRUE, need_output_file = TRUE, need_buffer = TRUE)
+  output <- catalog_apply(ctg, dtm_norm_color_chunk, rgbmap = rgbmap, .options = options)
+  return(output)
+}
+```
+
+We can test what happens if we badly use this function
+
+```{r, error = TRUE}
+opt_output_files(ctg) <- ""
+ctg_norm_colored <- dtm_norm_color(ctg, rgbmap)
+```
+
+It failed with an informative message.
+
+We are done. This is exactly how the `lidR` package works and we have presented all the tools needed to extent it with new applications. More examples can be found along this book. For example section \@ref(outboxdistancereturn) presents how to compute a raster of the average distance between first and last return and section \@ref(outboxrumple) presents how to compute a rumple index of the canopy from the point-cloud.

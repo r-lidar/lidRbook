@@ -18,7 +18,7 @@ LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
 las <- readLAS(LASfile)
 ```
 
-# Reading, Plotting, Querying & Validating
+# Reading, Plotting, Querying & Validating {#io}
 
 `lidR` is designed to process LAS files for several technical reasons:
 
