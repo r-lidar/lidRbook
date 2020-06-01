@@ -109,16 +109,16 @@ For a deep (and longer) inspection of each file use `deep = TRUE`. This will loa
 
 ## Extract a single ROIs
 
-The functions `clip_*()` are a very good starting point for exploring the cabability of the engine. What is presented here with `clip*` function is true with other `lidR`'s functions as we will see in next sections.  `clip_*()` functions allows for extracting a region of interest from a point cloud. For example the following command enable to extract a disc from a point cloud loaded in memory in a `LAS` object.
+The functions `clip_*()` are a very good starting point for exploring the cabability of the engine. What is presented here with `clip*` function is true with other `lidR`'s functions as we will see in next sections.  `clip_*()` functions allows for extracting a region of interest from a point cloud. For example the following command enable to extract a circle from a point cloud loaded in memory in a `LAS` object.
 
 ```r
-plot = clip_disc(las, x = 338700, y = 5238650, radius = 15)
+plot = clip_circle(las, x = 338700, y = 5238650, radius = 15)
 ```
 
 This can be extended to a `LAScataalog` seamlessly. The engine searches in which file(s) the ROIs belongs and extracts the correponding regions. The output is a `LAS` object.
 
 ```{r, rgl = TRUE, fig.height=4, fig.width=4}
-roi <- clip_disc(ctg, x = 338700, y = 5238650, radius = 40)
+roi <- clip_circle(ctg, x = 338700, y = 5238650, radius = 40)
 plot(roi, bg = "white", size = 4)
 ```
 
@@ -134,7 +134,7 @@ r <- 40
 plot(ctg)
 points(x, y)
 
-rois <- clip_disc(ctg, x, y, r)
+rois <- clip_circle(ctg, x, y, r)
 rois[1:2]
 ```
 
@@ -144,7 +144,7 @@ No matter which `lidR` function is used, when using a `LAScatalog` as input one 
 
 ```{r, fig.height=4, fig.width=4}
 opt_output_files(ctg) <- paste0(tempdir(), "/{XCENTER}_{YCENTER}_{ID}")
-rois <- clip_disc(ctg, x, y, r)
+rois <- clip_circle(ctg, x, y, r)
 rois
 plot(rois)
 ```
@@ -169,7 +169,7 @@ In `lidR`, parallelization is driven by the package [`future`](https://github.co
 library(future)
 plan(multisession)
 opt_output_files(ctg) <- paste0(tempdir(), "/{XCENTER}_{YCENTER}_{ID}")
-rois <- clip_disc(ctg, x, y, r)
+rois <- clip_circle(ctg, x, y, r)
 ```
 
 Notice that in this specific case of extracting 5 plots from indexed files, enabling the parallelization is not relevant because it introduces more overhead that it provides gains.
@@ -435,7 +435,7 @@ The new `LAScatalog` that is returned is made of files that have an extra attrib
 
 ```{r, rgl = TRUE}
 opt_output_files(ctg_segmented) <- ""
-lasplot <- clip_disc(ctg_segmented, 338500, 5238600, 40)
+lasplot <- clip_circle(ctg_segmented, 338500, 5238600, 40)
 plot(lasplot, color = "treeID", bg = "white", size = 4)
 ```
 
@@ -508,7 +508,7 @@ plot(rois)
 ```
 
 
-It is made of discontinuous files not related to each other. Loading a buffer is meaningless because there is no neighbooring files. Creating chunks is meaningless as well because we usually want one output per file without generating a wall-to-wall object. Worst, with the wrong options the output might be incorrect. For example on the top right of the previous collection we can see two overlapping files. If processed by chunk and with a buffer this will load twice the same point in the overlap plus some extra points from the other plot that are not related at all to the first plot. In short, in the case of ground plot inventory 99% of the cases consist in processing by file, without a buffer and without returning an single aggregated object. This cases actually corresponds to a regular `for` loop as shown in the introduction of this chapter. Thus there is not need of all the feature provided by the `lidR`'s engine and everybody with a small background in programming can write a code that does this job.
+It is made of circleontinuous files not related to each other. Loading a buffer is meaningless because there is no neighbooring files. Creating chunks is meaningless as well because we usually want one output per file without generating a wall-to-wall object. Worst, with the wrong options the output might be incorrect. For example on the top right of the previous collection we can see two overlapping files. If processed by chunk and with a buffer this will load twice the same point in the overlap plus some extra points from the other plot that are not related at all to the first plot. In short, in the case of ground plot inventory 99% of the cases consist in processing by file, without a buffer and without returning an single aggregated object. This cases actually corresponds to a regular `for` loop as shown in the introduction of this chapter. Thus there is not need of all the feature provided by the `lidR`'s engine and everybody with a small background in programming can write a code that does this job.
 
 However the engine can do it with the appropriated options. In this case the LAScatalog processing engine becomes more or less a parallelisable `for` loop with a real time monitoring.
 
