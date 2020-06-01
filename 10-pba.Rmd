@@ -150,3 +150,5 @@ las@data$B <- M$B
 colored <- filter_poi(las, !is.na(R)) # remove RGB = NA
 plot(colored, color = "RGB", nbits = 8, size = 3)
 ```
+
+This method is a bit naive 'as is'. First, the intensities returned by each channel are not comparable and require preliminary normalization. We could also argue about the choice of discarding RGB = `NA`. Instead, we could have chosen to set a pure color. To finish, enforcing a maximum value to 255 works in this specific example because very few intensity values are actually above 255 but is meaningless in a general case. 
