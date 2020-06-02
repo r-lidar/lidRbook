@@ -18,15 +18,17 @@ knitr::opts_chunk$set(
   fig.align = "center")
 ```
 
-# Thinking out of the box
+# Thinking outside the box
 
-In this book we have seen many common process. Most of the example presented could have been made with other software. But what we seen so far is only the top of the iceberg. In fact `lidR` has never been designed to apply common processes but instead it has been created to explore new ones. This idea has been introduced in chapter PBA. The following chapter present some applications that are likely to be inpossible to reproduce in other software. We are not pretending that these applications are clever and should be adopted widely. We only want to demonstrate how we can go from a novel idea to a fully fonctionnal tools using `lidR`. 
+We have presented many common processes through these tutorials. Most examples presented could have been done with other softwares, but what we have seen has only the tip of the iceberg. In fact, `lidR` was never designed with common processes in mind, but instead to explore new ones. Examples of this can be found in chapters like \@ref(Point Based Approach). 
+
+The following chapter presents some applications that are likely to be impossible to reproduce in other softwares, demonstrating how we can go from a novel idea to a fully functional tool using `lidR`. 
 
 ## New complex metrics in ABA
 
 ### Distance between returns {#outboxdistancereturn}
 
-In forestry we usually use some simple metrics derived from first return. But what about a metrics that estimate the average distance between first and last return? Is is a valuable measure of the forest stucture? Can we refine the prediction? Nobody knows but we can try. 
+In forestry simple metrics can be derived from first returns. But what about metrics that estimate the average distance between first and last returns? Is is a valuable metrics for characterizing of forest stucture? Can we refine the prediction? Nobody knows, but we can try. 
 
 ```{r, echo = FALSE, message=FALSE}
 library(lidR)
@@ -34,7 +36,7 @@ LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
 las = readLAS(LASfile)
 ```
 
-First we need to retrive each emitted pulse and keep only the first and last point of each sequance excluding sequences with only one return.
+First, we need to retrieve each emitted pulse and keep only the first and last point of each sequence excluding sequences with only one return.
 
 ```{r}
 las <- retrieve_pulses(las)
@@ -42,38 +44,38 @@ las <- filter_firstlast(las)
 las <- filter_poi(las, NumberOfReturns > 1)
 ```
 
-Using the `data.table` style we can compute the distance between first and last return for each pulse. It could be done with `dplyr` as well using `group_by() %>%  mutate()` but I'm a big `data.table` user.
+Using the `data.table` style we can compute the distance between first and last returns for each pulse. It could be done with `dplyr` as well using `group_by() %>%  mutate()` but Jean-Romain is proponent of using `data.table()`.
 
 ```r
 las@data[, d := Z[1]-Z[2], by = pulseID][]
 ```
-
+**Might want to add some comments in these for people who are totally fresh to the syntax**
 ```{r, echo = FALSE}
 u = las@data[, .(d = Z[1]-Z[2]), by = pulseID]
 las@data = las@data[u, on = "pulseID"]
 ```
 
-At this stage our dataset contains twice the distance one is associated with the first return and the second with the last return. We only need a single value so let keep only first returns. Some distances are `NA` and correspond to pulse at the very edge of the file were the first return is in a file but the last return is in another file. We can discard those case for the moment.
+At this stage our data set contains distances twice. One associated with the first return and the second with the last return. We only need a single value so lets keep only first returns. Some distances are `NA` and correspond to pulses at the very edge of the file. We can discard those case for the moment.
 
 ```{r}
 las <- filter_first(las)
 las <- filter_poi(las, !is.na(d))
 ```
 
-We can now plot the first returns colored by their distance to the last return
+We can now plot the first returns colored by their distance to the last return.
 
 ```{r, rgl = TRUE}
 plot(las, bg = "white", color = "d", colorPalette = viridis::magma(50), size = 3)
 ```
 
-Now we can compute the average in an ABA
+Now we can compute the average in an ABA.
 
 ```{r, fig.width=5.4, fig.height=5}
 d_first_last = grid_metrics(las, ~mean(d), 15)
 plot(d_first_last, col = height.colors(50))
 ```
 
-Now we have a working method we can extend the idea to apply it over a broad coverage using the catalog processing engine. First we create a function that does this job. This is not mandatory but factorising the code is a good pratice.
+Now we have a working method, we can extend the idea to apply it over a broad coverage using the `LAScatalog` processing engine -- see \@ref(lascatalog). First we create a function that does this job. This is not mandatory but factorizing the code is good practice.
 
 ```{r}
 grid_distance_first_last = function(las, res) {
@@ -87,7 +89,7 @@ grid_distance_first_last = function(las, res) {
 }
 ```
 
-Then we define a function that respect some requirement imposed by the catalog processing engine (see section xx).
+Then we define a function that respects some requirement imposed by the `LAScatalog` processing engine.
 
 ```{r}
 my_routine <- function(chunk, res) {
@@ -100,7 +102,7 @@ my_routine <- function(chunk, res) {
 }
 ```
 
-To finish we use the catalog procesing engine with `cataog_sapply()`. We need to process with a buffer to avoid the case with partial pulse separated in two file so we use `opt_chunk_buffer(ctg) <- 2`. In addition the output being a raster we ensure alignment of the chunk with the raster.
+To finish we use the `LAScatalog` processing engine with `cataog_sapply()`. We need to process with a buffer to avoid the case where pulses are separated in two files, so we use `opt_chunk_buffer(ctg) <- 2`. In addition, with the output being a raster, we ensure alignment of the chunk with the raster.
 
 ```r
 ctg <- readLAScatalog("folder/")
@@ -109,7 +111,7 @@ options <- list(raster_alignment = 15)
 metrics <- catalog_sapply(ctg, my_routine, res = 15, .options = options)
 ```
 
-And we are done. Our innovative metric is computing with a real-time monitoring. It can run in parallel on a single machine or in parallel on several machines and so on. At the end, the output is a wall-to-wall raster map of the average distance between first and last return for beam that return multiple returns. In 19 lignes of code!
+And we are done. Our innovative metric is computing with a real-time monitoring. It can run in parallel on a single machine or in parallel on several machines and so on. At the end, the output is a wall-to-wall raster map of the average distance between first and last returns for beams that return multiple returns. In 19 lines of code!
 
 ```r
 plot(metrics, col = height.colors(50))
@@ -123,7 +125,7 @@ raster::scalebar(500, type = "bar")
 
 ### Rumple index  {#outboxrumple}
 
-Another interesting metrics that could be computed is the rumple index. To compute a rumple index we can triangulate the point and measure the surface created divided by the projected surface. However it rumple index is expected to measure sur roughtness of the canopy and it does not makes sense to triangulate every point. An option is to triangulate each first return but yet first return are not all representative of the canopy. In the following example we are using the surface points every 1 m.
+Another interesting metric that could be computed is the rumple index (**paper for rumple**). To compute a rumple index we can triangulate points, measure the surface created, and divide by the projected surface. Rumple index is however expected to measure surface roughness of the canopy and it doesn't makes sense to triangulate every point. An option is to triangulate each first return but yet first returns are not all representative of the canopy. In the following example we are using the surface points every 1 m.
 
 ```{r}
 grid_rumple_index = function(las, res) {
@@ -160,9 +162,9 @@ raster::scalebar(500, type = "bar")
 
 ## Multispectral coloring
 
-We have already seen a multispectral coloring example in section \@ref(sec:pba-mscoloring). This is trully a good example of how to think out of the box with `lidR` so we show several variants here. The goal is to use multispectral data to generate false coloring and see how false coloring may be use for further analyses.
+We have already seen a multispectral coloring example in section \@ref(sec:pba-mscoloring). This is truly a good example of how to think out of the box with `lidR` so we show several variants here. The goal is to use multispectral data to generate false coloring and see how false coloring may be used for further analyses.
 
-Multispectral ALS data are sampled with 3 devices each emmiting a different wavelength. The point cloud is usually provided in the form of 3 `las` files, each file corresponding to a spectral wavelength. No matter the actual wavelenght we can consider the first band as blue, the secod as red and the third one as green and thus consider that each point has a pure color.
+Multispectral ALS data are sampled with 3 devices each emmiting a different wavelength. The point cloud is usually provided in the form of 3 `las` files, each file corresponding to a spectral wavelength. No matter the actual wavelength we can consider the first band as blue, the second as red and the third one as green and thus consider that each point has a pure color.
 
 ```{r, rgl = TRUE, message=FALSE}
 f1 = "data/chap11/PR1107_c1_ar_c.laz"
@@ -172,7 +174,7 @@ las <- readMSLAS(f1, f2, f3,  filter = "-keep_z_below 300")
 plot(las, color = "ScannerChannel", size = 6)
 ```
 
-Each channel return very different intensities as seen in figure below because of the wavelength reflectance properties of the targets. A first step could be to normalize the intensities. For the need of this example we won't do that to keep the example simple. 
+Each channels returns vary in intensities as seen in thefigure below because of the wavelength reflectance properties of the targets. A first step could be to normalize the intensities. For the need of this example we won't do that to keep the example simple. 
 
 ```{r}
 library(ggplot2)
@@ -184,13 +186,13 @@ ggplot(las@data) +
         legend.title = element_blank())
 ```
 
-Also in this very specific example we can notice that only few intensities are above 255. So intensity range from 0 to almost 255 and this is very convenient because we will be able to use the raw values as color without transformation. We will simply force values above 255 to be 255. This is a dirty option but fair enought for the example which is not about intensity normalization
+Also in this very specific example we can notice that only few intensities are above 255, So intensity ranges from 0 to almost 255. This is very convenient because we will be able to use the raw values as color without transformation. We will simply force values above 255 to be 255. This is a dirty option but fair enough for the example which is not about intensity normalization
 
 ```{r}
 las@data[Intensity > 255L, Intensity := 255L]
 ```
 
-To finish we define a function that takes as input the intensities and the associated channel. This function decompose the 3 channel, compute the average intensity of each chanel and return this 3 value that will be later interpreted as RGB. Also if one color can is missing we force RGB to be NA.
+To finish, we define a function that takes the intensities and the associated channel as inputs. This function decomposes the 3 channels, computes the average intensity of each channel, and returns these 3 values that will later be interpreted as RGB. Also if one color can is missing we force RGB to be NA.
 
 ```{r}
 colorize <- function(intensity, channel)
@@ -212,7 +214,7 @@ colorize <- function(intensity, channel)
 }
 ```
 
-Now we can use this function with different level of regularization
+Now we can use this function with different levels of regularization
 
 We can use `colorize()` with `grid_metrics()` in an ABA. It returns a multilayer raster that can be interpreted as RGB
 
@@ -221,7 +223,7 @@ rgb = grid_metrics(las, ~colorize(Intensity, ScannerChannel), 2)
 plotRGB(rgb, axes = T)
 ```
 
-In [Goodbody et al. (2020)]() they attributed an RGB color per voxel discarding the voxels with RGB = NA. We reproduce their work by computing `colorize()` with `voxel_metrics()` in a VBA.
+Here we attribute nn RGB color per voxel, discarding the voxels with RGB = NA by using `colorize()` with `voxel_metrics()` in a \@ref(VBA).
 
 ```{r, rgl = TRUE, warning=FALSE}
 rgb <- voxel_metrics(las, ~colorize(Intensity, ScannerChannel), 2)
@@ -230,7 +232,7 @@ rgb <- LAS(rgb, las@header) # Convert to LAS for display
 plot(rgb, color = "RGB", nbits = 8, size = 5)
 ```
 
-To finish we can compute `colorize()` with `point_metrics()` in a PBA. This has the advantage to maintain much more points compared to the VBA version and to preserve the coordinates.
+To finish we can compute `colorize()` with `point_metrics()` in a \@ref(PBA). This has the advantage to maintain much more points compared to the VBA version and to preserve the coordinates.
 
 ```{r, rgl = TRUE}
 rgb = point_metrics(las, ~colorize(Intensity, ScannerChannel), r = 0.5)
