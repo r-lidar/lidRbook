@@ -8,11 +8,11 @@ knitr::opts_chunk$set(
 
 # lidR plugin system {#plugins}
 
-We have seen that `lidR` has many functions to process a collection of file such as `grid_terrain()` that is capable of producing a continuous digital terrain model. Most of these function support more than one agorithm to achieve a given task. `grid_terrain()` supports `tin()`, `knnidw()`, `kriging()` ; `grid_canopy()` supports `p2r()`, `dsmtin()`, `pitfree()` and so on. What if a user want to create a new algorithm? For example a algorithm to generate a digitial terrain model using a bicubic spline interpolation.
+We have seen that `lidR` has many functions capable of processing a collection of files. Most of these functions support more than one algorithm to achieve a given task. `grid_terrain()` supports `tin()`, `knnidw()`, `kriging()` ; `grid_canopy()` supports `p2r()`, `dsmtin()`, `pitfree()` and so on. What if a user wanted to create a new algorithm integration? For example, what about an algorithm to create a digital terrain model using cubic spline interpolation.
 
-With the LAScatalog processing engine `catalog_apply()` one can replicate more or less the original `grid_terrain()` function and produce its own code to apply the method over a catalog. After all `grid_terrain()` actually use `catalog_apply()` as well. However this implies a lot of code and is error prone especially for users who are not fully confortable with the LAScatlog engine. A lot of trouble to reproduce something that already exist.
+With the `LAScatalog` engine `catalog_apply()` one can more or less replicate the original `grid_terrain()` function and apply the method over a catalog. After all, `grid_terrain()` actually uses `catalog_apply()` internally **correct me if im wrong JR**. However this implies a lot of code and is error prone especially for users who are not fully comfortable with the `LAScatalog` engine.
 
-There is another way to achieve the task of creating a new algortihms fully compatble with lidR functions. This is not documented in the package because the underlying mechanism is not yet fully consistant and is still subject to improvements and is thus kept under the radar. Let's continue with the bicubic spline interpolation method for digital terrain model. There is a package called `MBA` that implents tools. We will create a function `mba()` that can be use like any other algorithm:
+There is another way to create new algorithms that are fully compatible with `lidR` functions. This is not documented in the package because the underlying mechanism is not yet fully consistent and is still subject to improvements. Let's continue with the bicubic spline interpolation method for creating a digital terrain model. There is a package called `MBA` that implements tools. We will create a function `mba()` that can be used like any other algorithm:
 
 ```r
 dtm = grid_terrain(las, algorithm = mba(n = 1, h = 8))
@@ -20,7 +20,7 @@ dtm = grid_terrain(las, algorithm = mba(n = 1, h = 8))
 
 ## Understanding lidR algorithms
 
-In lidR an algorithm such as `tin()`, `p2r()` or `lmf()` is a function factory. The output is functions with extra classes so regular user don't see it is a function.
+In `lidR`, an algorithm such as `tin()`, `p2r()` or `lmf()` is a function factory. The output is functions with extra classes so regular users don't see it is a function.
 
 ```{r}
 algo = knnidw(k = 10)
@@ -41,7 +41,7 @@ We can see how a function designed to be used in `grid_terrain()` is designed. T
 function(what, where, scales = c(0,0), offsets = c(0,0))
 ```
 
-When creating a new algorithm for spatial interpolation, the function factory must return a function similar to that one. In the case of spatial interpolation `what` is a `data.frame` with X Y and Z coordinates of the ground point, `where` is a `data.frame` with the X Y coordinates of the location where we want to interpolate Z. It also receive `scale` and `offset` but we can forget about that in this case. The function returns a vector of Z coordinates at these locations.
+When creating a new algorithm for spatial interpolation, the function factory must return a function similar to what you see above. In the case of spatial interpolation `what` is a `data.frame` with X Y and Z coordinates of ground points. `where` is a `data.frame` with the X Y coordinates of the location where we want to interpolate Z. It also receives `scale` and `offset` but we can ignore them in this case. The function returns a vector of Z coordinates at these locations.
 
 ## Creation of the `mba` algorithm
 
@@ -68,14 +68,14 @@ mba <- function(n = 1, m = 1, h = 8, extend = TRUE)
 }
 ```
 
-Now let see what happens if we instanciate the `mba` algorithm.
+Now let see what happens if we instantiate the `mba` algorithm.
 
 ```{r}
 algo = mba(h = 6)
 algo
 ```
 
-We can now use it like any other lidR algorithm
+We can now use it like any other `lidR` algorithm
 
 ```{r, fig.height=7.5, fig.width=7.7}
 LASfile <- system.file("extdata", "Topography.laz", package="lidR")
@@ -84,12 +84,12 @@ dtm = grid_terrain(las, algorithm = mba())
 plot(dtm)
 ```
 
-If will even fail nicely if used badly 
+It will even fail nicely if used badly!
 
 ```{r, error = TRUE}
 grid_canopy(las, 1, mba())
 ```
 
-## What about other algorithm?
+## What about other algorithms?
 
-`lidR` has algorithm for canopy height models, individual tree segmentation, individual tree detection, sensor tracking, snag segmentation and so on. They all have different behavior this is why it is difficult to document. If you want to create a new algorithm the best is to communicate directly with lidR developers.
+`lidR` has algorithms for canopy height models, individual tree segmentation, individual tree detection, sensor tracking, snag segmentation and so on. They all have different behaviors and this is why it's difficult to document. If you want to create a new algorithm the best first step is to communicate directly with `lidR` developers :).
