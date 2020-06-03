@@ -27,7 +27,7 @@ opt_output_files(ctg) <- paste0(tempdir(), "/{*}_dtm") #specify output DTM disk 
 dtm <- grid_terrain(ctg, 1, tin()) #create DTMs
 
 opt_output_files(ctg) <- paste0(tempdir(), "/{*}_normalized") #specify output normalized las disk save location
-ctg_norm <- normalize_elevation(ctg, dtm) #normalize
+ctg_norm <- normalize_height(ctg, dtm) #normalize
 
 #loop through catalog files and apply rgb colour
 for (file in ctg$filename)
@@ -76,7 +76,7 @@ First we need to create a function that performs the DTM + normalization + color
 dtm_norm_color <- function(las, rgbmap)
 {
   dtm <- grid_terrain(las, 1, tin())
-  nlas <- normalize_elevation(las, dtm)
+  nlas <- normalize_height(las, dtm)
   colorized <- merge_spatial(nlas, rgbmap)
   return(colorized)
 }
@@ -85,7 +85,7 @@ dtm_norm_color <- function(las, rgbmap)
 Let's try it on a sample plot.
 
 ```{r, rgl = TRUE}
-las <- clip_disc(ctg, 338800, 5238500, 40)
+las <- clip_circle(ctg, 338800, 5238500, 40)
 nlasrgb <- dtm_norm_color(las, rgbmap)
 
 plot(nlasrgb, color = "RGB", bg = "white", size = 6)
@@ -140,7 +140,7 @@ plot(output)
 
 We still have a problem here. The files are overlapping because we read each file with a buffer and then the outputs have been written **with their buffer**. This is bad practice. It is important to always remove the buffer after the computation. In this specific case the output is a LAS file. When `readLAS()` reads a chunk from the catalog the points in the buffer are flagged so they can be easily manipulated. Since they are flagged, we can remove these points easily by adding this to our user-defined function. It is always the role of the user to remove the buffer of the output.
 
-```{r, fig.height=4, fig.width=4}}
+```{r, fig.height=4, fig.width=4}
 dtm_norm_color_chunk <- function(chunk, rgbmap)
 {
   las <- readLAS(chunk)
@@ -175,7 +175,7 @@ We can check that it worked by loading a sample from somewhere in our new catalo
 
 ```{r, rgl = TRUE}
 opt_output_files(output) <- ""
-las <- clip_disc(output, 338800, 5238500, 40)
+las <- clip_circle(output, 338800, 5238500, 40)
 plot(las, color = "RGB", size = 6, bg = "white")
 ```
 
@@ -194,7 +194,7 @@ dtm_norm_color <- function(las, rgbmap)
 dtm_norm_color.LAS <- function(las, rgbmap)
 {
   dtm <- grid_terrain(las, 1, tin())
-  nlas <- normalize_elevation(las, dtm)
+  nlas <- normalize_height(las, dtm)
   colorized <- merge_spatial(nlas, rgbmap)
   return(colorized)
 }

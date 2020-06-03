@@ -9,3 +9,4 @@ lidR-book_files
 lidR-book_cache
 .Rproj.user
 *.html
+lidR-book.Rmd

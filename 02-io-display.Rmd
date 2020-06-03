@@ -165,7 +165,7 @@ plot(las, color = "Intensity", trim = 50, bg = "white")
 LASfile <- system.file("extdata", "Topography.laz", package="lidR")
 las <- readLAS(LASfile, select = "xyzc")
 dtm <- grid_terrain(las, 2, tin())
-las <- clip_disc(las, 273516, 5274496, 80)
+las <- clip_circle(las, 273516, 5274496, 80)
 ```
 
 ```{r, rgl = TRUE, fig.width = 4, fig.height = 3}

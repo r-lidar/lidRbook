@@ -105,7 +105,7 @@ Also the triangulation method may be weak when a lot of points are missing. We c
  ```{r, rgl = TRUE}
 LASfile <- system.file("extdata", "Topography.laz", package = "lidR")
 las2 <- readLAS(LASfile)
-las2 = normalize_elevation(las2, tin())
+las2 = normalize_height(las2, tin())
 plot(las2, size = 3, bg = "white")
 ```
 
@@ -118,7 +118,7 @@ plot(chm, col = col)
 
 To fix that an option is to use the argument `max_edge` which defines the maximum edge of a triangle in the Delaunay triangulation. By default this argument is set to `0` meaning that no triangles are removed. If set to e.g. 8 it means that every triangule with an edge longer than 8 will be discarded from the triangulation.
  
- ```{r, fig.height=5.9, fig.width=6}
+```{r, fig.height=5.9, fig.width=6}
 chm <- grid_canopy(las2, res = 0.5, dsmtin(max_edge = 8))
 plot(chm, col = col)
 ```

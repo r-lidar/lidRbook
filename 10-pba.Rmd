@@ -72,7 +72,7 @@ Eigen value decomposition applied with `point_metrics()` opens the doors to endl
 
 Using the same logic we can also design a wire segmentation algorithm. For a wire we can change the [Limberger et al. (2015)](https://doi.org/10.1016/j.patcog.2014.12.020) constrains to enable the detection of elongated linear features instead of flat ones.
 
-```{r}
+```{r fdefinition}
 is.linear = function(x, y, z, th = 10) {
   xyz <- cbind(x,y,z)
   eigen_m <- eigen_values(xyz)
@@ -91,7 +91,7 @@ plot(las, size = 5)
 plot(las, color = "linear", size = 5)
 ```
 
-```{r, echo = FALSE}
+```{r restore_rgl_zoom, echo = FALSE}
 r3dDefaults$zoom = 0.7
 ```
 
@@ -107,7 +107,7 @@ las <- segment_shape(las, shp_line(th = 8, k = 15), "linear")
 
 Multispectral ALS data are sampled with 3 lasers of differing wavelengths. The point cloud is usually provided in the form of 3 `las` files, each file corresponding to a spectral wavelength. No matter the actual laser wavelength we have attributed first band to be coloured as blue, the second as red, and the third as green to assign a colour to each point. Here we read the 3 `las` files using the `readMSLAS()` function and filter out all points above 300 m elevation.
 
-```{r, rgl = TRUE, message=FALSE}
+```{r, rgl = TRUE, message = FALSE}
 f1 = "data/chap11/PR1107_c1_ar_c.laz"
 f2 = "data/chap11/PR1107_c2_ar_c.laz"
 f3 = "data/chap11/PR1107_c3_ar_c.laz"
@@ -118,8 +118,8 @@ plot(las, color = "ScannerChannel", size = 5)
 After loading the 3 files, we now want to attribute an RGB value to each point. To assign a single colour to each point we use neighborhood intensity values. In a given neighborhood points occur from all 3 ALS wavelengths, which for our example equate to red, blue and green points. To assign a colour to each point, we average the intensities of point wavelengths in the neighborhood and we consider these 3 values as the RGB values for the central point. Because some points are likely to have 0 red/blue/green neighbors we can set R G and B equal to `NA` for those points and discard those points later.
 
 
-```{r}
-set.color = function(intensity, channel){
+```{r set_color}
+set.color = function(intensity, channel) {
   # Slit the intensities of each channel
   i1 = intensity[channel == 1]
   i2 = intensity[channel == 2]
@@ -137,12 +137,13 @@ set.color = function(intensity, channel){
   if (i2 > 255L) i2 = 255L
   if (i3 > 255L) i3 = 255L
   
-  return(list(R = i1, G = i2, B = i3))}
+  return(list(R = i1, G = i2, B = i3))
+}
 ```
 
-We can then apply this function with `point_metrics()` using a spherical neighborhood radius of `r = 0.5`. We then attribute the output of `point_metrics()` back into the `LAS` object for a nice display.
+We can then apply this function with `point_metrics()` using a spherical neighborhood radius of `r` equal to 0.5. We then attribute the output of `point_metrics()` back into the `LAS` object for a nice display.
 
-```{r, rgl = TRUE}
+```{r render_rgb, rgl = TRUE}
 M = point_metrics(las, ~set.color(Intensity, ScannerChannel), r = 0.5)
 las@data$R <- M$R
 las@data$G <- M$G

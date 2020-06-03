@@ -301,18 +301,18 @@ We have learned several thinks about the engine in this section
 
 ## Height normalization
 
-Previous sections detail considerations for using the `LAScatalog` engine to perform point cloud normalization using `normalize_elevation()` (see section \@ref(normalization)). We created a DTM in the previous section, so we use it here to normalize.
+Previous sections detail considerations for using the `LAScatalog` engine to perform point cloud normalization using `normalize_height()` (see section \@ref(normalization)). We created a DTM in the previous section, so we use it here to normalize.
 
 ```{r normalize, cache = TRUE}
 opt_output_files(ctg) <-  paste0(tempdir(), "/{*}_norm")
-ctg_norm <- normalize_elevation(ctg, dtm)
+ctg_norm <- normalize_height(ctg, dtm)
 ```
 
 A point-cloud-based normalization without a raster is also possible
 
 ```r
 opt_output_files(ctg) <-  paste0(tempdir(), "/{*}_norm")
-ctg_norm <- normalize_elevation(ctg, tin())
+ctg_norm <- normalize_height(ctg, tin())
 ```
 
 ## Area Based Approach
