@@ -4,4 +4,7 @@
 .Ruserdata
 _bookdown_files
 _book
+bookdown-demo_files
+lidR-book_files
+lidR-book_cache
 .Rproj.user
