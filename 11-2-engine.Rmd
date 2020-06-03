@@ -171,7 +171,7 @@ options <- list(automerge = TRUE)
 output <- catalog_apply(ctg, dtm_norm_color_chunk, rgbmap = rgbmap, .options = options)
 ```
 
-We can check that it worked by loading a sample from somewhere in our new catalog. We are expecting to get a normalized (we normalized), colored (we merged satellite image), ground points (we used `-keep_class 2`). ---- **the user doesn't see that we did this from line 120**
+We can check that it worked by loading a sample from somewhere in our new catalog. We are expecting to get a normalized (we normalized), colored (we merged satellite image), ground points (we used `-keep_class 2`).
 
 ```{r, rgl = TRUE}
 opt_output_files(output) <- ""
