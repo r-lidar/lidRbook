@@ -54,10 +54,10 @@ las <- lasdetectshape(las, shp_plane(k = 20), "planar", filter = ~Classification
 plot(las, color = "planar", size = 3)
 ```
 
-We can then set a classification to those points
+We can then set a classification to those points using [ASPRS LAS specification standards](http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf)
 
 ```r
-las$Classification[M$pointID] <- ROOF
+las$Classification[M$pointID] <- LASBUILDING
 ```
 
 The function `is.planar()` is highly inefficient because `eigen()` is very slow. To remedy this, a dedicated `segment_shape()` function has been added to `lidR` to provide a specialized faster alternative.

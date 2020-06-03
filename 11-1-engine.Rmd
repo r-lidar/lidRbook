@@ -110,7 +110,7 @@ For a deep (and longer) inspection of each file use `deep = TRUE`. This will seq
 
 ## Extract a single ROIs
 
-Functions using the `clip_*()` moniker are a good starting point for exploring the capabilities of the `LAScataglog` engine. `clip_*()` functions (like many others in `lidR`) allow for the extraction of a region of interest (ROI) from a point cloud. For example the following example extracts a circle from a point cloud loaded into memory in a `LAS` object.
+Functions using the `clip_*()` moniker are a good starting point for exploring the capabilities of the `LAScataglog` engine. `clip_*()` functions allow for the extraction of a region of interest (ROI) from a point cloud. For example the following example extracts a circle from a point cloud loaded into memory in a `LAS` object.
 
 ```r
 plot = clip_circle(las, x = 338700, y = 5238650, radius = 15)
@@ -139,9 +139,13 @@ rois <- clip_circle(ctg, x, y, r)
 rois[1:2]
 ```
 
+### Modification of the default behavior
+
+When processing a `LAScatalog`, no matter with which function, it internally uses what we called the LAScatalog processing engine. This is what happened under the hood when using `clip_cirle()` in above examples. The default behavior of the engine is set in such a way that it returns what is most likely to be expected by the users. However the behavior of the engine can be tunned to optimize the processing. Engine options, at the user level, can be modified with functions `opt_something()`. The goal of this chapter is to present these options and how they affect the behavior of the engine.
+
 ### Multiple extractions on disk
-**JR should we have a brief description of the `opt_` functionality? We also never mention that the catalog is named ctg here - could be confusion for first time users**
-No matter the `lidR` function being used, a `LAScatalog` has the input to write the generated objects to disk storage rather than keeping everything in memory. This option can be activated using one of the many options to modify the behaviour of the engine. In this case `opt_output_files() <-` is used to designate the path of the folder where files will be written to disk. It expects a templated filename so each written file will be attributed a unique name. In the following example several LAS files will be written to disk with names like `339348.8_5239254_1.las` (center coordinates from each file) and the function returns a `LAScatalog` object that references all the new files.
+
+The engine has the input to write the generated objects to disk storage rather than keeping everything in memory. This option can be activated with `opt_output_files() <-` that is used to designate the path where files will be written to disk. It expects a templated filename so each written file will be attributed a unique name. In the following example several LAS files will be written to disk with names like `339348.8_5239254_1.las` (center coordinates from each file) and the function returns a `LAScatalog` object that references all the new files instead of a list of `LAS` object.
 
 ```{r, fig.height=4, fig.width=4}
 opt_output_files(ctg) <- paste0(tempdir(), "/{XCENTER}_{YCENTER}_{ID}")
@@ -158,22 +162,7 @@ rois$filename
 
 ### Multiple extraction with point cloud indexation
 
-Point cloud indexation is a topic covered by [this vignette](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html). In short LAS file indexation allows for faster queries when extracting ROIs in files. Under the hood `lidR` relies on `LASlib` to read files and inherits of the capability to leverage the use of `LAX` files developed by Martin Isenburg (**REFERENCE**). While extracting hundreds of plots from hundreds of files may take many seconds, the use of index files can reduce processing to few seconds.
-
-### Multiple extractions in parallel
-
-In `lidR` every iterative process can be computed in parallel on a single machine or on multiple machines accessible remotely. Remote parallelisation is a very advanced case not covered in this book for which a [wiki page](https://github.com/Jean-Romain/lidR/wiki/Make-cheap-High-Performance-Computing-to-process-large-datasets) has been written. In the following example only local parallelization is covered.
-
-In `lidR`, parallelization is driven by the package [`future`](https://github.com/HenrikBengtsson/future). Understanding this package is thus a requierement for being able to parallelize tasks in `lidR`. In the following example we load `future` and register a parallelization plan to enable parallelized extraction.
-
-```r
-library(future)
-plan(multisession)
-opt_output_files(ctg) <- paste0(tempdir(), "/{XCENTER}_{YCENTER}_{ID}")
-rois <- clip_circle(ctg, x, y, r)
-```
-
-Notice that in this specific case of extracting 5 plots from indexed files, enabling the parallelization is not relevant because it introduces more overhead that it provides gains. (**IF its not relevant why should we include this??**)
+Point cloud indexation is a topic covered by [this vignette](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html). In short LAS file indexation allows for faster queries when extracting ROIs in files. Under the hood `lidR` relies on `LASlib` to read files and inherits of the capability to leverage the use of [`LAX` files developed by Martin Isenburg](https://www.youtube.com/watch?v=FMcBywhPgdg). While extracting hundreds of plots from hundreds of files may take many seconds, the use of index files can reduce processing to few seconds.
 
 ### Summary
 
@@ -182,7 +171,6 @@ We have learned several thins about the `LAScatalog` engine in this section:
 1. Many functions of the package work the same either with a point cloud (`LAS`) or a collection of files (`LAScatalog`).
 2. The behavior of the engine can be modified to write objects to disk instead of loading everything into memory.
 3. The engine takes advantage of file indexes.
-4. Iterative processes can be performed in parallel.
 
 ## Ground classification
 
@@ -234,7 +222,9 @@ plot(ctg, chunk = TRUE)
 
 ### Parallelize the classification
 
-We have seen in the previous section that parallelization is built into the `LAScatalog` engine and very function is cabable of benefiting from parallel processing capabilities. We can combine steps to construct a valid classification configuration. Doing so does no mean that classification is performed in parallel, but that several chunks will be processed **simultaneously**. This means that its important to pay attention to memory requirements and parallelization is not necessarily relevant in all cases or in all computers.
+### Multiple extractions in parallel
+
+In `lidR` every iterative process can be computed in parallel on a single machine or on multiple machines accessible remotely. Remote parallelisation is a very advanced case not covered in this book for which a [wiki page](https://github.com/Jean-Romain/lidR/wiki/Make-cheap-High-Performance-Computing-to-process-large-datasets) has been written. In the following example only local parallelization is covered. Parallelization is driven by the package [`future`](https://github.com/HenrikBengtsson/future). Understanding this package is thus a requierement for being able to parallelize tasks in `lidR`. In the following example we load `future` and register a parallelization plan to enable parallelized classification.
 
 ```r
 library(future)
@@ -245,14 +235,17 @@ opt_output_files(ctg) <- paste0(tempdir(), "/{*}_classified")
 classified_ctg <- classify_ground(ctg, csf())
 ```
 
+Parallelization is a capability of the engine and every function is cabable of benefiting from parallel processing capabilities. Registering a parallelization plan would have worked with `clip_circle()` as well. However doing so does no mean that classification is performed in parallel, but that **several chunks will be processed simultaneously**. This means that its important to pay attention to memory requirements and parallelization is not necessarily relevant in all cases or in all computers.
+
 ### Summary
 
 We have learned several thinks about the engine in this section
 
-5. The engine iteratively processes regions of interest called chunks.
-6. Each chunk is loaded with a buffer on-the-fly.
-7. User can change chunk size to reduce the amount of memory used if files are too big.
-8. The buffer is used to remove ridge artifacts, is removed once the computation is done, and is not transferred to processing outputs.
+4. The engine iteratively processes regions of interest called chunks.
+5. Each chunk is loaded with a buffer on-the-fly.
+6. User can change chunk size to reduce the amount of memory used if files are too big.
+7. The buffer is used to remove ridge artifacts, is removed once the computation is done, and is not transferred to processing outputs.
+8. Iterative processes can be performed in parallel.
 9. Parallelization is performed by processing several chunks simultaneously. Users need processing memory to load several chunks at a time.
 
 ## Digital Terrain Model
@@ -386,7 +379,7 @@ ttops <- find_trees(ctg_norm, lmf(4), uniqueness = "bitmerge")
 ttops
 ```
 
-The attribute `treeID` is now an arbitrary number, not necessarily computed from the XY coordinates, that is guaranteed to be (1) unique (2) reproducible. No matter how the collection of files is processed (by files or by small chunks, in parallel or sequentially, with large or narrow buffer, in memory or on disk) the IDs will always be the same for a given tree.
+The attribute `treeID` is now an arbitrary number (here it is negative but not necessarily) computed from the XY coordinates, that is guaranteed to be (1) unique (2) reproducible. No matter how the collection of files is processed (by files or by small chunks, in parallel or sequentially, with large or narrow buffer, in memory or on disk) the IDs will always be the same for a given tree.
 
 In all the previous examples we have seen that the engine takes care of merging the intermediate results into a single usable object. When the intermediate results are stored on disk, the final results in R is a single lightweight object such as a `LAScatalog` or a Virtual Datset. This is not true for `find_tree()` and other functions that return `Spatial*` objects. The default behavior is to write in shapefiles and there is no way to build a light weigtht object out of a set of shapefiles. What is returned is thus a vector of written files.
 
