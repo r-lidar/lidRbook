@@ -102,9 +102,9 @@ We can also see it is very weak at interpolating regions with missing point such
 
 - **Triangulation** is a very fast and efficient methods that generate very good terrains and the is robust to empty regions inside the point cloud. However it is weak at the edges. `lidR` uses the neareast neighbour to complete the missing pixel out of the convex hull of the ground points so there is no missing pixel but yet, the interpolation is poor. It must alway be used with a buffer of extra points to ensure that the region of interest does not belong on the edges. It is the recommended method from broad DTM compuation but should be avoided for small region of interest loaded without buffer.
 - **Invert distance weighting** is fast but approximatively twice slower than TIN. The terrain is not very realistic but edges are likely to be free of strong edge artifacts. It is a compromise between TIN and KRIGING. It is recommended if you want a simple method, if you cannot load a buffer and if the edges are important.
-- **Kriging** is very slow because it is computanionnaly demanding. It is not woth it to try to use it on medium to large areas. It can be used for small plots without buffer to get a nice DTM without strong edges artifact.
+- **Kriging** is very slow because it is computanionnaly demanding. It does not worth it to try to use it on medium to large areas. It can be used for small plots without buffer to get a nice DTM without strong edges artifact.
 
-Whatever the method used, edges are critical. Asking a method to interpolate at the edges is trying to guess the local topography with only a partial information on the neighborhood. It will always be weak. But different methods provide more or less good guess. The bet is **always** to use a buffer to obtain some information about the neighborhood no matter the method.
+Whatever the method used, edges are critical. Asking a method to interpolate at the edges is trying to guess the local topography with only a partial information on the neighborhood. It will always be weak. Different methods provide more or less good guesses. The best is **always** to use a buffer to obtain some information about the neighborhood no matter the method and remove the buffer once the terrain is computed.
 
 ## Other methods
 
