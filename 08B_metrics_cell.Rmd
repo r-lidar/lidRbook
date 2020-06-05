@@ -1,0 +1,130 @@
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+r3dDefaults = rgl::r3dDefaults
+rgl::setupKnitr()
+r3dDefaults$FOV = 50
+r3dDefaults$zoom = 0.5
+library(lidR)
+```
+
+
+
+# Point cloud metrics at grid level
+
+Point cloud metrics calculated at grid level are the basis of the area-based approach (ABA) that we discuss in more detail in a separate chapter (\@ref(modeling)). In brief, ABA allows to create wall-to-wall predictions of forest inventory attributes (e.g. basal area or total volume per hectare) by linking ALS variables with field measured reference. In ABA,  metrics describing point cloud within a grid cell are used as independent variables in predictive models. Those metrics can consist of simple summary statistics (e.g. mean or standard deviation of point heights above ground), percentiles, or proportions (e.g. percentage of first returns above 2 m). 
+
+The level of detail in ABA is a single raster cell with size typically ranging between 10 and 30 m (with 20 x 20 m being the most common). The dimensions of ABA cell need to correspond to the size of the reference plot and therefor
+
+
+Below we demonstrate how the `lidR` package can be used to calculate different point cloud metrics. Again, we start by loading a sample ALS dataset included in the package:
+
+```{r}
+LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+las = readLAS(LASfile)
+```
+
+We can now use the `grid_metrics()` function to calculate e.g. the mean height of all points in each 20 x 20 m cell. 
+
+```{r}
+hmean <- grid_metrics(las, ~mean(Z), 20)
+plot(hmean)
+```
+
+
+The returned `hmean` object is a RasterLayer:
+
+```{r}
+hmean
+```
+
+To calculate metrics for hexagonal cell instead, we can use the `hexbin_metrics()` function instead. In this case the resolution is defined as the square root of the hexagon area.
+
+```{r}
+metrics_hex <- hexbin_metrics(las, ~mean(Z), 20)
+
+plot(metrics_hex, main="Mean Z")
+```
+
+
+As described before, to calculate more than one metric at a time, a custom function needs to be created first. The function can contain any number of metrics, but needs to return a labeled list. For example, to calculate the mean and standard deviation of point heights, a following function can be created:
+
+```{r}
+f <- function(x) {
+  list(
+    mean = mean(x), 
+    sd = sd(x))
+}
+```
+
+```{r}
+metrics <- grid_metrics(las, ~f(Z), 20)
+plot(metrics)
+```
+
+In this case the return object is a `RasterBrick` with two layers.
+```{r}
+metrics
+```
+
+
+The functions that specify which metrics to calculate can of course contain any number of metrics. The most commonly used metrics are already predefined in `lidR` - the `stdmetrics()` function contains metrics that summarize the vertical distribution of points, their intensities, and return structure. The complete list of all metrics can be found in the [lidR wiki page]( https://github.com/Jean-Romain/lidR/wiki/stdmetrics).
+
+To use the predefined list of metrics we can run the `grid_metrics()` function as follows:
+
+```
+metrics <- grid_metrics(las, ~stdmetrics(X,Y,Z,Intensity,ReturnNumber,Classification,dz=1), 20)
+```
+or use a convenient shorcut:
+```{r}
+metrics <- grid_metrics(las, .stdmetrics, 20)
+
+plot(metrics)
+```
+
+
+
+
+
+
+
+Because of the flexibility in metric definition it is very easy to extent the basic functionality and create new, non-standard metrics. For example, below we demonstrate how coefficient of variation and interquartile range can be calculated:
+
+
+```{r}
+
+metrics_custom <- function(z) {
+    output <- list(
+      coef_var =  sd(z) / mean(z) * 100, #coefficient of variation
+      iqr = IQR(z) #interquartile range
+      )
+
+  return(output)
+}
+
+metrics <- grid_metrics(las, ~metrics_custom(z=Z), 20)
+
+plot(metrics)
+
+```
+
+
+The custom metrics can also be combined with the predefined set of metrics (e.g. `.stdmetrics_z`):
+
+```{r}
+metrics_extended <- function(z) {
+  
+  metrics_std <- stdmetrics_z(z = z)
+  
+  metrics_2 <- metrics_custom(z = z)
+  
+  return(c(metrics_2, metrics_std))
+  
+}
+```
+
+```{r}
+metrics <- grid_metrics(las, ~metrics_extended(z=Z), 20)
+
+plot(metrics)
+```
+
+

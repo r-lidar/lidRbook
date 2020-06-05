@@ -1,0 +1,68 @@
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+r3dDefaults = rgl::r3dDefaults
+rgl::setupKnitr()
+r3dDefaults$FOV = 50
+r3dDefaults$zoom = 0.5
+library(lidR)
+```
+
+
+# Detecting and segmenting individual trees {#itd}
+
+intro - what is tree detection, detecting treetops, segmenting crowns
+
+In `lidR` detecting and segmenting procedures are divided into two separate functions. Tree tops are detected using the`find_trees()` function, followed by the `segment_trees()` function to delineate crowns. 
+
+The specific algorithms to be used with `find_trees()` and `segment_trees()` are designed as separate functions and accept arguments specific to each of the methods.
+
+Two functions can be used with `find_trees()` to identify treetops:
+
+- `lmf()`, local maximum filter. 
+- `manual()`, allows to manually located tree tops and is designed to allow for minor corrections of automatically detected tree tops or to identify treetops on small test areas.
+
+
+## Detecting tree tops
+
+
+```{r}
+LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
+las <- readLAS(LASfile, select = "xyz", filter = "-drop_z_below 0")
+
+CHM <- grid_canopy(las, 1, p2r())
+```
+
+
+```{r}
+ttops <- find_trees(las, lmf(ws = 5))
+
+plot(CHM)
+plot(ttops, add=T)
+```
+
+Tree detection result can also be visualized in 3D
+
+```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
+x <- plot(las)
+add_treetops3d(x, ttops)
+```
+
+
+Modifying the `ws` param
+function as the `ws` param (dynamic window size)
+
+CHM as input
+
+
+
+### On a raster
+
+### On a point cloud
+
+
+
+## Tree crown segmentation
+
+### On a raster
+
+### On a point cloud
+

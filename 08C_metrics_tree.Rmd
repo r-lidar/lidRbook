@@ -1,0 +1,10 @@
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+r3dDefaults = rgl::r3dDefaults
+rgl::setupKnitr()
+r3dDefaults$FOV = 50
+r3dDefaults$zoom = 0.5
+library(lidR)
+```
+
+
+# Point cloud metrics at tree level 

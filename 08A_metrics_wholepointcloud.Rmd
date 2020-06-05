@@ -1,0 +1,33 @@
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+r3dDefaults = rgl::r3dDefaults
+rgl::setupKnitr()
+r3dDefaults$FOV = 50
+r3dDefaults$zoom = 0.5
+library(lidR)
+```
+
+
+# Point cloud metrics for the whole point cloud
+
+Calculating point cloud metrics for the whole point cloud is straightforward - user only needs to provide a formula to calculate the metric of interest. For example, to calculate the average height of all points we can run the following:
+
+```{r}
+LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+las = readLAS(LASfile)
+
+cloud_metrics(las, func = ~mean(Z))
+```
+
+To calculate more than one metric a custom function needs to be used or one of the pre-defined functions implemented in `lidR`. For example, to calculate the whole suite of metrics defined in `stdmetrics_rn()` we could use:
+
+```
+cloud_metrics(las, func = ~stdmetrics_rn(ReturnNumber)
+```
+or use the convenient shortcut:
+
+```{r}
+metrics <- cloud_metrics(las, func = .stdmetrics_rn)
+metrics
+```
+
+When multiple metrics are calculated the returned object is of class `list`. 
