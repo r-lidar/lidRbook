@@ -7,4 +7,78 @@ library(lidR)
 ```
 
 
-# Point cloud metrics at tree level 
+# Point cloud metrics at tree level {#metrics_tree}
+
+Detecting and segmenting individual trees is very often followed by extracting a number of point cloud metrics for each crown segment. Some of these metrics, like maximum point height above ground, inform directly on important inventory attributes (tree height), others can be used as predictors when developing models to estimate tree-level attributes.
+
+In `lidR` tree level metrics are calculated using the `tree_metrics()` function. The input data for this function is a point cloud (single file or a `catalog()`) that needs to contain an information on tree segmentation (e.g. `treeID` attribute). In majority of cases `tree_metrics()` is run after segmenting tree crowns with `segment_trees()` (see section \@ref(itd)).
+
+By default `tree_metrics()` calculates a single metrics for each segmented tree - maximum point height (`max(Z)`). The output is a `SpatialPoinsDataFrame` that in addition to the calculated metrics contains also the XYZ coordinates of the highest point in each segment, and segment ID.
+
+In the example below we show the most basic use of the `tree_metrics()` function:
+
+```{r}
+LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
+las <- readLAS(LASfile, filter = "-drop_z_below 0")
+
+metrics = tree_metrics(las)
+```
+
+The output (`metrics`) contains two attributes: `treeID` and `Z`.
+
+```{r}
+metrics
+```
+
+```{r}
+head(metrics)
+```
+
+The output can be visualized using the standard `plot()` function, however other plotting functions specific to `sp` objects may also be used. In the plot below the output is visualized using color to depict the `Z` attribute.
+
+```{r}
+spplot(metrics, zcol="Z", col.regions=hcl.colors(5))
+```
+
+As with other functions designed to calculate point cloud metrics, users can create their own custom functions containing all of the metrics of interest. In the example below we show how to calculate metrics that are based both on point heights and intensities.
+
+```{r}
+custom_tree_metrics = function(z, i) {
+  metrics = list(
+     z_max = max(z),     #max height
+     z_sd = sd(z),       #vertical variability of points
+     int_mean = mean(i), #mean intensity
+     int_max  = max(i)   #max intensity
+   )
+   return(metrics)
+}
+```
+
+The custom function is then applied to every segmented tree crown.
+```{r}
+metrics = tree_metrics(las, ~custom_tree_metrics(z = Z, i = Intensity))
+head(metrics)
+```
+
+Metrics can be also combined with the crown segments derived with the `delineate_crowns()` function.
+
+```{r}
+crowns <- delineate_crowns(las)
+crowns_metrics <- merge(crowns, metrics)
+```
+
+The new object `crowns_metrics` is now a `SpatialPolygonsDataFrame` that contains both the original attributes derived with `segment_trees()` and the calculated metrics. 
+
+To visualize the metrics only, without including the `treeID` or coordinates in the plot we can convert the `crown_metrics` object to a `sf` class and use the `dplyr::select()` function as shown below:
+
+```{r, warning=F, message=F}
+library(sf)
+crowns_metrics %>% 
+   st_as_sf() %>%
+   dplyr::select(z_max:int_max) %>%
+   plot()
+```
+
+
+
+

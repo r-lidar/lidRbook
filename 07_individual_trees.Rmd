@@ -4,6 +4,7 @@ rgl::setupKnitr()
 r3dDefaults$FOV = 50
 r3dDefaults$zoom = 0.5
 library(lidR)
+
 ```
 
 
@@ -21,8 +22,9 @@ Two functions can be used with `find_trees()` to identify treetops:
 - `manual()`, allows to manually located tree tops and is designed to allow for minor corrections of automatically detected tree tops or to identify treetops on small test areas.
 
 
-## Detecting tree tops
+## Detecting tree tops 
 
+We will use one the `MixedConifer.laz` dataset to demonstrate both tree detection and crown segmentation. We will also generate a CHM to help visualize the results. 
 
 ```{r}
 LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
@@ -30,6 +32,8 @@ las <- readLAS(LASfile, select = "xyz", filter = "-drop_z_below 0")
 
 CHM <- grid_canopy(las, 1, p2r())
 ```
+
+Treetops are detected by applying the local maxima filter on the loaded dataset. The `lmf()` function requires the argument `ws` (window size) to be specified. For example, defining the `ws` argument equal to 5, results in local maxima being detected in every 5 x 5 window:
 
 
 ```{r}
@@ -47,22 +51,147 @@ add_treetops3d(x, ttops)
 ```
 
 
-Modifying the `ws` param
-function as the `ws` param (dynamic window size)
 
-CHM as input
+Changing the `ws` argument largely affects the tree detection result. 
+
+```{r}
+ttops_3x3 <- find_trees(las, lmf(ws = 3))
+ttops_11x11 <- find_trees(las, lmf(ws = 11))
 
 
+par(mfrow=c(1,2))
+plot(CHM)
+plot(ttops_3x3, add=T)
+plot(CHM)
+plot(ttops_11x11, add=T)
 
-### On a raster
+```
 
-### On a point cloud
+In the plot above, the panel on the left show the tree detection results with window size of 3 x 3; the right panel show results when the window size is set to 11 x 11. 
+
+The examples so far demonstrate the use of the `lmf()` function with constant window size. However, the window size can also be defined as a function of height - taller trees have usually larger crowns and to correctly detect their treetops the window size should be larger than in case of shorter trees. Variable window size is especially suitable for stands of more complex structure, or when tree detection is performed on larger areas, covering stands of different sizes. 
+
+When designing a function to define the window size based on point heights we need to keep in mind what the minimum and maximum window size should be, and relate that to the minimum and maximum tree heights. In general, the minimum window size should not be smaller than 3 x 3. 
+
+Below we show an example of such function. The function returns the windows size proportionally the input height. 
+
+```{r}
+f <- function(x) { x * 0.1 + 3}
+
+heights <- 0:30
+ws <- f(heights)
+
+plot(heights, ws)
+```
+
+When applied with the `find_trees()` function, the function yields the following result:
+```{r}
+ttops <- find_trees(las, lmf(f))
+
+par(mfrow=c(1,1))
+plot(CHM)
+plot(ttops, add=T)
+```
+
+
+So far the tree detection was performed using the point cloud as input. However, a CHM can be used instead as well. Because the resolution (i.e. pixel size) and the quality of the CHM influence the result of tree detection, additional raster operations may be performed before running the algorithm to improve the detection result. Those may include e.g. focal filtering operations.
+
+In the examples below we run the tree detection on CHM generated with different resolutions (0.5 and 1 m) and with a median filter applied.
+
+First the four different CHMs are generated:
+```{r}
+CHM_05 <- grid_canopy(las, 0.5, p2r(subcircle = 0.2))
+CHM_1 <- grid_canopy(las, 1, p2r(subcircle = 0.2))
+
+#median filter
+kernel <- matrix(1,3,3)
+CHM_05_median <- raster::focal(CHM_05, w = kernel, fun = median, na.rm = TRUE)
+CHM_1_median <- raster::focal(CHM_1, w = kernel, fun = median, na.rm = TRUE)
+```
+
+Then the same tree detection routine is applied to each CHM:
+```{r}
+ttops_CHM_05 <- find_trees(CHM_05, lmf(5))
+ttops_CHM_1 <- find_trees(CHM_1, lmf(5))
+ttops_CHM_05_median <- find_trees(CHM_05_median, lmf(5))
+ttops_CHM_1_median <- find_trees(CHM_1_median, lmf(5))
+```
+
+Finally the detection results are visualized:
+```{r, fig.asp=4}
+par(mfrow=c(4,1))
+plot(CHM_05, main="CHM_05"); plot(ttops_CHM_05, add=T)
+plot(CHM_1, main="CHM_1"); plot(ttops_CHM_1, add=T)
+plot(CHM_05_median, main="CHM_05_median"); plot(ttops_CHM_05_median, add=T)
+plot(CHM_1_median, main="CHM_1_median"); plot(ttops_CHM_1_median, add=T)
+```
+We can see that the median filter applied to the finer (0.5 m) resolution provided the best detection results. Without the median filter the CHM contained voids that could negatively affect the detection process. The larger pixel size on the other hand did not allow to detect all of the smaller trees.
 
 
 
 ## Tree crown segmentation
 
-### On a raster
 
-### On a point cloud
+Four crown segmentation algorithms are available in `lidR`:
+
+- `dalponte2016()`
+- `watershed()`
+- `silva2016()`
+- `li2012()`
+
+The first three algorithms are raster-based, meaning they use a CHM as input. The last algorithm (`li2012()`) works directly on the point cloud. 
+
+In `lidR` crown segmentation can be run using each of the listed function directly, or through the `segment_trees()` function. When the second option is used, the input must include the point cloud data, which is then used to store the segmentation results using a new attribute (`treeID` by default) containing the segmentation result. The raster-based crown segmentation algorithms, when run independently, do not require the point cloud as input. The segmentation result is then returned as `RasterLayer`.
+
+For example, when segmenting crowns using `dalponte2016` algorithm we can either call the function directly:
+```{r}
+crowns <- dalponte2016(chm = CHM_05_median, ttops_CHM_05_median)()
+```
+or use it within `segment_trees()` as follows:
+```{r}
+las <- segment_trees(las, dalponte2016(chm = CHM_05_median, ttops_CHM_05_median))
+```
+
+The segmentation result will be exactly the same in both cases, the difference will be the data format to store the segmentation result - in the first case `crowns` is a `RasterLayer`, in the second case the `las` object contains a `treeID` attribute. Both can be visualized using the plot function:
+
+```{r}
+plot(crowns, col=random.colors(50))
+```
+```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
+plot(las, color="treeID")
+```
+
+When using the `segment_trees()` algorithm, crown shapes can be delineated with the `delineate_crowns()` function, as follows:
+
+```{r}
+crowns <- delineate_crowns(las)
+plot(crowns)
+```
+
+
+
+
+Two out of the four available crown segmentation algorithms require treetops as one of the inputs. The `watershed()` and `li2012()` algorithms can be run without detecting the treetops first. For example, the `watershed()` segmentation can be run using the following formula:
+```{r}
+crowns_watershed <- watershed(chm = CHM_05_median)()
+plot(crowns_watershed, col=random.colors(50))
+```
+
+Each of the segmentation algorithms contains a list of parameters that can be adjusted by the user to improve the segmentation result. While the default parameter values often result in a reasonable segmentation, very often significant adjustments are required. For example, when using the `li2012()` with the default parameters the segmentation quality is very low:
+
+```{r}
+las_li2012 <- segment_trees(las, li2012())
+crowns_li2012 <- delineate_crowns(las_li2012)
+plot(crowns_li2012)
+```
+However, after relatively minor modifications the segmentation result becomes markedly better:
+
+```{r}
+las_li2012 <- segment_trees(las, li2012(dt1 = 1.4, R = 3, speed_up = 5))
+crowns_li2012 <- delineate_crowns(las_li2012)
+plot(crowns_li2012)
+```
+
+
+
 

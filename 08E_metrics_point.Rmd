@@ -7,13 +7,13 @@ library(lidR)
 ```
 
 
-# Point Based Approach
+# Point Based Approach {#metrics_point}
 
 Area-based approach (ABA) consists in computing metrics at the pixel level and tree-based apprach (TBA) consists in computing metrics at the tree level. Both are well known approches used in forestry to process point clouds. `lidR` provides tools to compute any user-defined metrics both in ABA, TBA as seen in previous sections. We have also seen that `lidR` extended the idea to voxel-based approach (VBA) but we also extended the metrics concept to the point-based apprach (PBA).
 
 PBA consist in computing any user-defined metrics for each point using its neighborhood points. For each point the neibourhood can be either the k nearest neighbors or the points within a sphere centered on the processed point. The following section presents few applications made possible out of this tool. The function `point_metrics()` only takes care of mapping a user-defined function and the actual applications are not limited to the example below. It is up to the user to think out of the box.
 
-## Roof segmentation
+### Roof segmentation
 
 Roof are flat areas. [Limberger et al. (2015)](https://doi.org/10.1016/j.patcog.2014.12.020) described a method to find flat areas in a point clouds using an eigen values decomposition. Using the good user-defined function we can use `point_metrics()` to create this algorithm. In this example we will use the following urban scene:
 
@@ -90,7 +90,7 @@ But yet `lidR` has a dedicated function for this specific task because we believ
 las <- segment_shape(las, shp_plane(k = 25), "planar")
 ```
 
-## Lake and wire segmentation
+### Lake and wire segmentation
 
 Eigen value decomposition applied with `point_metrics()` open multiple possibilities. For example by tweaking a bit the previous example we can design a lake segmentation algorithm.  A lake is a planar region with a vertical normal vector. To create a lake segmentation we simply need to add such constrain in `is.planar`. We can also design a wire segmentation algorithm. For a wire we can change the Limberger et al. (2015) constrains to enable the detection of elongated linear features instead of flat feature.
 
@@ -124,7 +124,7 @@ again `lidR` has a dedicated function for this specific task because we believe 
 las <- segment_shape(las, shp_line(th = 8, k = 15), "linear")
 ```
 
-## Multispectral coloring {#sec:pba-mscoloring}
+### Multispectral coloring {#sec:pba-mscoloring}
 
 `point_metrics()` is not limited to eigen value related metrics. It is only limited by user's imagination. In the following we will demonstrate how it an be used to attribute false color to a multispectral point cloud.
 

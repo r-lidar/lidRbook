@@ -8,7 +8,7 @@ library(lidR)
 
 
 
-# Point cloud metrics at grid level
+## Point cloud metrics at grid level {#metrics_cell}
 
 Point cloud metrics calculated at grid level are the basis of the area-based approach (ABA) that we discuss in more detail in a separate chapter (\@ref(modeling)). In brief, ABA allows to create wall-to-wall predictions of forest inventory attributes (e.g. basal area or total volume per hectare) by linking ALS variables with field measured reference. In ABA,  metrics describing point cloud within a grid cell are used as independent variables in predictive models. Those metrics can consist of simple summary statistics (e.g. mean or standard deviation of point heights above ground), percentiles, or proportions (e.g. percentage of first returns above 2 m). 
 

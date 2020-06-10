@@ -7,4 +7,58 @@ library(lidR)
 ```
 
 
-# Point cloud metrics at voxel level
+# Point cloud metrics at voxel level {#metrics_voxel}
+
+Voxels are 3D pixels. Transforming a point cloud dataset into voxels can be used to either lower the density (and often remove noise) or to calculate data summaries in 3D space. 
+
+Function `voxel_metrics()` allows to generate voxel based on the provided point cloud with the specified voxel size. In addition the function calculates voxel-level metrics based on points located inside each voxel.
+
+For example, we can count the number of points inside each 2 x 2 x 2 m voxel:
+
+```{r}
+LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+las = readLAS(LASfile)
+
+vox_met <- voxel_metrics(las, ~length(Z), 2)
+```
+
+In this example the point cloud is first converted into 2 m voxels, then the function `length(Z)` is applied to all points located inside every voxel. Note that similar to all function used within the metrics function, the function call needs to be preceded with `~`. 
+
+The output is a `data.table` that contains the X, Y, and Z coordinates of voxels, and the calculated number of points:
+
+```{r}
+head(vox_met)
+```
+
+The result can be visualized using the `plot()` function as follows:
+
+```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
+plot(vox_met, color="V1")
+```
+
+Similar to other function designed to calculate point cloud metrics, `voxel_metrics()` can be used to calculate any number of pre- or user-defined summaries. For example, to calculate minimum, mean, maximum, and standard deviation of intensity in each voxel we can create a following function:
+
+```{r}
+custom_metrics <- function(x) {
+  m <- list(
+    int_min = min(x),
+    int_mean = mean(x),
+    int_max = max(x),
+    int_sd = sd(x)
+  )
+  return(m)
+}
+```
+
+and apply it in `voxel_metrics()`:
+```{r}
+vox_met <- voxel_metrics(las, ~custom_metrics(Intensity), 4)
+```
+
+```{r}
+head(vox_met)
+```
+
+
+
+
