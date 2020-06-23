@@ -29,7 +29,7 @@ las <- readLAS(LASfile)
 
 Discrete return ALS sensors record a number of pieces of data. First and foremost, positional data in three dimensions (X,Y,Z), followed by additional information like the intensity for each point, the position of each point in the return sequence, or the beam incidence angle of each point. Reading, writing, and efficient storage of these ALS data is a critical step prior to any subsequent analysis. 
 
-ALS data is most commonly distributed in LAS format, which is specifically designed to store ALS data that is standardized. These data are officially documented and maintained by the American Society for Photogrammetry & Remote Sensing (ASPRS). LAS files do however require a large amount of memory because they are not compressed. The LAZ format has become the standard compression scheme, because it is free and open-source.
+ALS data is most commonly distributed in LAS format, which is specifically designed to store ALS data that is standardized. These data are officially documented and maintained by the [American Society for Photogrammetry & Remote Sensing (ASPRS)](http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf). LAS files do however require a large amount of memory because they are not compressed. The LAZ format has become the standard compression scheme, because it is free and open-source.
 
 The widespread use, standardization and open source nature of the LAS and LAZ formats promoted the development of the `lidR` package, which has been designed to process LAS and LAZ files both as input and output, taking advantage of the LASlib and LASzip C++ libraries via the `rlas` package.
 
