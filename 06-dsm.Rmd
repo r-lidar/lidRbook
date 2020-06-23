@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
   fig.align = "center")
 ```
 
-# Digital Surface Model and Canopy Height model
+# Digital Surface Model and Canopy Height model {#chm}
 
 Digital Surface Model (DSM) and Canopy Height Model (CHM) are raster layers that represent, more or less the highest elevation of lidar returns. In case of a normalized point-cloud with relative elevations the derived surface represents the canopy height (for vegetated areas) and is refered to as CHM. When the original point-cloud with absolute elevations is used, the derived layer represents the elevation of the top of the canopy above sea level, and is refered to as DSM. Both surface models are derived using the same algorithms, with the only difference being the elevation values of the point cloud.
 
