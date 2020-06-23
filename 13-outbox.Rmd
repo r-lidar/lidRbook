@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
   fig.align = "center")
 ```
 
-# Thinking outside the box
+# Thinking outside the box {#outbox}
 
 We have presented many common processes through these tutorials. Most examples presented could have been done with other softwares, but what we have seen has only the tip of the iceberg. In fact, `lidR` was never designed with common processes in mind, but instead to explore new ones. Examples of this can be found in chapters like \@ref(Point Based Approach). 
 

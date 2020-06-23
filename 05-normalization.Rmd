@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
   fig.align = "center")
 ```
 
-# Height normalization {#normalization}
+# Height normalization {#norm}
 
 The purpose of the DTM, apart from using it as a stand alone product for water drainage, archeology or road planning is to facilitate terrain normalization. Described simply, point cloud normalization removes the influence of terrain on above ground measurements. This makes comparison of above ground vegetation heights possible and simplifies analyses accross acquisition areas. When reading a non normalized file:
 
