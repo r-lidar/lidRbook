@@ -10,14 +10,14 @@ description: "A guide to the `lidR` package"
 
 # Introduction
 
-`lidR` is an R package for manipulating and visualizating airborne laser scanning (ALS) data with an emphasis on forestry applications. The package is entirely opensource and is integrated within the geospatial R ecosytem (i.e. `raster`, `sp`, `sf`, `rgdal` etc.). This guide has been written to help both the LiDAR novice, as well as seasoned point cloud processing veterans. Key functionality of the package includes functions to:
+`lidR` is an R package for manipulating and visualizating airborne laser scanning (ALS) data with an emphasis on forestry applications. The package is entirely open source and is integrated within the geospatial R ecosytem (i.e. `raster`, `sp`, `sf`, `rgdal` etc.). This guide has been written to help both the ALS novice, as well as seasoned point cloud processing veterans. Key functionality of `lidR` includes functions to:
 
 * Read and write `.las` and `.laz` files
 * Plot point clouds and customize visualizations
 * Generate standard ALS outputs such as digital terrain models (DTM), digital surface models (DSM), and canopy height models (CHM)
 * Process point clouds including point classification, normalization, filtering, and thinning
-* Compute standard and user-defined statistical metrics for forest modelling at different level of regularisation
-* Guidelines for implementing area-based approaches to forest modelling using ALS LiDAR data
+* Compute standard and user-defined statistical metrics for forest modelling at different levels of regularisation
+* Guidelines for implementing area-based approaches to forest modelling using ALS data
 * Manage processing for sets of point cloud files - referred to as a `LAScatalog`
 * Facilitate user-defined processing streams for research and development.
 
