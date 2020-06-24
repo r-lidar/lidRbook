@@ -16,22 +16,21 @@ library(lidR)
 
 ## Overview
 
-The "grid" level of regularization corresponds to the computation of derived metrics for regularly spaced location in 2D. Derived metrics calculated at grid level are the basis of the area-based approach (ABA) that we discuss with more details in a separate chapter (\@ref(modeling)). In brief, ABA allows to create wall-to-wall predictions of forest inventory attributes (e.g. basal area or total volume per hectare) by linking ALS variables with field measured reference. ABA is one application of derived metrics at the grid level but not the only one.
+The "grid" level of regularization corresponds to the computation of derived metrics for regularly spaced locations in 2D. Derived metrics calculated at grid level are the basis of the area-based approach (ABA) that we discuss with in more detail in section (\@ref(modeling)). In brief, the ABA allows the creation of wall-to-wall predictions of forest inventory attributes (e.g. basal area or total volume per hectare) by linking ALS variables with field measured references. ABA is one application of derived metrics at the grid level but not the only one.
 
-As seen in chapters \@ref(metrics) and \@ref(cba) calculating derived metrics is straightforward user only needs to provide a formula to calculate the metric of interest. For example, to calculate the average height of all points within 10 x 10 m pixels we can run the following:
+As seen in chapters \@ref(metrics) and \@ref(cba) calculating derived metrics is straightforward. The user only needs to provide a formula to calculate the metric of interest. For example, to calculate the average height (`mean(Z)`) of all points within 10 x 10 m pixels we can run the following:
 
 ```{r, echo=FALSE}
-las <- readLAS("data/ENGINE/catalog/tiles_338000_5238500_1.laz")
-las <- lasnormalize(las, tin())
+las <- readLAS("data/ENGINE/catalog/tiles_338000_5238500_1.laz") # read file
+las <- lasnormalize(las, tin()) # normalize
 ```
 
 ```{r, fig.height=7.9, fig.width=8}
-hmean <- grid_metrics(las, ~mean(Z), 10)
+hmean <- grid_metrics(las, ~mean(Z), 10) #calculate mean at 10 m
 plot(hmean, col = height.colors(50))
 ```
 
-
-The returned `hmean` object is a RasterLayer:
+The returned `hmean` object is a `RasterLayer`:
 
 ```{r}
 hmean
@@ -45,59 +44,58 @@ col = grDevices::colorRampPalette(height.colors(25))
 plot(metrics_hex, colramp = col)
 ```
 
-
-As described in chapters \@ref(metrics) and \@ref(cba), to calculate more than one metric at a time, a custom function needs to be created first. The function can contain any number of metrics, but needs to return a labeled `list`. For example, to calculate the mean and standard deviation of point heights, a following function can be created. In this case the return object is a `RasterBrick` with two layers.
+As described in sections \@ref(metrics) and \@ref(cba), to calculate more than one metric at a time a custom function needs to be created first. The function can contain any number of metrics but needs to return a labeled `list`. For example, to calculate the mean and standard deviation of point heights, the following function can be created. In this case the return object is a `RasterBrick` with two layers.
 
 ```{r, fig.height=4.6, fig.width=10}
-f <- function(x) {
+f <- function(x) { # user-defined fucntion
   list( mean = mean(x), sd = sd(x))
 }
 
-metrics <- grid_metrics(las, ~f(Z), 10)
-plot(metrics, col = height.colors(50))
+metrics <- grid_metrics(las, ~f(Z), 10) # calculate grid metrics
+plot(metrics, col = height.colors(50)) # some plotting
 ```
 
 The functions that specify which metrics to calculate can of course contain any number of metrics. The most commonly used metrics are already predefined in `lidR` - the `stdmetrics()` function contains metrics that summarize the vertical distribution of points, their intensities, and return structure. The complete list of all metrics can be found in the [lidR wiki page]( https://github.com/Jean-Romain/lidR/wiki/stdmetrics). To use the predefined list of 56 metrics we can run the `grid_metrics()` function as follows:
 
 ```{r, fig.height=7, fig.width=8}
-metrics <- grid_metrics(las, .stdmetrics, 10)
-plot(metrics, col = height.colors(50))
+metrics <- grid_metrics(las, .stdmetrics, 10) # calculate standard metrics
+plot(metrics, col = height.colors(50)) # some plotting
 ```
 
-Because of the flexibility in metric definition it is very easy to extent the basic functionality and create new, non-standard metrics. For example, below we demonstrate how coefficient of variation and interquartile range can be calculated:
-
+Because of the flexibility in defining metrics, it is very easy to extend basic functionality to create new, non-standard metrics. For example, below we demonstrate how the coefficient of variation and inter-quartile range can be calculated:
 
 ```{r, fig.height=4.6, fig.width=10}
-metrics_custom <- function(z) {
+metrics_custom <- function(z) { # user defined function
 list(
-   coef_var =  sd(z) / mean(z) * 100,
-   iqr = IQR(z))
+   coef_var =  sd(z) / mean(z) * 100, # coefficient of variation
+   iqr = IQR(z)) # inter-quartile range
 }
 
-metrics <- grid_metrics(las, ~metrics_custom(z=Z), 10)
-plot(metrics, col = height.colors(50))
+metrics <- grid_metrics(las, ~metrics_custom(z=Z), 10) # calculate grid metrics
+plot(metrics, col = height.colors(50)) # some plotting
 ```
 
 ## Applications
 
 ### Modeling
 
-All `*_metrics` functions can map any kind of formula as long as the formula return a number or a list of numbers meaning that it is possible to input a expression derived from a predictive model to map the ressource. In the previous chapter \@ref(cba) we found a model that can be written $0.7018 \times pzabove2 + 0.9268 \times zmax$. We can map this predictive model with a resolution of 10 meters:
+All `*_metrics` functions can map any kind of formula as long as it returns a number or a list of numbers, meaning that that it's possible to input an expression derived from a predictive model to map the resource. In the section \@ref(cba) we made a model that can be written $0.7018 \times pzabove2 + 0.9268 \times zmax$. We can map this predictive model with a resolution of 10 meters:
 
 ```{r, fig.height=6.9, fig.width=7}
-prediction <- grid_metrics(las, ~0.7018 * sum(Z > 2)/length(Z) + 0.9268 *max(Z), 20)
-plot(prediction, col = height.colors(50))
+prediction <- grid_metrics(las, ~0.7018 * sum(Z > 2)/length(Z) + 0.9268 *max(Z), 20) # predicting model mapping
+plot(prediction, col = height.colors(50)) # some plotting
 ```
 
 ### Density
 
-The point density is the number of point within a pixel divided by the area of the pixel.
+Point density is the number of points within a pixel divided by the area of the pixel.
 
 ```{r, fig.height=6.9, fig.width=7}
-density <- grid_metrics(las, ~length(Z)/16, 4)
-plot(density, col = gray.colors(50,0,1))
+density <- grid_metrics(las, ~length(Z)/16, 4) # calculate density
+plot(density, col = gray.colors(50,0,1)) # some plotting
 ```
-When using only the first returns the same formula gives the pulse density instead of the point density
+
+When using only the first returns, the same formula gives the pulse density instead of the point density
 
 ```r
 density <- grid_metrics(las, ~length(Z)/16, 4, filter = ~ReturnNumber == 1L)
@@ -105,19 +103,21 @@ density <- grid_metrics(las, ~length(Z)/16, 4, filter = ~ReturnNumber == 1L)
 
 ### Intensity
 
-It is possible to generate a map of the average intensity of first return only
+It's possible to generate a map of the average intensity of first return only
 
 ```{r, fig.height=6.9, fig.width=7}
-imap <- grid_metrics(las, ~mean(Intensity), 4, filter = ~ReturnNumber == 1L)
-plot(imap, col = heat.colors(50))
+imap <- grid_metrics(las, ~mean(Intensity), 4, filter = ~ReturnNumber == 1L) # mapping average intensity
+plot(imap, col = heat.colors(50)) # some plotting
 ```
 
 ### Other
 
-Many other raster-based applications can be derived with the adequate metrics. In section \@ref(outbox) we will see some uncommon possibilies to demonstrate how the concept of metrics can be leveraged to design new applications. A simple uncommon application could be to map the ratio between multiple returns and single returns. To count single returns we can count the number of points with a number of return equal to 1. To count the number of multiple returns we can count the number of points with a return number equal to 1 AND a number of return above 1.
+Many other raster-based applications can be derived with adequate metrics. In section \@ref(outbox) we will see some out of the box possibilities to demonstrate how the concept of metrics can be leveraged to design new applications. A simple uncommon application could be to map the ratio between multiple returns and single returns. 
+
+To count single returns we can count the number of points where number of returns equal to 1. To count the number of multiple returns we can count the number of points with a return number equal to 1 **AND** a return number above 1.
 
 ```{r, fig.height=6.2, fig.width=7}
-mymetric = function(return_number, number_of_returns) {
+mymetric = function(return_number, number_of_returns) { #user-defined function
   nsingle = sum(number_of_returns == 1L)
   nmultiple = sum(return_number == 1L & number_of_returns > 1L)
   return(list(n_single = nsingle,
@@ -125,8 +125,6 @@ mymetric = function(return_number, number_of_returns) {
               ratio = nmultiple/nsingle))
 }
 
-rmap <- grid_metrics(las, ~mymetric(ReturnNumber, NumberOfReturns), 8)
-plot(rmap, col = viridis::viridis(50))
+rmap <- grid_metrics(las, ~mymetric(ReturnNumber, NumberOfReturns), 8) # mapping retunrs
+plot(rmap, col = viridis::viridis(50)) # some plotting
 ```
-
-

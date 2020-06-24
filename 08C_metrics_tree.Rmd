@@ -16,84 +16,79 @@ library(lidR)
 
 ## Overview
 
-The "tree" level of regularization corresponds to the computation of derived metrics centered on each tree using the points that belong in each tree. Derived metrics calculated at tree level are the basis for an inventory at the individual tree level or the basis for individal species identification.
+The "tree" level of regularization corresponds to the computation of derived metrics centered on each tree using the points that belong to each tree. Derived metrics calculated at tree level are the basis for an inventory at the individual tree level or the basis for individual species identification.
 
-Similarly to what we have seen in chapters \@ref(metrics), \@ref(cba), \@ref(aba) calculating derived metrics is straightforward and works exactly the same way than in `cloud_metrics()` or `grid_metrics()`. Derived tree metrics are calculated using the `tree_metrics()` function. The input data for this function is a point cloud that needs to contain an information on the tree segmentation (e.g. usually `treeID` attribute). In majority of cases `tree_metrics()` is run after segmenting tree crowns with `segment_trees()` (see chapter \@ref(itd)) but the segmentation could also be performed in another way independenly of `lidR`.
+Similarly to what we have seen in sections \@ref(metrics), \@ref(cba), and \@ref(aba) calculating derived metrics is straightforward and works exactly the same way as in `cloud_metrics()` or `grid_metrics()`. Derived tree metrics are calculated using the `tree_metrics()` function. The input data for this function is a point cloud that needs to contain information from tree segmentation (e.g. usually the `treeID` attribute). In the majority of cases `tree_metrics()` is run after segmenting tree crowns with `segment_trees()` (see section \@ref(itd)) but the segmentation could also be performed in another way independently of `lidR`.
 
-In the example below we show the basic use of the `tree_metrics()` function on the files we already used in chapter \@ref(itd). This file already stores an ID for each point refering to each tree so we don't need to perform the segmentation first:
+In the example below we show the basic use of the `tree_metrics()` function on the files we used in chapter \@ref(itd). This file already stores an ID for each point referring to each tree, so we don't need to perform the segmentation first:
 
 ```{r}
-LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
-las <- readLAS(LASfile, filter = "-drop_z_below 0")
+LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR") 
+las <- readLAS(LASfile, filter = "-drop_z_below 0") # read the file
 
-metrics <- tree_metrics(las, ~list(z_max = max(Z), z_mean = mean(Z)))
+metrics <- tree_metrics(las, ~list(z_max = max(Z), z_mean = mean(Z))) # calculate tree metrics
 metrics
 ```
 
-The output (`metrics`) contains 3 attributes: `treeID` and the two defined metrics and can be visualized using the standard `plot()` function, however other plotting functions specific to `sp` objects may also be used. In the plot below the output is visualized using color to depict the `z_max` attribute.
+The output (`metrics`) contains 3 attributes: `treeID`, `max(Z)`, and `mean(Z)`. The latter can be visualized using the standard `plot()` function, however other plotting functions specific to `sp` objects may also be used. In the plot below the output is visualized using color to depict the `z_max` attribute.
 
 ```{r}
-spplot(metrics, zcol="z_max", col.regions = hcl.colors(5))
+spplot(metrics, zcol="z_max", col.regions = hcl.colors(5)) # plot using z_max
 ```
 
-Like other functions seen in chapters \@ref(cba), \@ref(aba), users can create their own custom functions containing all of the metrics of interest. In the example below we show how to calculate metrics that are based both on point heights and intensities.
+Like other functions seen in sections \@ref(cba) and \@ref(aba), users can create their own custom functions containing all of the metrics of interest. In the example below we show how to calculate metrics that are based both on point heights and intensities.
 
 ```{r}
-custom_tree_metrics = function(z, i) {
+custom_tree_metrics = function(z, i) { # user-defined function
   metrics = list(
      z_max = max(z),     # max height
      z_sd = sd(z),       # vertical variability of points
      i_mean = mean(i), # mean intensity
      i_max  = max(i)   # max intensity
    )
-   return(metrics)
+   return(metrics) # output
 }
 ```
 
-In chapter \@ref(itd) we have seen the function `delineate_crown()`. This function also supports the computation of metrics in a very similar way but returns polygons instead of points.
+In section \@ref(itd) we described the `delineate_crowns()` function. This function also supports the computation of metrics in a similar way but returns polygons instead of points.
 
 ```{r}
-crowns_metrics <- delineate_crowns(las, func = ~custom_tree_metrics(z = Z, i = Intensity))
-spplot(crowns_metrics, "z_max", col.regions = hcl.colors(30))
+crowns_metrics <- delineate_crowns(las, func = ~custom_tree_metrics(z = Z, i = Intensity)) # delineate crowns
+spplot(crowns_metrics, "z_max", col.regions = hcl.colors(30)) # some plotting
 ```
 
 ## Applications
 
 ### Selection of trees
 
-`tree_metrics` gives the ID of the trees and associated metrics. We can use these information to filter the scene and remove the trees with a low intensity.
+`tree_metrics()` gives the ID of trees and associated metrics. We can use these data to filter the scene and remove trees with a low intensity.
 
 ```{r, rgl = TRUE}
-metrics <- tree_metrics(las, ~list(imean = mean(Intensity)))
-metrics <- metrics[metrics$imean > 80,]
+metrics <- tree_metrics(las, ~list(imean = mean(Intensity))) # calculate tree intensity metrics
+metrics <- metrics[metrics$imean > 80,] # filter intensity
 
 subset <- filter_poi(las, treeID %in% metrics$treeID)
 x = plot(las, bg = "white", size = 4)
-plot(subset, add = x + c(-100, 0), size = 5)
+plot(subset, add = x + c(-100, 0), size = 5) # some plotting
 ```
 
 ### Tree based inventory
 
-Asumming with know a relationship between the derived metrics and a value of interest `G` such as the biommass of a tree we can map the ressource. For the need of this example let assume that $G = 0.7 \times z_{max} + 0.1 \times i_{mean}$. In real life a value of interest is more likely to be related to the crown size but this simplified example will allows to make a simple example. First we can compute `G` for each trees
+Assuming with know a relationship between the derived metrics and a value of interest `G` - such as the biomass of a tree - we can map the resource. Lets assume that $G = 0.7 \times z_{max} + 0.1 \times i_{mean}$. In real life a value of interest is more likely to be related to the crown size, but this is a simplified example. First we can compute `G` for each tree:
 
 ```{r}
-metrics <- tree_metrics(las, func = ~custom_tree_metrics(Z, Intensity))
-metrics$G <- 0.7 * metrics$z_max + 0.1 * metrics$i_mean
-spplot(metrics, "G", col.regions = hcl.colors(5))
+metrics <- tree_metrics(las, func = ~custom_tree_metrics(Z, Intensity)) # calculate intensity metrics
+metrics$G <- 0.7 * metrics$z_max + 0.1 * metrics$i_mean # set value of interest
+spplot(metrics, "G", col.regions = hcl.colors(5)) # some plotting
 ```
 
-Then using the raster package we can rasterize this map and sum `G` of each trees within each pixel with a resultion of 15 m to get the total value of `G` for a given pixel. The final ouptut is a predictive model that mixes the area-based approach and the tree-based-approach.
+Then using the `raster` package, we can rasterize the map. Here we get the sum of `G` from each tree within each 15 m pixel to get the total value of `G` for a given pixel. The final output is a predictive model that mixes the area-based approach and the tree-based-approach.
 
 ```{r, fig.height=5.9, fig.width=6}
-r = raster(extent(las))
-res(r) <- 15
-map = rasterize(metrics, r, field = "G", fun = sum)
-plot(map, col = hcl.colors(15))
+r = raster(extent(las)) # rasterize map
+res(r) <- 15 # set resolution
+map = rasterize(metrics, r, field = "G", fun = sum) # extract sum of G at 15m
+plot(map, col = hcl.colors(15)) # some plotting
 ```
-In this specific case the example chosen is too small for being very insteresting but one may imagine or test the result on a bigger dataset.
 
-### Individual tree species identification
-
-With many kind of metrics per trees and a ground inventory that records the species of each trees it is easy to train a machine with some machine learning technic using third party specialized R packages. Sadldy we cannot make any demonstration here because the dataset if way to small for learning anything and we don't have a ground thruth data base.
-
-Similarly with a model capable of predicting the species from metrics it is possible to attribute a species to each tree.
+This is a small example that may not be of interest, but one may imagine or test the result on a bigger data set.
