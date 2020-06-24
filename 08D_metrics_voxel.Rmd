@@ -1,64 +1,59 @@
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 r3dDefaults = rgl::r3dDefaults
+m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
+                -0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
 rgl::setupKnitr()
 r3dDefaults$FOV = 50
-r3dDefaults$zoom = 0.5
+r3dDefaults$userMatrix = m
+r3dDefaults$zoom = 0.75
+
+knitr::opts_chunk$set(
+  comment =  "#>", 
+  collapse = TRUE,
+  fig.align = "center")
+
 library(lidR)
 ```
 
 
-# Point cloud metrics at voxel level {#metrics_voxel}
+# Derived metrics at the voxel level {#vba}
 
-Voxels are 3D pixels. Transforming a point cloud dataset into voxels can be used to either lower the density (and often remove noise) or to calculate data summaries in 3D space. 
+## Overview
 
-Function `voxel_metrics()` allows to generate voxel based on the provided point cloud with the specified voxel size. In addition the function calculates voxel-level metrics based on points located inside each voxel.
+The "voxel" level of regularization corresponds to the computation of derived metrics for regularly spaced location in 3D. Function `voxel_metrics()` allows to generate voxel based derived metrics on the provided point cloud and works like `cloud_metrics()`, `grid_metrics()`, `hexbin_metrics()` and `tree_metrics()` seen in chapters \@ref(metrics), \@ref(cba), \@ref(aba) and \@ref(tba). Consequently there is actually few things to add in this chapter.
 
-For example, we can count the number of points inside each 2 x 2 x 2 m voxel:
+We can count the number of points inside each 4 x 4 x 4 m voxel:
 
 ```{r}
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
-las = readLAS(LASfile)
-
-vox_met <- voxel_metrics(las, ~length(Z), 2)
+las <- readLAS(LASfile)
+vox_met <- voxel_metrics(las, ~list(N = length(Z)), 4)
 ```
 
-In this example the point cloud is first converted into 2 m voxels, then the function `length(Z)` is applied to all points located inside every voxel. Note that similar to all function used within the metrics function, the function call needs to be preceded with `~`. 
-
-The output is a `data.table` that contains the X, Y, and Z coordinates of voxels, and the calculated number of points:
-
-```{r}
-head(vox_met)
-```
-
-The result can be visualized using the `plot()` function as follows:
+In this example the point cloud is first converted into 4 m voxels, then the function `length(Z)` is applied to all points located inside every voxel. The output is a `data.table` that contains the X, Y, and Z coordinates of voxels, and the calculated number of points and can be visualized in 3D using the `plot()` function as follows:
 
 ```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
-plot(vox_met, color="V1")
+plot(vox_met, color="N", colorPalette = heat.colors(50), size = 4, bg = "white")
 ```
 
-Similar to other function designed to calculate point cloud metrics, `voxel_metrics()` can be used to calculate any number of pre- or user-defined summaries. For example, to calculate minimum, mean, maximum, and standard deviation of intensity in each voxel we can create a following function:
+Similarly to other `*_metrics()` functions designed to calculate derived metrics, `voxel_metrics()` can be used to calculate any number of pre- or user-defined summaries. For example, to calculate minimum, mean, maximum, and standard deviation of intensity in each voxel we can create a following function:
 
 ```{r}
 custom_metrics <- function(x) {
   m <- list(
-    int_min = min(x),
-    int_mean = mean(x),
-    int_max = max(x),
-    int_sd = sd(x)
+    i_min = min(x),
+    i_mean = mean(x),
+    i_max = max(x),
+    i_sd = sd(x)
   )
   return(m)
 }
-```
 
-and apply it in `voxel_metrics()`:
-```{r}
 vox_met <- voxel_metrics(las, ~custom_metrics(Intensity), 4)
 ```
 
-```{r}
-head(vox_met)
-```
+## Applications
 
-
+`voxel_metrics()` is particulalry interesting for dense point clouds such as those produced by terrestrial lidar, drones or digital photogrametry.
 
 

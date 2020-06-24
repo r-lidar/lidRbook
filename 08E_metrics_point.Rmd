@@ -3,15 +3,51 @@ r3dDefaults = rgl::r3dDefaults
 rgl::setupKnitr()
 r3dDefaults$FOV = 50
 r3dDefaults$zoom = 0.5
+
+knitr::opts_chunk$set(
+  comment =  "#>", 
+  collapse = TRUE,
+  fig.align = "center")
+
 library(lidR)
 ```
 
+# Derived metrics at point level {#pba}
 
-# Point Based Approach {#metrics_point}
+## Overview
 
-Area-based approach (ABA) consists in computing metrics at the pixel level and tree-based apprach (TBA) consists in computing metrics at the tree level. Both are well known approches used in forestry to process point clouds. `lidR` provides tools to compute any user-defined metrics both in ABA, TBA as seen in previous sections. We have also seen that `lidR` extended the idea to voxel-based approach (VBA) but we also extended the metrics concept to the point-based apprach (PBA).
+The "point" level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. Function `point_metrics()` allows to generate point-based derived metrics and works like `cloud_metrics()`, `grid_metrics()`, `hexbin_metrics()`, `tree_metrics()` or `voxel_metrics()` seen in chapters \@ref(metrics), \@ref(cba), \@ref(aba), \@ref(tba) and \@ref(vba) and the reader can refer to previous sections for a more comprehensive overview.
 
-PBA consist in computing any user-defined metrics for each point using its neighborhood points. For each point the neibourhood can be either the k nearest neighbors or the points within a sphere centered on the processed point. The following section presents few applications made possible out of this tool. The function `point_metrics()` only takes care of mapping a user-defined function and the actual applications are not limited to the example below. It is up to the user to think out of the box.
+For each point the neibourhood can be either (1) the k nearest neighbors, (2) the points within a sphere centered on the processed point or (3) the k nearest neighbors but with a limited radius search. The syntax for the 3 options is given below.
+
+```{r}
+LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+las = readLAS(LASfile)
+metrics <- point_metrics(las, ~list(imean = mean(Intensity)), k = 7)        # 1
+metrics <- point_metrics(las, ~list(imean = mean(Intensity)), r = 3)        # 2
+metrics <- point_metrics(las, ~list(imean = mean(Intensity)), k = 7, r = 3) # 3
+```
+
+The output is a `data.table` with the ID of the reference points and the metric(s) for this points.
+
+```{r}
+metrics
+```
+
+Intead of the ID on may prefer to get the coordinates with `xyz = TRUE`
+
+```r
+metrics <- point_metrics(las, ~list(imean = mean(Intensity)), k = 7, xyz = TRUE)
+```
+
+It is also possible to process only some points excluding the other one from the computation without creating a copy of the point cloud. In the following, the mean intensity is computed excluding the outliers with an intensity above 100. No metric is computed for those points and they are not used to get the local neighborhood of the other points.
+
+```{r}
+metrics <- point_metrics(las, ~list(imean = mean(Intensity)), k = 7, filter = ~Intensity < 100 )
+metrics
+```
+
+## Applications
 
 ### Roof segmentation
 
@@ -128,7 +164,7 @@ las <- segment_shape(las, shp_line(th = 8, k = 15), "linear")
 
 `point_metrics()` is not limited to eigen value related metrics. It is only limited by user's imagination. In the following we will demonstrate how it an be used to attribute false color to a multispectral point cloud.
 
-Multispectral ALS data are sampled with 3 devices each emmiting a different wavelength. The point cloud is usually provided in the form of 3 `las` files, each file corresponding to a spectral wavelength. No matter the actual wavelenght we can consider the first band as blue, the secod as red and the third one as green and thus consider that each point has a pure color.
+Multispectral ALS data are sampled with 3 devices each emmiting a different wavelength. The point cloud is usually provided in the form of 3 `las` files, each file corresponding to a spectral wavelength. No matter the actual wavelenght we can consider the first band as blue, the second as red and the third one as green and thus consider that each point has a pure color.
 
 ```{r, rgl = TRUE, message=FALSE}
 f1 = "data/chap11/PR1107_c1_ar_c.laz"
@@ -169,13 +205,13 @@ We can then apply this function with `point_metrics()` using a spherical neighbo
 
 ```{r, rgl = TRUE}
 M = point_metrics(las, ~set.color(Intensity, ScannerChannel), r = 0.5)
-las@data$R <- M$R
-las@data$G <- M$G
-las@data$B <- M$B
+las = add_lasrgb(las, M$R, M$G, M$B)
 colored <- filter_poi(las, !is.na(R)) # remove RGB = NA
-plot(colored, color = "RGB", nbits = 8, size = 3)
+plot(colored, color = "RGB", size = 3)
 ```
 
 This method is a bit naive 'as is'. First the intensities returned by each channel are not comparable and required to be normalized first. We could also argue about the choice of discareding RGB = `NA`. Instead we could have chosen to set a pure color. To finish enforcing a maximum value to 255 works in this specific example because very few intensity values are actually above 255 but is meaningless in general case. Anyway this is only a demo to show how to think out of the box with `point_metrics()`.
 
+### Outlier filtering
 
+An outlier is a point that belong alone compared to other points. Outliers are usually hight points with no close neighbors. The term "no close neighbor" can have several formal definition such as *no neighbors closer than x meters* or *less than n neighbors within a distance x meter* or any other fair definition. In all case it can be estimated with a metrics and thus `point_metrics()` enable to design an outlier filter method. We give this as an exercice to the reader.
