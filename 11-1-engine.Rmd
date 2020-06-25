@@ -63,7 +63,7 @@ This chapter presents the justification for the engine and demonstrates how to u
 
 The `LAScatalog` class and the `LAScatalog` engine are intricately documented in two dedicated vignettes available [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-class.html) and [here](). The purpose of this book is to propose alternative documentation with more illustrated examples and real use cases.
 
-### Read a collection of files
+### Read a collection of files {#files}
 
 The function `readLAScatalog()` reads the header of all the `LAS` files of a given folder. The header of a `LAS` file contains, among others, the bounding box of the point cloud, meaning that it's possible to know where the file is situated spatially without reading a potentially massive amount of data. `readLAScatalog()` builds a `SpatialPolygonsDataFrame` out of the bounding boxes of the files and presents them in an easily accessible manner.
 
