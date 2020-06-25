@@ -26,8 +26,6 @@ The following chapter presents some applications that are likely to be impossibl
 
 ## New complex metrics in ABA
 
---- JR do we have something for this section? --
-
 ### Distance between returns {#outboxdistancereturn}
 
 In forestry, simple metrics can be derived from first returns. But what about metrics that estimate the average distance between first and last returns? Is is a valuable metric for characterizing of forest stucture? Can we refine the prediction? Nobody knows, but we can try. 
@@ -127,7 +125,7 @@ raster::scalebar(500, type = "bar")
 
 ### Rumple index  {#outboxrumple}
 
-Another interesting metric that could be computed is the rumple index, see [Kane et al. (2008)](https://gis.ess.washington.edu/keck/ESS_421_additional_reading/Kane_Interpretation_and_topographic.pdf).
+Another interesting metric that could be computed is the rumple index (see [Kane et al. (2008)](https://gis.ess.washington.edu/keck/ESS_421_additional_reading/Kane_Interpretation_and_topographic.pdf)).
 
 To compute a rumple index we can triangulate points, measure the surface created, and divide by the projected surface. Rumple index is however expected to measure surface roughness of the canopy and it doesn't makes sense to triangulate every point. An option is to triangulate each first return but yet first returns are not all representative of the canopy. In the following example we are using the surface points every 1 m.
 
