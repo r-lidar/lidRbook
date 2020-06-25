@@ -107,7 +107,7 @@ gnd = filter_ground(las_4)
 plot(gnd, size = 3, bg = "white") 
 ```
 
-## Edge artifacts
+## Edge artifacts {#buffer}
 
 No matter which algorithm is used in `lidR` or other software, ground classification will be weaker at the edges of point clouds. To find ground points, an algorithm need to analyze the local neighborhood or local context that is missing at edge areas. When processing point clouds it's important to always consider a buffer around the region of interest to avoid edge artifacts. `lidR` has tools to manage buffered tiles and this advanced use of the package will be covered in section \@ref(engine).
 
