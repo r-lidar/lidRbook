@@ -6,13 +6,20 @@ knitr::opts_chunk$set(
   fig.align = "center")
 ```
 
-# lidR plugin system {#plugins}
+# `lidR` plugin system {#plugins}
 
-We have seen that `lidR` has many functions capable of processing a collection of files. Most of these functions support more than one algorithm to achieve a given task. `grid_terrain()` supports `tin()`, `knnidw()`, `kriging()` ; `grid_canopy()` supports `p2r()`, `dsmtin()`, `pitfree()` and so on. What if a user wanted to create a new algorithm integration? For example, what about an algorithm to create a digital terrain model using cubic spline interpolation.
+We have seen that `lidR` has many functions capable of processing a collection of files. Most of these functions support more than one algorithm to achieve a given task. 
+
+* `grid_terrain()` supports `tin()`, `knnidw()`, `kriging()`
+* `grid_canopy()` supports `p2r()`, `dsmtin()`, `pitfree()` etc.
+
+What if a user wanted to create a new algorithm integration? For example, what about an algorithm to create a digital terrain model using cubic spline interpolation? Sounds interesting.
 
 With `catalog_apply()` one can more or less replicate the original `grid_terrain()` function and apply the method over a catalog. After all, `grid_terrain()` actually uses `catalog_apply()` internally. However this implies a lot of code and is error prone especially for users who are not fully comfortable with the engine.
 
-There is another way to create new algorithms that are fully compatible with `lidR` functions. This is not documented in the package because the underlying mechanism is not yet fully consistent and is still subject to improvements. Let's continue with the bicubic spline interpolation method for creating a digital terrain model. There is a package called [`MBA`](https://CRAN.R-project.org/package=MBA) that implements bicubic spline interpolation. We will create a function `mba()` that can be used like any other algorithm:
+There is another way to create new algorithms that are fully compatible with `lidR` functions. This is not documented in the package because the underlying mechanism is not yet fully consistent and is still subject to improvements. 
+
+Let's continue with the bicubic spline interpolation method for creating a digital terrain model. There is a package called [`MBA`](https://CRAN.R-project.org/package=MBA) that implements bicubic spline interpolation. We will create a function `mba()` that can be used like any other algorithm:
 
 ```r
 dtm <- grid_terrain(las, algorithm = mba(n = 1, h = 8))
@@ -20,7 +27,7 @@ dtm <- grid_terrain(las, algorithm = mba(n = 1, h = 8))
 
 ## Understanding lidR algorithms
 
-In `lidR`, an algorithm such as `tin()`, `p2r()` or `lmf()` is a function factory. The output is functions with extra classes so regular users don't see it is a function.
+In `lidR`, an algorithm such as `tin()`, `p2r()` or `lmf()` is a function factory. The output is functions with extra classes so regular users wont immediately recognize that they are functions.
 
 ```{r}
 algo <- knnidw(k = 10)
@@ -28,7 +35,7 @@ algo
 class(algo) # algo is a function
 ```
 
-Removing the extra classes we can see it is a function and we can see the source code.
+Removing the extra classes we can see its a function and we can see the source code.
 
 ```{r}
 class(algo) <- "function"
@@ -66,14 +73,14 @@ mba <- function(n = 1, m = 1, h = 8, extend = TRUE) {
 }
 ```
 
-Now let see what happens if we instantiate the `mba` algorithm.
+Now let see what happens if we instantiate the `mba` algorithm:
 
 ```{r}
 algo <- mba(h = 6)
 algo
 ```
 
-We can now use it like any other `lidR` algorithm
+We can now use it like any other `lidR` algorithm:
 
 ```{r, fig.height=7.5, fig.width=7.7}
 LASfile <- system.file("extdata", "Topography.laz", package="lidR")
@@ -82,7 +89,7 @@ dtm <- grid_terrain(las, algorithm = mba())
 plot(dtm, col = gray.colors(50, 0, 1))
 ```
 
-It will even fail nicely if used badly!
+It will even fail nicely if used poorly!
 
 ```{r, error = TRUE}
 grid_canopy(las, 1, mba())
