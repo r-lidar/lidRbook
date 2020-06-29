@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>16 The Area-Based Approach (ABA) to forest modelling | The lidR package</title>
+  <meta name="description" content="A guide to the lidR package" />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="16 The Area-Based Approach (ABA) to forest modelling | The lidR package" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="A guide to the lidR package" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="16 The Area-Based Approach (ABA) to forest modelling | The lidR package" />
+  
+  <meta name="twitter:description" content="A guide to the lidR package" />
+  
+
+<meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
+
+
+<meta name="date" content="2020-06-29" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="engine2.html"/>
+<link rel="next" href="outbox.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="io.html"><a href="io.html"><i class="fa fa-check"></i><b>2</b> Reading, Plotting, Querying &amp; Validating</a><ul>
+<li class="chapter" data-level="2.1" data-path="io.html"><a href="io.html#read"><i class="fa fa-check"></i><b>2.1</b> Reading LiDAR data using <code>readLAS</code></a><ul>
+<li class="chapter" data-level="2.1.1" data-path="io.html"><a href="io.html#parameter-select"><i class="fa fa-check"></i><b>2.1.1</b> Parameter <code>select</code></a></li>
+<li class="chapter" data-level="2.1.2" data-path="io.html"><a href="io.html#filter"><i class="fa fa-check"></i><b>2.1.2</b> Parameter <code>filter</code></a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="io.html"><a href="io.html#validating-lidar-data"><i class="fa fa-check"></i><b>2.2</b> Validating lidar data</a></li>
+<li class="chapter" data-level="2.3" data-path="io.html"><a href="io.html#plot"><i class="fa fa-check"></i><b>2.3</b> Plotting</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="io.html"><a href="io.html#basic-3d-rendering"><i class="fa fa-check"></i><b>2.3.1</b> Basic 3D rendering</a></li>
+<li class="chapter" data-level="2.3.2" data-path="io.html"><a href="io.html#overlays"><i class="fa fa-check"></i><b>2.3.2</b> Overlays</a></li>
+<li class="chapter" data-level="2.3.3" data-path="io.html"><a href="io.html#advanced-3d-rendering"><i class="fa fa-check"></i><b>2.3.3</b> Advanced 3D rendering</a></li>
+<li class="chapter" data-level="2.3.4" data-path="io.html"><a href="io.html#crossection"><i class="fa fa-check"></i><b>2.3.4</b> Cross sections 2D rendering</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="gnd.html"><a href="gnd.html"><i class="fa fa-check"></i><b>3</b> Ground classification</a><ul>
+<li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#progressive-morphological-filter"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
+<li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#cloth-simulation-function"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#buffer"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#how-to-choose-a-method-and-its-parameters"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a><ul>
+<li class="chapter" data-level="4.1" data-path="dtm.html"><a href="dtm.html#triangular-irregular-network"><i class="fa fa-check"></i><b>4.1</b> Triangular irregular network</a></li>
+<li class="chapter" data-level="4.2" data-path="dtm.html"><a href="dtm.html#invert-distance-weighting-idw"><i class="fa fa-check"></i><b>4.2</b> Invert distance weighting (IDW)</a></li>
+<li class="chapter" data-level="4.3" data-path="dtm.html"><a href="dtm.html#kriging"><i class="fa fa-check"></i><b>4.3</b> Kriging</a></li>
+<li class="chapter" data-level="4.4" data-path="dtm.html"><a href="dtm.html#pros-and-cons"><i class="fa fa-check"></i><b>4.4</b> Pros and cons</a></li>
+<li class="chapter" data-level="4.5" data-path="dtm.html"><a href="dtm.html#other-methods"><i class="fa fa-check"></i><b>4.5</b> Other methods</a></li>
+<li class="chapter" data-level="4.6" data-path="dtm.html"><a href="dtm.html#render-shaded-dtm"><i class="fa fa-check"></i><b>4.6</b> Render shaded DTM</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="norm.html"><a href="norm.html"><i class="fa fa-check"></i><b>5</b> Height normalization</a><ul>
+<li class="chapter" data-level="5.1" data-path="norm.html"><a href="norm.html#dtm-normalization"><i class="fa fa-check"></i><b>5.1</b> DTM normalization</a></li>
+<li class="chapter" data-level="5.2" data-path="norm.html"><a href="norm.html#point-cloud-normalization"><i class="fa fa-check"></i><b>5.2</b> Point cloud normalization</a></li>
+<li class="chapter" data-level="5.3" data-path="norm.html"><a href="norm.html#pros-and-cons-1"><i class="fa fa-check"></i><b>5.3</b> Pros and cons</a></li>
+<li class="chapter" data-level="5.4" data-path="norm.html"><a href="norm.html#reversing-normalization"><i class="fa fa-check"></i><b>5.4</b> Reversing normalization</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="chm.html"><a href="chm.html"><i class="fa fa-check"></i><b>6</b> Digital Surface Model and Canopy Height model</a><ul>
+<li class="chapter" data-level="6.1" data-path="chm.html"><a href="chm.html#point-to-raster"><i class="fa fa-check"></i><b>6.1</b> Point-to-raster</a></li>
+<li class="chapter" data-level="6.2" data-path="chm.html"><a href="chm.html#triangulation"><i class="fa fa-check"></i><b>6.2</b> Triangulation</a></li>
+<li class="chapter" data-level="6.3" data-path="chm.html"><a href="chm.html#pit-free-algorithm"><i class="fa fa-check"></i><b>6.3</b> Pit-free algorithm</a></li>
+<li class="chapter" data-level="6.4" data-path="chm.html"><a href="chm.html#post-processing-a-chm"><i class="fa fa-check"></i><b>6.4</b> Post-processing a CHM</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="itd.html"><a href="itd.html"><i class="fa fa-check"></i><b>7</b> Indivitual tree dectection and segmentation</a><ul>
+<li class="chapter" data-level="7.1" data-path="itd.html"><a href="itd.html#individual-tree-detection-itd"><i class="fa fa-check"></i><b>7.1</b> Individual Tree Detection (ITD)</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-fixed-windows-size"><i class="fa fa-check"></i><b>7.1.1</b> Local Maximum Filter with fixed windows size</a></li>
+<li class="chapter" data-level="7.1.2" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-variable-windows-size"><i class="fa fa-check"></i><b>7.1.2</b> Local Maximum Filter with variable windows size</a></li>
+<li class="chapter" data-level="7.1.3" data-path="itd.html"><a href="itd.html#local-maximum-filter-on-a-chm"><i class="fa fa-check"></i><b>7.1.3</b> Local Maximum Filter on a CHM</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="itd.html"><a href="itd.html#individual-tree-segmentation-its"><i class="fa fa-check"></i><b>7.2</b> Individual Tree Segmentation (ITS)</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="itd.html"><a href="itd.html#segmentation-of-the-point-cloud"><i class="fa fa-check"></i><b>7.2.1</b> Segmentation of the point-cloud</a></li>
+<li class="chapter" data-level="7.2.2" data-path="itd.html"><a href="itd.html#segmentation-of-the-chm"><i class="fa fa-check"></i><b>7.2.2</b> Segmentation of the CHM</a></li>
+<li class="chapter" data-level="7.2.3" data-path="itd.html"><a href="itd.html#comparaison-of-tree-segmentations"><i class="fa fa-check"></i><b>7.2.3</b> Comparaison of tree segmentations</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="metrics.html"><a href="metrics.html"><i class="fa fa-check"></i><b>8</b> Derived metrics</a><ul>
+<li class="chapter" data-level="8.1" data-path="metrics.html"><a href="metrics.html#the-basics"><i class="fa fa-check"></i><b>8.1</b> The basics</a></li>
+<li class="chapter" data-level="8.2" data-path="metrics.html"><a href="metrics.html#user-defined-metrics"><i class="fa fa-check"></i><b>8.2</b> User-defined metrics</a></li>
+<li class="chapter" data-level="8.3" data-path="metrics.html"><a href="metrics.html#pre-defined-metrics"><i class="fa fa-check"></i><b>8.3</b> Pre-defined metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="cba.html"><a href="cba.html"><i class="fa fa-check"></i><b>9</b> Derived metrics at the cloud level</a><ul>
+<li class="chapter" data-level="9.1" data-path="cba.html"><a href="cba.html#overview"><i class="fa fa-check"></i><b>9.1</b> Overview</a></li>
+<li class="chapter" data-level="9.2" data-path="cba.html"><a href="cba.html#applications"><i class="fa fa-check"></i><b>9.2</b> Applications</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="aba.html"><a href="aba.html"><i class="fa fa-check"></i><b>10</b> Derived metrics at the grid level</a><ul>
+<li class="chapter" data-level="10.1" data-path="aba.html"><a href="aba.html#overview-1"><i class="fa fa-check"></i><b>10.1</b> Overview</a></li>
+<li class="chapter" data-level="10.2" data-path="aba.html"><a href="aba.html#applications-1"><i class="fa fa-check"></i><b>10.2</b> Applications</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="aba.html"><a href="aba.html#modelling"><i class="fa fa-check"></i><b>10.2.1</b> Modelling</a></li>
+<li class="chapter" data-level="10.2.2" data-path="aba.html"><a href="aba.html#density"><i class="fa fa-check"></i><b>10.2.2</b> Density</a></li>
+<li class="chapter" data-level="10.2.3" data-path="aba.html"><a href="aba.html#intensity"><i class="fa fa-check"></i><b>10.2.3</b> Intensity</a></li>
+<li class="chapter" data-level="10.2.4" data-path="aba.html"><a href="aba.html#other"><i class="fa fa-check"></i><b>10.2.4</b> Other</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="tba.html"><a href="tba.html"><i class="fa fa-check"></i><b>11</b> Derived metrics at the tree level</a><ul>
+<li class="chapter" data-level="11.1" data-path="tba.html"><a href="tba.html#overview-2"><i class="fa fa-check"></i><b>11.1</b> Overview</a></li>
+<li class="chapter" data-level="11.2" data-path="tba.html"><a href="tba.html#applications-2"><i class="fa fa-check"></i><b>11.2</b> Applications</a><ul>
+<li class="chapter" data-level="11.2.1" data-path="tba.html"><a href="tba.html#selection-of-trees"><i class="fa fa-check"></i><b>11.2.1</b> Selection of trees</a></li>
+<li class="chapter" data-level="11.2.2" data-path="tba.html"><a href="tba.html#tree-based-inventory"><i class="fa fa-check"></i><b>11.2.2</b> Tree based inventory</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="vba.html"><a href="vba.html"><i class="fa fa-check"></i><b>12</b> Derived metrics at the voxel level</a><ul>
+<li class="chapter" data-level="12.1" data-path="vba.html"><a href="vba.html#overview-3"><i class="fa fa-check"></i><b>12.1</b> Overview</a></li>
+<li class="chapter" data-level="12.2" data-path="vba.html"><a href="vba.html#applications-3"><i class="fa fa-check"></i><b>12.2</b> Applications</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="pba.html"><a href="pba.html"><i class="fa fa-check"></i><b>13</b> Derived metrics at point level</a><ul>
+<li class="chapter" data-level="13.1" data-path="pba.html"><a href="pba.html#overview-4"><i class="fa fa-check"></i><b>13.1</b> Overview</a></li>
+<li class="chapter" data-level="13.2" data-path="pba.html"><a href="pba.html#applications-4"><i class="fa fa-check"></i><b>13.2</b> Applications</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="pba.html"><a href="pba.html#roof-segmentation"><i class="fa fa-check"></i><b>13.2.1</b> Roof segmentation</a></li>
+<li class="chapter" data-level="13.2.2" data-path="pba.html"><a href="pba.html#lake-and-wire-segmentation"><i class="fa fa-check"></i><b>13.2.2</b> Lake and wire segmentation</a></li>
+<li class="chapter" data-level="13.2.3" data-path="pba.html"><a href="pba.html#sec:pba-mscoloring"><i class="fa fa-check"></i><b>13.2.3</b> Multi-spectral coloring</a></li>
+<li class="chapter" data-level="13.2.4" data-path="pba.html"><a href="pba.html#outlier-filtering"><i class="fa fa-check"></i><b>13.2.4</b> Outlier filtering</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="engine.html"><a href="engine.html"><i class="fa fa-check"></i><b>14</b> <code>LAScatalog</code> processing engine (1/2)</a><ul>
+<li class="chapter" data-level="14.1" data-path="engine.html"><a href="engine.html#rationale-for-lascatalog-functionality"><i class="fa fa-check"></i><b>14.1</b> Rationale for <code>LAScatalog</code> functionality</a></li>
+<li class="chapter" data-level="14.2" data-path="engine.html"><a href="engine.html#the-lascatalog-engine"><i class="fa fa-check"></i><b>14.2</b> The <code>LAScatalog</code> engine</a></li>
+<li class="chapter" data-level="14.3" data-path="engine.html"><a href="engine.html#files"><i class="fa fa-check"></i><b>14.3</b> Read a collection of files</a></li>
+<li class="chapter" data-level="14.4" data-path="engine.html"><a href="engine.html#validation"><i class="fa fa-check"></i><b>14.4</b> Validation</a></li>
+<li class="chapter" data-level="14.5" data-path="engine.html"><a href="engine.html#extract-regions-of-interest"><i class="fa fa-check"></i><b>14.5</b> Extract Regions of interest</a><ul>
+<li class="chapter" data-level="14.5.1" data-path="engine.html"><a href="engine.html#extract-a-single-roi"><i class="fa fa-check"></i><b>14.5.1</b> Extract a single ROI</a></li>
+<li class="chapter" data-level="14.5.2" data-path="engine.html"><a href="engine.html#multiple-extractions"><i class="fa fa-check"></i><b>14.5.2</b> Multiple extractions</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="engine.html"><a href="engine.html#modification-of-default-behavior"><i class="fa fa-check"></i><b>14.6</b> Modification of default behavior</a><ul>
+<li class="chapter" data-level="14.6.1" data-path="engine.html"><a href="engine.html#multiple-extractions-on-disk"><i class="fa fa-check"></i><b>14.6.1</b> Multiple extractions on disk</a></li>
+<li class="chapter" data-level="14.6.2" data-path="engine.html"><a href="engine.html#multiple-extraction-with-point-cloud-indexation"><i class="fa fa-check"></i><b>14.6.2</b> Multiple extraction with point cloud indexation</a></li>
+</ul></li>
+<li class="chapter" data-level="14.7" data-path="engine.html"><a href="engine.html#summary"><i class="fa fa-check"></i><b>14.7</b> Summary</a></li>
+<li class="chapter" data-level="14.8" data-path="engine.html"><a href="engine.html#ground-classification"><i class="fa fa-check"></i><b>14.8</b> Ground classification</a><ul>
+<li class="chapter" data-level="14.8.1" data-path="engine.html"><a href="engine.html#chunk-processing"><i class="fa fa-check"></i><b>14.8.1</b> Chunk processing</a></li>
+<li class="chapter" data-level="14.8.2" data-path="engine.html"><a href="engine.html#modifying-buffers"><i class="fa fa-check"></i><b>14.8.2</b> Modifying buffers</a></li>
+<li class="chapter" data-level="14.8.3" data-path="engine.html"><a href="engine.html#modify-the-chunk-size"><i class="fa fa-check"></i><b>14.8.3</b> Modify the chunk size</a></li>
+<li class="chapter" data-level="14.8.4" data-path="engine.html"><a href="engine.html#parallel-processing"><i class="fa fa-check"></i><b>14.8.4</b> Parallel processing</a></li>
+</ul></li>
+<li class="chapter" data-level="14.9" data-path="engine.html"><a href="engine.html#summary-1"><i class="fa fa-check"></i><b>14.9</b> Summary</a></li>
+<li class="chapter" data-level="14.10" data-path="engine.html"><a href="engine.html#digital-terrain-model"><i class="fa fa-check"></i><b>14.10</b> Digital Terrain Model</a><ul>
+<li class="chapter" data-level="14.10.1" data-path="engine.html"><a href="engine.html#in-memory-dtm"><i class="fa fa-check"></i><b>14.10.1</b> In memory DTM</a></li>
+<li class="chapter" data-level="14.10.2" data-path="engine.html"><a href="engine.html#on-disk-dtm"><i class="fa fa-check"></i><b>14.10.2</b> On disk DTM</a></li>
+</ul></li>
+<li class="chapter" data-level="14.11" data-path="engine.html"><a href="engine.html#storage-summary"><i class="fa fa-check"></i><b>14.11</b> Storage Summary</a></li>
+<li class="chapter" data-level="14.12" data-path="engine.html"><a href="engine.html#height-normalization"><i class="fa fa-check"></i><b>14.12</b> Height normalization</a></li>
+<li class="chapter" data-level="14.13" data-path="engine.html"><a href="engine.html#area-based-approach"><i class="fa fa-check"></i><b>14.13</b> Area Based Approach</a></li>
+<li class="chapter" data-level="14.14" data-path="engine.html"><a href="engine.html#height-aba-summary"><i class="fa fa-check"></i><b>14.14</b> Height &amp; ABA Summary</a></li>
+<li class="chapter" data-level="14.15" data-path="engine.html"><a href="engine.html#individual-tree-detection"><i class="fa fa-check"></i><b>14.15</b> Individual Tree Detection</a><ul>
+<li class="chapter" data-level="14.15.1" data-path="engine.html"><a href="engine.html#itd-summary"><i class="fa fa-check"></i><b>14.15.1</b> ITD Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14.16" data-path="engine.html"><a href="engine.html#individual-tree-segmentation"><i class="fa fa-check"></i><b>14.16</b> Individual Tree Segmentation</a></li>
+<li class="chapter" data-level="14.17" data-path="engine.html"><a href="engine.html#retile-a-catalog"><i class="fa fa-check"></i><b>14.17</b> Retile a catalog</a><ul>
+<li class="chapter" data-level="14.17.1" data-path="engine.html"><a href="engine.html#retile-a-catalog-into-smaller-files"><i class="fa fa-check"></i><b>14.17.1</b> Retile a catalog into smaller files</a></li>
+<li class="chapter" data-level="14.17.2" data-path="engine.html"><a href="engine.html#add-a-buffer-around-each-file"><i class="fa fa-check"></i><b>14.17.2</b> Add a buffer around each file</a></li>
+<li class="chapter" data-level="14.17.3" data-path="engine.html"><a href="engine.html#create-a-new-collection-with-only-first-returns"><i class="fa fa-check"></i><b>14.17.3</b> Create a new collection with only first returns</a></li>
+<li class="chapter" data-level="14.17.4" data-path="engine.html"><a href="engine.html#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel"><i class="fa fa-check"></i><b>14.17.4</b> Create a new collection of small and buffered ground returns in parallel</a></li>
+</ul></li>
+<li class="chapter" data-level="14.18" data-path="engine.html"><a href="engine.html#the-case-of-ground-inventories"><i class="fa fa-check"></i><b>14.18</b> The case of ground inventories</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="engine2.html"><a href="engine2.html"><i class="fa fa-check"></i><b>15</b> LAScatalog processing engine (2/2)</a><ul>
+<li class="chapter" data-level="15.1" data-path="engine2.html"><a href="engine2.html#catalog_apply"><i class="fa fa-check"></i><b>15.1</b> <code>catalog_apply()</code></a></li>
+<li class="chapter" data-level="15.2" data-path="engine2.html"><a href="engine2.html#create-user-defined-function"><i class="fa fa-check"></i><b>15.2</b> Create user-defined function</a></li>
+<li class="chapter" data-level="15.3" data-path="engine2.html"><a href="engine2.html#create-an-intermediate-function-for-catalog_apply"><i class="fa fa-check"></i><b>15.3</b> Create an intermediate function for <code>catalog_apply()</code></a></li>
+<li class="chapter" data-level="15.4" data-path="engine2.html"><a href="engine2.html#make-a-user-friendly-function-for-third-party-users"><i class="fa fa-check"></i><b>15.4</b> Make a user-friendly function for third party users</a></li>
+<li class="chapter" data-level="15.5" data-path="engine2.html"><a href="engine2.html#make-a-safe-function-for-third-party-users"><i class="fa fa-check"></i><b>15.5</b> Make a safe function for third party users</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="aba.html"><a href="aba.html#modelling"><i class="fa fa-check"></i><b>16</b> The Area-Based Approach (ABA) to forest modelling</a><ul>
+<li class="chapter" data-level="16.1" data-path="modelling.html"><a href="modelling.html"><i class="fa fa-check"></i><b>16.1</b> Read in data</a></li>
+<li class="chapter" data-level="16.2" data-path="modelling.html"><a href="modelling.html#aba-processing"><i class="fa fa-check"></i><b>16.2</b> ABA Processing</a><ul>
+<li class="chapter" data-level="16.2.1" data-path="modelling.html"><a href="modelling.html#step-1---clip-als-ground-inventory"><i class="fa fa-check"></i><b>16.2.1</b> Step 1 - Clip ALS ground inventory</a></li>
+<li class="chapter" data-level="16.2.2" data-path="modelling.html"><a href="modelling.html#step-2---calculate-plot-metrics"><i class="fa fa-check"></i><b>16.2.2</b> Step 2 - Calculate plot metrics</a></li>
+<li class="chapter" data-level="16.2.3" data-path="modelling.html"><a href="modelling.html#step-3---modeling"><i class="fa fa-check"></i><b>16.2.3</b> Step 3 - Modeling</a></li>
+<li class="chapter" data-level="16.2.4" data-path="modelling.html"><a href="modelling.html#step-4---wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.2.4</b> Step 4 - Wall to wall modelling</a></li>
+<li class="chapter" data-level="16.2.5" data-path="modelling.html"><a href="modelling.html#step-5---calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.2.5</b> Step 5 - Calculate wall-to-wall predictions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="outbox.html"><a href="outbox.html"><i class="fa fa-check"></i><b>17</b> Thinking outside the box</a><ul>
+<li class="chapter" data-level="17.1" data-path="outbox.html"><a href="outbox.html#new-complex-metrics-in-aba"><i class="fa fa-check"></i><b>17.1</b> New complex metrics in ABA</a><ul>
+<li class="chapter" data-level="17.1.1" data-path="outbox.html"><a href="outbox.html#outboxdistancereturn"><i class="fa fa-check"></i><b>17.1.1</b> Distance between returns</a></li>
+<li class="chapter" data-level="17.1.2" data-path="outbox.html"><a href="outbox.html#outboxrumple"><i class="fa fa-check"></i><b>17.1.2</b> Rumple index</a></li>
+</ul></li>
+<li class="chapter" data-level="17.2" data-path="outbox.html"><a href="outbox.html#multi-spectral-coloring"><i class="fa fa-check"></i><b>17.2</b> Multi-spectral coloring</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="plugins.html"><a href="plugins.html"><i class="fa fa-check"></i><b>18</b> <code>lidR</code> plugin system</a><ul>
+<li class="chapter" data-level="18.1" data-path="plugins.html"><a href="plugins.html#understanding-lidr-algorithms"><i class="fa fa-check"></i><b>18.1</b> Understanding lidR algorithms</a></li>
+<li class="chapter" data-level="18.2" data-path="plugins.html"><a href="plugins.html#creation-of-the-mba-algorithm"><i class="fa fa-check"></i><b>18.2</b> Creation of the <code>mba</code> algorithm</a></li>
+<li class="chapter" data-level="18.3" data-path="plugins.html"><a href="plugins.html#what-about-other-algorithms"><i class="fa fa-check"></i><b>18.3</b> What about other algorithms?</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The <code>lidR</code> package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="modelling" class="section level1">
+<h1><span class="header-section-number">16</span> The Area-Based Approach (ABA) to forest modelling</h1>
+<p>This chapter presents a complete workflow about processing ALS point cloud data to create wall-to-wall predictions of selected forest stand attributes using an area-based approach (ABA) to forest inventories. The steps used in this vignette as well as further details about enhanced forest inventories (EFI) are described in depth in <a href="https://cfs.nrcan.gc.ca/publications?id=34887">White et al. 2013</a> and <a href="https://cfs.nrcan.gc.ca/publications?id=38945">White et al. 2017</a>. This vignette assumes that the user has a directory of classified and normalized <code>.las/.laz</code> files. First we load the package <code>sf</code> to work with spatial data.</p>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb181-1" data-line-number="1"><span class="kw">library</span>(sf)</a></code></pre></div>
+<div id="read-in-data" class="section level2">
+<h2><span class="header-section-number">16.1</span> Read in data</h2>
+<p>The function <code>readLAScatalog()</code> seen in chapter <a href="engine.html#engine">14</a> builds a <code>LAScatalog</code> object from a folder. Make sure the ALS files have associated index files - for details see: <a href="https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html">Speed-up the computations on a LAScatalog</a>.</p>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb182-1" data-line-number="1">ctg &lt;-<span class="st"> </span><span class="kw">readLAScatalog</span>(<span class="st">&quot;folder/&quot;</span>)</a>
+<a class="sourceLine" id="cb182-2" data-line-number="2"><span class="kw">print</span>(ctg)</a>
+<a class="sourceLine" id="cb182-3" data-line-number="3"><span class="co">#&gt; class       : LAScatalog</span></a>
+<a class="sourceLine" id="cb182-4" data-line-number="4"><span class="co">#&gt; extent      : 297317.5 , 316001 , 5089000 , 5099000 (xmin, xmax, ymin, ymax)</span></a>
+<a class="sourceLine" id="cb182-5" data-line-number="5"><span class="co">#&gt; coord. ref. : +proj=utm +zone=18 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs </span></a>
+<a class="sourceLine" id="cb182-6" data-line-number="6"><span class="co">#&gt; area        : 125.19 km²</span></a>
+<a class="sourceLine" id="cb182-7" data-line-number="7"><span class="co">#&gt; points      : 1.58 billion points</span></a>
+<a class="sourceLine" id="cb182-8" data-line-number="8"><span class="co">#&gt; density     : 12.6 points/m²</span></a>
+<a class="sourceLine" id="cb182-9" data-line-number="9"><span class="co">#&gt; num. files  : 138</span></a>
+<a class="sourceLine" id="cb182-10" data-line-number="10"><span class="kw">plot</span>(ctg)</a></code></pre></div>
+<center>
+<img src="images/ABA/01_ctg_map.png" />
+</center>
+<p>Now that our ALS data is prepared lets read in our inventory data using the <code>st_read()</code> function from the <code>sf</code> package. We read in a <code>.shp</code> file where each features is a point with a unique plot ID and corresponding plot level inventory summaries.</p>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb183-1" data-line-number="1">plots &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;PRF_plots.shp&quot;</span>)</a></code></pre></div>
+<p>Our <code>plots</code> object contains 203 plots with coordinates of plot centers, plot name, and stand attributes: Lorey’s height (HL), Basal area (BA), and gross timber volume (GTV).</p>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb184-1" data-line-number="1">plots</a>
+<a class="sourceLine" id="cb184-2" data-line-number="2"><span class="co">#&gt; Simple feature collection with 203 features and 4 fields</span></a>
+<a class="sourceLine" id="cb184-3" data-line-number="3"><span class="co">#&gt; geometry type:  POINT</span></a>
+<a class="sourceLine" id="cb184-4" data-line-number="4"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb184-5" data-line-number="5"><span class="co">#&gt; bbox:           xmin: 299051.3 ymin: 5089952 xmax: 314849.4 ymax: 5098426</span></a>
+<a class="sourceLine" id="cb184-6" data-line-number="6"><span class="co">#&gt; epsg (SRID):    NA</span></a>
+<a class="sourceLine" id="cb184-7" data-line-number="7"><span class="co">#&gt; proj4string:    +proj=utm +zone=18 +ellps=GRS80 +units=m +no_defs</span></a>
+<a class="sourceLine" id="cb184-8" data-line-number="8"><span class="co">#&gt; First 5 features:</span></a>
+<a class="sourceLine" id="cb184-9" data-line-number="9"><span class="co">#&gt;    PlotID       HL       BA      GTV                 geometry</span></a>
+<a class="sourceLine" id="cb184-10" data-line-number="10"><span class="co">#&gt; 1  PRF002 20.71166 38.21648 322.1351 POINT (313983.8 5094190)</span></a>
+<a class="sourceLine" id="cb184-11" data-line-number="11"><span class="co">#&gt; 2  PRF003 19.46735 28.92692 251.1327 POINT (312218.6 5091995)</span></a>
+<a class="sourceLine" id="cb184-12" data-line-number="12"><span class="co">#&gt; 3  PRF004 21.74877 45.16215 467.1033 POINT (311125.1 5092501)</span></a>
+<a class="sourceLine" id="cb184-13" data-line-number="13"><span class="co">#&gt; 4  PRF005 27.76175 61.55561 783.9303 POINT (313425.2 5091836)</span></a>
+<a class="sourceLine" id="cb184-14" data-line-number="14"><span class="co">#&gt; 5  PRF006 27.26387 39.78153 508.0337 POINT (313106.2 5091393)</span></a></code></pre></div>
+<p>To visualize where the plots are in our study area we can overlay them on the <code>LAScatalog</code>.</p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb185-1" data-line-number="1"><span class="kw">plot</span>(ctg)</a>
+<a class="sourceLine" id="cb185-2" data-line-number="2"><span class="kw">plot</span>(plots, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</a></code></pre></div>
+<center>
+<img src="images/ABA/02_ctg_map_with_plots.png" />
+</center>
+<p>We have now prepared both our ALS and plot inventory data and can begin ABA processing.</p>
+</div>
+<div id="aba-processing" class="section level2">
+<h2><span class="header-section-number">16.2</span> ABA Processing</h2>
+<div id="step-1---clip-als-ground-inventory" class="section level3">
+<h3><span class="header-section-number">16.2.1</span> Step 1 - Clip ALS ground inventory</h3>
+<p>The functions <code>clip_*</code> allow to extract regions of interest as seen in chapter <a href="engine.html#engine">14</a>. <code>clip_roi()</code> is capable of extraction from a shapefile. First we set <code>opt_output_files()</code> option to write the results on disc. This is an important option to set. The clipped plots will be saved on disk and not kept in memory. We also use the <code>opt_filter()</code> function to ignore noise below 0 m so that they do not influence future processing. We clip discs with a <code>radius</code> of 14.1 meters because our plot radius is 14.1 m. The <code>plots_ALS_clipped</code> object is now a <code>LAScatalog</code> object containing all clipped plots.</p>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb186-1" data-line-number="1"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{PlotID}&quot;</span>) <span class="co"># Write files to disc</span></a>
+<a class="sourceLine" id="cb186-2" data-line-number="2"><span class="kw">opt_filter</span>(ctg) &lt;-<span class="st"> &quot;-drop_z_below 0&quot;</span> <span class="co"># Ignore points with elevations below 0</span></a>
+<a class="sourceLine" id="cb186-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb186-4" data-line-number="4"><span class="co"># Clip catalog object using plots with a circular buffer of 14.1 m</span></a>
+<a class="sourceLine" id="cb186-5" data-line-number="5">plots_ALS_clipped &lt;-<span class="st"> </span><span class="kw">clip_roi</span>(ctg, plots, <span class="dt">radius=</span><span class="fl">14.1</span>)</a>
+<a class="sourceLine" id="cb186-6" data-line-number="6">plots_ALS_clipped</a>
+<a class="sourceLine" id="cb186-7" data-line-number="7"><span class="co">#&gt; class       : LAScatalog</span></a>
+<a class="sourceLine" id="cb186-8" data-line-number="8"><span class="co">#&gt; extent      : 299037.3 , 314863.4 , 5089938 , 5098440 (xmin, xmax, ymin, ymax)</span></a>
+<a class="sourceLine" id="cb186-9" data-line-number="9"><span class="co">#&gt; coord. ref. : +proj=utm +zone=18 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs </span></a>
+<a class="sourceLine" id="cb186-10" data-line-number="10"><span class="co">#&gt; area        : 160376.5 m²</span></a>
+<a class="sourceLine" id="cb186-11" data-line-number="11"><span class="co">#&gt; points      : 1.67 million points</span></a>
+<a class="sourceLine" id="cb186-12" data-line-number="12"><span class="co">#&gt; density     : 10.4 points/m²</span></a>
+<a class="sourceLine" id="cb186-13" data-line-number="13"><span class="co">#&gt; num. files  : 203 </span></a></code></pre></div>
+</div>
+<div id="step-2---calculate-plot-metrics" class="section level3">
+<h3><span class="header-section-number">16.2.2</span> Step 2 - Calculate plot metrics</h3>
+<p>As seen in chapter <a href="engine.html#engine">14</a> ground inventories are special cases of independent files. We first set some adequate processing options. We also use <code>opt_output_files() &lt;- &quot;&quot;</code> to have plot metrics stored in memory instead of on disc.</p>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb187-1" data-line-number="1"><span class="kw">opt_independant_files</span>(plots_ALS_clipped) &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
+<a class="sourceLine" id="cb187-2" data-line-number="2"><span class="kw">opt_output_files</span>(plots_ALS_clipped) &lt;-<span class="st"> &quot;&quot;</span></a></code></pre></div>
+<p>To calculate metrics for each plot we use the <code>catalog_apply()</code> functionality. We specify that we want to process our <code>plots_ALS_clipped</code> catalog object using <code>cloud_metrics</code> to calculate all metrics contained in the <code>.stdmetrics_z</code> function. The <code>func</code> argument also supports user defined functions. The output of <code>catalog_apply()</code> is a list of vectors (<code>plots_metrics</code>), which we convert into a <code>data.table</code>.</p>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb188-1" data-line-number="1">plots_metrics &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(plots_ALS_clipped, cloud_metrics, <span class="dt">func =</span> .stdmetrics_z)</a>
+<a class="sourceLine" id="cb188-2" data-line-number="2">plots_metrics &lt;-<span class="st"> </span>data.table<span class="op">::</span><span class="kw">rbindlist</span>(plots_metrics)</a></code></pre></div>
+<p>We have now calculated a variety of ALS metrics for each plot. In order to complete our inventory and begin modelling we now must merge ALS metrics with field measured values (<code>D</code>).</p>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb189-1" data-line-number="1">D &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">as.data.frame</span>(plots), plots_metrics)</a></code></pre></div>
+</div>
+<div id="step-3---modeling" class="section level3">
+<h3><span class="header-section-number">16.2.3</span> Step 3 - Modeling</h3>
+<p>Here we provide a simple example of how to create an OLS model (<code>lm</code>) for Lorey’s Mean Height (HL). Using the <code>summary</code> and <code>plot</code> functions we found that the 85<sup>th</sup> percentile of height (<code>zq85</code>) for ALS metrics explain a large amount of variation in <code>HL</code> values. We are more than happy with this simple model.</p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb190-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">lm</span>(HL <span class="op">~</span>zq85, <span class="dt">data=</span>D)</a>
+<a class="sourceLine" id="cb190-2" data-line-number="2"><span class="kw">summary</span>(m)</a>
+<a class="sourceLine" id="cb190-3" data-line-number="3"><span class="co">#&gt; Call:</span></a>
+<a class="sourceLine" id="cb190-4" data-line-number="4"><span class="co">#&gt; lm(formula = HL ~ zq85, data = D)</span></a>
+<a class="sourceLine" id="cb190-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb190-6" data-line-number="6"><span class="co">#&gt; Residuals:</span></a>
+<a class="sourceLine" id="cb190-7" data-line-number="7"><span class="co">#&gt;    Min     1Q Median     3Q    Max </span></a>
+<a class="sourceLine" id="cb190-8" data-line-number="8"><span class="co">#&gt; -4.640 -1.053 -0.031  1.030  4.258 </span></a>
+<a class="sourceLine" id="cb190-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb190-10" data-line-number="10"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb190-11" data-line-number="11"><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></a>
+<a class="sourceLine" id="cb190-12" data-line-number="12"><span class="co">#&gt; (Intercept)  2.29496    0.31116   7.376  4.2e-12 ***</span></a>
+<a class="sourceLine" id="cb190-13" data-line-number="13"><span class="co">#&gt; zq85         0.93389    0.01525  61.237  &lt; 2e-16 ***</span></a>
+<a class="sourceLine" id="cb190-14" data-line-number="14"><span class="co">#&gt; ---</span></a>
+<a class="sourceLine" id="cb190-15" data-line-number="15"><span class="co">#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span></a>
+<a class="sourceLine" id="cb190-16" data-line-number="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb190-17" data-line-number="17"><span class="co">#&gt; Residual standard error: 1.5 on 201 degrees of freedom</span></a>
+<a class="sourceLine" id="cb190-18" data-line-number="18"><span class="co">#&gt; Multiple R-squared:  0.9491, Adjusted R-squared:  0.9489 </span></a>
+<a class="sourceLine" id="cb190-19" data-line-number="19"><span class="co">#&gt; F-statistic:  3750 on 1 and 201 DF,  p-value: &lt; 2.2e-16</span></a></code></pre></div>
+<p>Here we visualize the relationship between the observed (measured) and predicted (ALS-based) HL values.</p>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb191-1" data-line-number="1"><span class="kw">plot</span>(D<span class="op">$</span>HL, <span class="kw">predict</span>(m))</a>
+<a class="sourceLine" id="cb191-2" data-line-number="2"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</a></code></pre></div>
+<center>
+<img src="images/ABA/05_scatterplot_HL.png" />
+</center>
+</div>
+<div id="step-4---wall-to-wall-modelling" class="section level3">
+<h3><span class="header-section-number">16.2.4</span> Step 4 - Wall to wall modelling</h3>
+<p>Now that we have created a model using plot data, we now need to apply that model across our entire study area.</p>
+<p>To do so we first need to generate the same suite of ALS metrics (<code>.stdmetrics_z</code>) for our ALS data using the <code>grid_metrics()</code> function on our original collection of files. We have chosen to write these metrics into memory. Note that the <code>res</code> parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius ≈ 625m<sup>2</sup>).</p>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb192-1" data-line-number="1"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> &quot;&quot;</span></a>
+<a class="sourceLine" id="cb192-2" data-line-number="2">metrics_w2w &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(ctg, .stdmetrics_z, <span class="dt">res =</span> <span class="dv">25</span>)</a></code></pre></div>
+<p>To visualize any of the metrics you can use the <code>plot</code> function.</p>
+<pre><code>plot(metrics_w2w$zq85)
+plot(metrics_w2w$zmean)
+plot(metrics_w2w$pzabovezmean)</code></pre>
+</div>
+<div id="step-5---calculate-wall-to-wall-predictions" class="section level3">
+<h3><span class="header-section-number">16.2.5</span> Step 5 - Calculate wall-to-wall predictions</h3>
+<p>We can use two methods for applying our model (<code>m</code>) to all of our ALS data. We can do this manually using the model coefficients, or use the <code>predict</code> function. Both of these methods produce the same output (<code>HL_pred</code>) which is a wall-to-wall raster of predicted Lorey’s mean height.</p>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb194-1" data-line-number="1">HL_pred &lt;-<span class="st"> </span><span class="kw">coef</span>(m)[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>metrics_w2w<span class="op">$</span>zq85 <span class="op">*</span><span class="st"> </span><span class="kw">coef</span>(m)[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb194-2" data-line-number="2"><span class="co"># or</span></a>
+<a class="sourceLine" id="cb194-3" data-line-number="3">HL_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(metrics_w2w<span class="op">$</span>zq85, m)</a></code></pre></div>
+<p>To visualize wall-to-wall predictions use</p>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb195-1" data-line-number="1"><span class="kw">plot</span>(HL_pred)</a></code></pre></div>
+<center>
+<img src="images/ABA/06_HL_pred.png" />
+</center>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="engine2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="outbox.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
