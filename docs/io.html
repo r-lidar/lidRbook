@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Reading, Plotting, Querying &amp; Validating | The lidR package</title>
+  <meta name="description" content="A guide to the lidR package" />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Reading, Plotting, Querying &amp; Validating | The lidR package" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="A guide to the lidR package" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Reading, Plotting, Querying &amp; Validating | The lidR package" />
+  
+  <meta name="twitter:description" content="A guide to the lidR package" />
+  
+
+<meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
+
+
+<meta name="date" content="2020-06-29" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="gnd.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="io.html"><a href="io.html"><i class="fa fa-check"></i><b>2</b> Reading, Plotting, Querying &amp; Validating</a><ul>
+<li class="chapter" data-level="2.1" data-path="io.html"><a href="io.html#read"><i class="fa fa-check"></i><b>2.1</b> Reading LiDAR data using <code>readLAS</code></a><ul>
+<li class="chapter" data-level="2.1.1" data-path="io.html"><a href="io.html#parameter-select"><i class="fa fa-check"></i><b>2.1.1</b> Parameter <code>select</code></a></li>
+<li class="chapter" data-level="2.1.2" data-path="io.html"><a href="io.html#filter"><i class="fa fa-check"></i><b>2.1.2</b> Parameter <code>filter</code></a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="io.html"><a href="io.html#validating-lidar-data"><i class="fa fa-check"></i><b>2.2</b> Validating lidar data</a></li>
+<li class="chapter" data-level="2.3" data-path="io.html"><a href="io.html#plot"><i class="fa fa-check"></i><b>2.3</b> Plotting</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="io.html"><a href="io.html#basic-3d-rendering"><i class="fa fa-check"></i><b>2.3.1</b> Basic 3D rendering</a></li>
+<li class="chapter" data-level="2.3.2" data-path="io.html"><a href="io.html#overlays"><i class="fa fa-check"></i><b>2.3.2</b> Overlays</a></li>
+<li class="chapter" data-level="2.3.3" data-path="io.html"><a href="io.html#advanced-3d-rendering"><i class="fa fa-check"></i><b>2.3.3</b> Advanced 3D rendering</a></li>
+<li class="chapter" data-level="2.3.4" data-path="io.html"><a href="io.html#crossection"><i class="fa fa-check"></i><b>2.3.4</b> Cross sections 2D rendering</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="gnd.html"><a href="gnd.html"><i class="fa fa-check"></i><b>3</b> Ground classification</a><ul>
+<li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#progressive-morphological-filter"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
+<li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#cloth-simulation-function"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#buffer"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#how-to-choose-a-method-and-its-parameters"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a><ul>
+<li class="chapter" data-level="4.1" data-path="dtm.html"><a href="dtm.html#triangular-irregular-network"><i class="fa fa-check"></i><b>4.1</b> Triangular irregular network</a></li>
+<li class="chapter" data-level="4.2" data-path="dtm.html"><a href="dtm.html#invert-distance-weighting-idw"><i class="fa fa-check"></i><b>4.2</b> Invert distance weighting (IDW)</a></li>
+<li class="chapter" data-level="4.3" data-path="dtm.html"><a href="dtm.html#kriging"><i class="fa fa-check"></i><b>4.3</b> Kriging</a></li>
+<li class="chapter" data-level="4.4" data-path="dtm.html"><a href="dtm.html#pros-and-cons"><i class="fa fa-check"></i><b>4.4</b> Pros and cons</a></li>
+<li class="chapter" data-level="4.5" data-path="dtm.html"><a href="dtm.html#other-methods"><i class="fa fa-check"></i><b>4.5</b> Other methods</a></li>
+<li class="chapter" data-level="4.6" data-path="dtm.html"><a href="dtm.html#render-shaded-dtm"><i class="fa fa-check"></i><b>4.6</b> Render shaded DTM</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="norm.html"><a href="norm.html"><i class="fa fa-check"></i><b>5</b> Height normalization</a><ul>
+<li class="chapter" data-level="5.1" data-path="norm.html"><a href="norm.html#dtm-normalization"><i class="fa fa-check"></i><b>5.1</b> DTM normalization</a></li>
+<li class="chapter" data-level="5.2" data-path="norm.html"><a href="norm.html#point-cloud-normalization"><i class="fa fa-check"></i><b>5.2</b> Point cloud normalization</a></li>
+<li class="chapter" data-level="5.3" data-path="norm.html"><a href="norm.html#pros-and-cons-1"><i class="fa fa-check"></i><b>5.3</b> Pros and cons</a></li>
+<li class="chapter" data-level="5.4" data-path="norm.html"><a href="norm.html#reversing-normalization"><i class="fa fa-check"></i><b>5.4</b> Reversing normalization</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="chm.html"><a href="chm.html"><i class="fa fa-check"></i><b>6</b> Digital Surface Model and Canopy Height model</a><ul>
+<li class="chapter" data-level="6.1" data-path="chm.html"><a href="chm.html#point-to-raster"><i class="fa fa-check"></i><b>6.1</b> Point-to-raster</a></li>
+<li class="chapter" data-level="6.2" data-path="chm.html"><a href="chm.html#triangulation"><i class="fa fa-check"></i><b>6.2</b> Triangulation</a></li>
+<li class="chapter" data-level="6.3" data-path="chm.html"><a href="chm.html#pit-free-algorithm"><i class="fa fa-check"></i><b>6.3</b> Pit-free algorithm</a></li>
+<li class="chapter" data-level="6.4" data-path="chm.html"><a href="chm.html#post-processing-a-chm"><i class="fa fa-check"></i><b>6.4</b> Post-processing a CHM</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="itd.html"><a href="itd.html"><i class="fa fa-check"></i><b>7</b> Indivitual tree dectection and segmentation</a><ul>
+<li class="chapter" data-level="7.1" data-path="itd.html"><a href="itd.html#individual-tree-detection-itd"><i class="fa fa-check"></i><b>7.1</b> Individual Tree Detection (ITD)</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-fixed-windows-size"><i class="fa fa-check"></i><b>7.1.1</b> Local Maximum Filter with fixed windows size</a></li>
+<li class="chapter" data-level="7.1.2" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-variable-windows-size"><i class="fa fa-check"></i><b>7.1.2</b> Local Maximum Filter with variable windows size</a></li>
+<li class="chapter" data-level="7.1.3" data-path="itd.html"><a href="itd.html#local-maximum-filter-on-a-chm"><i class="fa fa-check"></i><b>7.1.3</b> Local Maximum Filter on a CHM</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="itd.html"><a href="itd.html#individual-tree-segmentation-its"><i class="fa fa-check"></i><b>7.2</b> Individual Tree Segmentation (ITS)</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="itd.html"><a href="itd.html#segmentation-of-the-point-cloud"><i class="fa fa-check"></i><b>7.2.1</b> Segmentation of the point-cloud</a></li>
+<li class="chapter" data-level="7.2.2" data-path="itd.html"><a href="itd.html#segmentation-of-the-chm"><i class="fa fa-check"></i><b>7.2.2</b> Segmentation of the CHM</a></li>
+<li class="chapter" data-level="7.2.3" data-path="itd.html"><a href="itd.html#comparaison-of-tree-segmentations"><i class="fa fa-check"></i><b>7.2.3</b> Comparaison of tree segmentations</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="metrics.html"><a href="metrics.html"><i class="fa fa-check"></i><b>8</b> Derived metrics</a><ul>
+<li class="chapter" data-level="8.1" data-path="metrics.html"><a href="metrics.html#the-basics"><i class="fa fa-check"></i><b>8.1</b> The basics</a></li>
+<li class="chapter" data-level="8.2" data-path="metrics.html"><a href="metrics.html#user-defined-metrics"><i class="fa fa-check"></i><b>8.2</b> User-defined metrics</a></li>
+<li class="chapter" data-level="8.3" data-path="metrics.html"><a href="metrics.html#pre-defined-metrics"><i class="fa fa-check"></i><b>8.3</b> Pre-defined metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="cba.html"><a href="cba.html"><i class="fa fa-check"></i><b>9</b> Derived metrics at the cloud level</a><ul>
+<li class="chapter" data-level="9.1" data-path="cba.html"><a href="cba.html#overview"><i class="fa fa-check"></i><b>9.1</b> Overview</a></li>
+<li class="chapter" data-level="9.2" data-path="cba.html"><a href="cba.html#applications"><i class="fa fa-check"></i><b>9.2</b> Applications</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="aba.html"><a href="aba.html"><i class="fa fa-check"></i><b>10</b> Derived metrics at the grid level</a><ul>
+<li class="chapter" data-level="10.1" data-path="aba.html"><a href="aba.html#overview-1"><i class="fa fa-check"></i><b>10.1</b> Overview</a></li>
+<li class="chapter" data-level="10.2" data-path="aba.html"><a href="aba.html#applications-1"><i class="fa fa-check"></i><b>10.2</b> Applications</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="aba.html"><a href="aba.html#modelling"><i class="fa fa-check"></i><b>10.2.1</b> Modelling</a></li>
+<li class="chapter" data-level="10.2.2" data-path="aba.html"><a href="aba.html#density"><i class="fa fa-check"></i><b>10.2.2</b> Density</a></li>
+<li class="chapter" data-level="10.2.3" data-path="aba.html"><a href="aba.html#intensity"><i class="fa fa-check"></i><b>10.2.3</b> Intensity</a></li>
+<li class="chapter" data-level="10.2.4" data-path="aba.html"><a href="aba.html#other"><i class="fa fa-check"></i><b>10.2.4</b> Other</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="tba.html"><a href="tba.html"><i class="fa fa-check"></i><b>11</b> Derived metrics at the tree level</a><ul>
+<li class="chapter" data-level="11.1" data-path="tba.html"><a href="tba.html#overview-2"><i class="fa fa-check"></i><b>11.1</b> Overview</a></li>
+<li class="chapter" data-level="11.2" data-path="tba.html"><a href="tba.html#applications-2"><i class="fa fa-check"></i><b>11.2</b> Applications</a><ul>
+<li class="chapter" data-level="11.2.1" data-path="tba.html"><a href="tba.html#selection-of-trees"><i class="fa fa-check"></i><b>11.2.1</b> Selection of trees</a></li>
+<li class="chapter" data-level="11.2.2" data-path="tba.html"><a href="tba.html#tree-based-inventory"><i class="fa fa-check"></i><b>11.2.2</b> Tree based inventory</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="vba.html"><a href="vba.html"><i class="fa fa-check"></i><b>12</b> Derived metrics at the voxel level</a><ul>
+<li class="chapter" data-level="12.1" data-path="vba.html"><a href="vba.html#overview-3"><i class="fa fa-check"></i><b>12.1</b> Overview</a></li>
+<li class="chapter" data-level="12.2" data-path="vba.html"><a href="vba.html#applications-3"><i class="fa fa-check"></i><b>12.2</b> Applications</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="pba.html"><a href="pba.html"><i class="fa fa-check"></i><b>13</b> Derived metrics at point level</a><ul>
+<li class="chapter" data-level="13.1" data-path="pba.html"><a href="pba.html#overview-4"><i class="fa fa-check"></i><b>13.1</b> Overview</a></li>
+<li class="chapter" data-level="13.2" data-path="pba.html"><a href="pba.html#applications-4"><i class="fa fa-check"></i><b>13.2</b> Applications</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="pba.html"><a href="pba.html#roof-segmentation"><i class="fa fa-check"></i><b>13.2.1</b> Roof segmentation</a></li>
+<li class="chapter" data-level="13.2.2" data-path="pba.html"><a href="pba.html#lake-and-wire-segmentation"><i class="fa fa-check"></i><b>13.2.2</b> Lake and wire segmentation</a></li>
+<li class="chapter" data-level="13.2.3" data-path="pba.html"><a href="pba.html#sec:pba-mscoloring"><i class="fa fa-check"></i><b>13.2.3</b> Multi-spectral coloring</a></li>
+<li class="chapter" data-level="13.2.4" data-path="pba.html"><a href="pba.html#outlier-filtering"><i class="fa fa-check"></i><b>13.2.4</b> Outlier filtering</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="engine.html"><a href="engine.html"><i class="fa fa-check"></i><b>14</b> <code>LAScatalog</code> processing engine (1/2)</a><ul>
+<li class="chapter" data-level="14.1" data-path="engine.html"><a href="engine.html#rationale-for-lascatalog-functionality"><i class="fa fa-check"></i><b>14.1</b> Rationale for <code>LAScatalog</code> functionality</a></li>
+<li class="chapter" data-level="14.2" data-path="engine.html"><a href="engine.html#the-lascatalog-engine"><i class="fa fa-check"></i><b>14.2</b> The <code>LAScatalog</code> engine</a></li>
+<li class="chapter" data-level="14.3" data-path="engine.html"><a href="engine.html#files"><i class="fa fa-check"></i><b>14.3</b> Read a collection of files</a></li>
+<li class="chapter" data-level="14.4" data-path="engine.html"><a href="engine.html#validation"><i class="fa fa-check"></i><b>14.4</b> Validation</a></li>
+<li class="chapter" data-level="14.5" data-path="engine.html"><a href="engine.html#extract-regions-of-interest"><i class="fa fa-check"></i><b>14.5</b> Extract Regions of interest</a><ul>
+<li class="chapter" data-level="14.5.1" data-path="engine.html"><a href="engine.html#extract-a-single-roi"><i class="fa fa-check"></i><b>14.5.1</b> Extract a single ROI</a></li>
+<li class="chapter" data-level="14.5.2" data-path="engine.html"><a href="engine.html#multiple-extractions"><i class="fa fa-check"></i><b>14.5.2</b> Multiple extractions</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="engine.html"><a href="engine.html#modification-of-default-behavior"><i class="fa fa-check"></i><b>14.6</b> Modification of default behavior</a><ul>
+<li class="chapter" data-level="14.6.1" data-path="engine.html"><a href="engine.html#multiple-extractions-on-disk"><i class="fa fa-check"></i><b>14.6.1</b> Multiple extractions on disk</a></li>
+<li class="chapter" data-level="14.6.2" data-path="engine.html"><a href="engine.html#multiple-extraction-with-point-cloud-indexation"><i class="fa fa-check"></i><b>14.6.2</b> Multiple extraction with point cloud indexation</a></li>
+</ul></li>
+<li class="chapter" data-level="14.7" data-path="engine.html"><a href="engine.html#summary"><i class="fa fa-check"></i><b>14.7</b> Summary</a></li>
+<li class="chapter" data-level="14.8" data-path="engine.html"><a href="engine.html#ground-classification"><i class="fa fa-check"></i><b>14.8</b> Ground classification</a><ul>
+<li class="chapter" data-level="14.8.1" data-path="engine.html"><a href="engine.html#chunk-processing"><i class="fa fa-check"></i><b>14.8.1</b> Chunk processing</a></li>
+<li class="chapter" data-level="14.8.2" data-path="engine.html"><a href="engine.html#modifying-buffers"><i class="fa fa-check"></i><b>14.8.2</b> Modifying buffers</a></li>
+<li class="chapter" data-level="14.8.3" data-path="engine.html"><a href="engine.html#modify-the-chunk-size"><i class="fa fa-check"></i><b>14.8.3</b> Modify the chunk size</a></li>
+<li class="chapter" data-level="14.8.4" data-path="engine.html"><a href="engine.html#parallel-processing"><i class="fa fa-check"></i><b>14.8.4</b> Parallel processing</a></li>
+</ul></li>
+<li class="chapter" data-level="14.9" data-path="engine.html"><a href="engine.html#summary-1"><i class="fa fa-check"></i><b>14.9</b> Summary</a></li>
+<li class="chapter" data-level="14.10" data-path="engine.html"><a href="engine.html#digital-terrain-model"><i class="fa fa-check"></i><b>14.10</b> Digital Terrain Model</a><ul>
+<li class="chapter" data-level="14.10.1" data-path="engine.html"><a href="engine.html#in-memory-dtm"><i class="fa fa-check"></i><b>14.10.1</b> In memory DTM</a></li>
+<li class="chapter" data-level="14.10.2" data-path="engine.html"><a href="engine.html#on-disk-dtm"><i class="fa fa-check"></i><b>14.10.2</b> On disk DTM</a></li>
+</ul></li>
+<li class="chapter" data-level="14.11" data-path="engine.html"><a href="engine.html#storage-summary"><i class="fa fa-check"></i><b>14.11</b> Storage Summary</a></li>
+<li class="chapter" data-level="14.12" data-path="engine.html"><a href="engine.html#height-normalization"><i class="fa fa-check"></i><b>14.12</b> Height normalization</a></li>
+<li class="chapter" data-level="14.13" data-path="engine.html"><a href="engine.html#area-based-approach"><i class="fa fa-check"></i><b>14.13</b> Area Based Approach</a></li>
+<li class="chapter" data-level="14.14" data-path="engine.html"><a href="engine.html#height-aba-summary"><i class="fa fa-check"></i><b>14.14</b> Height &amp; ABA Summary</a></li>
+<li class="chapter" data-level="14.15" data-path="engine.html"><a href="engine.html#individual-tree-detection"><i class="fa fa-check"></i><b>14.15</b> Individual Tree Detection</a><ul>
+<li class="chapter" data-level="14.15.1" data-path="engine.html"><a href="engine.html#itd-summary"><i class="fa fa-check"></i><b>14.15.1</b> ITD Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14.16" data-path="engine.html"><a href="engine.html#individual-tree-segmentation"><i class="fa fa-check"></i><b>14.16</b> Individual Tree Segmentation</a></li>
+<li class="chapter" data-level="14.17" data-path="engine.html"><a href="engine.html#retile-a-catalog"><i class="fa fa-check"></i><b>14.17</b> Retile a catalog</a><ul>
+<li class="chapter" data-level="14.17.1" data-path="engine.html"><a href="engine.html#retile-a-catalog-into-smaller-files"><i class="fa fa-check"></i><b>14.17.1</b> Retile a catalog into smaller files</a></li>
+<li class="chapter" data-level="14.17.2" data-path="engine.html"><a href="engine.html#add-a-buffer-around-each-file"><i class="fa fa-check"></i><b>14.17.2</b> Add a buffer around each file</a></li>
+<li class="chapter" data-level="14.17.3" data-path="engine.html"><a href="engine.html#create-a-new-collection-with-only-first-returns"><i class="fa fa-check"></i><b>14.17.3</b> Create a new collection with only first returns</a></li>
+<li class="chapter" data-level="14.17.4" data-path="engine.html"><a href="engine.html#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel"><i class="fa fa-check"></i><b>14.17.4</b> Create a new collection of small and buffered ground returns in parallel</a></li>
+</ul></li>
+<li class="chapter" data-level="14.18" data-path="engine.html"><a href="engine.html#the-case-of-ground-inventories"><i class="fa fa-check"></i><b>14.18</b> The case of ground inventories</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="engine2.html"><a href="engine2.html"><i class="fa fa-check"></i><b>15</b> LAScatalog processing engine (2/2)</a><ul>
+<li class="chapter" data-level="15.1" data-path="engine2.html"><a href="engine2.html#catalog_apply"><i class="fa fa-check"></i><b>15.1</b> <code>catalog_apply()</code></a></li>
+<li class="chapter" data-level="15.2" data-path="engine2.html"><a href="engine2.html#create-user-defined-function"><i class="fa fa-check"></i><b>15.2</b> Create user-defined function</a></li>
+<li class="chapter" data-level="15.3" data-path="engine2.html"><a href="engine2.html#create-an-intermediate-function-for-catalog_apply"><i class="fa fa-check"></i><b>15.3</b> Create an intermediate function for <code>catalog_apply()</code></a></li>
+<li class="chapter" data-level="15.4" data-path="engine2.html"><a href="engine2.html#make-a-user-friendly-function-for-third-party-users"><i class="fa fa-check"></i><b>15.4</b> Make a user-friendly function for third party users</a></li>
+<li class="chapter" data-level="15.5" data-path="engine2.html"><a href="engine2.html#make-a-safe-function-for-third-party-users"><i class="fa fa-check"></i><b>15.5</b> Make a safe function for third party users</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="aba.html"><a href="aba.html#modelling"><i class="fa fa-check"></i><b>16</b> The Area-Based Approach (ABA) to forest modelling</a><ul>
+<li class="chapter" data-level="16.1" data-path="modelling.html"><a href="modelling.html"><i class="fa fa-check"></i><b>16.1</b> Read in data</a></li>
+<li class="chapter" data-level="16.2" data-path="modelling.html"><a href="modelling.html#aba-processing"><i class="fa fa-check"></i><b>16.2</b> ABA Processing</a><ul>
+<li class="chapter" data-level="16.2.1" data-path="modelling.html"><a href="modelling.html#step-1---clip-als-ground-inventory"><i class="fa fa-check"></i><b>16.2.1</b> Step 1 - Clip ALS ground inventory</a></li>
+<li class="chapter" data-level="16.2.2" data-path="modelling.html"><a href="modelling.html#step-2---calculate-plot-metrics"><i class="fa fa-check"></i><b>16.2.2</b> Step 2 - Calculate plot metrics</a></li>
+<li class="chapter" data-level="16.2.3" data-path="modelling.html"><a href="modelling.html#step-3---modeling"><i class="fa fa-check"></i><b>16.2.3</b> Step 3 - Modeling</a></li>
+<li class="chapter" data-level="16.2.4" data-path="modelling.html"><a href="modelling.html#step-4---wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.2.4</b> Step 4 - Wall to wall modelling</a></li>
+<li class="chapter" data-level="16.2.5" data-path="modelling.html"><a href="modelling.html#step-5---calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.2.5</b> Step 5 - Calculate wall-to-wall predictions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="outbox.html"><a href="outbox.html"><i class="fa fa-check"></i><b>17</b> Thinking outside the box</a><ul>
+<li class="chapter" data-level="17.1" data-path="outbox.html"><a href="outbox.html#new-complex-metrics-in-aba"><i class="fa fa-check"></i><b>17.1</b> New complex metrics in ABA</a><ul>
+<li class="chapter" data-level="17.1.1" data-path="outbox.html"><a href="outbox.html#outboxdistancereturn"><i class="fa fa-check"></i><b>17.1.1</b> Distance between returns</a></li>
+<li class="chapter" data-level="17.1.2" data-path="outbox.html"><a href="outbox.html#outboxrumple"><i class="fa fa-check"></i><b>17.1.2</b> Rumple index</a></li>
+</ul></li>
+<li class="chapter" data-level="17.2" data-path="outbox.html"><a href="outbox.html#multi-spectral-coloring"><i class="fa fa-check"></i><b>17.2</b> Multi-spectral coloring</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="plugins.html"><a href="plugins.html"><i class="fa fa-check"></i><b>18</b> <code>lidR</code> plugin system</a><ul>
+<li class="chapter" data-level="18.1" data-path="plugins.html"><a href="plugins.html#understanding-lidr-algorithms"><i class="fa fa-check"></i><b>18.1</b> Understanding lidR algorithms</a></li>
+<li class="chapter" data-level="18.2" data-path="plugins.html"><a href="plugins.html#creation-of-the-mba-algorithm"><i class="fa fa-check"></i><b>18.2</b> Creation of the <code>mba</code> algorithm</a></li>
+<li class="chapter" data-level="18.3" data-path="plugins.html"><a href="plugins.html#what-about-other-algorithms"><i class="fa fa-check"></i><b>18.3</b> What about other algorithms?</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The <code>lidR</code> package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="io" class="section level1">
+<h1><span class="header-section-number">2</span> Reading, Plotting, Querying &amp; Validating</h1>
+<div id="read" class="section level2">
+<h2><span class="header-section-number">2.1</span> Reading LiDAR data using <code>readLAS</code></h2>
+<p>Discrete return ALS sensors record a number of pieces of data. First and foremost, positional data in three dimensions (X,Y,Z), followed by additional information like the intensity for each point, the position of each point in the return sequence, or the beam incidence angle of each point. Reading, writing, and efficient storage of these ALS data is a critical step prior to any subsequent analysis.</p>
+<p>ALS data is most commonly distributed in LAS format, which is specifically designed to store ALS data in a standardized way. These data are officially documented and maintained by the <a href="http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf">American Society for Photogrammetry &amp; Remote Sensing (ASPRS)</a>. LAS files do however require a large amount of memory because they are not compressed. The LAZ format has become the standard compression scheme, because it is free and open-source.</p>
+<p>The widespread use, standardization and open source nature of the LAS and LAZ formats promoted the development of the <code>lidR</code> package, which has been designed to process LAS and LAZ files both as input and output, taking advantage of the LASlib and LASzip C++ libraries via the <a href="https://cran.r-project.org/package=rlas"><code>rlas</code></a> package.</p>
+<p>The function <code>readLAS()</code> reads a LAS or LAZ file and returns an object of class <code>LAS</code>. The <code>LAS</code> formal class is documented in depth in a <a href="https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAS-class.html">dedicated vignette</a>. To briefly summarize, a LAS file is made of two parts:</p>
+<ol style="list-style-type: decimal">
+<li>The header that stores summary information about its content including the bounding box of the file, coordinate reference system, and point format.</li>
+<li>The payload - i.e. the point cloud itself.</li>
+</ol>
+<p>The function <code>readLAS()</code> reads and creates an object that contains both the header and the payload.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(<span class="st">&quot;files.las&quot;</span>)</a></code></pre></div>
+<p>When printed it displays a summary of its content in a similar way to the <code>sp</code> package.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">print</span>(las)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; class        : LAS (v1.2 format 1)</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; memory       : 6.2 Mb </span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; extent       : 684766.4, 684993.3, 5017773, 5018007 (xmin, xmax, ymin, ymax)</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; coord. ref.  : +proj=utm +zone=17 +datum=NAD83 +units=m +no_defs </span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; area         : 53112.69 m²</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; points       : 81.6 thousand points</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; density      : 1.54 points/m²</span></a></code></pre></div>
+<p>For a more in-depth print out of the data use the function <code>summary()</code> instead of <code>print()</code>.</p>
+<div id="parameter-select" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Parameter <code>select</code></h3>
+<p>A LAS file stores the <code>X Y Z</code> coordinates of each point as well as many other data such as intensity, incidence angle, and return sequence position. We call these data <em>attributes</em>. In pratice many attributes are not actually useful but they are loaded anyway by default. This can take up a lot of processing memory because R is a language that does not allow for choosing data storage modes (see <a href="(https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAS-class.html)">this vignette</a> for more details).</p>
+<p>To save memory, <code>readLAS()</code> can take an optional parameter <code>select</code> which enables the user to selectively load the attributes of interest. For example, one can choose to load only the <code>X Y Z</code> attributes.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(<span class="st">&quot;file.las&quot;</span>, <span class="dt">select =</span> <span class="st">&quot;xyz&quot;</span>)  <span class="co"># load XYZ only</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(<span class="st">&quot;file.las&quot;</span>, <span class="dt">select =</span> <span class="st">&quot;xyzi&quot;</span>) <span class="co"># load XYZ and intensity only</span></a></code></pre></div>
+<p>Examples of other attribute abbreviations are: <code>t</code> - gpstime, <code>a</code> - scan angle, <code>n</code> - number of returns, <code>r</code> - return number, <code>c</code> - classification, <code>s</code> - synthetic flag, <code>k</code> - keypoint flag, <code>w</code> - withheld flag, <code>o</code> - overlap flag (format 6+), <code>u</code> - user data, <code>p</code> - point source ID, <code>e</code> - edge of flight line flag, <code>d</code> - direction of scan flag</p>
+</div>
+<div id="filter" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Parameter <code>filter</code></h3>
+<p>While <code>select</code> enables the user to select “columns” (or attributes) while reading files, <code>filter</code> allows selection of “rows” (or points) while reading. Removing superfluous data at reading time saves memory and increases computation speed. For example, it’s common pratice in forestry to process using first returns.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(<span class="st">&quot;file.las&quot;</span>, <span class="dt">filter =</span> <span class="st">&quot;-keep_first&quot;</span>) <span class="co"># Read only first returns</span></a></code></pre></div>
+<p>It is important to understand that the option <code>filter</code> in <code>readLAS()</code> keeps or discards point <strong>at read time</strong> i.e. while reading at the C++ level without implying any R code. For example the R function to filter points of interest (POI) is <code>filter_poi()</code> may return the exact same output than the <code>filter</code> option in <code>readLAS()</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">las1 &lt;-<span class="st"> </span><span class="kw">readLAS</span>(<span class="st">&quot;file.las&quot;</span>, <span class="dt">filter =</span> <span class="st">&quot;-keep_first&quot;</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">las2 &lt;-<span class="st"> </span><span class="kw">readLAS</span>(<span class="st">&quot;file.las&quot;</span>)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">las2 &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las2, ReturnNumber <span class="op">==</span><span class="st"> </span>1L)</a></code></pre></div>
+<p>In the above example we are (1) reading only the first returns or (2) Reading all the points then filtering the first returns in R. Both outputs are strictly identical but the first one is faster and more memory efficient because it doesn’t load the whole file in R and does not use extra processing memory. It should always be prefered when possible. Mutiple filter commands can be used at once to e.g. read only first return between 5 and 50 m.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">las &lt;-<span class="st">  </span><span class="kw">readLAS</span>(<span class="st">&quot;file.las&quot;</span>, <span class="dt">filter =</span> <span class="st">&quot;-keep_first -drop_z_below 5 -drop_z_above 50&quot;</span>)</a></code></pre></div>
+<p>The full list of available commands is given by <code>readLAS(filter = &quot;-help&quot;)</code>. Users of <code>LAStools</code> may recognize these commands because both <code>LAStools</code> and <code>lidR</code> use the same library (LASlib and LASzip) to read and write LAS and LAZ files.</p>
+</div>
+</div>
+<div id="validating-lidar-data" class="section level2">
+<h2><span class="header-section-number">2.2</span> Validating lidar data</h2>
+<p>An important first step in ALS data processing is ensuring that your data is complete and valid according to the <a href="http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf">ASPRS LAS specifications</a>. Users commonly report bugs arising from invalid data. This is why we introduced the <code>las_check()</code> function to perform a deep inspection of <code>LAS</code> objects. This function checks if a <code>LAS</code> object meets the ASPRS LAS specifications and whether it is valid for processing, giving warnings if otherwise.</p>
+<p>A simple example that happens fairly often is that a <code>LAS</code> file contains duplicate points. This may lead to problems like trees being detected twice, to invalid metrics, or to errors in DTM generation. We can also encounter invalid return numbers, incoherent return numbers and number of returns attributes, invalid coordinate reference system etc. Always make sure to run the <code>las_check()</code> function before digging deep into your data.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">las_check</span>(las)</a></code></pre></div>
+<PRE class="fansi fansi-output"><CODE>#&gt; 
+#&gt;  Checking the data
+#&gt;   - Checking coordinates...<span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking coordinates type...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking coordinates quantization...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking attributes type...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking ReturnNumber validity...
+#&gt;  </span><span style='color: #BBBB00;'>  ⚠ Invalid data: 1 points with a return number equal to 0 found.</span><span>
+#&gt;   - Checking NumberOfReturns validity...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking ReturnNumber vs. NumberOfReturns...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking RGB validity...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking absence of NAs...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking duplicated points...
+#&gt;  </span><span style='color: #BBBB00;'>  ⚠ 1 points are duplicated and share XYZ coordinates with other points</span><span>
+#&gt;   - Checking degenerated ground points...
+#&gt;  </span><span style='color: #BBBB00;'>  ⚠ There were 1 degenerated ground points. Some X Y Z coordinates were repeated.</span><span>
+#&gt;   - Checking attribute population...
+#&gt;  </span><span style='color: #BBBB00;'>  ⚠ 'PointSourceID' attribute is not populated.</span><span>
+#&gt;  </span><span style='color: #BBBB00;'>  ⚠ 'EdgeOfFlightline' attribute is not populated.</span><span>
+#&gt;   - Checking gpstime incoherances</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking flag attributes...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking user data attribute...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;  Checking the header
+#&gt;   - Checking header completeness...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking scale factor validity...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking point data format ID validity...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking extra bytes attributes validity...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking the bounding box validity...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking coordinate reference sytem...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;  Checking header vs data adequacy
+#&gt;   - Checking attributes vs. point format...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking header bbox vs. actual content...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking header number of points vs. actual content...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking header return number vs. actual content...
+#&gt;  </span><span style='color: #BBBB00;'>  ⚠ Invalid file: the header states the file contains 55756 returns numbered '1' but 55755 were found.</span><span>
+#&gt;  Checking preprocessing already done 
+#&gt;   - Checking ground classification...</span><span style='color: #00BB00;'> yes</span><span>
+#&gt;   - Checking normalization...</span><span style='color: #00BB00;'> yes</span><span>
+#&gt;   - Checking negative outliers...</span><span style='color: #00BB00;'> ✓</span><span>
+#&gt;   - Checking flightline classification...</span><span style='color: #BB0000;'> no</span><span>
+</span></CODE></PRE>
+<p>A check is performed at read time regardless, but the read time check is not as thorough as <code>las_check()</code> for computation time reasons. For example duplicated points are not checked at read time.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">las =<span class="st"> </span><span class="kw">readLAS</span>(<span class="st">&quot;data/chap1/corrupted.laz&quot;</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; Warning: Invalid data: 174638 points with a &#39;return number&#39; greater than the &#39;number of returns&#39;.</span></a></code></pre></div>
+</div>
+<div id="plot" class="section level2">
+<h2><span class="header-section-number">2.3</span> Plotting</h2>
+<p>The <code>lidR</code> package takes advantage of the <a href="https://cran.r-project.org/package=rgl"><code>rgl</code></a> package to provide a versatile and interactive 3D viewer with points colored by Z coordinates on a black background as default.</p>
+<div id="basic-3d-rendering" class="section level3">
+<h3><span class="header-section-number">2.3.1</span> Basic 3D rendering</h3>
+<p>The very basic way to render a point cloud is the function <code>plot()</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">plot</span>(las)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-7-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p>Users can change the attributes used for coloring by providing the name of the attribute used to colorize the points. The background color of the viewer can also be changed by assigning a color using the <code>bg</code> argument. Axes can also be added and point sizes can be changed.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># Plot las object by scan angle, make the background white, display XYZ axis and Z scale colors</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">plot</span>(las, <span class="dt">color =</span> <span class="st">&quot;ScanAngleRank&quot;</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">axis =</span> <span class="ot">TRUE</span>, <span class="dt">legend =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p>Note that if your file contains RGB data the string <code>&quot;RGB&quot;</code> is supported:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">plot</span>(las, <span class="dt">color =</span><span class="st">&quot;RGB&quot;</span>)</a></code></pre></div>
+<p>The <code>trim</code> parameter enables trimming of values when outliers break the color palette range. For example, intensity often contains large outliers. The palette range would be too large and most of the values will be considered as “very low”, so everything will appear in the same color. Using <code>trim</code> as an outlier threshold enable to print every value higher than <code>trim</code> using the same color.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">plot</span>(las, <span class="dt">color =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">trim =</span> <span class="dv">1800</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-9-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+<div id="overlays" class="section level3">
+<h3><span class="header-section-number">2.3.2</span> Overlays</h3>
+<p>The package also provides some easy to use functions for common overlay. For example <code>add_dtm3d()</code> to add a digital terrain model (chapter <a href="dtm.html#dtm">4</a>) and <code>add_treetops3d()</code> to visualize the output of an individual tree detection (chapter <a href="itd.html#itd">7</a>)</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">x =<span class="st"> </span><span class="kw">plot</span>(las, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">add_dtm3d</span>(x, dtm)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-11-1.png" width="384" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">x =<span class="st"> </span><span class="kw">plot</span>(las, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw">add_treetops3d</span>(x, ttops)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-13-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p>It is also possible to combine two point clouds with different color palettes. In the following example we are using a previously classified point cloud. We first separate the vegetation and non vegetation points using <code>filter_poi()</code> and then plot both on top of each other with different color schemes using <code>add</code> options in <code>plot()</code></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">nonveg =<span class="st"> </span><span class="kw">filter_poi</span>(las, Classification <span class="op">!=</span><span class="st"> </span>LASHIGHVEGETATION)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">veg =<span class="st"> </span><span class="kw">filter_poi</span>(las, Classification <span class="op">==</span><span class="st"> </span>LASHIGHVEGETATION)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">x =<span class="st"> </span><span class="kw">plot</span>(nonveg, <span class="dt">color =</span> <span class="st">&quot;Classification&quot;</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="kw">plot</span>(veg, <span class="dt">add =</span> x)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-15-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="advanced-3d-rendering" class="section level3">
+<h3><span class="header-section-number">2.3.3</span> Advanced 3D rendering</h3>
+<p>With <code>lidR</code> being based on <code>rgl</code> it is easy to add objects in the main rendering using <code>rgl</code> functions such as <code>rgl::point3d</code>, <code>rgl::text()</code>, <code>rgl::surface3d()</code> and so on. However <code>lidR</code> introduced an additional challenge because it does not display the points with their actual coordinates. The points are shifted to be rendered close to (0, 0) (a matter of accuracy because <code>rgl</code> uses <code>float</code> (decimal numbers on 32 bits) instead of <code>double</code> (decimal numbers on 64 bits)). When <code>plot()</code> is used it invisibly returns the shift values that can be used later to realign other objects.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">offsets =<span class="st"> </span><span class="kw">plot</span>(las)</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw">print</span>(offsets)</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co">#&gt; [1]  391867.8 3901019.3</span></a></code></pre></div>
+<p>The coordinates of the objects must be corrected to align with the point cloud. In the following we will add lines to render the trunks. We read a file, we locate the trees (see chapter <a href="itd.html#itd">7</a>), we extract the coordinates and sizes of the trees an plot lines with <code>rgl::segment3d</code>.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">LASfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;MixedConifer.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;lidR&quot;</span>)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(LASfile, <span class="dt">select =</span> <span class="st">&quot;xyzc&quot;</span>)</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co"># get the location of the trees</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5">ttops &lt;-<span class="st"> </span><span class="kw">find_trees</span>(las, <span class="kw">lmf</span>(<span class="dt">ws =</span> <span class="dv">5</span>)) </a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb18-7" data-line-number="7"><span class="co"># extract the coordinates of the trees</span></a>
+<a class="sourceLine" id="cb18-8" data-line-number="8">x =<span class="st"> </span><span class="kw">coordinates</span>(ttops)[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb18-9" data-line-number="9">y =<span class="st"> </span><span class="kw">coordinates</span>(ttops)[,<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb18-10" data-line-number="10">z =<span class="st"> </span>ttops<span class="op">$</span>Z</a>
+<a class="sourceLine" id="cb18-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb18-12" data-line-number="12"><span class="co"># plot the point cloud</span></a>
+<a class="sourceLine" id="cb18-13" data-line-number="13">offsets =<span class="st"> </span><span class="kw">plot</span>(las, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb18-14" data-line-number="14"><span class="kw">add_treetops3d</span>(offsets, ttops)</a>
+<a class="sourceLine" id="cb18-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb18-16" data-line-number="16"><span class="co"># add the trunks</span></a>
+<a class="sourceLine" id="cb18-17" data-line-number="17"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(ttops)) {</a>
+<a class="sourceLine" id="cb18-18" data-line-number="18">  <span class="co"># apply the shift to display the lines</span></a>
+<a class="sourceLine" id="cb18-19" data-line-number="19">  <span class="co"># in the rendering coordinate system</span></a>
+<a class="sourceLine" id="cb18-20" data-line-number="20">  X =<span class="st"> </span><span class="kw">c</span>(x[i], x[i]) <span class="op">-</span><span class="st"> </span>offsets[<span class="dv">1</span>] </a>
+<a class="sourceLine" id="cb18-21" data-line-number="21">  Y =<span class="st"> </span><span class="kw">c</span>(y[i], y[i]) <span class="op">-</span><span class="st"> </span>offsets[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb18-22" data-line-number="22">  Z =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, z[i])</a>
+<a class="sourceLine" id="cb18-23" data-line-number="23">  rgl<span class="op">::</span><span class="kw">segments3d</span>(X, Y, Z, <span class="dt">col =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb18-24" data-line-number="24">}</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-18-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+<div id="crossection" class="section level3">
+<h3><span class="header-section-number">2.3.4</span> Cross sections 2D rendering</h3>
+<p>To better visualize the vertical structure of a point cloud, investigate classification results, or compare results of different interpolation routines, a cross section can be plotted. To do that we first need to decide where the cross section is located (i.e. define the beginning and the end) and specify it’s width. The point cloud can then be clipped and the <code>X</code> and <code>Z</code> coordinates used to create the plot.</p>
+<p>For example, to create a 100 m long cross section we may define the beginning and the end and then use <code>clip_transect()</code> function to subset the point cloud.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">p1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">273357</span>, <span class="dv">5274357</span>) <span class="co"># these are coordinates</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">p2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">273542</span>, <span class="dv">5274542</span>) <span class="co"># these are coordinates</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3">las_tr &lt;-<span class="st"> </span><span class="kw">clip_transect</span>(las, p1, p2, <span class="dt">width =</span> <span class="dv">4</span>, <span class="dt">xz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p>Rendering can be achieved with base plot or <code>ggplot2</code>. Notice the use of <code>@data</code> to extract the <code>data.frame</code> from the <code>LAS</code> object.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">ggplot</span>(las_tr<span class="op">@</span>data, <span class="kw">aes</span>(X,Z, <span class="dt">color =</span> Z)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="st">  </span><span class="kw">coord_equal</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_color_gradientn</span>(<span class="dt">colours =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-22-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>The two steps required to create a cross section (clipping the point cloud and plotting) can be combined. Below we create a simple function that will become handy at multiple occasions throughout this book. To make this function even easier to use we will specify the default values for <code>p1</code> and <code>p2</code> so that the cross section is located in the centre of the point cloud, along the X-axis. The default width will be 4 m.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">plot_crossection &lt;-<span class="st"> </span><span class="cf">function</span>(las,</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">                             <span class="dt">p1 =</span> <span class="kw">c</span>(<span class="kw">min</span>(las<span class="op">@</span>data<span class="op">$</span>X), <span class="kw">mean</span>(las<span class="op">@</span>data<span class="op">$</span>Y)),</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">                             <span class="dt">p2 =</span> <span class="kw">c</span>(<span class="kw">max</span>(las<span class="op">@</span>data<span class="op">$</span>X), <span class="kw">mean</span>(las<span class="op">@</span>data<span class="op">$</span>Y)),</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">                             <span class="dt">width =</span> <span class="dv">4</span>, <span class="dt">colour_by =</span> <span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">{</a>
+<a class="sourceLine" id="cb21-6" data-line-number="6">  colour_by &lt;-<span class="st"> </span><span class="kw">enquo</span>(colour_by)</a>
+<a class="sourceLine" id="cb21-7" data-line-number="7">  data_clip &lt;-<span class="st"> </span><span class="kw">clip_transect</span>(las, p1, p2, width)</a>
+<a class="sourceLine" id="cb21-8" data-line-number="8">  p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(data_clip<span class="op">@</span>data, <span class="kw">aes</span>(X,Z)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">coord_equal</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_minimal</span>()</a>
+<a class="sourceLine" id="cb21-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb21-10" data-line-number="10">  <span class="cf">if</span> (<span class="op">!</span><span class="kw">is.null</span>(colour_by))</a>
+<a class="sourceLine" id="cb21-11" data-line-number="11">    p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">aes</span>(<span class="dt">color =</span> <span class="op">!!</span>colour_by) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">color =</span> <span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb21-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb21-13" data-line-number="13">  <span class="kw">return</span>(p)</a>
+<a class="sourceLine" id="cb21-14" data-line-number="14">}</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">plot_crossection</span>(las, <span class="dt">colour_by =</span> <span class="kw">factor</span>(Classification))</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-24-1.png" width="768" style="display: block; margin: auto;" /></p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="gnd.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
