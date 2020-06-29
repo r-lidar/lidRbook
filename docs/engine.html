@@ -456,8 +456,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="lidR-book_files/figure-html/unnamed-chunk-151-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>We can check the files that were written on disk and see that the names match the template.</p>
 <div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1">rois<span class="op">$</span>filename</a>
-<a class="sourceLine" id="cb138-2" data-line-number="2"><span class="co">#&gt; [1] &quot;/tmp/Rtmpjh5f2C/339348.8_5239254_1.las&quot; &quot;/tmp/Rtmpjh5f2C/339141.9_5238717_2.las&quot; &quot;/tmp/Rtmpjh5f2C/338579.6_5238169_3.las&quot;</span></a>
-<a class="sourceLine" id="cb138-3" data-line-number="3"><span class="co">#&gt; [4] &quot;/tmp/Rtmpjh5f2C/338520.8_5239318_4.las&quot; &quot;/tmp/Rtmpjh5f2C/338110_5239247_5.las&quot;   &quot;/tmp/Rtmpjh5f2C/339385_5239290_6.las&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb138-2" data-line-number="2"><span class="co">#&gt; [1] &quot;/tmp/Rtmpo4Wgrx/339348.8_5239254_1.las&quot; &quot;/tmp/Rtmpo4Wgrx/339141.9_5238717_2.las&quot;</span></a>
+<a class="sourceLine" id="cb138-3" data-line-number="3"><span class="co">#&gt; [3] &quot;/tmp/Rtmpo4Wgrx/338579.6_5238169_3.las&quot; &quot;/tmp/Rtmpo4Wgrx/338520.8_5239318_4.las&quot;</span></a>
+<a class="sourceLine" id="cb138-4" data-line-number="4"><span class="co">#&gt; [5] &quot;/tmp/Rtmpo4Wgrx/338110_5239247_5.las&quot;   &quot;/tmp/Rtmpo4Wgrx/339385_5239290_6.las&quot;</span></a></code></pre></div>
 </div>
 <div id="multiple-extraction-with-point-cloud-indexation" class="section level3">
 <h3><span class="header-section-number">14.6.2</span> Multiple extraction with point cloud indexation</h3>
@@ -577,7 +578,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb146-23" data-line-number="23"><span class="co">#&gt; resolution : 1, 1  (x, y)</span></a>
 <a class="sourceLine" id="cb146-24" data-line-number="24"><span class="co">#&gt; extent     : 338000, 339500, 5238000, 5239500  (xmin, xmax, ymin, ymax)</span></a>
 <a class="sourceLine" id="cb146-25" data-line-number="25"><span class="co">#&gt; crs        : +proj=utm +zone=19 +datum=WGS84 +units=m +no_defs </span></a>
-<a class="sourceLine" id="cb146-26" data-line-number="26"><span class="co">#&gt; source     : /tmp/Rtmpjh5f2C/grid_terrain.vrt </span></a>
+<a class="sourceLine" id="cb146-26" data-line-number="26"><span class="co">#&gt; source     : /tmp/Rtmpo4Wgrx/grid_terrain.vrt </span></a>
 <a class="sourceLine" id="cb146-27" data-line-number="27"><span class="co">#&gt; names      : layer </span></a>
 <a class="sourceLine" id="cb146-28" data-line-number="28"><span class="co">#&gt; values     : 534.024, 803.364  (min, max)</span></a>
 <a class="sourceLine" id="cb146-29" data-line-number="29"><span class="kw">inMemory</span>(dtm)</a>
@@ -696,9 +697,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb155-35" data-line-number="35"><span class="co">#&gt; Warning in proj4string(x): CRS object has comment, which is lost in output</span></a>
 <a class="sourceLine" id="cb155-36" data-line-number="36"></a>
 <a class="sourceLine" id="cb155-37" data-line-number="37"><span class="co">#&gt; Warning in proj4string(x): CRS object has comment, which is lost in output</span></a>
-<a class="sourceLine" id="cb155-38" data-line-number="38"><span class="co">#&gt; [1] &quot;/tmp/Rtmpjh5f2C/tiles_338000_5238000_1_norm.shp&quot; &quot;/tmp/Rtmpjh5f2C/tiles_338000_5238500_1_norm.shp&quot; &quot;/tmp/Rtmpjh5f2C/tiles_338000_5239000_1_norm.shp&quot;</span></a>
-<a class="sourceLine" id="cb155-39" data-line-number="39"><span class="co">#&gt; [4] &quot;/tmp/Rtmpjh5f2C/tiles_338500_5238000_1_norm.shp&quot; &quot;/tmp/Rtmpjh5f2C/tiles_338500_5238500_1_norm.shp&quot; &quot;/tmp/Rtmpjh5f2C/tiles_338500_5239000_1_norm.shp&quot;</span></a>
-<a class="sourceLine" id="cb155-40" data-line-number="40"><span class="co">#&gt; [7] &quot;/tmp/Rtmpjh5f2C/tiles_339000_5238000_1_norm.shp&quot; &quot;/tmp/Rtmpjh5f2C/tiles_339000_5238500_1_norm.shp&quot; &quot;/tmp/Rtmpjh5f2C/tiles_339000_5239000_1_norm.shp&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb155-38" data-line-number="38"><span class="co">#&gt; [1] &quot;/tmp/Rtmpo4Wgrx/tiles_338000_5238000_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb155-39" data-line-number="39"><span class="co">#&gt; [2] &quot;/tmp/Rtmpo4Wgrx/tiles_338000_5238500_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb155-40" data-line-number="40"><span class="co">#&gt; [3] &quot;/tmp/Rtmpo4Wgrx/tiles_338000_5239000_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb155-41" data-line-number="41"><span class="co">#&gt; [4] &quot;/tmp/Rtmpo4Wgrx/tiles_338500_5238000_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb155-42" data-line-number="42"><span class="co">#&gt; [5] &quot;/tmp/Rtmpo4Wgrx/tiles_338500_5238500_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb155-43" data-line-number="43"><span class="co">#&gt; [6] &quot;/tmp/Rtmpo4Wgrx/tiles_338500_5239000_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb155-44" data-line-number="44"><span class="co">#&gt; [7] &quot;/tmp/Rtmpo4Wgrx/tiles_339000_5238000_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb155-45" data-line-number="45"><span class="co">#&gt; [8] &quot;/tmp/Rtmpo4Wgrx/tiles_339000_5238500_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb155-46" data-line-number="46"><span class="co">#&gt; [9] &quot;/tmp/Rtmpo4Wgrx/tiles_339000_5239000_1_norm.shp&quot;</span></a></code></pre></div>
 <div id="itd-summary" class="section level3">
 <h3><span class="header-section-number">14.15.1</span> ITD Summary</h3>
 <p>We have learned several things about the engine in this section</p>
