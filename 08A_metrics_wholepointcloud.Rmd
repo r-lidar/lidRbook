@@ -22,7 +22,7 @@ The "cloud" level of regularization corresponds to the computation of derived me
 ```{r}
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
 las <- readLAS(LASfile)
-cloud_metrics(las, func = ~mean(Z)) #calculate mean height
+cloud_metrics(las, func = ~mean(Z)) # calculate mean height
 ```
 
 To calculate more than one metric a custom function needs to be used, or one of the pre-defined functions within `lidR`. To calculate the whole suite of metrics defined in `stdmetrics_rn()` we can use `func = .stdmetrics_rn`. When several metrics are computed they are returned as a `list`.
@@ -85,7 +85,7 @@ head(inventory)
 head(metrics[,1:8])
 ```
 
-We have computed man metrics for each plot and the known value of interest. We can use that to build a linear model with some metrics.
+We have computed many metrics for each plot and the known value of interest. We can use that to build a linear model with some metrics.
 
 ```{r}
 model = lm(G~zmax+zmean+pzabove2+zq50+zq90, data = metrics)
@@ -99,4 +99,4 @@ plot(inventory$G, 0.7018 *metrics$pzabove2 + 0.9268 * metrics$zmax, xlab = "Meas
 abline(0,1)
 ```
 
-In section \@ref(engine) we will study how to extract a ground inventory and in section \@ref(modeling) we will study more in depth modelling.
+This example can be improved. In chapter \@ref(engine) we will study how to extract a ground inventory and in section \@ref(modelling) we will study more in depth modelling presenting a complete workflow from the plot extraction to the mapping of the predictive model.

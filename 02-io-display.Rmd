@@ -16,24 +16,21 @@ library(lidR)
 library(ggplot2)
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
 las <- readLAS(LASfile)
+
+rgdal::set_thin_PROJ6_warnings(TRUE)
+options(crayon.enabled = TRUE)
+old_hooks <- fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message", "error"))
 ```
 
 # Reading, Plotting, Querying & Validating {#io}
 
-`lidR` is designed to process LAS files for several technical reasons:
-
-1. LAS is backed by public format specifications
-2. Binary format providing efficient storage in read and write mode
-3. Contains a comprehensive header that describes the content of the file including its bounding box. 
-4. Compressed LAZ format is supported
+## Reading LiDAR data using `readLAS` {#read}
 
 Discrete return ALS sensors record a number of pieces of data. First and foremost, positional data in three dimensions (X,Y,Z), followed by additional information like the intensity for each point, the position of each point in the return sequence, or the beam incidence angle of each point. Reading, writing, and efficient storage of these ALS data is a critical step prior to any subsequent analysis. 
 
-ALS data is most commonly distributed in LAS format, which is specifically designed to store ALS data that is standardized. These data are officially documented and maintained by the [American Society for Photogrammetry & Remote Sensing (ASPRS)](http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf). LAS files do however require a large amount of memory because they are not compressed. The LAZ format has become the standard compression scheme, because it is free and open-source.
+ALS data is most commonly distributed in LAS format, which is specifically designed to store ALS data in a standardized way. These data are officially documented and maintained by the [American Society for Photogrammetry & Remote Sensing (ASPRS)](http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf). LAS files do however require a large amount of memory because they are not compressed. The LAZ format has become the standard compression scheme, because it is free and open-source.
 
-The widespread use, standardization and open source nature of the LAS and LAZ formats promoted the development of the `lidR` package, which has been designed to process LAS and LAZ files both as input and output, taking advantage of the LASlib and LASzip C++ libraries via the `rlas` package.
-
-## Reading LiDAR data using `readLAS` {#read}
+The widespread use, standardization and open source nature of the LAS and LAZ formats promoted the development of the `lidR` package, which has been designed to process LAS and LAZ files both as input and output, taking advantage of the LASlib and LASzip C++ libraries via the [`rlas`](https://cran.r-project.org/package=rlas) package.
 
 The function `readLAS()` reads a LAS or LAZ file and returns an object of class `LAS`. The `LAS` formal class is documented in depth in a [dedicated vignette](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAS-class.html). To briefly summarize, a LAS file is made of two parts:
 
@@ -63,21 +60,7 @@ To save memory, `readLAS()` can take an optional parameter `select` which enable
 las <- readLAS("file.las", select = "xyz")  # load XYZ only
 las <- readLAS("file.las", select = "xyzi") # load XYZ and intensity only
 ```
-Examples of other commonly used attribute abbreviations are:
-
-* `t` - gpstime
-* `a` - scan angle
-* `n` - number of returns
-* `r` - return number
-* `c` - classification
-* `s` - synthetic flag
-* `k` - keypoint flag
-* `w` - withheld flag
-* `o` - overlap flag (format 6+)
-* `u` - user data
-* `p` - point source ID
-* `e` - edge of flight line flag
-* `d` - direction of scan flag
+Examples of other attribute abbreviations are: `t` - gpstime, `a` - scan angle, `n` - number of returns, `r` - return number, `c` - classification, `s` - synthetic flag, `k` - keypoint flag, `w` - withheld flag, `o` - overlap flag (format 6+), `u` - user data, `p` - point source ID, `e` - edge of flight line flag, `d` - direction of scan flag
 
 ### Parameter `filter` {#filter}
 
@@ -97,26 +80,27 @@ las2 <- readLAS("file.las")
 las2 <- filter_poi(las2, ReturnNumber == 1L)
 ```
 
-In the previous example we are:
-
-1. Reading only the first returns
-2. Reading all the points then filtering the first return. 
-
-Both outputs are strictly identical but the first one is faster and more memory efficient because it doesn't load the whole file in R.
-
-Mutiple filter commands can be used at once.
+In the above example we are (1) reading only the first returns or (2) Reading all the points then filtering the first returns in R. Both outputs are strictly identical but the first one is faster and more memory efficient because it doesn't load the whole file in R and does not use extra processing memory. It should always be prefered when possible. Mutiple filter commands can be used at once to e.g. read only first return between 5 and 50 m.
 
 ```r
 las <-  readLAS("file.las", filter = "-keep_first -drop_z_below 5 -drop_z_above 50")
 ```
 
-The full list of available commands is given by `rlas::lasfilterusage()`. Users of `LAStools` may recognize these commands because both `LAStools` and `lidR` use the same library (LASlib and LASzip) to read and write LAS and LAZ files.
+The full list of available commands is given by `readLAS(filter = "-help")`. Users of `LAStools` may recognize these commands because both `LAStools` and `lidR` use the same library (LASlib and LASzip) to read and write LAS and LAZ files.
 
 ## Validating lidar data
 
-An important first step in ALS data processing is ensuring that your data is complete and valid. Users commonly report bugs in their point clouds, making them invalid. This is why we introduced the `las_check()` function to perform a deep inspection of `LAS` objects. This function checks if a `LAS` object meets specifications and whether it is valid for processing, giving warnings if otherwise. 
+An important first step in ALS data processing is ensuring that your data is complete and valid according to the [ASPRS LAS specifications](http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf). Users commonly report bugs arising from invalid data. This is why we introduced the `las_check()` function to perform a deep inspection of `LAS` objects. This function checks if a `LAS` object meets the ASPRS LAS specifications and whether it is valid for processing, giving warnings if otherwise.
 
 A simple example that happens fairly often is that a `LAS` file contains duplicate points. This may lead to problems like trees being detected twice, to invalid metrics, or to errors in DTM generation. We can also encounter invalid return numbers, incoherent return numbers and number of returns attributes, invalid coordinate reference system etc. Always make sure to run the `las_check()` function before digging deep into your data.
+
+```{r, echo = FALSE}
+las$X[2] <- las$X[1]
+las$Y[2] <- las$Y[1]
+las$Z[2] <- las$Z[1]
+las$Classification[1:2] <- 2L
+las$ReturnNumber[3] <- 0L
+```
 
 ```{r}
 las_check(las)
@@ -130,7 +114,12 @@ las = readLAS("data/chap1/corrupted.laz")
 
 ## Plotting {#plot}
 
-The `lidR` package takes advantage of the `rgl` package to provide a versatile and interactive 3D viewer with points colored by Z coordinates on a black background as default.
+```{r, echo = FALSE, warning = FALSE}
+LASfile <- system.file("extdata", "Topography.laz", package="lidR")
+las <- readLAS(LASfile)
+```
+
+The `lidR` package takes advantage of the [`rgl`](https://cran.r-project.org/package=rgl) package to provide a versatile and interactive 3D viewer with points colored by Z coordinates on a black background as default.
 
 ### Basic 3D rendering
 
@@ -147,7 +136,7 @@ plot(las, size = 3)
 Users can change the attributes used for coloring by providing the name of the attribute used to colorize the points. The background color of the viewer can also be changed by assigning a color using the `bg` argument. Axes can also be added and point sizes can be changed.
 
 ```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
-# Plot las object by return number, make the background grey, and display XYZ axis
+# Plot las object by scan angle, make the background white, display XYZ axis and Z scale colors
 plot(las, color = "ScanAngleRank", bg = "white", axis = TRUE, legend = TRUE)
 ```
 
@@ -156,19 +145,20 @@ Note that if your file contains RGB data the string `"RGB"` is supported:
 ```r
 plot(las, color ="RGB")
 ```
-The `trim` parameter enables trimming of values when outliers break the color palette range. For example, intensity often contains large outliers. The palette range would be too large and most of the values will be considered as "very low", so everything will appear in the same color.
+
+The `trim` parameter enables trimming of values when outliers break the color palette range. For example, intensity often contains large outliers. The palette range would be too large and most of the values will be considered as "very low", so everything will appear in the same color. Using `trim` as an outlier threshold enable to print every value higher than `trim` using the same color.
 
 ```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
-plot(las, color = "Intensity", trim = 50, bg = "white")
+plot(las, color = "Intensity", trim = 1800, bg = "white")
 ```
 
-`lidR` also provides some easy to use functions for common overlay. For example `add_dtm3d()` to add a digital terrain model (section \@ref(dtm)) and `add_treetops3d()` to visualize the output of an individual tree detection (section \@ref(itd))
+### Overlays
 
-```{r, echo = FALSE}
-LASfile <- system.file("extdata", "Topography.laz", package="lidR")
-las <- readLAS(LASfile, select = "xyzc")
+The package also provides some easy to use functions for common overlay. For example `add_dtm3d()` to add a digital terrain model (chapter \@ref(dtm)) and `add_treetops3d()` to visualize the output of an individual tree detection (chapter \@ref(itd))
+
+```{r, echo = FALSE, warning=FALSE}
 dtm <- grid_terrain(las, 2, tin())
-las <- clip_circle(las, 273516, 5274496, 80)
+las <- clip_circle(las, 273516, 5274496, 100)
 ```
 
 ```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
@@ -205,14 +195,14 @@ plot(veg, add = x)
 
 ### Advanced 3D rendering
 
-With `lidR` being based on `rgl` it is easy to add objects in the main rendering using `rgl` function such as `rgl::point3d`, `rgl::text()`, `rgl::surface3d()` and so on.  However `lidR` introduced an additional challenge because it does not display the points with their actual coordinates. The points are shifted to be rendered close to (0, 0) (a matter of accuracy because `rgl` uses `float` (decimal numbers on 32 bits) instead of `double` (decimal numbers on 64 bits)). When `plot()` is used it invisibly returns the shift values that can be used later to realign other objects.
+With `lidR` being based on `rgl` it is easy to add objects in the main rendering using `rgl` functions such as `rgl::point3d`, `rgl::text()`, `rgl::surface3d()` and so on.  However `lidR` introduced an additional challenge because it does not display the points with their actual coordinates. The points are shifted to be rendered close to (0, 0) (a matter of accuracy because `rgl` uses `float` (decimal numbers on 32 bits) instead of `double` (decimal numbers on 64 bits)). When `plot()` is used it invisibly returns the shift values that can be used later to realign other objects.
 
 ```{r}
 offsets = plot(las)
 print(offsets)
 ```
 
-The coordinates of the objects must corrected in `rgl` functions to align with the point cloud. In the following we will add lines to render the trucks
+The coordinates of the objects must be corrected to align with the point cloud. In the following we will add lines to render the trunks. We read a file, we locate the trees (see chapter \@ref(itd)), we extract the coordinates and sizes of the trees an plot lines with `rgl::segment3d`.
 
 ```{r, echo=FALSE}
 r3dDefaults = rgl::r3dDefaults
@@ -227,17 +217,24 @@ r3dDefaults$zoom = 0.75
 ```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
 LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
 las <- readLAS(LASfile, select = "xyzc")
-ttops <- find_trees(las, lmf(ws = 5))
 
+# get the location of the trees
+ttops <- find_trees(las, lmf(ws = 5)) 
+
+# extract the coordinates of the trees
 x = coordinates(ttops)[,1]
 y = coordinates(ttops)[,2]
 z = ttops$Z
 
+# plot the point cloud
 offsets = plot(las, bg = "white", size = 3)
 add_treetops3d(offsets, ttops)
-for (i in 1:length(ttops))  
-{
-  X = c(x[i], x[i]) - offsets[1]
+
+# add the trunks
+for (i in 1:length(ttops)) {
+  # apply the shift to display the lines
+  # in the rendering coordinate system
+  X = c(x[i], x[i]) - offsets[1] 
   Y = c(y[i], y[i]) - offsets[2]
   Z = c(0, z[i])
   rgl::segments3d(X, Y, Z, col = "black", lwd = 2)
@@ -261,12 +258,12 @@ las <- readLAS(LASfile)
 ```
 
 ```{r}
-p1 <- c(273357, y = 5274357) # these are coordinates
-p2 <- c(273542, y = 5274542) # these are coordinates
+p1 <- c(273357, 5274357) # these are coordinates
+p2 <- c(273542, 5274542) # these are coordinates
 las_tr <- clip_transect(las, p1, p2, width = 4, xz = TRUE)
 ```
 
-Rendering can be achieved with base plot or `ggplot2`
+Rendering can be achieved with base plot or `ggplot2`. Notice the use of `@data` to extract the `data.frame` from the `LAS` object.
 
 ```{r, fig.height=1.5, fig.width=8}
 ggplot(las_tr@data, aes(X,Z, color = Z)) + 

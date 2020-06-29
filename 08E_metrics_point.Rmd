@@ -16,7 +16,7 @@ library(lidR)
 
 ## Overview
 
-The "point" level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The `point_metrics()` function allows calculation of point-based metrics and works like `cloud_metrics()`, `grid_metrics()`, `hexbin_metrics()`, `tree_metrics()` or `voxel_metrics()` seen in sections \@ref(metrics), \@ref(cba), \@ref(aba), \@ref(tba) and \@ref(vba). Refer to these sections for a more comprehensive overview.
+The "point" level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The `point_metrics()` function allows calculation of point-based metrics and works like `cloud_metrics()`, `grid_metrics()`, `hexbin_metrics()`, `tree_metrics()` or `voxel_metrics()` seen in chapter \@ref(metrics), \@ref(cba), \@ref(aba), \@ref(tba) and \@ref(vba). Refer to these sections for a more comprehensive overview.
 
 For each point, the neighbourhood can be either:
 
@@ -75,6 +75,7 @@ is.planar = function(x, y, z, th1 = 25, th2 = 6) {
   return(list(planar = is_planar))
 }
 ```
+
 We then apply this function using 20 neighbors. We also use `filter = ~Classification != LASGROUND` to not process points classified as ground. We do this first, because the scene is normalized so by definition each ground point is expected to be part of a flat planar surface, and second, because it will speed-up computation because fewer points will be considered.
 
 ```r
@@ -125,7 +126,7 @@ is.planar = function(x, y, z, th1 = 25, th2 = 6) {
 }
 ```
 
-We can do this... but we know that not everyone is well versed in C++. `lidR` therefore has a dedicated function (`segment_shape()`) for this specific task because we believe that it's of high interest to provide a specialized and faster version of this tool.
+We can do this... but we know that not everyone is well versed in C++. `lidR` therefore has a dedicated and even faster function (`segment_shape()`) for this specific task because we believe that it's of high interest to provide a specialized and faster version of this tool.
 
 ```r
 las <- segment_shape(las, shp_plane(k = 25), "planar")
@@ -133,11 +134,11 @@ las <- segment_shape(las, shp_plane(k = 25), "planar")
 
 ### Lake and wire segmentation
 
-Eigen value decomposition applied using `point_metrics()` opens alot of possibilities. For example, by tweaking the previous example we can design a lake segmentation algorithm. A lake is a planar region with a vertical normal vector, so to create a lake segmentation we simply need to add such constraints in `is.planar()`.
+Eigen value decomposition applied using `point_metrics()` opens a lot of possibilities. For example, by tweaking the previous example we can design a lake segmentation algorithm. A lake is a planar region with a vertical normal vector, so to create a lake segmentation we simply need to add such constraints in `is.planar()`.
 
 We can also design a wire segmentation algorithm. For a wire we can change the [Limberger et al. (2015)](https://doi.org/10.1016/j.patcog.2014.12.020) constrains to enable the detection of elongated linear features instead of flat feature.
 
-```{r}
+```{r, warning =FALSE}
 is.linear = function(x, y, z, th = 10) {
   xyz <- cbind(x,y,z)
   eigen_m <- eigen_values(xyz)
@@ -168,11 +169,7 @@ las <- segment_shape(las, shp_line(th = 8, k = 15), "linear")
 
 ### Multi-spectral coloring {#sec:pba-mscoloring}
 
-`point_metrics()` is not limited to eigen value related metrics. **It is only limited by a users imagination**. 
-
-In the following we will demonstrate how it an be used to attribute false colors to a multi-spectral point cloud.
-
-Multi-spectral ALS data are sampled with 3 scanners each emitting a different wavelength. The point cloud is usually provided in the form of 3 `.las` files where each file corresponds to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red and the third as green, and thus consider that each point has a pure color.
+`point_metrics()` is not limited to eigen value related metrics. It is only limited by a users imagination. In the following we will demonstrate how it an be used to attribute false colors to a multi-spectral point cloud. Multi-spectral ALS data are sampled with 3 scanners each emitting a different wavelength. The point cloud is usually provided in the form of 3 `.las` files where each file corresponds to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red and the third as green, and thus consider that each point has a pure color.
 
 ```{r, rgl = TRUE, message=FALSE}
 f1 = "data/chap11/PR1107_c1_ar_c.laz"

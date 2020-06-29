@@ -4,21 +4,18 @@ library(lidR)
 
 # The Area-Based Approach (ABA) to forest modelling {#modelling}
 
-Here we provide an example demonstration on how to process ALS point cloud data to create wall-to-wall predictions of selected forest stand attributes using an area-based approach (ABA) to forest inventories. The steps used in this vignette as well as further details about enhanced forest inventories (EFI) are described in depth in [White et al. 2013](https://cfs.nrcan.gc.ca/publications?id=34887) and [White et al. 2017](https://cfs.nrcan.gc.ca/publications?id=38945). 
-
-This vignette assumes that the user has a directory of classified and normalized `.las/.laz` files.  First we load the necessary packages
+This chapter presents a complete workflow about processing ALS point cloud data to create wall-to-wall predictions of selected forest stand attributes using an area-based approach (ABA) to forest inventories. The steps used in this vignette as well as further details about enhanced forest inventories (EFI) are described in depth in [White et al. 2013](https://cfs.nrcan.gc.ca/publications?id=34887) and [White et al. 2017](https://cfs.nrcan.gc.ca/publications?id=38945). This vignette assumes that the user has a directory of classified and normalized `.las/.laz` files.  First we load the package `sf` to work with spatial data.
 
 ```r
-library(lidR)
 library(sf)
 ```
 
 ## Read in data
 
-The function `readLAScatalog()` builds a `LAScatalog` object from a folder. Make sure the ALS files have associated index files - for details see: [Speed-up the computations on a LAScatalog](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html).
+The function `readLAScatalog()` seen in chapter \@ref(engine) builds a `LAScatalog` object from a folder. Make sure the ALS files have associated index files - for details see: [Speed-up the computations on a LAScatalog](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html).
 
 ```r
-ctg <- readLAScatalog("F:\\petawawa\\ALS_Petawawa\\ALS2012\\ALS2012_norm_nobuff_filtered")
+ctg <- readLAScatalog("folder/")
 print(ctg)
 #> class       : LAScatalog
 #> extent      : 297317.5 , 316001 , 5089000 , 5099000 (xmin, xmax, ymin, ymax)
@@ -27,11 +24,6 @@ print(ctg)
 #> points      : 1.58 billion points
 #> density     : 12.6 points/m²
 #> num. files  : 138
-```
-
-To visualize the file pattern use the `plot()` function on the `LAScatalog` object.
-
-```r
 plot(ctg)
 ```
 
@@ -65,7 +57,7 @@ plots
 #> 5  PRF006 27.26387 39.78153 508.0337 POINT (313106.2 5091393)
 ```
 
-To visualize where the plots are in our study area we can overlay them on `LAScatalog`.
+To visualize where the plots are in our study area we can overlay them on the `LAScatalog`.
 
 ```r
 plot(ctg)
@@ -81,27 +73,16 @@ We have now prepared both our ALS and plot inventory data and can begin ABA proc
 
 ## ABA Processing
 
-### Step 1 - Configure the catalog 
+### Step 1 - Clip ALS ground inventory
 
-Set `opt_output_files()` option to write the results on disc. This is an important option to set. The clipped plots will be saved on hdd and not kept in memory. We also use the `opt_filter()` function to ignore noise below 0 m so that they do not influence future processing.
+The functions `clip_*` allow to extract regions of interest as seen in chapter \@ref(engine). `clip_roi()` is capable of extraction from a shapefile. First we set `opt_output_files()` option to write the results on disc. This is an important option to set. The clipped plots will be saved on disk and not kept in memory. We also use the `opt_filter()` function to ignore noise below 0 m so that they do not influence future processing. We clip discs with a `radius` of  14.1 meters because our plot radius is 14.1 m. The `plots_ALS_clipped` object is now a `LAScatalog` object containing all clipped plots.
 
 ```r
 opt_output_files(ctg) <- paste0(tempdir(), "/{PlotID}") # Write files to disc
 opt_filter(ctg) <- "-drop_z_below 0" # Ignore points with elevations below 0
-```
 
-### Step 2 - Clip ALS point cloud using `clip_roi()`  
-
-Note that the `radius` parameter is 14.1 because our plot radius is 14.1 m. This step may take a while.
-
-```r
 # Clip catalog object using plots with a circular buffer of 14.1 m
 plots_ALS_clipped <- clip_roi(ctg, plots, radius=14.1)
-```
-
-The `plots_ALS_clipped` object is now a `LAScatalog` object containing all clipped plots.
-
-```
 plots_ALS_clipped
 #> class       : LAScatalog
 #> extent      : 299037.3 , 314863.4 , 5089938 , 5098440 (xmin, xmax, ymin, ymax)
@@ -112,13 +93,12 @@ plots_ALS_clipped
 #> num. files  : 203 
 ```
 
-### Step 3 - Calculate plot metrics
+### Step 2 - Calculate plot metrics
 
-We first set some processing options using `opt_chunk_buffer()` and `opt_chunk_size()`. Setting these options to 0 mean that there will be no buffer around our plots when we calculate metrics and that processing will not be done in chunks (we do this for plots because they are small and do not require chunk processing functionality). We also use `opt_output_files()` to have plot metrics stored in memory instead of on disc.
+As seen in chapter \@ref(engine) ground inventories are special cases of independent files. We first set some adequate processing options. We also use `opt_output_files() <- ""` to have plot metrics stored in memory instead of on disc.
 
 ```r
-opt_chunk_buffer(plots_ALS_clipped) <- 0
-opt_chunk_size(plots_ALS_clipped) <- 0
+opt_independant_files(plots_ALS_clipped) <- TRUE
 opt_output_files(plots_ALS_clipped) <- ""
 ```
 
@@ -135,11 +115,11 @@ We have now calculated a variety of ALS metrics for each plot. In order to compl
 D <- cbind(as.data.frame(plots), plots_metrics)
 ```
 
-### Step 4 - Modeling
+### Step 3 - Modeling
 
 Here we provide a simple example of how to create an OLS model (`lm`) for Lorey's Mean Height (HL). Using the `summary` and `plot` functions we found that the 85<sup>th</sup> percentile of height (`zq85`) for ALS metrics explain a large amount of variation in `HL` values. We are more than happy with this simple model.
 
-```
+```r
 m <- lm(HL ~zq85, data=D)
 summary(m)
 #> Call:
@@ -173,11 +153,11 @@ abline(0,1)
 </center>
 
 
-### Step 5 - Wall to wall modelling
+### Step 4 - Wall to wall modelling
 
 Now that we have created a model using plot data, we now need to apply that model across our entire study area. 
 
-To do so we first need to generate the same suite of ALS metrics (`.stdmetrics_z`) for our ALS data using the `grid_metrics` function on our original `ctg ` `LAScatalog` object . We have chosen to write these metrics into memory. Note that the `res` parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius ≈ 625m<sup>2</sup>).
+To do so we first need to generate the same suite of ALS metrics (`.stdmetrics_z`) for our ALS data using the `grid_metrics()` function on our original collection of files. We have chosen to write these metrics into memory. Note that the `res` parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius ≈ 625m<sup>2</sup>).
 
 ```r
 opt_output_files(ctg) <- ""
@@ -192,7 +172,7 @@ plot(metrics_w2w$zmean)
 plot(metrics_w2w$pzabovezmean)
 ```
 
-### Step 6 - Calculate wall-to-wall predictions
+### Step 5 - Calculate wall-to-wall predictions
 
 We can use two methods for applying our model (`m`) to all of our ALS data. We can do this manually using the model coefficients, or use the `predict` function. Both of these methods produce the same output (`HL_pred`) which is a wall-to-wall raster of predicted Lorey's mean height.
 
@@ -204,7 +184,7 @@ HL_pred <- predict(metrics_w2w$zq85, m)
 
 To visualize wall-to-wall predictions use
 
-```
+```r
 plot(HL_pred)
 ```
 

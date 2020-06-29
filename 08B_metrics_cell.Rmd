@@ -16,7 +16,7 @@ library(lidR)
 
 ## Overview
 
-The "grid" level of regularization corresponds to the computation of derived metrics for regularly spaced locations in 2D. Derived metrics calculated at grid level are the basis of the area-based approach (ABA) that we discuss with in more detail in section (\@ref(modeling)). In brief, the ABA allows the creation of wall-to-wall predictions of forest inventory attributes (e.g. basal area or total volume per hectare) by linking ALS variables with field measured references. ABA is one application of derived metrics at the grid level but not the only one.
+The "grid" level of regularization corresponds to the computation of derived metrics for regularly spaced locations in 2D. Derived metrics calculated at grid level are the basis of the area-based approach (ABA) that we discuss with in more detail in cahpter (\@ref(modelling)). In brief, the ABA allows the creation of wall-to-wall predictions of forest inventory attributes (e.g. basal area or total volume per hectare) by linking ALS variables with field measured references. ABA is one application of derived metrics at the grid level but not the only one.
 
 As seen in chapters \@ref(metrics) and \@ref(cba) calculating derived metrics is straightforward. The user only needs to provide a formula to calculate the metric of interest. For example, to calculate the average height (`mean(Z)`) of all points within 10 x 10 m pixels we can run the following:
 
@@ -26,7 +26,7 @@ las <- lasnormalize(las, tin()) # normalize
 ```
 
 ```{r, fig.height=7.9, fig.width=8}
-hmean <- grid_metrics(las, ~mean(Z), 10) #calculate mean at 10 m
+hmean <- grid_metrics(las, ~mean(Z), 10) # calculate mean at 10 m
 plot(hmean, col = height.colors(50))
 ```
 
@@ -36,7 +36,7 @@ The returned `hmean` object is a `RasterLayer`:
 hmean
 ```
 
-To calculate metrics for hexagonal cells instead, we can use the `hexbin_metrics()` function instead. In this case the resolution is defined as the square root of the hexagon area.
+To calculate metrics for hexagonal cells instead, we can use the `hexbin_metrics()` function instead. In this case the resolution is defined as the square root of the hexagon area to be consitant with `grid_metrics()`.
 
 ```{r}
 metrics_hex <- hexbin_metrics(las, ~mean(Z), 10)
@@ -48,7 +48,7 @@ As described in sections \@ref(metrics) and \@ref(cba), to calculate more than o
 
 ```{r, fig.height=4.6, fig.width=10}
 f <- function(x) { # user-defined fucntion
-  list( mean = mean(x), sd = sd(x))
+  list(mean = mean(x), sd = sd(x))
 }
 
 metrics <- grid_metrics(las, ~f(Z), 10) # calculate grid metrics
@@ -77,9 +77,9 @@ plot(metrics, col = height.colors(50)) # some plotting
 
 ## Applications
 
-### Modeling
+### Modelling
 
-All `*_metrics` functions can map any kind of formula as long as it returns a number or a list of numbers, meaning that that it's possible to input an expression derived from a predictive model to map the resource. In the section \@ref(cba) we made a model that can be written $0.7018 \times pzabove2 + 0.9268 \times zmax$. We can map this predictive model with a resolution of 10 meters:
+All `*_metrics` functions can map any kind of formula as long as it returns a number or a list of numbers, meaning that that it's possible to input an expression derived from a predictive model to map the resource. In the chapter \@ref(cba) we made a model that can be written $0.7018 \times pzabove2 + 0.9268 \times zmax$. We can map this predictive model with a resolution of 10 meters:
 
 ```{r, fig.height=6.9, fig.width=7}
 prediction <- grid_metrics(las, ~0.7018 * sum(Z > 2)/length(Z) + 0.9268 *max(Z), 20) # predicting model mapping

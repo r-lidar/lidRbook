@@ -1,5 +1,11 @@
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 r3dDefaults = rgl::r3dDefaults
+m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
+-0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
+rgl::setupKnitr()
+r3dDefaults$FOV = 50
+r3dDefaults$userMatrix = m
+r3dDefaults$zoom = 0.75
 rgl::setupKnitr()
 
 knitr::opts_chunk$set(
@@ -7,20 +13,16 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   fig.align = "center")
 
+rgdal::set_thin_PROJ6_warnings(TRUE)
+
 library(lidR)
 ```
 
 # Indivitual tree dectection and segmentation {#itd}
 
-**Individual tree detection (ITD)** is the process of spatially locating trees and extracting height information.
+**Individual tree detection (ITD)** is the process of spatially locating trees and extracting height information. **Individual tree segmentation (ITS)** is the process of individually delineating detected trees. In `lidR`, detecting and segmenting functions are decoupled to maximize flexibility. Tree tops are first detected using the `find_trees()` function, followed crown delineation using `segment_trees()`. In the following chapter we will use the `MixedConifer.laz` data set, which is included internally within `lidR` to demonstrate both ITD and ITS. We will also generate a CHM (see section \@ref(chm)) to help visualize the results.
 
-**Individual tree segmentation (ITS)** is the process of individually delineating detected trees.
-
-In `lidR`, detecting and segmenting functions can be performed separately to maximize flexibility and allow users to define parameters for each step. Tree tops are first detected using the `find_trees()` function, followed crown delineation using `segment_trees()`. The specific algorithms available to detect and segment within `find_trees()` and `segment_trees()` are designed as separate functions and accept arguments specific to each method.
-
-In the following chapter we will use one the `MixedConifer.laz` data set, which is included internally within `lidR` to demonstrate both ITD and ITS. We will also generate a CHM (see section \@ref(chm)) to help visualize the results.
-
-```{r, rgl = TRUE}
+```{r, rgl = TRUE, fig.width = 5, fig.height = 4}
 LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
 las <- readLAS(LASfile, select = "xyzr", filter = "-drop_z_below 0")
 chm <- grid_canopy(las, 0.5, pitfree(subcircle = 0.2))
@@ -29,11 +31,11 @@ plot(las, bg = "white", size = 4)
 
 ## Individual Tree Detection (ITD)
 
-Tree tops can be detected by applying a Local Maximum Filter (LMF) on the loaded data set. The LMF in `lidR` is point cloud-based, meaning that it finds the tree tops from the point cloud without any rasterization (like using a CHM). The processing, however is actually very similar. For a given point, the algorithm analyzes neigbourhood points, checking if the processed point is the highest. This algorithm can be applied with the `lmf()` function.
+Tree tops can be detected by applying a Local Maximum Filter (LMF) on the loaded data set. The LMF in `lidR` is point cloud-based, meaning that it finds the tree tops from the point cloud without any raster like a CHM. The processing, however is actually very similar. For a given point, the algorithm analyzes neigbourhood points, checking if the processed point is the highest. This algorithm can be applied with the `lmf()` function.
 
 ### Local Maximum Filter with fixed windows size
 
-While the algorithm does not need any CHM to work we chose to display the results on top of a CHM for better visualization.
+The LMF can be applied with a constant size windows. Here with a windows size of `ws = 5` meters meaning that for a given point the algorithm looks to the neigbourhood points within a 2.4 radius circle to figure out if the point is the local highest. While the algorithm does not need any CHM to work we chose to display the results on top of a CHM for better visualization.
 
 ```{r, fig.height=6.9, fig.width=7}
 ttops <- find_trees(las, lmf(ws = 5))
@@ -45,13 +47,11 @@ plot(ttops, add = TRUE)
 Tree detection results can also be visualized in 3D!
 
 ```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
-x <- plot(las, bg = "white", size = 3)
+x <- plot(las, bg = "white", size = 4)
 add_treetops3d(x, ttops)
 ```
 
-One of the LMF arguments is the windows size `ws`, which is used to define the size of neighborhood around a given point. The number of detected trees is correlated to the `ws` argument. Small windows sizes usually gives more trees, while large windows size generally miss smaller trees that are _"hidden"_ by big trees that contain the highest points in the neighborhood.
-
-This can be seen in the figure below where only the dominant trees are found with a large windows size and a lot of small trees are found with a small windows size.
+The number of detected trees is correlated to the `ws` argument. Small windows sizes usually gives more trees, while large windows size generally miss smaller trees that are _"hidden"_ by big trees that contain the highest points in the neighborhood. This can be seen in the figure below where only the dominant trees are found with a large windows size and too many trees are found with a small windows size.
 
 ```{r, fig.height=5.4, fig.width=10}
 ttops_3x3 <- find_trees(las, lmf(ws = 3))
@@ -66,7 +66,7 @@ plot(ttops_11x11, add = TRUE)
 
 ### Local Maximum Filter with variable windows size
 
-The examples above demonstrate the `lmf()` function with a constant window size i.e. `x` meters. A large windows is suitable for large scattered trees while a small windows size if preferable for small and close trees. In reality trees of variable sizes may be present in a single scene leading to sub-optimal outputs. To overcome this issue, a windows size that adapts to the height of pixels or height of the points in our case becomes necessary. 
+The examples above demonstrate the `lmf()` function with a constant window size. A large windows is suitable for large scattered trees while a small windows size if preferable for small and close trees. In reality trees of variable sizes may be present in a single scene leading to sub-optimal outputs. To overcome this issue, a windows size that adapts to the height of pixels or height of the points in our case becomes necessary. 
 
 For example, a point at 30 m (a big tree) will be tested with a large neighbourhood, while a point at 10 m (a smaller tree) will be tested with a smaller window. The window size can therefore be defined as a function of height. Tall trees have comparatively larger crowns, needing larger window sizes to accurately detect their treetops. Variable window sizes are especially suitable for stands of more complex structures, or when tree detection is performed on larger areas, covering heterogeneous stands.
 
@@ -80,7 +80,7 @@ ws <- f(heights)
 plot(heights, ws, type = "l", ylim = c(0,6))
 ```
 
-When applied within `find_trees()`, the function yields the following result:
+When applied within `lmf()`, the function yields the following result:
 
 ```{r, fig.height=5, fig.width=5.2}
 ttops <- find_trees(las, lmf(f))
@@ -108,11 +108,9 @@ plot(heights, ws, type = "l",  ylim = c(0,5))
 
 ### Local Maximum Filter on a CHM
 
-So far tree detection was performed on a point cloud. A CHM can however also be used to find trees instead of points. This is also a perfectly valid way to process ALS data. Performing the detection on a CHM is faster because there are less data to process, but it is also more complex because the output depends on how the CHM has been built. The spatial resolution (i.e. pixel size), the algorithm used (see section \@ref(chm)), and any additional post-processing steps will influence tree detection results.
+So far tree detection was performed on a point cloud. A CHM can however also be used to find trees instead of the point cloud. This is also a perfectly valid way to process ALS data. Performing the detection on a CHM is faster because there are less data to process, but it is also more complex because the output depends on how the CHM has been built. The spatial resolution (i.e. pixel size), the algorithm used (see section \@ref(chm)), and any additional post-processing steps will influence tree detection results.
 
-In the examples below we run tree detection on CHM generated with different algorithms (`p2r`, `pitfree`), different resolutions (0.5 and 1 m), and different post-processing smoothing steps with a median filter applied.
-
-First the different CHMs are generated:
+In the examples below we run tree detection on CHM generated with different algorithms (`p2r`, `pitfree`), different resolutions (0.5 and 1 m), and different post-processing smoothing steps with a median filter applied. First the different CHMs are generated:
 
 ```{r}
 # Point-to-raster 2 resolutions
@@ -129,7 +127,7 @@ chm_p2r_05_smoothed <- raster::focal(chm_p2r_05, w = kernel, fun = median, na.rm
 chm_p2r_1_smoothed <- raster::focal(chm_p2r_1, w = kernel, fun = median, na.rm = TRUE)
 ```
 
-Then the same tree detection routine is applied to each CHM:
+Then the same tree detection routine with a constant windows size of 5 m is applied to each CHM:
 
 ```{r}
 ttops_chm_p2r_05 <- find_trees(chm_p2r_05, lmf(5))
@@ -140,7 +138,7 @@ ttops_chm_p2r_05_smoothed <- find_trees(chm_p2r_05_smoothed, lmf(5))
 ttops_chm_p2r_1_smoothed <- find_trees(chm_p2r_1_smoothed, lmf(5))
 ```
 
-Finally the detection results are visualized:
+Finally the detection results are visualized to see the various output found as a function of the CHM building choices:
 
 ```{r, fig.height=15, fig.width=10}
 par(mfrow=c(3,2))
@@ -165,28 +163,26 @@ Each family can be divided into two sub families
 1. Algorithms that work in two steps - Individual tree detection followed by segmentation.
 2. Algorithms that are all-in-one.
 
-In this section we won't go through all of these possibilities, but its important to recognize that all algorithms are not well suited to every context. 
-
-In the examples below we used the `dalponte2016()` algorithm, becasue we found it to perform best using the example data.
+In this section we won't go through all of these possibilities, but its important to recognize that all algorithms are not well suited to every context. In the examples below we used the `dalponte2016()` algorithm, becasue we found it to perform best using the example data.
 
 ### Segmentation of the point-cloud
 
-Even when the algorithm is raster-based (which is the case of `dalponte2016()`), `lidR` segments the point cloud and assigns an ID to `treeID`. This means that every point is associated with a particular tree. This is because `lidR` is point cloud oriented and we want to provide an immediate way to be able to access a segmented point cloud.
+Even when the algorithm is raster-based (which is the case of `dalponte2016()`), `lidR` segments the point cloud and assigns an ID to each point by inserting a new attribute named `treeID` in the `LAS` object. This means that every point is associated with a particular tree. This is because `lidR` is point cloud oriented and we want to provide an immediate way to be able to access a segmented point cloud not the segmented raster.
 
-```{r, rgl = TRUE}
+```{r, rgl = TRUE, fig.width = 5, fig.height = 4, warning = FALSE}
 algo <- dalponte2016(chm_p2r_05_smoothed, ttops_chm_p2r_05_smoothed)
-las <- segment_trees(las, algo) #segment point cloud
-plot(las, bg = "white", size = 4, color = "treeID") #visualize trees
+las <- segment_trees(las, algo) # segment point cloud
+plot(las, bg = "white", size = 4, color = "treeID") # visualize trees
 ```
 
-We assign an ID to each point because it enables interesting analyses at the point-cloud level. This could involve extracting every tree to derive measurements.
+We assign an ID to each point because it enables interesting analyses at the point-cloud level. This could involve extracting every tree to derive measurements. In the following we extracted and displayed the tree number 110.
 
-```{r, rgl = TRUE}
+```{r, rgl = TRUE, fig.width = 3, fig.height = 4}
 tree110 = filter_poi(las, treeID == 110)
 plot(tree110, size = 8, bg = "white")
 ```
 
-`lidR` provides functions that can be used following `segment_trees()`, like  delineation of crown shapes using `delineate_crowns()`:
+`lidR` provides functions that can be used following `segment_trees()`, like  delineation of crown shapes using `delineate_crowns()`. This function computes the hulls (either convex or concave) of each tree and returns a `SpatialPolygonsDataFrame`:
 
 ```{r, fig.height=4, fig.width=4}
 crowns <- delineate_crowns(las)
@@ -194,7 +190,7 @@ par(mar=rep(0,4))
 plot(crowns)
 ```
 
-It's also possible to compute metrics for each tree with `tree_metrics()`. We go further into this functionality section \@ref(tba), but here is a brief example where crowns are colored by their area.
+It's also possible to compute metrics for each tree. We go further into this functionality chapter \@ref(tba), but here is a brief example where crowns are colored by their area.
 
 ```{r, fig.height=4, fig.width=4}
 crowns <- delineate_crowns(las, func = .stdtreemetrics)
@@ -203,9 +199,7 @@ spplot(crowns, "convhull_area")
 
 ### Segmentation of the CHM
 
-While point cloud segmentation is standard in `lidR`, users may only have access to a CHM. There are many reasons for only using a CHM, and this is why raster-based methods can be run standalone outside `segment_trees()`. Whether using the point cloud or a raster, segmentation results will be exactly the same. The difference will be the data format of the segmentation result. In `lidR`, a `LAS` object will gain a `treeID` attribute, while for rasters, delineated crowns are returned in a `RasterLayer`.
-
-To work outside `segment_trees()` it suffices to call the function standalone like this:
+While point cloud segmentation is standard in `lidR`, users may only have access to a CHM. There are many reasons for only using a CHM, and this is why raster-based methods can be run standalone outside `segment_trees()`. Whether using the point cloud or a raster, segmentation results will be exactly the same. The difference will be the data format of the segmentation result. In `lidR`, a `LAS` object will gain a `treeID` attribute, while for rasters, delineated crowns are returned in a `RasterLayer`. To work outside `segment_trees()` it suffices to call the function standalone like this:
 
 ```{r, fig.height=5, fig.width=5.2}
 algo <- dalponte2016(chm_p2r_05_smoothed, ttops_chm_p2r_05_smoothed)
@@ -218,9 +212,14 @@ The output is a `RasterLayer`, for which `lidR` does not provide any processing 
 
 ### Comparaison of tree segmentations
 
-At the point cloud level it's pretty easy to compare tree segmentations by choosing a different attribute name for each method. For example we can compare `dalponte2016` and `li2012` side by side.
+At the point cloud level it's pretty easy to compare tree segmentations by choosing a different attribute name for each method. For example we can compare `dalponte2016` (which is a raster based methods in two steps) and `li2012` (which is an *"all-in-one"* point cloud based method) side by side.
 
-```{r, rgl = TRUE}
+```{r, echo = FALSE}
+r3dDefaults = rgl::r3dDefaults
+r3dDefaults$zoom = 0.7
+```
+
+```{r, rgl = TRUE, warning = FALSE, fig.height=6, fig.width=8}
 algo1 <- dalponte2016(chm_p2r_05_smoothed, ttops_chm_p2r_05_smoothed)
 algo2 <- li2012()
 las <- segment_trees(las, algo1, attribute = "IDdalponte")
@@ -230,6 +229,9 @@ x = plot(las, bg = "white", size = 4, color = "IDdalponte", colorPalette = paste
 plot(las, add = x + c(100,0), bg = "white", size = 4, color = "IDli", colorPalette = pastel.colors(200))
 ```
 
+By comparing their crowns with `delineate_crowns()` we can more easily see that the `li2012` algorithm doesnt perform well in this example with default parameters - maybe some parameter tuning can lead to better results!
+
+
 ```{r, fig.height=5, fig.width=5.8, cache = TRUE}
 crowns_dalponte <- delineate_crowns(las, attribute = "IDdalponte", type = "concave")
 crowns_li <- delineate_crowns(las, attribute = "IDli", type = "concave")
@@ -238,5 +240,3 @@ par(mfrow=c(1,2),mar=rep(0,4))
 plot(crowns_dalponte)
 plot(crowns_li)
 ```
-
-We can see that the `li2012`algorithm doesnt perform well with default parameters -maybe some parameter tuning can lead to better results!

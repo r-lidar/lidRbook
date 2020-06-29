@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
   comment =  "#>", 
   collapse = TRUE,
   fig.align = "center")
+
+rgdal::set_thin_PROJ6_warnings(TRUE)
 ```
 
 # Digital Surface Model and Canopy Height model {#chm}
@@ -50,16 +52,16 @@ chm <- grid_canopy(las, res = 0.5, algorithm = p2r())
 plot(chm, col = col)
 ```
 
-We can clearly see that there are a lot of empty pixels in the derived surface that correspond to `NoData` areas in the point cloud. The spatial resolution was increased, however the CHM contains to many voids. 
+We can clearly see that there are a lot of empty pixels in the derived surface that correspond to `NA` pixels in the point cloud. The spatial resolution was increased, however the CHM contains to many voids. 
 
-One option to reduce the number of voids in the surface model is to replace every point in the point cloud with a disk of a know radius (e.g. 15 cm). This operation is meant to simulate the fact that the laser footprint is not a point, but rather a circular area. It is equivalent to computing the CHM from a point cloud that is more smoothed and more dense.
+One option to reduce the number of voids in the surface model is to replace every point in the point cloud with a disk of a know radius (e.g. 15 cm). This operation is meant to simulate the fact that the laser footprint is not a point, but rather a circular area. It is equivalent to computing the CHM from a densified point cloud in a way that tries to have a physical meaning.
 
 ```{r, fig.height=5.9, fig.width=6}
 chm <- grid_canopy(las, res = 0.5, algorithm = p2r(subcircle = 0.15))
 plot(chm, col = col)
 ```
 
-This CHM is the CHM computed "as if" the point cloud was the following
+This CHM is the CHM computed *"as if"* the point cloud was the following
 
 ```{r, rgl = TRUE, echo = FALSE, fig.height=5.9, fig.width=6}
 data = lidR:::subcircled(las@data, r = 0.15, 8)
@@ -67,7 +69,7 @@ las2 = suppressWarnings(LAS(data, las@header))
 plot(las2, size = 3, bg = "white")
 ```
 
-We can zoom in to see the small disks that replace each point
+We can zoom in to see the small disks that replace each point.
 
 ```{r, rgl = TRUE, echo = FALSE}
 r3dDefaults = rgl::r3dDefaults
@@ -112,25 +114,24 @@ plot(las2, size = 3, bg = "white")
 ```
 In this case the CHM is incorrectly computed in the empty lakes
 
-```{r, fig.height=5.9, fig.width=6}
+```{r, fig.height=5.9, fig.width=6, warning=FALSE}
 chm <- grid_canopy(las2, res = 0.5, algorithm = dsmtin())
 plot(chm, col = col)
 ```
 
-To fix this, one option is to use the `max_edge` argument, which defines the maximum edge of a TIN in the Delaunay triangulation. By default this argument is set to `0` meaning that no TINs are removed. If set to e.g. 8 it means that every TIN with an edge longer than 8 will be discarded from the triangulation.
+To fix this, one option is to use the `max_edge` argument, which defines the maximum edge of a TIN in the Delaunay triangulation. By default this argument is set to `0` meaning that no triangle are removed. If set to e.g. 8 it means that every ttriangle with an edge longer than 8 will be discarded from the triangulation.
  
-```{r, fig.height=5.9, fig.width=6}
+```{r, fig.height=5.9, fig.width=6,warning=FALSE}
 chm <- grid_canopy(las2, res = 0.5, algorithm = dsmtin(max_edge = 8))
 plot(chm, col = col)
 ```
 
 ## Pit-free algorithm
 
-More advanced algorithms have also been designed that avoid pits during the computation step instead of requiring post-processing. [Khosravipour et al. (2014)](https://www.ingentaconnect.com/content/asprs/pers/2014/00000080/00000009/art00003?crawler=true) proposed a ‘pit-free’ algorithm, which consists of a series of sequential height thresholds where Delaunay triangulations are applied to first returns. For each threshold, the triangulation is cleaned of TINs that are too wide, similar to the example given in the previous section. In a final step, the partial rasters are stacked and only the highest pixels of each raster are retained (figure below). The output is a DSM that is expected to be natively free of pits without using any post-processing or correction methods. 
+More advanced algorithms have also been designed that avoid pits during the computation step instead of requiring post-processing. [Khosravipour et al. (2014)](https://www.ingentaconnect.com/content/asprs/pers/2014/00000080/00000009/art00003?crawler=true) proposed a ‘pit-free’ algorithm, which consists of a series of sequential height thresholds where Delaunay triangulations are applied to first returns. For each threshold, the triangulation is cleaned of triangles that are too wide, similar to the example given in the previous section. In a final step, the partial rasters are stacked and only the highest pixels of each raster are retained (figure below). The output is a DSM that is expected to be natively free of pits without using any post-processing or correction methods. 
 
 <center>
 ![](images/DSM/pitfree.svg)
-
 </center>
 
 To understand this method better, we can reproduce the figure above with `algorithm = dsmtin()`:
@@ -163,7 +164,7 @@ chm <- grid_canopy(las, res = 0.5, pitfree(thresholds = c(0, 10, 20), max_edge =
 plot(chm, col = col)
 ```
 
-By increasing the `max_edge` argument for the pit-free triangulation part from `1.5` to `2` the CHM becomes smoother:
+By increasing the `max_edge` argument for the pit-free triangulation part from `1.5` to `2` the CHM becomes smoother but also less realistic:
 
 ```{r, fig.height=5.9, fig.width=6}
 chm <- grid_canopy(las, res = 0.5, pitfree(max_edge = c(0, 2)))
@@ -180,7 +181,7 @@ plot(chm, col = col)
 
 ## Post-processing a CHM
 
-CHMs are usually post-processed to smooth or to fill empty pixels. This is mainly because most publications use a point-to-raster approach without any tweaks. One may want to apply a post-processing step to the CHM. Sadly `lidR` does not provide any tools for that. `lidR` is a point-cloud oriented software. Once a function has returned a raster, the job of the `lidR` package has ended. Futher work requires other dedicated tools to process rasters. The `raster` package is one of those. The code below presents a simple option to fill NAs and smooth a CHM with the `raster` package. For more details see the documentation of the package `raster`.
+CHMs are usually post-processed to smooth or to fill empty pixels. This is mainly because most publications use a point-to-raster approach without any tweaks. One may want to apply a post-processing step to the CHM. Sadly `lidR` does not provide any tools for that. `lidR` is a point cloud oriented software. Once a function has returned a raster, the job of the `lidR` package has ended. Futher work requires other dedicated tools to process rasters. The `raster` package is one of those. The code below presents a simple option to fill NAs and smooth a CHM with the `raster` package. For more details see the documentation of the package `raster`.
 
 ```{r, fig.height=6.6, fig.width=7.4}
 fill.na <- function(x, i=5) { if (is.na(x)[i]) { return(mean(x, na.rm = TRUE)) } else { return(x[i]) }}

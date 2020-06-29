@@ -14,22 +14,24 @@ knitr::opts_chunk$set(
   comment =  "#>", 
   collapse = TRUE,
   fig.align = "center")
+
+rgdal::set_thin_PROJ6_warnings(TRUE)
 ```
 
 # LAScatalog processing engine (2/2) {#engine2}
 
-Section \@ref(engine) showed how to use the `LAScatalog` processing engine to apply `lidR` functions on a collection of files. This included how to process acquisitions in user defined chunk sizes, loading buffers on-the-fly, saving the output to disk, and parallelizing tasks. These examples all used existing functions provided with the `lidR` package. The power of the engine goes beyond those limited used case and allows developers to design their own applications. 
+Chapter \@ref(engine) showed how to use the `LAScatalog` processing engine to apply `lidR` functions on a collection of files. This included how to process acquisitions in user defined chunk sizes, loading buffers on-the-fly, saving the output to disk, and parallelizing tasks. These examples all used existing functions provided with the `lidR` package. The power of the engine goes beyond those limited used case and allows developers to design their own applications. 
 
 Let's imagine we want to normalize a data set **and** colorize it using RGB satellite data. According to the previous chapters we could do something like this:
 
 ```r
-opt_output_files(ctg) <- paste0(tempdir(), "/{*}_dtm") #specify output DTM disk save location
-dtm <- grid_terrain(ctg, 1, tin()) #create DTMs
+opt_output_files(ctg) <- paste0(tempdir(), "/{*}_dtm") # specify output DTM disk save location
+dtm <- grid_terrain(ctg, 1, tin()) # create DTMs
 
-opt_output_files(ctg) <- paste0(tempdir(), "/{*}_normalized") #specify output normalized las disk save location
-ctg_norm <- normalize_height(ctg, dtm) #normalize
+opt_output_files(ctg) <- paste0(tempdir(), "/{*}_normalized") # specify output normalized las disk save location
+ctg_norm <- normalize_height(ctg, dtm) # normalize
 
-#loop through catalog files and apply rgb colour
+# loop through catalog files and apply rgb colour
 for (file in ctg$filename)
 {
   newname <-  tools::file_path_sans_ext(basename(file))
@@ -42,25 +44,21 @@ for (file in ctg$filename)
 
 This method is however far from optimal. First, **the whole** point cloud is read 3 times:
 
-<c>
 1. To create the DTM
 2. To normalize
 3. To colorize
-</c>
 
-This takes a significant amount of time. It also implies the need to create copies of the acquisition after each processing step, taking up a lot of disk storage. Then, to finish, a custom `for` loop is used because `merge_spatial()` cannot be applied on a `LAScatalog`. 
+This takes a significant amount of time. It also implies the need to create copies of the acquisition after each processing step, taking up a lot of disk storage. Then, to finish, a custom `for` loop is used because `merge_spatial()` cannot be applied on a `LAScatalog` natively. 
 
-<c>
 **What if we were able to do that in a single run?**
-</c>
 
 ## `catalog_apply()`
 
-In this chapter we outline the `catalog_apply()` function, which is used subliminally in every function seen in the section \@ref(engine). Here we show how to leverage its versatility to design tools that do not yet exist like the DTM + normalization + colorization example from above. 
+In this chapter we outline the `catalog_apply()` function, which is used subliminally in every function seen in the chapter \@ref(engine). Here we show how to leverage its versatility to design tools that do not yet exist like the DTM + normalization + colorization example from above but also more inovative processes. 
 
 Again, the `LAScatalog` class and the `LAScatalog` engine are deeply documented in a two dedicated vignettes available [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-class.html) and [here](**need vignette**). The purpose of these examples is to provide alternative, hands on documentation with more applied examples and real use cases. 
 
-In this chapter we will use the same 9 files used in section \@ref(files) and an RGB raster that encompasses the collection of file.
+In this chapter we will use the same 9 files used in chapter \@ref(engine) section \@ref(files) and an RGB raster that encompasses the collection of file.
 
 ```{r, fig.height=4, fig.width=4}
 ctg = readLAScatalog("data/ENGINE/catalog/")
@@ -73,7 +71,7 @@ opt_progress(ctg) <- FALSE
 
 Satellite images are available for download [here](data/ENGINE/catalog/rgb.tif).
 
-```{r, fig.height=8, fig.width=8}
+```{r, fig.height=8, fig.width=8, warning=FALSE}
 rgbmap = stack("data/ENGINE/catalog/rgb.tif")
 plotRGB(rgbmap)
 ```
@@ -101,7 +99,7 @@ nlasrgb <- dtm_norm_color(las, rgbmap) # apply user defined function
 plot(nlasrgb, color = "RGB", bg = "white", size = 6) # some plotting
 ```
 
-It works! We have a workable function that performs on a point cloud. Sadly, the 2D rendering in this book does not do justice to the beauty of the 3D rendering you get from R (Try it yourself and see!). Remember that `dtm_norm_color()` is just an example. You could instead choose to make an algorithm for individual tree detection or a method to sample point of interest, _let your imagination run wild!_ 
+It works! We have a workable function that performs on a point cloud. Sadly, the 2D rendering in this book does not do justice to the beauty of the 3D rendering you get from R (try it yourself and see!). Remember that `dtm_norm_color()` is just an example. You could instead choose to make an algorithm for individual tree detection or a method to sample point of interest, _let your imagination run wild!_ 
 
 So far it works only when using a `LAS` object. Now let's make it working with a `LAScatalog`.
 
@@ -121,7 +119,7 @@ dtm_norm_color_chunk <- function(chunk, rgbmap) # user defined function
 }
 ```
 
-This introduces an additional level of complexity that is crucial. First, catalog chunks will be sequentially fed into the function. Each chunk is read inside the user-defined function with all processing options being automatically respected (`filter`, `select`, `chunk_size`, `chunk_buffer` etc.). The `LAS` variable in the code snippet above is a point cloud extracted from the catalog that contains the chunks + a buffer. It's important to check that the loaded portion of the collection is not empty -- subsequent code will fail. This may happen depending on the size of the chunk and the `filter` options chosen. 
+This introduces an additional level of complexity that is crucial. First, catalog chunks will be sequentially fed into the function. Each chunk is read inside the user-defined function with all processing options being automatically respected (`filter`, `select`, `chunk_size`, `chunk_buffer` etc.). The `las` variable in the code snippet above is a point cloud extracted from the catalog that contains the chunks + a buffer. It's important to check that the loaded portion of the collection is not empty or subsequent code will likely fail. This may happen depending on the size of the chunk and the `filter` options chosen. 
 
 This function is `catalog_apply()` compatible and can be applied over the entire ALS acquisition. The output will be a point cloud, so we need to pay attention mitigate memory issues and save to disk. At this stage, we haven't mitigated that problem yet so we add it below.
 
@@ -136,7 +134,7 @@ output <- catalog_apply(ctg, dtm_norm_color_chunk, rgbmap = rgbmap) # implement 
 output
 ```
 
-We see that the output is a `list` with the name of each file written to disk. This is the default behavior of the engine. It returns a `list` with one element per chunk. This isn't really convenient. We have seen in section \@ref(engine) that in the case of `LAS` files we can return a `LAScatalog`, which is far more convenient. 
+We see that the output is a `list` with the name of each file written to disk. This is the default behavior of the engine. It returns a `list` with one element per chunk. This isn't really convenient. We have seen in chapter \@ref(engine) that in the case of `LAS` files we can return a `LAScatalog`, which is far more convenient. 
 
 We can use the option `automerge = TRUE` so `catalog_apply()` will automatically merge the list into something more user-friendly.
 
@@ -168,7 +166,7 @@ plot(output)
 
 When the outputs are `Spatial*` or `Raster*` they can be cropped using the bounding box of the chunk accessible via `raster::extent(chunk)` or `sp::bbox(chunk)`.
 
-Nice! We created a custom function -- `dtm_norm_color()` -- and we upscale its definition to capably and efficiently process an entire ALS acquisition made up of hundreds of files. Using options described in \@ref(engine), we can also introduce paralellization, chunk size control, and buffer size control.
+Nice! We created a custom function -- `dtm_norm_color()` -- and we upscale its definition to capably and efficiently process an entire ALS acquisition made up of hundreds of files. Using options described in chapter \@ref(engine), we can also introduce paralellization, chunk size control, and buffer size control.
 
 ```r
 library(future)
@@ -181,7 +179,7 @@ options <- list(automerge = TRUE)
 output <- catalog_apply(ctg, dtm_norm_color_chunk, rgbmap = rgbmap, .options = options)
 ```
 
-We can check that it worked by loading a sample from somewhere in our new catalog. We are expecting to get a normalized (we normalized), colored (we merged satellite image), ground points (we used `-keep_class 2`).
+We can check that it worked by loading a sample from somewhere in our new catalog. According to the options put above we are expecting to get a normalized (we normalized), colored (we merged satellite image), ground points (we used `-keep_class 2`).
 
 ```{r, rgl = TRUE}
 opt_output_files(output) <- ""
@@ -264,4 +262,4 @@ It failed with an informative message!
 
 We are done. This is exactly how the `lidR` package works and we have presented all the tools needed to extent it with new applications. 
 
-More examples can be found further along in this book. For example section \@ref(outboxdistancereturn) presents how to compute a raster of the average distance between first and last returns, and section \@ref(outboxrumple) presents how to compute a rumple index of the canopy from the point cloud.
+More examples can be found further along in this book. For example section \@ref(outboxdistancereturn) presents how to compute a raster of the average distance between first and last returns, and section \@ref(outboxrumple) presents how to compute a rumple index of the canopy from the point cloud and of course the documentation of the package itself is more comprehensive than this book.

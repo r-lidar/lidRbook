@@ -15,7 +15,7 @@ library(lidR)
 
 # Derived metrics {#metrics}
 
-The goal of this section is to describe the notion of _"metrics"_ in `lidR`. Analyses of point cloud data are often based on metrics calculations. Metrics are scalar summaries of point distributions that can be computed using varying neighborhood sizes for reference locations. For example, when reference locations are regularly distributed on a grid and the neigbourhood is a square centered on those locations, we typically use an area-based-approach (ABA) that consists of computing metrics for pixels. Maximum height of points inside a 20 x 20 m grid cell (in this case our pixel) is an example of an ABA metric. This however is not the only option, and other definitions can enable other analyses and applications.
+The goal of this section is to describe the notion of _"metrics"_ in `lidR`. Analyses of point cloud data are often based on metrics calculations. Metrics are scalar summaries of point distributions that can be computed using varying neighborhood sizes for reference locations. For example, when reference locations are regularly distributed on a grid and the neigbourhood is a square centered on those locations, we typically use an area-based-approach (ABA) that consists of computing metrics for pixels. Maximum height of points inside a 20 x 20 m grid cell (in this case of pixel) is an example of an ABA metric. This however is not the only option, and other definitions can enable other analyses and applications.
 
 The standard deviation of point heights within a single tree crown is an example of a metric calculated at the tree level. The average distance between a point and its k-nearest neighbours is a metrics calculated at the point level. More complex metrics can even be imagined like the average distance between first and last returns within a pixel or within a tree. In the end, irregardless of the scale at which metrics are calculated, they serve as proxies of forest inventory attributes or can be used as independent variables in predictive models.
 
@@ -34,9 +34,8 @@ In the majority of cases, derived metrics are calculated based on point heights 
 A metric is simply a number derived from the attribute of a subset of points. Thus the potential number of metrics that can be calculated is very large and only limited by user's imagination. There are however published studies that discuss the usefulness of different metrics for modeling and standard sets of metrics exist.
 
 ## The basics
-While there are some differences between functions dedicated to metric computations but the basic idea is the same for all of them.
 
-In addition to the input point cloud, the user needs to provide a formula to calculate the metric(s) of interest. For example, the average height of points for each point cloud, each pixel, each tree crown, or each voxel can be be calculated using `mean(Z)`. 
+While there are some differences between functions dedicated to metric computations the basic idea is the same for all of them. In addition to the input point cloud, the user needs to provide a formula to calculate the metric(s) of interest. For example, the average height of points for the point cloud, for each pixel, for each tree crown, or for each voxel can be be calculated using `mean(Z)`.
 
 ```r
 cloud_metrics(las, func = ~mean(Z))
@@ -45,10 +44,11 @@ tree_metrics(las, func = ~mean(Z))
 voxel_metrics(las, func = ~mean(Z))
 ```
 
-## User-defined metrics
-In the example above only a single metric is calculated - the mean elevation of the points. Calculations can however be easily extended to any number of metrics. To do this, users can design custom functions. 
+Al the function work the same way but the output format depends on the regularization level. In each case, outputs will be a different class (i.e. a `list`, a `RasterBrick`, a `SpatialPointsDataFrame` or a `data.frame`) to take advantage of the best storage method, but the same two metrics will be calculated for every unit of analysis. 
 
-The function can contain any number of metrics, but needs to return a labeled `list`. For example, to calculate the mean and standard deviation of elevation & the mean intensity, the following function can be used:
+## User-defined metrics
+
+In the example above only a single metric is calculated - the mean elevation of the points. Calculations can however be easily extended to any number of user-defined metrics. To do this, users can design custom functions. The function can contain any number of metrics, but needs to return a labeled `list`. For example, to calculate the mean and standard deviation of elevation & the mean intensity, the following function can be used:
 
 ```{r}
 f <- function(z, i) {
@@ -68,8 +68,15 @@ tree_metrics(las, func = ~f(Z, Intensity))
 voxel_metrics(las, func = ~f(Z, Intensity))
 ```
 
-In each case, outputs will be a different class (i.e. a `list`, a `RasterBrick`, a `SpatialPointsDataFrame` or a `data.frame`) to take advantage of the best storage method, but the same two metrics will be calculated for every unit of analysis. 
-
 While any metric can be computed at any level of regularization, it's important to recognize that they may not all be meaningful. For example, the average elevation of points has a meaning at the pixel level or at the tree level but not at the voxel level. Indeed at the voxel level it corresponds to the average elevation of the points within the voxel i.e. more or less the Z coordinate of the voxel. This in the end needs to be conisered by the user. Perhaps asking _"does this metric make sense?"_ is a good place to start!
 
-The most commonly used metrics are already predefined in `lidR` - the `stdmetrics*()` group of functions contain metrics that summarize the vertical distribution of points, their intensities, and return structure. The complete list of all metrics can be found in the [lidR wiki page](https://github.com/Jean-Romain/lidR/wiki/stdmetrics). We will demonstrate how these predefined functions can be used in more detail in the following sections of the book.
+## Pre-defined metrics
+
+The most commonly used metrics are already predefined in `lidR` - the `stdmetrics*()` group of functions contain metrics that summarize the vertical distribution of points, their intensities, and return structure. The complete list of all metrics can be found in the [lidR wiki page](https://github.com/Jean-Romain/lidR/wiki/stdmetrics) and can be use that way:
+
+```r
+cloud_metrics(las, func = .stdmetrics)
+grid_metrics(las, func = .stdmetrics)
+tree_metrics(las, func = .stdmetrics)
+voxel_metrics(las, func = .stdmetrics)
+```

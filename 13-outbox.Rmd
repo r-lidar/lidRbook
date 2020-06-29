@@ -20,9 +20,7 @@ knitr::opts_chunk$set(
 
 # Thinking outside the box {#outbox}
 
-We have presented many common processes through these tutorials. Most examples presented could have been done with other softwares, but what we have seen is only the tip of the `lidR` iceberg! In fact, `lidR` was never designed with common processes in mind, but instead to explore new ones and push innovation in this field. Examples of this can be found in section \@ref(pba) for example. 
-
-The following chapter presents some applications that are likely to be impossible to reproduce in other softwares, demonstrating how we can go from a novel idea to a fully functional tool using `lidR`. 
+We have presented many common processes through these tutorials. Most examples presented could have been done with other softwares, but what we have seen is only the tip of the `lidR` iceberg! In fact, `lidR` was never designed with common processes in mind, but instead to explore new ones and push innovation in this field. Some examples might be found here and there in the book. The following chapter presents some applications that are likely to be impossible to reproduce in other softwares, demonstrating how we can go from a novel idea to a fully functional tool using `lidR`. 
 
 ## New complex metrics in ABA
 
@@ -32,7 +30,7 @@ In forestry, simple metrics can be derived from first returns. But what about me
 
 ```{r, echo = FALSE, message=FALSE}
 library(lidR)
-LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+LASfile <- "data/ENGINE/catalog/tiles_338000_5239000_1.laz"
 las = readLAS(LASfile)
 ```
 
@@ -44,10 +42,10 @@ las <- filter_firstlast(las)
 las <- filter_poi(las, NumberOfReturns > 1)
 ```
 
-Using the `data.table` [syntax](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html) we can compute the distance between first and last returns for each pulse. It could be done with `dplyr` as well using `group_by() %>%  mutate()` but Jean-Romain is proponent of using `data.table()`.
+Using the [`data.table` syntax](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html) we can compute the distance between first and last returns for each pulse. It could be done with `dplyr` as well using `group_by() %>%  mutate()` but we are proponent of using `data.table()`.
 
 ```r
-las@data[, d := Z[1]-Z[2], by = pulseID][]
+las@data[, d := Z[1]-Z[2], by = pulseID]
 ```
 
 ```{r, echo = FALSE}
@@ -65,12 +63,12 @@ las <- filter_poi(las, !is.na(d))
 We can now plot the first returns colored by their distance to the last return.
 
 ```{r, rgl = TRUE}
-plot(las, bg = "white", color = "d", colorPalette = viridis::magma(50), size = 3)
+plot(las, bg = "white", color = "d", colorPalette = viridis::magma(50), size = 4)
 ```
 
 Now we can compute the average in an ABA (see section \@ref(aba)).
 
-```{r, fig.width=5.4, fig.height=5}
+```{r, fig.width=5.4, fig.height=5.2}
 d_first_last = grid_metrics(las, ~mean(d), 15)
 plot(d_first_last, col = height.colors(50))
 ```
@@ -102,7 +100,7 @@ my_routine <- function(chunk, res) {
 }
 ```
 
-To finish we use the `LAScatalog` processing engine with `cataog_sapply()`. We need to process with a buffer to avoid the case where pulses are separated in two files, so we use `opt_chunk_buffer(ctg) <- 2`. In addition, with the output being a raster, we ensure alignment of the chunk with the raster.
+To finish we use the `LAScatalog` processing engine with `catalog_sapply()`. We need to process with a buffer to avoid the case where pulses are separated in two files, so we use `opt_chunk_buffer(ctg) <- 2`. In addition, with the output being a raster, we ensure alignment of the chunk with the raster.
 
 ```r
 ctg <- readLAScatalog("folder/")
@@ -188,7 +186,7 @@ ggplot(las@data) +
         legend.title = element_blank())
 ```
 
-In this specific example, notice notice that only few intensities are above 255, So intensity ranges from 0 to almost 255. This is very convenient because we will be able to use the raw values as color without transformation. We will simply force values above 255 to be 255. This is a dirty solution but fair enough for the example which is not about intensity normalization.
+In this specific example, notice that only few intensities are above 255, So intensity ranges from 0 to almost 255. This is very convenient because we will be able to use the raw values as color without transformation. We will simply force values above 255 to be 255. This is a dirty solution but fair enough for the example which is not about intensity normalization.
 
 ```{r}
 las@data[Intensity > 255L, Intensity := 255L]
@@ -216,16 +214,14 @@ colorize <- function(intensity, channel)
 }
 ```
 
-Now we can use this function with different levels of regularization.
-
-We can use `colorize()` with `grid_metrics()` in an ABA. It returns a multi-layer raster that can be interpreted as RGB
+Now we can use this function with different levels of regularization. We can use `colorize()` with `grid_metrics()` in an ABA. It returns a multi-layer raster that can be interpreted as RGB
 
 ```{r}
 rgb = grid_metrics(las, ~colorize(Intensity, ScannerChannel), 2)
 plotRGB(rgb, axes = T)
 ```
 
-Here we attribute an RGB color per voxel, discarding the voxels where `RGB = NA` by using `colorize()` with `voxel_metrics()` in a VBA (see section \@ref(vba)).
+We can also attribute an RGB color per voxel, discarding the voxels where `RGB = NA` by using `colorize()` with `voxel_metrics()` (see chapter \@ref(vba)).
 
 ```{r, rgl = TRUE, warning=FALSE}
 rgb <- voxel_metrics(las, ~colorize(Intensity, ScannerChannel), 2)
@@ -234,7 +230,7 @@ rgb <- LAS(rgb, las@header) # Convert to LAS for display
 plot(rgb, color = "RGB", nbits = 8, size = 5)
 ```
 
-To finish we can `colorize()` with `point_metrics()` in a PBA (see section \@ref(pba)). This has the advantage of maintaining much more points compared to the VBA version and to preserve coordinates.
+To finish we can `colorize()` with `point_metrics()` (see chapter \@ref(pba)). This has the advantage of maintaining much more points compared to the voxel-based version and to preserve coordinates.
 
 ```{r, rgl = TRUE}
 rgb = point_metrics(las, ~colorize(Intensity, ScannerChannel), r = 0.5)
