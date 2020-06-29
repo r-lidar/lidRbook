@@ -492,7 +492,7 @@ first <- catalog_retile(ctg)
 We can combine all the options seen in this section to generate a buffered set of tiny files containing only ground returns. We present that here in parallel.
 
 ```{r, fig.height=4, fig.width=4, message=FALSE}
-library(future
+library(future)
 plan(multisession)
 
 opt_output_files(ctg) <- paste0(tempdir(), "/{XLEFT}_{YBOTTOM}_first_buffered")
