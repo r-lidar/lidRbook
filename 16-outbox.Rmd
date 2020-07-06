@@ -174,7 +174,7 @@ las <- readMSLAS(f1, f2, f3,  filter = "-keep_z_below 300")
 plot(las, color = "ScannerChannel", size = 6)
 ```
 
-Each channels returns vary in intensities as seen in the figure below because of the wavelength reflectance properties of the targets. A first step could be to normalize the intensities. For this example we won't do that to keep things simple. 
+Each channel's returns vary in intensities as seen in the figure below because of the wavelength reflectance properties of the targets. A first step could be to normalize the intensities. For this example we won't do that to keep things simple. 
 
 ```{r}
 library(ggplot2)

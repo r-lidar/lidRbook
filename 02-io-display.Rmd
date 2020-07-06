@@ -70,7 +70,7 @@ While `select` enables the user to select "columns" (or attributes) while readin
 las <- readLAS("file.las", filter = "-keep_first") # Read only first returns
 ```
 
-It is important to understand that the option `filter` in `readLAS()` keeps or discards point **at read time** i.e. while reading at the C++ level without implying any R code. For example the R function to filter points of interest (POI) is `filter_poi()` may return the exact same output than the `filter` option in `readLAS()`: 
+It is important to understand that the option `filter` in `readLAS()` keeps or discards point **at read time** i.e. while reading at the C++ level without implying any R code. For example the R function to filter points of interest (POI) is `filter_poi()` may return the exact same output as the `filter` option in `readLAS()`: 
 
 
 ```r
@@ -202,7 +202,7 @@ offsets = plot(las)
 print(offsets)
 ```
 
-The coordinates of the objects must be corrected to align with the point cloud. In the following we will add lines to render the trunks. We read a file, we locate the trees (see chapter \@ref(itd)), we extract the coordinates and sizes of the trees an plot lines with `rgl::segment3d`.
+The coordinates of the objects must be corrected to align with the point cloud. In the following we will add lines to render the trunks. We read a file, we locate the trees (see chapter \@ref(itd)), we extract the coordinates and sizes of the trees and plot lines with `rgl::segment3d`.
 
 ```{r, echo=FALSE}
 r3dDefaults = rgl::r3dDefaults

@@ -155,7 +155,9 @@ The goal of this section is to present these options and how they affect the beh
 
 ### Multiple extractions on disk
 
-The engine has the ability to write generated objects to disk storage rather than keeping everything in memory. This option can be activated with `opt_output_files() <-` that is used to designate the path where files will be written to disk. It expects a templated filename so each written file will be attributed a unique name. In the following example several `LAS` files will be written to disk with names like `339348.8_5239254_1.las` (center coordinates from each file) and the function returns a `LAScatalog` object that references all the new files instead of a list of `LAS` object.
+The engine has the ability to write generated objects to disk storage rather than keeping everything in memory. This option can be activated with `opt_output_files() <-` that is used to designate the path where files will be written to disk. It expects a templated filename so each written file will be attributed a unique name. 
+
+In the following example, several `LAS` files will be written to disk with names like `339348.8_5239254_1.las` (center coordinates from each file) and the function returns a `LAScatalog` object that references all the new files instead of a list of `LAS` object.
 
 ```{r, fig.height=4, fig.width=4}
 opt_output_files(ctg) <- paste0(tempdir(), "/{XCENTER}_{YCENTER}_{ID}")
@@ -300,7 +302,7 @@ Light rasters can be used as if it were an in memory raster or a single file ras
 
 ## Storage Summary
 
-We learned several the following about the engine in this section
+In this section we learned several the following about the engine in this section
 
 10. The engine takes care of returning a single and manipulable object.
 
@@ -322,7 +324,7 @@ ctg_norm <- normalize_height(ctg, tin())
 
 ## Area Based Approach
 
-Area-based-approach (`grid_metrics()`) outputs are raster objects like a DTM (see chapter \@ref(aba) for more details and tuning options). Two more options do however exist that are not controllable in each function. When reading a LAS file with `readLAS()` two options `select` and `filter` are offered (see chapter \@ref(io)). When processing a collection of files `readLAS()` is called internally and it is not possible to modify these parameters. Instead we can use the options `opt_filter()` and `opt_select()` to propagate these arguments.
+Area based approach (`grid_metrics()`) outputs are raster objects like a DTM (see chapter \@ref(aba) for more details and tuning options). Two more options do however exist that are not controllable in every function. When reading a LAS file with `readLAS()` two options `select` and `filter` are offered (see chapter \@ref(io)). When processing a collection of files `readLAS()` is called internally and it is not possible to modify these parameters. Instead we can use the options `opt_filter()` and `opt_select()` to propagate these arguments.
 
 ```r
 opt_select(ctg) <- "xyzci"
@@ -334,7 +336,7 @@ opt_output_files(ctg_norm) <- ""
 opt_progress(ctg_norm) <- FALSE
 ```
 
-Used in conjonction with `grid_metrics()`, these enable computation on a selected set of points (first returns for example), loading only user specified attributes.
+Used in conjunction with `grid_metrics()`, these enable computation on a selected set of points (first returns for example), loading only user specified attributes.
 
 ```{r, fig.height=7, fig.width=7.1, cache = TRUE}
 opt_select(ctg_norm) <- "xyz"

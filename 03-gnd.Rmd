@@ -36,7 +36,7 @@ The implementation of PMF algorithm in `lidR` is based on the method described i
 ![](images/GND/PMF.svg)
 </center>
 
-The `pmf()` function requires defining the following input parameters: `ws` (window size or sequence of window sizes), and `th` (threshold size or sequence of threshold heights). More experienced user may experiment with these parameters to achieve best classification accuracy, however `lidR` contains `util_makeZhangParam()` function that includes the default parameter values described in [Zhang et al. (2003) ](https://ieeexplore.ieee.org/document/1202973).
+The `pmf()` function requires defining the following input parameters: `ws` (window size or sequence of window sizes), and `th` (threshold size or sequence of threshold heights). More experienced users may experiment with these parameters to achieve best classification accuracy, however `lidR` contains `util_makeZhangParam()` function that includes the default parameter values described in [Zhang et al. (2003) ](https://ieeexplore.ieee.org/document/1202973).
 
 ```{r, warning=FALSE}
 LASfile <- system.file("extdata", "Topography.laz", package="lidR")
@@ -74,7 +74,7 @@ plot_crossection(las, p1 = p1, p2 = p2, colour_by = factor(Classification))
 
 ## Cloth Simulation Function
 
-Cloth simulation filtering (CSF) is based on [Zhang et al 2016](http://www.mdpi.com/2072-4292/8/6/501/htm) and consists in simulating a piece of cloth draped on top of a reversed point cloud. In this method the point cloud is turned upside down and then a  cloth is dropped on the inverted surface. Ground points are determined by analyzing the interactions between the nodes of the cloth and the inverted surface. The cloth simulation itself is based on a grid that consists of particles with mass and interconnections that together determine the three-dimensional position and shape of the cloth.
+Cloth simulation filtering (CSF) is based on [Zhang et al 2016](http://www.mdpi.com/2072-4292/8/6/501/htm) and consists of simulating a piece of cloth draped over a reversed point cloud. In this method the point cloud is turned upside down and then a  cloth is dropped on the inverted surface. Ground points are determined by analyzing the interactions between the nodes of the cloth and the inverted surface. The cloth simulation itself is based on a grid that consists of particles with mass and interconnections that together determine the three-dimensional position and shape of the cloth.
 
 <center>
 ![](images/GND/CSF.svg)
@@ -92,7 +92,7 @@ Similar to the previous examples, classification results can be assessed using a
 plot_crossection(las, p1 = p1, p2 = p2, colour_by = factor(Classification))
 ```
 
-While the default parameters of `csf()` are designed to be universal and provide accurate classification results according to the original paper, it is apparent that the algorithm did not work properly in our example with a significant portion of points located in the ground were not classified. In such cases the algorithm parameters need to be tuned to improve the result. For this particular data set a set of parameters that resulted in an improved classification result were formulated as follows:
+While the default parameters of `csf()` are designed to be universal and provide accurate classification results, according to the original paper, it's apparent that the algorithm did not work properly in our example because a significant portion of points located in the ground were not classified. In such cases the algorithm parameters need to be tuned to improve the result. For this particular data set a set of parameters that resulted in an improved classification result were formulated as follows:
 
 ```{r, fig.height=2, fig.width=8, message=FALSE}
 mycsf <- csf(sloop_smooth = TRUE, class_threshold = 1, cloth_resolution = 1, time_step = 1)
@@ -109,7 +109,7 @@ plot(gnd, size = 3, bg = "white")
 
 ## Edge artifacts {#buffer}
 
-No matter which algorithm is used in `lidR` or other software, ground classification will be weaker at the edges of point clouds. To find ground points, an algorithm need to analyze the local neighborhood or local context that is missing at edge areas. When processing point clouds it's important to always consider a buffer around the region of interest to avoid edge artifacts. `lidR` has tools to manage buffered tiles and this advanced use of the package will be covered in chapter \@ref(engine).
+No matter which algorithm is used in `lidR` or other software, ground classification will be weaker at the edges of point clouds as the algorithm must analyze the local neighbourhood (which is missing on edges). To find ground points, an algorithm need to analyze the local neighborhood or local context that is missing at edge areas. When processing point clouds it's important to always consider a buffer around the region of interest to avoid edge artifacts. `lidR` has tools to manage buffered tiles and this advanced use of the package will be covered in chapter \@ref(engine).
 
 ## How to choose a method and its parameters?
 

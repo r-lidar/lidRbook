@@ -64,7 +64,7 @@ las <- readLAS("data/chap11/building_WilliamsAZ_Urban_normalized.laz")
 plot(las, size = 3)
 ```
 
-First we need to defined a function that computes the eigen value decomposition of a set of points and estimates if the set of points is flat according to the [Limberger et al. (2015)](https://doi.org/10.1016/j.patcog.2014.12.020) criteria.
+First we need to define a function that computes the eigen value decomposition of a set of points and estimates if the set of points is flat according to the [Limberger et al. (2015)](https://doi.org/10.1016/j.patcog.2014.12.020) criteria.
 
 ```r
 is.planar = function(x, y, z, th1 = 25, th2 = 6) {
@@ -169,7 +169,7 @@ las <- segment_shape(las, shp_line(th = 8, k = 15), "linear")
 
 ### Multi-spectral coloring {#sec:pba-mscoloring}
 
-`point_metrics()` is not limited to eigen value related metrics. It is only limited by a users imagination. In the following we will demonstrate how it an be used to attribute false colors to a multi-spectral point cloud. Multi-spectral ALS data are sampled with 3 scanners each emitting a different wavelength. The point cloud is usually provided in the form of 3 `.las` files where each file corresponds to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red and the third as green, and thus consider that each point has a pure color.
+`point_metrics()` is not limited to eigen value related metrics. It is only limited by a users imagination. In the following example we will demonstrate how it an be used to attribute false colors to a multi-spectral point cloud. Multi-spectral ALS data are sampled with 3 scanners each emitting a different wavelength. The point cloud is usually provided in the form of 3 `.las` files where each file corresponds to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red and the third as green, and thus consider that each point has a pure color.
 
 ```{r, rgl = TRUE, message=FALSE}
 f1 = "data/chap11/PR1107_c1_ar_c.laz"

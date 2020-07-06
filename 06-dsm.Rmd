@@ -119,7 +119,7 @@ chm <- grid_canopy(las2, res = 0.5, algorithm = dsmtin())
 plot(chm, col = col)
 ```
 
-To fix this, one option is to use the `max_edge` argument, which defines the maximum edge of a TIN in the Delaunay triangulation. By default this argument is set to `0` meaning that no triangle are removed. If set to e.g. 8 it means that every ttriangle with an edge longer than 8 will be discarded from the triangulation.
+To fix this, one option is to use the `max_edge` argument, which defines the maximum edge of a TIN in the Delaunay triangulation. By default this argument is set to `0` meaning that no triangle are removed. If set to e.g. 8 it means that every triangle with an edge longer than 8 will be discarded from the triangulation.
  
 ```{r, fig.height=5.9, fig.width=6,warning=FALSE}
 chm <- grid_canopy(las2, res = 0.5, algorithm = dsmtin(max_edge = 8))

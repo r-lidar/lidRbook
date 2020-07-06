@@ -35,7 +35,7 @@ Tree tops can be detected by applying a Local Maximum Filter (LMF) on the loaded
 
 ### Local Maximum Filter with fixed windows size
 
-The LMF can be applied with a constant size windows. Here with a windows size of `ws = 5` meters meaning that for a given point the algorithm looks to the neigbourhood points within a 2.4 radius circle to figure out if the point is the local highest. While the algorithm does not need any CHM to work we chose to display the results on top of a CHM for better visualization.
+The LMF can be applied with a constant size windows. Here with a windows size of `ws = 5` meters meaning that for a given point the algorithm looks to the neigbourhood points within a 2.5 radius circle to figure out if the point is the local highest. While the algorithm does not need any CHM to work we chose to display the results on top of a CHM for better visualization.
 
 ```{r, fig.height=6.9, fig.width=7}
 ttops <- find_trees(las, lmf(ws = 5))
@@ -51,7 +51,7 @@ x <- plot(las, bg = "white", size = 4)
 add_treetops3d(x, ttops)
 ```
 
-The number of detected trees is correlated to the `ws` argument. Small windows sizes usually gives more trees, while large windows size generally miss smaller trees that are _"hidden"_ by big trees that contain the highest points in the neighborhood. This can be seen in the figure below where only the dominant trees are found with a large windows size and too many trees are found with a small windows size.
+The number of detected trees is correlated to the `ws` argument. Small windows sizes usually gives more trees, while large windows size generally miss smaller trees that are _"hidden"_ by big trees that contain the highest points in the neighborhood. This can be seen in the figure below where too many trees are found with a small window size and only the dominant trees are found with a large windows size.
 
 ```{r, fig.height=5.4, fig.width=10}
 ttops_3x3 <- find_trees(las, lmf(ws = 3))
@@ -68,7 +68,7 @@ plot(ttops_11x11, add = TRUE)
 
 The examples above demonstrate the `lmf()` function with a constant window size. A large windows is suitable for large scattered trees while a small windows size if preferable for small and close trees. In reality trees of variable sizes may be present in a single scene leading to sub-optimal outputs. To overcome this issue, a windows size that adapts to the height of pixels or height of the points in our case becomes necessary. 
 
-For example, a point at 30 m (a big tree) will be tested with a large neighbourhood, while a point at 10 m (a smaller tree) will be tested with a smaller window. The window size can therefore be defined as a function of height. Tall trees have comparatively larger crowns, needing larger window sizes to accurately detect their treetops. Variable window sizes are especially suitable for stands of more complex structures, or when tree detection is performed on larger areas, covering heterogeneous stands.
+For example, a point at 30 m (a big tree) will be tested with a large window, while a point at 10 m (a smaller tree) will be tested with a smaller window. The window size can therefore be defined as a function of height. Tall trees have comparatively larger crowns, needing larger window sizes to accurately detect their treetops. Variable window sizes are especially suitable for stands of more complex structures, or when tree detection is performed on larger areas, covering heterogeneous stands.
 
 in `lidR` a user can design a function that computes a windows size as a function of point (or pixel) height. When designing a function to define the window size based on point heights we need to determine what the minimum and maximum window size should be related to the minimum and maximum tree heights. In general, the minimum window size should not be smaller than 3 meters. Below we show an example where the windows size is related to the point height with an affine relationship. When a point is at 0 the windows size is 3 meters. At 10 m it is 4 m and so on. 
 
@@ -156,7 +156,7 @@ plot(chm_pitfree_05_2, main = "CHM PITFREE 2", col = col); plot(ttops_chm_pitfre
 While individual tree detection provides very useful information about tree density and size, one may want to go further to segment and extract each tree individually. Several algorithms are available in `lidR` and can be divided in two families.
 
 1. Point cloud-based that perform without a CHM.
-2. Raster-based that using a CHM.
+2. Raster-based that perform with a CHM.
 
 Each family can be divided into two sub families
 

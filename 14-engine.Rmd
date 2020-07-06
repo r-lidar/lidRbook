@@ -20,7 +20,7 @@ rgdal::set_thin_PROJ6_warnings(TRUE)
 
 # LAScatalog processing engine (2/2) {#engine2}
 
-Chapter \@ref(engine) showed how to use the `LAScatalog` processing engine to apply `lidR` functions on a collection of files. This included how to process acquisitions in user defined chunk sizes, loading buffers on-the-fly, saving the output to disk, and parallelizing tasks. These examples all used existing functions provided with the `lidR` package. The power of the engine goes beyond those limited used case and allows developers to design their own applications. 
+Chapter \@ref(engine) showed how to use the `LAScatalog` processing engine to apply `lidR` functions on a collection of files. This included how to process acquisitions in user defined chunk sizes, loading buffers on-the-fly, saving the output to disk, and parallelizing tasks. These examples all used existing functions provided with the `lidR` package. The power of the engine goes beyond limited used cases, allowing developers to design their own applications. 
 
 Let's imagine we want to normalize a data set **and** colorize it using RGB satellite data. According to the previous chapters we could do something like this:
 
@@ -56,7 +56,7 @@ This takes a significant amount of time. It also implies the need to create copi
 
 In this chapter we outline the `catalog_apply()` function, which is used subliminally in every function seen in the chapter \@ref(engine). Here we show how to leverage its versatility to design tools that do not yet exist like the DTM + normalization + colorization example from above but also more inovative processes. 
 
-Again, the `LAScatalog` class and the `LAScatalog` engine are deeply documented in a two dedicated vignettes available [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-class.html) and [here](**need vignette**). The purpose of these examples is to provide alternative, hands on documentation with more applied examples and real use cases. 
+Again, the `LAScatalog` class and the `LAScatalog` engine are deeply documented in a two dedicated vignettes available [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-class.html) and [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-engine.html). The purpose of these examples is to provide alternative, hands-on documentation with more applied examples and real use cases. 
 
 In this chapter we will use the same 9 files used in chapter \@ref(engine) section \@ref(files) and an RGB raster that encompasses the collection of file.
 
@@ -78,7 +78,9 @@ plotRGB(rgbmap)
 
 ## Create user-defined function
 
-First we need to create a function that combined the DTM + normalization + colorization stepts. Let's call it `dtm_norm_color()`. Its simple and uses only 3 functions.
+The example presented here follows standard R syntax. For more details about how to write your own functions check out [this link](https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Writing-your-own-functions)
+
+First we need to create a function that combined the DTM + normalization + colorization steps. Let's call it `dtm_norm_color()`. Its simple and uses only 3 functions.
 
 ```{r}
 dtm_norm_color <- function(las, rgbmap) # create user-defined function
