@@ -336,7 +336,7 @@ opt_output_files(ctg_norm) <- ""
 opt_progress(ctg_norm) <- FALSE
 ```
 
-Used in conjunction with `grid_metrics()`, these enable computation on a selected set of points (first returns for example), loading only user specified attributes.
+Used in conjunction with `grid_metrics()`, these enable computation on a selected set of points (first returns for example), loading only user specified attributes. This is useful mainly to save processing memory but may also have a small favorable impact on computation time.
 
 ```{r, fig.height=7, fig.width=7.1, cache = TRUE}
 opt_select(ctg_norm) <- "xyz"
@@ -397,7 +397,7 @@ The attribute `treeID` is now an arbitrary number (here it is negative but not n
 
 In all the previous examples we have seen that the engine takes care of merging  intermediate results into a single usable object. When intermediate results are stored on disk, the final results in R is a single lightweight object such as a `LAScatalog` or a Virtual Data set. This is not true for `find_trees()` and other functions that return `Spatial*` objects. The default behavior is to write shapefiles (`.shp`) and there is no way to build a light weight object. What is returned is thus a vector of written files.
 
-```{r, cache = TRUE}
+```{r, cache = TRUE, warning = FALSE}
 opt_output_files(ctg_norm) <- paste0(tempdir(), "/{*}")
 find_trees(ctg_norm, lmf(4), uniqueness = "bitmerge")
 ```
@@ -535,3 +535,20 @@ opt_independent_files(rois) <- FALSE
 ```
 
 Everything seen so far remains true. But with these options we are sure to not make mistakes when processing independent files.
+
+## Summary
+
+The engine processed the covered area by chunk. A chunk is an arbitraty square region queried from the collection of files. Each chunk is loaded with a buffer, and each chunk correspond to an independent results. Results are merged into a single object at the end of the processing when possible.
+
+- `opt_chunk_size(ctg) <- 800` controls the size of the chunks. Set 0 use the tiling pattern (processing by file)
+- `opt_chunk_buffer(ctg) <- 40` controls the size of the buffer around the chunks.
+- `opt_chunk_alignment(ctg) <- c(100, 200)` controls the aligment of the chunks
+- `opt_output_file(ctg) <- "{TEMPLATE}` redirects the results in files names after the templated name instead of keeping everything in memory.
+- `opt_select(ctg) <- "xyzi"` loads only the attributes of interest when querying a chunk (see also `readLAS()`)
+- `opt_filter(ctg) <- "-keep_first"` loads only the points of interest when querying a chunk (see also `readLAS()`)
+- `opt_wall_to_wall(ctg) <- FALSE` disables some internal control that guarantee that output will be strictly wall-to-wall. It should not be used actually because `opt_independent_files()` should cover the vast majority of cases
+- `opt_independent_files() <- TRUE` to configure the processing for the special case of independent files (typically plot inventories). It turns the engine into a simple loop and the notion of chunks covering the area is lost.
+- `opt_merge(ctg) <- FALSE` disables the final merging. In this case a `list` is returned in all cases.
+- `opt_progress(ctg) <- FALSE` disables progress estimation.
+- `opt_stop_early(ctg) <- FALSE` disable early exit. If a chunk throws an error the processing keeps going and this chunk will be missing in the output.
+- Use `future` and register a parallelization plan to process several chunks at a time taking advantage of multiple cores or multiple machines architectures.

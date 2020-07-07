@@ -153,10 +153,10 @@ The [`rayshader`](https://github.com/tylermorganwall/rayshader) package also pro
 library(rayshader)
 elmat <- raster_to_matrix(dtm_tin)
 map <- elmat %>%
-  sphere_shade(texture = "imhof1") %>%
+  sphere_shade(texture = "imhof1", progbar = FALSE) %>%
   add_water(detect_water(elmat), color = "imhof1") %>%
-  add_shadow(ray_shade(elmat), 0.5) %>%
-  add_shadow(ambient_shade(elmat), 0)
+  add_shadow(ray_shade(elmat, progbar = FALSE), 0.5) %>%
+  add_shadow(ambient_shade(elmat, progbar = FALSE), 0)
 ```
 
 2D plot
