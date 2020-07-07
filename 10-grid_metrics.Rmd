@@ -77,7 +77,7 @@ plot(metrics, col = height.colors(50)) # some plotting
 
 ## Applications
 
-### Modelling
+### Modeling
 
 All `*_metrics` functions can map any kind of formula as long as it returns a number or a list of numbers, meaning that that it's possible to input an expression derived from a predictive model to map the resource. In the chapter \@ref(cba) we made a model that can be written $0.7018 \times pzabove2 + 0.9268 \times zmax$. We can map this predictive model with a resolution of 10 meters:
 

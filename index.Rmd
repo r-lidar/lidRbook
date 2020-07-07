@@ -17,7 +17,7 @@ description: "A guide to the `lidR` package"
 * Perform individual tree segmentation (chapter \@ref(itd))
 * Compute standard and user-defined metrics at different levels of regularisation (chapters \@ref(metrics), \@ref(cba), \@ref(aba), \@ref(tba), \@ref(vba) and \@ref(pba))
 * Manage processing for sets of point-cloud files - referred to as a `LAScatalog` (chapter \@ref(engine) and \@ref(engine2))
-* Guidelines for implementing area-based approaches to forest modelling using ALS data (chapter \@ref(modelling))
+* Guidelines for implementing area-based approaches to forest modelling using ALS data (chapter \@ref(modeling))
 * Facilitate user-defined processing streams for research and development (chapter \@ref(outbox))
 * Discover the plugin system (chapter \@ref(plugins))
 
