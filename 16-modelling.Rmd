@@ -2,7 +2,7 @@
 library(lidR)
 ```
 
-# The Area-Based Approach (ABA) to forest modelling {#modeling}
+# The Area-Based Approach (ABA) to forest modelling {#modeling-aba}
 
 This chapter presents a complete workflow about processing ALS point cloud data to create wall-to-wall predictions of selected forest stand attributes using an area-based approach (ABA) to forest inventories. The steps used in this vignette as well as further details about enhanced forest inventories (EFI) are described in depth in [White et al. 2013](https://cfs.nrcan.gc.ca/publications?id=34887) and [White et al. 2017](https://cfs.nrcan.gc.ca/publications?id=38945). This vignette assumes that the user has a directory of classified and normalized `.las/.laz` files.  First we load the package `sf` to work with spatial data.
 
