@@ -56,7 +56,7 @@ nlas <- las - dtm
 plot(nlas, size = 4, bg = "white")
 ```
 
-We can see that the point cloud has been normalized, making the point cloud flat. All the elevations are relative to the ground surface. The ground surface being the reference 0 all the ground points are expected to be at Z = 0 by definition. But are they? Lets look at the distribution of ground points.
+We can see that the point cloud has been normalized, making the point cloud flat. All the elevations are now relative to the ground surface. The ground surface being the reference 0 all the ground points are expected to be at Z = 0 by definition. But are they? Lets look at the distribution of ground points.
 
 ```{r, fig.height=4, fig.width=4}
 hist(filter_ground(nlas)$Z, breaks = seq(-0.45, 0.45, 0.01), main = "", xlab = "Elevation")
@@ -75,7 +75,7 @@ In this case it doesn't seem to have helped, perhaps even making it worse. This 
 
 ## Point cloud normalization
 
-Point cloud normalization without a DTM interpolates the elevation of every single point locations using ground points. It no longer uses elevations at discrete predefined locations. Thus the methods is exact, **computationally speaking**. It means that it's equivalent to a continuous DTM but it is important to recall that all interpolation methods are interpolation and by definition make guesses with different strategies. Thus by "exact" we mean "continuous". To compute the continuous normalization, we can feed `normalize_height()` with an algorithm for spatial interpolation instead of a `RasterLayer`.
+Point cloud normalization without a DTM interpolates the elevation of every single point locations using ground points. It no longer uses elevations at discrete predefined locations. Thus the methods is exact, **computationally speaking**. It means that it is equivalent to using a continuous DTM but it is important to recall that all interpolation methods are interpolation and by definition make guesses with different strategies. Thus by "exact" we mean "continuous". To compute the continuous normalization, we can feed `normalize_height()` with an algorithm for spatial interpolation instead of a `RasterLayer`.
 
 ```{r, rgl = TRUE}
 nlas = normalize_height(las, knnidw())
@@ -87,7 +87,7 @@ All the ground points should be exactly 0. Let check it:
 hist(filter_ground(nlas)$Z, breaks = seq(-0.45, 0.45, 0.01), main = "", xlab = "Elevation")
 ```
 
-One can reproduce this with other algorithm such as `tin()`. It's also important to recall buffer and edge artifacts also apply here here.
+One can reproduce this with other algorithm such as `tin()`. It's also important to recall buffer and edge artifacts also apply here
 
 ## Pros and cons
 

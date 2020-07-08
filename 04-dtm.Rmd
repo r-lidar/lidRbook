@@ -24,14 +24,14 @@ rgdal::set_thin_PROJ6_warnings(TRUE)
 
 # Digital terrain model {#dtm}
 
-Generating a Digital Terrain Model (DTM) is usually the second step in processing that follows classification of ground points (see chapter \@ref(gnd)). Put simply, a DTM can be described as an "image" of the ground. Methods to generate DTMs have been intensively studied and several algorithms have been proposed for various terrain situations. DTMs are used for a variety of purposes in practice, such as determination of the catchment basins of water retention and stream flow, or the identification of drivable roads to access resources. It also enables users to normalize point clouds i.e. subtract the local terrain from the elevation of points to allow a manipulation of point clouds as if they were acquired on a flat surface (see chapter \@ref(norm)).
+Generating a Digital Terrain Model (DTM) is usually the second step in processing that follows classification of ground points (chapter \@ref(gnd)). Put simply, a DTM can be described as an "image" of the ground. Methods to generate DTMs have been intensively studied and several algorithms have been proposed for various terrain situations. DTMs are used for a variety of purposes in practice, such as determination of the catchment basins of water retention and stream flow, or the identification of drivable roads to access resources. It also enables users to normalize point clouds i.e. subtract the local terrain from the elevation of points to allow a manipulation of point clouds as if they were acquired on a flat surface (chapter \@ref(norm)).
 
-The construction of a DTM starts with known or sampled ground points and uses various spatial interpolation techniques to infer ground points at unsampled locations. Accuracy of the DTM is very important because errors will propagate to future processing stages like tree height estimation. A wide range of methods exist for  spatial interpolation of points. All of these methods are applicable to ALS data. In the following chapter we will use the classified `Topography.laz` data set, which is included internally within `lidR`.
+The construction of a DTM starts with known or sampled ground points and uses various spatial interpolation techniques to infer ground points at unsampled locations. Accuracy of the DTM is very important because errors will propagate to future processing stages like tree height estimation. A wide range of methods exist for  spatial interpolation of points. In the following chapter we will use the classified `Topography.laz` data set, which is included internally within `lidR` to create reproducible examples.
 
 ```{r, rgl = TRUE, warning=FALSE}
 LASfile <- system.file("extdata", "Topography.laz", package="lidR")
-las = readLAS(LASfile, filter = "-keep_class 2")
-plot(las, size = 4, bg = "white")
+las <- readLAS(LASfile, select = "xyzc")
+plot(las, size = 3, bg = "white")
 ```
 
 
@@ -39,9 +39,10 @@ plot(las, size = 4, bg = "white")
 
 This method is based on triangular irregular network (TIN) of ground point data to derive a bivariate function for each triangle, which is then used to estimate the values at unsampled locations (between known ground points). 
 
-```{r, rgl = TRUE, echo = FALSE}
-dxyz <- with(las@data, deldir::deldir(X, Y, z = Z, suppressMsge = TRUE))
-col <- with(las@data, height.colors(20)[1 + round(19*(Z - min(Z))/diff(range(Z)))])
+```{r triangulation, rgl = TRUE, echo = FALSE}
+las2 <- filter_ground(las)
+dxyz <- with(las2@data, deldir::deldir(X, Y, z = Z, suppressMsge = TRUE))
+col <- with(las2@data, height.colors(20)[1 + round(19*(Z - min(Z))/diff(range(Z)))])
 rgl::persp3d(dxyz, col = col, smooth = FALSE, add = T, front="lines", axes = F)
 rgl::axes3d(c("x-", "y+", "z-"))
 rgl::grid3d(side=c('x-', 'y+', 'z-'), col="gray")
@@ -51,14 +52,14 @@ Planar facets of each generated triangle are used to interpolate. Used with a De
 
 To generate a DTM model with the TIN algorithm we use `grid_terrain()` where `algorithm = tin()`.
 
-```{r, rgl = TRUE}
+```{r tin-dtm, rgl = TRUE}
 dtm_tin = grid_terrain(las, res = 1, algorithm = tin())
 plot_dtm3d(dtm_tin, bg = "white") 
 ```
 
 Notice the ugly edge interpolations. This occurs because we didn't process with a buffer.
 
-## Invert distance weighting (IDW)
+## Invert distance weighting
 
 Invert distance weighting (IDW) is one of the simplest and most readily available methods that can be applied to create DTMs. It is based on an assumption that the value at an unsampled point can be approximated as a weighted average of values at points within a certain cut-off distance _d_, or from a given number _k_ of closest neighbours. Weights are usually inversely proportional to a power _p_ of the distance between the location and the neighbour, which leads to the computing of an estimator.
 
@@ -66,7 +67,7 @@ Compared to `tin()` this method is more robust to edge artifacts because it uses
 
 To generate a DTM model with the IDW algorithm we use `grid_terrain()`  where `algorithm = knnidw()`.
 
-```{r, rgl = TRUE}
+```{r idw-dtm, rgl = TRUE}
 dtm_idw = grid_terrain(las, algorithm = knnidw(k = 10L, p = 2))
 plot_dtm3d(dtm_idw, bg = "white") 
 ```
@@ -96,7 +97,7 @@ Kriging is the most advanced approach and utilizes advanced geostatistical inter
 
 To generate a DTM model with the kriging algorithm we use `grid_terrain()`  where `algorithm = kriging()`.
 
-```{r, message=F, warning=F, rgl = TRUE}
+```{r kri-dtm, message=F, warning=F, rgl = TRUE}
 dtm_kriging = grid_terrain(las, algorithm = kriging(k = 40))
 plot_dtm3d(dtm_kriging, bg = "white") 
 ```
@@ -130,17 +131,16 @@ mba <- function(n = 1, m = 1, h = 8, extend = TRUE)
 ```
 
 ```{r, rgl = TRUE}
-dtm_mba = grid_terrain(las, algorithm = mba())
+dtm_mba <- grid_terrain(las, algorithm = mba())
 plot_dtm3d(dtm_mba, bg = "white")
 ```
 
-## Render shaded DTM
+## Render shaded DTM {#shaded-dtm}
 
-Generating a hillshade layer in R is relatively straight forward and is done using function from the `raster` package. The `terrain()` and `hillShade()` functions can be combined to take the DTM raster layers as input and return a hillshade raster:
+Generating a hillshade layer in R is relatively straight forward and is done using functions from the `raster` package. The `terrain()` and `hillShade()` functions can be combined to take the DTM raster layers as input and return a hillshade raster:
 
 ```{r, fig.height=5.85, fig.width=6, warning=FALSE}
-dtm_tin = crop(dtm_tin, extent(dtm_tin) - 3) # Remove 3 m of buffer
-
+dtm_tin <- crop(dtm_tin, extent(dtm_tin) - 3) # Remove 3 m of buffer
 dtm_prod <- terrain(dtm_tin, opt = c("slope", "aspect"))
 dtm_tin_hillshade <- hillShade(slope = dtm_prod$slope, aspect = dtm_prod$aspect)
 plot(dtm_tin_hillshade, col = grey.colors(50, 0, 1), legend = FALSE)
@@ -149,7 +149,7 @@ plot(dtm_tin_hillshade, col = grey.colors(50, 0, 1), legend = FALSE)
 
 The [`rayshader`](https://github.com/tylermorganwall/rayshader) package also provides interesting tools to generate shaded DTM.
 
-```{r, rgl = TRUE}
+```{r, rgl = TRUE, message=FALSE}
 library(rayshader)
 elmat <- raster_to_matrix(dtm_tin)
 map <- elmat %>%

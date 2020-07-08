@@ -18,9 +18,9 @@ library(lidR)
 
 The "tree" level of regularization corresponds to the computation of derived metrics centered on each tree using the points that belong to each tree. Derived metrics calculated at tree level are the basis for an inventory at the individual tree level or the basis for individual species identification.
 
-Similarly to what we have seen in section \@ref(metrics), \@ref(cba), and \@ref(aba) calculating derived metrics is straightforward and works exactly the same way as in `cloud_metrics()` or `grid_metrics()`. Derived tree metrics are calculated using the `tree_metrics()` function. The input data for this function is a point cloud that needs to contain information from tree segmentation (e.g. usually the `treeID` attribute). In the majority of cases `tree_metrics()` is run after segmenting tree crowns with `segment_trees()` (see section \@ref(itd)) but the segmentation could also be performed in another way independently of `lidR`.
+Similarly to what we have seen in chapters \@ref(metrics), \@ref(cba), and \@ref(aba) calculating derived metrics is straightforward and works exactly the same way as in `cloud_metrics()` or `grid_metrics()`. Derived tree metrics are calculated using the `tree_metrics()` function. The input data for this function is a point cloud that needs to contain information from tree segmentation (e.g. usually the `treeID` attribute). In the majority of cases `tree_metrics()` is run after segmenting tree crowns with `segment_trees()` (chapter \@ref(itd-its)) but the segmentation could also be performed in another way independently of `lidR`.
 
-In the example below we show the basic use of the `tree_metrics()` function on the files we used in section \@ref(itd). This file already stores an ID for each point referring to each tree, so we don't need to perform the segmentation first. We compute two metrics  `z_max` and `z_mean` using the formula `list(z_max = max(Z), z_mean = mean(Z)`. The output is a `SpatialPointsDataFrame`.
+In the example below we show the basic use of the `tree_metrics()` function on the files we used in chapter \@ref(itd-its). This file already stores an ID for each point referring to each tree, so we don't need to perform the segmentation first. We compute two metrics  `z_max` and `z_mean` using the formula `list(z_max = max(Z), z_mean = mean(Z)`. The output is a `SpatialPointsDataFrame`.
 
 ```{r}
 LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR") 
@@ -36,7 +36,7 @@ The XY coordinates of the points correspond to the XY coordinates of the highest
 spplot(metrics, zcol="z_max", col.regions = hcl.colors(5)) # plot using z_max
 ```
 
-Like other functions seen in sections \@ref(cba) and \@ref(aba), users can create their own custom functions containing all of the metrics of interest. In the example below we show how to calculate metrics that are based both on point heights and intensities.
+Like other functions seen in chapters \@ref(cba) and \@ref(aba), users can create their own custom functions containing all of the metrics of interest. In the example below we show how to calculate metrics that are based both on point heights and intensities.
 
 ```{r}
 custom_tree_metrics = function(z, i) { # user-defined function
@@ -68,7 +68,7 @@ metrics <- tree_metrics(las, ~list(imean = mean(Intensity))) # calculate tree in
 metrics <- metrics[metrics$imean > 80,] # filter intensity
 
 subset <- filter_poi(las, treeID %in% metrics$treeID)
-x = plot(las, bg = "white", size = 4)
+x <- plot(las, bg = "white", size = 4)
 plot(subset, add = x + c(-100, 0), size = 5) # some plotting
 ```
 
@@ -85,9 +85,9 @@ spplot(metrics, "G", col.regions = hcl.colors(5)) # some plotting
 Then using the `raster` package, we can rasterize the map. Here we get the sum of `G` from each tree within each 15 m pixel to get the total value of `G` for a given pixel. The final output is a predictive model that mixes the area-based approach and the tree-based-approach.
 
 ```{r, fig.height=5.9, fig.width=6}
-r = raster(extent(las)) # rasterize map
+r <- raster(extent(las)) # rasterize map
 res(r) <- 15 # set resolution
-map = rasterize(metrics, r, field = "G", fun = sum) # extract sum of G at 15m
+map <- rasterize(metrics, r, field = "G", fun = sum) # extract sum of G at 15m
 plot(map, col = hcl.colors(15)) # some plotting
 ```
 

@@ -18,11 +18,16 @@ knitr::opts_chunk$set(
 We have seen that `lidR` has many functions capable of processing a collection of files. Most of these functions support more than one algorithm to achieve a given task. 
 
 * `grid_terrain()` supports `tin()`, `knnidw()`, `kriging()`
-* `grid_canopy()` supports `p2r()`, `dsmtin()`, `pitfree()` etc.
+* `grid_canopy()` supports `p2r()`, `dsmtin()`, `pitfree()`
+* `classify_ground()` support `csf()`, `pmf()`
+* `find_trees()` supports `lmf()`
+* `segment_trees()` supports `dalponte2016()`, `li2012()`, `watershed()`, `silva2016()`
+* `track_sensor()` supports `roussel2020()`, `Gatziolis2019()`
+* and so on
 
-What if a user wanted to create a new algorithm integration? For example, what about an algorithm to create a digital terrain model using cubic spline interpolation? Sounds interesting.
+What if a user wanted to create a new algorithm integration? For example, what about a new algorithm for ground segmentation or tree segmentation or another interpolation method to create a digital terrain model using cubic spline interpolation? Sounds interesting.
 
-With `catalog_apply()` one can more or less replicate the original `grid_terrain()` function and apply the method over a catalog. After all, `grid_terrain()` actually uses `catalog_apply()` internally. However this implies a lot of code and is error prone especially for users who are not fully comfortable with the engine.
+With `catalog_apply()` one can more or less replicate the original functions and apply a new method over a catalog. After all, `lidR` functions actually use `catalog_apply()` internally. However this implies a lot of code and is error prone especially for users who are not fully comfortable with the engine.
 
 There is another way to create new algorithms that are fully compatible with `lidR` functions. This is not documented in the package because the underlying mechanism is not yet fully consistent and is still subject to improvements. 
 
@@ -108,4 +113,4 @@ grid_canopy(las, 1, mba())
 
 ## What about other algorithms?
 
-`lidR` has algorithms for canopy height models, individual tree segmentation, individual tree detection, sensor tracking, snag segmentation and so on. They all have different behaviors and this is why it's difficult to document. If you want to create a new algorithm the best first step is to communicate directly with `lidR` developers :).
+`lidR` has algorithms for canopy height models, individual tree segmentation, individual tree detection, sensor tracking, snag segmentation and so on. They all have different behaviors and this is why it's difficult to document. If you want to create a new algorithm the best first step is to communicate directly with `lidR` developers :). The [`lidRplugins`](https://github.com/Jean-Romain/lidRplugins) package makes heavy use of the plugins system to provide extra methods for diverse tasks.

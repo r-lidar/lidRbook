@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Ground classification {#gnd}
 
-Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows creation of a continuous model of terrain elevation (see section \@ref(dtm)). Many algorithms have been reported in the literature and `lidR` currently implements two of them: Progressive Morphological Filter (PMF) and Cloth Simulation Function (CSF) usable with the function `classify_ground()`.
+Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows creation of a continuous model of terrain elevation (see section \@ref(dtm)). Many algorithms have been reported in the literature and `lidR` currently (v3.0.2) provides two of them: Progressive Morphological Filter (PMF) and Cloth Simulation Function (CSF) usable with the function `classify_ground()`.
 
 ## Progressive Morphological Filter
 
@@ -103,7 +103,7 @@ plot_crossection(las, p1 = p1, p2 = p2, colour_by = factor(Classification))
 We can also subset only the ground points to display the results in 3D
 
 ```{r, rgl = TRUE}
-gnd = filter_ground(las)
+gnd <- filter_ground(las)
 plot(gnd, size = 3, bg = "white") 
 ```
 
@@ -116,3 +116,11 @@ No matter which algorithm is used in `lidR` or other software, ground classifica
 Identifying the optimal algorithm parameters is not a trivial task and often requires several trial runs. `lidR` proposes several algorithms, and may propose even more in future versions, however the main goal is to provide a mean to compare outputs. We don't know which one is better, and we don't know which parameters best suit a given terrain. It's likely that parameters need to be dynamically adjusted to the local context, providing reasoning for why parameters works in one file may provide inadequate results in another.
 
 If available, we recommend using classifications given by the data provider. `classify_ground()`is useful for small to medium size unclassified region of interests because it is feasible to visually assess classification results. For large acquisitions where visual assessment is no longer feasible, we do not recommend performing ground classification without studying its accuracy ahead of time.
+
+## Other methods
+
+Ground segmentation is not limited to the 2 methods described above. Many more have been presented and described in the literature. In section \@ref(plugins) we will learn how to create a plugin algorithm and test it seamlessly in R with `lidR` using a syntax like:
+
+```r
+las <- classify_ground(las, algorithm = my_new_method(param1 = 0.05))
+```

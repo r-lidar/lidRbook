@@ -17,7 +17,7 @@ library(lidR)
 
 ## Overview
 
-The "cloud" level of regularization corresponds to the computation of derived metrics using all available points. As seen in section \@ref(metrics), calculating derived metrics for the whole point cloud is straightforward and users only need to provide a formula to calculate metric(s) of interest. For example, to calculate the average height (`mean(Z)`) of all points we can run the following:
+The "cloud" level of regularization corresponds to the computation of derived metrics using all available points. As seen in chapter \@ref(metrics), calculating derived metrics for the whole point cloud is straightforward and users only need to provide a formula to calculate metric(s) of interest. For example, to calculate the average height (`mean(Z)`) of all points we can run the following:
 
 ```{r}
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
@@ -25,12 +25,12 @@ las <- readLAS(LASfile)
 cloud_metrics(las, func = ~mean(Z)) # calculate mean height
 ```
 
-To calculate more than one metric a custom function needs to be used, or one of the pre-defined functions within `lidR`. To calculate the whole suite of metrics defined in `stdmetrics_rn()` we can use `func = .stdmetrics_rn`. When several metrics are computed they are returned as a `list`.
+To calculate more than one metric a custom function needs to be used, or one of the pre-defined functions within `lidR`. To calculate the whole suite of 36 metrics defined in `stdmetrics_z()` we can use `func = .stdmetrics_z`. When several metrics are computed they are returned as a `list`.
 
 
 ```{r}
-metrics <- cloud_metrics(las, func = .stdmetrics_rn)
-metrics # output is a list
+metrics <- cloud_metrics(las, func = .stdmetrics_z)
+head(metrics) # output is a list
 ```
 
 ## Applications
@@ -52,7 +52,7 @@ opt_output_files(plots) <- ""
 
 metrics <- lapply(plots$filename, function(file) # calculate metrics
 {
-   las = readLAS(file)
+   las <- readLAS(file)
    cloud_metrics(las, .stdmetrics_z)
 })
 
@@ -71,7 +71,7 @@ plots <- list.files("path/to/plot/inventory/")
 inventory <- read.table("ground_inventory.txt")
 
 metrics <- lapply(plots, function(file) {
-   las = readLAS(file)
+   las <- readLAS(file)
    cloud_metrics(las, .stdmetrics_z)
 })
 metrics <- data.table::rbindlist(metrics)
@@ -85,10 +85,10 @@ head(inventory)
 head(metrics[,1:8])
 ```
 
-We have computed many metrics for each plot and the known value of interest. We can use that to build a linear model with some metrics.
+We have computed many metrics for each plot and we known the value of interest `G`. We can use that to build a linear model with some metrics.
 
 ```{r}
-model = lm(G~zmax+zmean+pzabove2+zq50+zq90, data = metrics)
+model <- lm(G~zmax+zmean+pzabove2+zq50+zq90, data = metrics)
 summary(model)
 ```
 
@@ -99,4 +99,4 @@ plot(inventory$G, 0.7018 *metrics$pzabove2 + 0.9268 * metrics$zmax, xlab = "Meas
 abline(0,1)
 ```
 
-This example can be improved. In chapter \@ref(engine) we will study how to extract a ground inventory and in section \@ref(modelling) we will study more in depth modelling presenting a complete workflow from the plot extraction to the mapping of the predictive model.
+This example can be improved. In chapter \@ref(engine) we will study how to extract a ground inventory and in chapter \@ref(modeling-aba) we will study more in depth modeling presenting a complete workflow from the plot extraction to the mapping of the predictive model.

@@ -61,7 +61,7 @@ Again, the `LAScatalog` class and the `LAScatalog` engine are deeply documented 
 In this chapter we will use the same 9 files used in chapter \@ref(engine) section \@ref(files) and an RGB raster that encompasses the collection of file.
 
 ```{r, fig.height=4, fig.width=4}
-ctg = readLAScatalog("data/ENGINE/catalog/")
+ctg <- readLAScatalog("data/ENGINE/catalog/")
 plot(ctg)
 ```
 
@@ -72,13 +72,11 @@ opt_progress(ctg) <- FALSE
 Satellite images are available for download [here](data/ENGINE/catalog/rgb.tif).
 
 ```{r, fig.height=8, fig.width=8, warning=FALSE}
-rgbmap = stack("data/ENGINE/catalog/rgb.tif")
+rgbmap <- stack("data/ENGINE/catalog/rgb.tif")
 plotRGB(rgbmap)
 ```
 
 ## Create user-defined function
-
-The example presented here follows standard R syntax. For more details about how to write your own functions check out [this link](https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Writing-your-own-functions)
 
 First we need to create a function that combined the DTM + normalization + colorization steps. Let's call it `dtm_norm_color()`. Its simple and uses only 3 functions.
 
@@ -101,7 +99,7 @@ nlasrgb <- dtm_norm_color(las, rgbmap) # apply user defined function
 plot(nlasrgb, color = "RGB", bg = "white", size = 6) # some plotting
 ```
 
-It works! We have a workable function that performs on a point cloud. Sadly, the 2D rendering in this book does not do justice to the beauty of the 3D rendering you get from R (try it yourself and see!). Remember that `dtm_norm_color()` is just an example. You could instead choose to make an algorithm for individual tree detection or a method to sample point of interest, _let your imagination run wild!_ 
+It works! We have a workable function that performs on a point cloud. Remember that `dtm_norm_color()` is just an example. You could instead choose to make an algorithm for individual tree detection or a method to sample point of interest, _let your imagination run wild!_ 
 
 So far it works only when using a `LAS` object. Now let's make it working with a `LAScatalog`.
 
@@ -133,7 +131,7 @@ opt_filter(ctg) <- "-keep_class 2"
 ```{r}
 opt_output_files(ctg) <- paste0(tempdir(), "/{*}_norm_rgb") # write to disk
 output <- catalog_apply(ctg, dtm_norm_color_chunk, rgbmap = rgbmap) # implement user-defined function using catalog_apply
-output
+head(output,4)
 ```
 
 We see that the output is a `list` with the name of each file written to disk. This is the default behavior of the engine. It returns a `list` with one element per chunk. This isn't really convenient. We have seen in chapter \@ref(engine) that in the case of `LAS` files we can return a `LAScatalog`, which is far more convenient. 

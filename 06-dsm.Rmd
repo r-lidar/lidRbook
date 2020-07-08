@@ -24,7 +24,7 @@ rgdal::set_thin_PROJ6_warnings(TRUE)
 
 Digital Surface Models (DSM) and Canopy Height Models (CHM) are raster layers that represent - more or less - the highest elevation of ALS returns. In the case of a normalized point cloud, the derived surface represents the canopy height (for vegetated areas) and is referred to as CHM. When the original (non-normalized) point cloud with absolute elevations is used, the derived layer represents the elevation of the top of the canopy above sea level, and is referred to as DSM. Both surface models are derived using the same algorithms, with the only difference being the elevation values of the point cloud.
 
-Different methods exist to create DSMs and CHMs. In the most simple case, a grid can be created with a user-defined pixel size and the elevations of the highest point can be assigned to each grid cell. This is called point-to-raster. More complex methods have been presented in the literature. In this section we will use the normalized `MixedConifer.laz` data set, which is included internally within `lidR`.
+Different methods exist to create DSMs and CHMs. In the most simple case, a grid can be created with a user-defined pixel size and the elevations of the highest point can be assigned to each grid cell. This is called point-to-raster. More complex methods have been presented in the literature. In this section we will use the normalized `MixedConifer.laz` data set, which is included internally within `lidR` to create reproducible examples.
 
 ```{r, rgl = TRUE}
 LASfile <- system.file("extdata", "MixedConifer.laz", package ="lidR")
@@ -109,7 +109,7 @@ The triangulation method may also be weak when a lot of points are missing. We c
  ```{r, rgl = TRUE}
 LASfile <- system.file("extdata", "Topography.laz", package = "lidR")
 las2 <- readLAS(LASfile)
-las2 = normalize_height(las2, algorithm = tin())
+las2 <- normalize_height(las2, algorithm = tin())
 plot(las2, size = 3, bg = "white")
 ```
 In this case the CHM is incorrectly computed in the empty lakes
@@ -119,7 +119,7 @@ chm <- grid_canopy(las2, res = 0.5, algorithm = dsmtin())
 plot(chm, col = col)
 ```
 
-To fix this, one option is to use the `max_edge` argument, which defines the maximum edge of a TIN in the Delaunay triangulation. By default this argument is set to `0` meaning that no triangle are removed. If set to e.g. 8 it means that every triangle with an edge longer than 8 will be discarded from the triangulation.
+To fix this, one option is to use the `max_edge` argument, which defines the maximum edge of a triangle allowed in the Delaunay triangulation. By default this argument is set to `0` meaning that no triangle are removed. If set to e.g. 8 it means that every triangle with an edge longer than 8 will be discarded from the triangulation.
  
 ```{r, fig.height=5.9, fig.width=6,warning=FALSE}
 chm <- grid_canopy(las2, res = 0.5, algorithm = dsmtin(max_edge = 8))
@@ -138,7 +138,7 @@ To understand this method better, we can reproduce the figure above with `algori
 
 ```{r, fig.height=6.6, fig.width=7.4}
 # The first layer is a regular triangulation
-layer0 = grid_canopy(las, res = 0.5, algorithm = dsmtin())
+layer0 <- grid_canopy(las, res = 0.5, algorithm = dsmtin())
 
 # Triangulation of first return above 10 m
 above10 <- filter_poi(las, Z >= 10)
@@ -185,13 +185,13 @@ CHMs are usually post-processed to smooth or to fill empty pixels. This is mainl
 
 ```{r, fig.height=6.6, fig.width=7.4}
 fill.na <- function(x, i=5) { if (is.na(x)[i]) { return(mean(x, na.rm = TRUE)) } else { return(x[i]) }}
-w = matrix(1, 3, 3)
+w <- matrix(1, 3, 3)
 
 chm <- grid_canopy(las, res = 0.5, algorithm = p2r(subcircle = 0.15))
-filled = focal(chm, w, fun = fill.na)
-smoothed = focal(chm, w, fun = mean, na.rm = TRUE)
+filled <- focal(chm, w, fun = fill.na)
+smoothed <- focal(chm, w, fun = mean, na.rm = TRUE)
 
-chms = stack(chm, filled, smoothed)
+chms <- stack(chm, filled, smoothed)
 names(chms) <- c("Base", "Filled", "Smoothed")
 plot(chms, col = col)
 ```

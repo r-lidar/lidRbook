@@ -86,9 +86,9 @@ In the above example we are (1) reading only the first returns or (2) Reading al
 las <-  readLAS("file.las", filter = "-keep_first -drop_z_below 5 -drop_z_above 50")
 ```
 
-The full list of available commands is given by `readLAS(filter = "-help")`. Users of `LAStools` may recognize these commands because both `LAStools` and `lidR` use the same library (LASlib and LASzip) to read and write LAS and LAZ files.
+The full list of available commands is given by `readLAS(filter = "-help")`. Users of `LAStools` may recognize these commands because both `LAStools` and `lidR` use the same library (`LASlib` and `LASzip`) to read and write LAS and LAZ files.
 
-## Validating lidar data
+## Validating lidar data {#asprs-compliance}
 
 An important first step in ALS data processing is ensuring that your data is complete and valid according to the [ASPRS LAS specifications](http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf). Users commonly report bugs arising from invalid data. This is why we introduced the `las_check()` function to perform a deep inspection of `LAS` objects. This function checks if a `LAS` object meets the ASPRS LAS specifications and whether it is valid for processing, giving warnings if otherwise.
 
@@ -109,7 +109,7 @@ las_check(las)
 A check is performed at read time regardless, but the read time check is not as thorough as `las_check()` for computation time reasons. For example duplicated points are not checked at read time.
 
 ```{r, warning = TRUE}
-las = readLAS("data/chap1/corrupted.laz")
+las <- readLAS("data/chap1/corrupted.laz")
 ```
 
 ## Plotting {#plot}
@@ -162,7 +162,7 @@ las <- clip_circle(las, 273516, 5274496, 100)
 ```
 
 ```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
-x = plot(las, bg = "white", size = 3)
+x <- plot(las, bg = "white", size = 3)
 add_dtm3d(x, dtm)
 ```
 
@@ -174,7 +174,7 @@ ttops <- find_trees(las, lmf(ws = 5))
 ```
 
 ```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
-x = plot(las, bg = "white", size = 3)
+x <- plot(las, bg = "white", size = 3)
 add_treetops3d(x, ttops)
 ```
 
@@ -186,23 +186,23 @@ las = readLAS("data/chap11/building_WilliamsAZ_Urban_normalized.laz", filter = "
 ```
 
 ```{r, rgl = TRUE, fig.width=8, fig.height=3}
-nonveg = filter_poi(las, Classification != LASHIGHVEGETATION)
-veg = filter_poi(las, Classification == LASHIGHVEGETATION)
+nonveg <- filter_poi(las, Classification != LASHIGHVEGETATION)
+veg <- filter_poi(las, Classification == LASHIGHVEGETATION)
 
-x = plot(nonveg, color = "Classification", bg = "white", size = 3)
+x <- plot(nonveg, color = "Classification", bg = "white", size = 3)
 plot(veg, add = x)
 ```
 
 ### Advanced 3D rendering
 
-With `lidR` being based on `rgl` it is easy to add objects in the main rendering using `rgl` functions such as `rgl::point3d`, `rgl::text()`, `rgl::surface3d()` and so on.  However `lidR` introduced an additional challenge because it does not display the points with their actual coordinates. The points are shifted to be rendered close to (0, 0) (a matter of accuracy because `rgl` uses `float` (decimal numbers on 32 bits) instead of `double` (decimal numbers on 64 bits)). When `plot()` is used it invisibly returns the shift values that can be used later to realign other objects.
+With `lidR` being based on `rgl` it is easy to add objects in the main rendering using `rgl` functions such as `rgl::point3d()`, `rgl::text()`, `rgl::surface3d()` and so on to produce publication ready rendering.  However `lidR` introduced an additional challenge because it does not display the points with their actual coordinates. The points are shifted to be rendered close to (0, 0) (a matter of accuracy because `rgl` uses `float` (decimal numbers on 32 bits) instead of `double` (decimal numbers on 64 bits)). When `plot()` is used it invisibly returns the shift values that can be used later to realign other objects.
 
 ```{r}
-offsets = plot(las)
+offsets <- plot(las)
 print(offsets)
 ```
 
-The coordinates of the objects must be corrected to align with the point cloud. In the following we will add lines to render the trunks. We read a file, we locate the trees (see chapter \@ref(itd)), we extract the coordinates and sizes of the trees and plot lines with `rgl::segment3d`.
+The coordinates of the objects must be corrected to align with the point cloud. In the following we will add lines to render the trunks. We read a file, we locate the trees (see chapter \@ref(itd)), we extract the coordinates and sizes of the trees and plot lines with `rgl::segment3d()`.
 
 ```{r, echo=FALSE}
 r3dDefaults = rgl::r3dDefaults
@@ -222,21 +222,21 @@ las <- readLAS(LASfile, select = "xyzc")
 ttops <- find_trees(las, lmf(ws = 5)) 
 
 # extract the coordinates of the trees
-x = coordinates(ttops)[,1]
-y = coordinates(ttops)[,2]
-z = ttops$Z
+x <- coordinates(ttops)[,1]
+y <- coordinates(ttops)[,2]
+z <- ttops$Z
 
 # plot the point cloud
-offsets = plot(las, bg = "white", size = 3)
+offsets <- plot(las, bg = "white", size = 3)
 add_treetops3d(offsets, ttops)
 
 # add the trunks
 for (i in 1:length(ttops)) {
   # apply the shift to display the lines
   # in the rendering coordinate system
-  X = c(x[i], x[i]) - offsets[1] 
-  Y = c(y[i], y[i]) - offsets[2]
-  Z = c(0, z[i])
+  X <- c(x[i], x[i]) - offsets[1] 
+  Y <- c(y[i], y[i]) - offsets[2]
+  Z <- c(0, z[i])
   rgl::segments3d(X, Y, Z, col = "black", lwd = 2)
 }
 ```
@@ -278,6 +278,8 @@ The two steps required to create a cross section (clipping the point cloud and p
 ```{r, code=readLines("function_plot_crossection.R")}
 
 ```
+
+Then we can used the function:
 
 ```{r, fig.height=1.5, fig.width=8}
 plot_crossection(las, colour_by = factor(Classification))
