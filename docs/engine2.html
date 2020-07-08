@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-07-07" />
+<meta name="date" content="2020-07-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -133,7 +133,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1.1" data-path="io.html"><a href="io.html#parameter-select"><i class="fa fa-check"></i><b>2.1.1</b> Parameter <code>select</code></a></li>
 <li class="chapter" data-level="2.1.2" data-path="io.html"><a href="io.html#filter"><i class="fa fa-check"></i><b>2.1.2</b> Parameter <code>filter</code></a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="io.html"><a href="io.html#validating-lidar-data"><i class="fa fa-check"></i><b>2.2</b> Validating lidar data</a></li>
+<li class="chapter" data-level="2.2" data-path="io.html"><a href="io.html#asprs-compliance"><i class="fa fa-check"></i><b>2.2</b> Validating lidar data</a></li>
 <li class="chapter" data-level="2.3" data-path="io.html"><a href="io.html#plot"><i class="fa fa-check"></i><b>2.3</b> Plotting</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="io.html"><a href="io.html#basic-3d-rendering"><i class="fa fa-check"></i><b>2.3.1</b> Basic 3D rendering</a></li>
 <li class="chapter" data-level="2.3.2" data-path="io.html"><a href="io.html#overlays"><i class="fa fa-check"></i><b>2.3.2</b> Overlays</a></li>
@@ -146,14 +146,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#cloth-simulation-function"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
 <li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#buffer"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
 <li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#how-to-choose-a-method-and-its-parameters"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other-methods"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a><ul>
 <li class="chapter" data-level="4.1" data-path="dtm.html"><a href="dtm.html#triangular-irregular-network"><i class="fa fa-check"></i><b>4.1</b> Triangular irregular network</a></li>
-<li class="chapter" data-level="4.2" data-path="dtm.html"><a href="dtm.html#invert-distance-weighting-idw"><i class="fa fa-check"></i><b>4.2</b> Invert distance weighting (IDW)</a></li>
+<li class="chapter" data-level="4.2" data-path="dtm.html"><a href="dtm.html#invert-distance-weighting"><i class="fa fa-check"></i><b>4.2</b> Invert distance weighting</a></li>
 <li class="chapter" data-level="4.3" data-path="dtm.html"><a href="dtm.html#kriging"><i class="fa fa-check"></i><b>4.3</b> Kriging</a></li>
 <li class="chapter" data-level="4.4" data-path="dtm.html"><a href="dtm.html#pros-and-cons"><i class="fa fa-check"></i><b>4.4</b> Pros and cons</a></li>
-<li class="chapter" data-level="4.5" data-path="dtm.html"><a href="dtm.html#other-methods"><i class="fa fa-check"></i><b>4.5</b> Other methods</a></li>
-<li class="chapter" data-level="4.6" data-path="dtm.html"><a href="dtm.html#render-shaded-dtm"><i class="fa fa-check"></i><b>4.6</b> Render shaded DTM</a></li>
+<li class="chapter" data-level="4.5" data-path="dtm.html"><a href="dtm.html#other-methods-1"><i class="fa fa-check"></i><b>4.5</b> Other methods</a></li>
+<li class="chapter" data-level="4.6" data-path="dtm.html"><a href="dtm.html#shaded-dtm"><i class="fa fa-check"></i><b>4.6</b> Render shaded DTM</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="norm.html"><a href="norm.html"><i class="fa fa-check"></i><b>5</b> Height normalization</a><ul>
 <li class="chapter" data-level="5.1" data-path="norm.html"><a href="norm.html#dtm-normalization"><i class="fa fa-check"></i><b>5.1</b> DTM normalization</a></li>
@@ -167,16 +168,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="chm.html"><a href="chm.html#pit-free-algorithm"><i class="fa fa-check"></i><b>6.3</b> Pit-free algorithm</a></li>
 <li class="chapter" data-level="6.4" data-path="chm.html"><a href="chm.html#post-processing-a-chm"><i class="fa fa-check"></i><b>6.4</b> Post-processing a CHM</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="itd.html"><a href="itd.html"><i class="fa fa-check"></i><b>7</b> Indivitual tree dectection and segmentation</a><ul>
-<li class="chapter" data-level="7.1" data-path="itd.html"><a href="itd.html#individual-tree-detection-itd"><i class="fa fa-check"></i><b>7.1</b> Individual Tree Detection (ITD)</a><ul>
-<li class="chapter" data-level="7.1.1" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-fixed-windows-size"><i class="fa fa-check"></i><b>7.1.1</b> Local Maximum Filter with fixed windows size</a></li>
-<li class="chapter" data-level="7.1.2" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-variable-windows-size"><i class="fa fa-check"></i><b>7.1.2</b> Local Maximum Filter with variable windows size</a></li>
-<li class="chapter" data-level="7.1.3" data-path="itd.html"><a href="itd.html#local-maximum-filter-on-a-chm"><i class="fa fa-check"></i><b>7.1.3</b> Local Maximum Filter on a CHM</a></li>
+<li class="chapter" data-level="7" data-path="itd-its.html"><a href="itd-its.html"><i class="fa fa-check"></i><b>7</b> Indivitual tree dectection and segmentation</a><ul>
+<li class="chapter" data-level="7.1" data-path="itd-its.html"><a href="itd-its.html#itd"><i class="fa fa-check"></i><b>7.1</b> Individual Tree Detection (ITD)</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="itd-its.html"><a href="itd-its.html#lmffw"><i class="fa fa-check"></i><b>7.1.1</b> Local Maximum Filter with fixed windows size</a></li>
+<li class="chapter" data-level="7.1.2" data-path="itd-its.html"><a href="itd-its.html#lmfvw"><i class="fa fa-check"></i><b>7.1.2</b> Local Maximum Filter with variable windows size</a></li>
+<li class="chapter" data-level="7.1.3" data-path="itd-its.html"><a href="itd-its.html#lmfchm"><i class="fa fa-check"></i><b>7.1.3</b> Local Maximum Filter on a CHM</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="itd.html"><a href="itd.html#individual-tree-segmentation-its"><i class="fa fa-check"></i><b>7.2</b> Individual Tree Segmentation (ITS)</a><ul>
-<li class="chapter" data-level="7.2.1" data-path="itd.html"><a href="itd.html#segmentation-of-the-point-cloud"><i class="fa fa-check"></i><b>7.2.1</b> Segmentation of the point-cloud</a></li>
-<li class="chapter" data-level="7.2.2" data-path="itd.html"><a href="itd.html#segmentation-of-the-chm"><i class="fa fa-check"></i><b>7.2.2</b> Segmentation of the CHM</a></li>
-<li class="chapter" data-level="7.2.3" data-path="itd.html"><a href="itd.html#comparaison-of-tree-segmentations"><i class="fa fa-check"></i><b>7.2.3</b> Comparaison of tree segmentations</a></li>
+<li class="chapter" data-level="7.2" data-path="itd-its.html"><a href="itd-its.html#its"><i class="fa fa-check"></i><b>7.2</b> Individual Tree Segmentation (ITS)</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="itd-its.html"><a href="itd-its.html#its-cloud"><i class="fa fa-check"></i><b>7.2.1</b> Segmentation of the point-cloud</a></li>
+<li class="chapter" data-level="7.2.2" data-path="itd-its.html"><a href="itd-its.html#its-chm"><i class="fa fa-check"></i><b>7.2.2</b> Segmentation of the CHM</a></li>
+<li class="chapter" data-level="7.2.3" data-path="itd-its.html"><a href="itd-its.html#comparaison-of-tree-segmentations"><i class="fa fa-check"></i><b>7.2.3</b> Comparaison of tree segmentations</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="metrics.html"><a href="metrics.html"><i class="fa fa-check"></i><b>8</b> Derived metrics</a><ul>
@@ -229,35 +230,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.6" data-path="engine.html"><a href="engine.html#modification-of-default-behavior"><i class="fa fa-check"></i><b>14.6</b> Modification of default behavior</a><ul>
 <li class="chapter" data-level="14.6.1" data-path="engine.html"><a href="engine.html#multiple-extractions-on-disk"><i class="fa fa-check"></i><b>14.6.1</b> Multiple extractions on disk</a></li>
 <li class="chapter" data-level="14.6.2" data-path="engine.html"><a href="engine.html#multiple-extraction-with-point-cloud-indexation"><i class="fa fa-check"></i><b>14.6.2</b> Multiple extraction with point cloud indexation</a></li>
+<li class="chapter" data-level="14.6.3" data-path="engine.html"><a href="engine.html#summary"><i class="fa fa-check"></i><b>14.6.3</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.7" data-path="engine.html"><a href="engine.html#summary"><i class="fa fa-check"></i><b>14.7</b> Summary</a></li>
-<li class="chapter" data-level="14.8" data-path="engine.html"><a href="engine.html#ground-classification"><i class="fa fa-check"></i><b>14.8</b> Ground classification</a><ul>
-<li class="chapter" data-level="14.8.1" data-path="engine.html"><a href="engine.html#chunk-processing"><i class="fa fa-check"></i><b>14.8.1</b> Chunk processing</a></li>
-<li class="chapter" data-level="14.8.2" data-path="engine.html"><a href="engine.html#modifying-buffers"><i class="fa fa-check"></i><b>14.8.2</b> Modifying buffers</a></li>
-<li class="chapter" data-level="14.8.3" data-path="engine.html"><a href="engine.html#modify-the-chunk-size"><i class="fa fa-check"></i><b>14.8.3</b> Modify the chunk size</a></li>
-<li class="chapter" data-level="14.8.4" data-path="engine.html"><a href="engine.html#parallel-processing"><i class="fa fa-check"></i><b>14.8.4</b> Parallel processing</a></li>
+<li class="chapter" data-level="14.7" data-path="engine.html"><a href="engine.html#ground-classification"><i class="fa fa-check"></i><b>14.7</b> Ground classification</a><ul>
+<li class="chapter" data-level="14.7.1" data-path="engine.html"><a href="engine.html#chunk-processing"><i class="fa fa-check"></i><b>14.7.1</b> Chunk processing</a></li>
+<li class="chapter" data-level="14.7.2" data-path="engine.html"><a href="engine.html#modifying-buffers"><i class="fa fa-check"></i><b>14.7.2</b> Modifying buffers</a></li>
+<li class="chapter" data-level="14.7.3" data-path="engine.html"><a href="engine.html#modify-the-chunk-size"><i class="fa fa-check"></i><b>14.7.3</b> Modify the chunk size</a></li>
+<li class="chapter" data-level="14.7.4" data-path="engine.html"><a href="engine.html#parallel-processing"><i class="fa fa-check"></i><b>14.7.4</b> Parallel processing</a></li>
+<li class="chapter" data-level="14.7.5" data-path="engine.html"><a href="engine.html#summary-1"><i class="fa fa-check"></i><b>14.7.5</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.9" data-path="engine.html"><a href="engine.html#summary-1"><i class="fa fa-check"></i><b>14.9</b> Summary</a></li>
-<li class="chapter" data-level="14.10" data-path="engine.html"><a href="engine.html#digital-terrain-model"><i class="fa fa-check"></i><b>14.10</b> Digital Terrain Model</a><ul>
-<li class="chapter" data-level="14.10.1" data-path="engine.html"><a href="engine.html#in-memory-dtm"><i class="fa fa-check"></i><b>14.10.1</b> In memory DTM</a></li>
-<li class="chapter" data-level="14.10.2" data-path="engine.html"><a href="engine.html#on-disk-dtm"><i class="fa fa-check"></i><b>14.10.2</b> On disk DTM</a></li>
+<li class="chapter" data-level="14.8" data-path="engine.html"><a href="engine.html#digital-terrain-model"><i class="fa fa-check"></i><b>14.8</b> Digital Terrain Model</a><ul>
+<li class="chapter" data-level="14.8.1" data-path="engine.html"><a href="engine.html#in-memory-dtm"><i class="fa fa-check"></i><b>14.8.1</b> In memory DTM</a></li>
+<li class="chapter" data-level="14.8.2" data-path="engine.html"><a href="engine.html#on-disk-dtm"><i class="fa fa-check"></i><b>14.8.2</b> On disk DTM</a></li>
+<li class="chapter" data-level="14.8.3" data-path="engine.html"><a href="engine.html#summary-2"><i class="fa fa-check"></i><b>14.8.3</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.11" data-path="engine.html"><a href="engine.html#storage-summary"><i class="fa fa-check"></i><b>14.11</b> Storage Summary</a></li>
-<li class="chapter" data-level="14.12" data-path="engine.html"><a href="engine.html#height-normalization"><i class="fa fa-check"></i><b>14.12</b> Height normalization</a></li>
-<li class="chapter" data-level="14.13" data-path="engine.html"><a href="engine.html#area-based-approach"><i class="fa fa-check"></i><b>14.13</b> Area Based Approach</a></li>
-<li class="chapter" data-level="14.14" data-path="engine.html"><a href="engine.html#height-aba-summary"><i class="fa fa-check"></i><b>14.14</b> Height &amp; ABA Summary</a></li>
-<li class="chapter" data-level="14.15" data-path="engine.html"><a href="engine.html#individual-tree-detection"><i class="fa fa-check"></i><b>14.15</b> Individual Tree Detection</a><ul>
-<li class="chapter" data-level="14.15.1" data-path="engine.html"><a href="engine.html#itd-summary"><i class="fa fa-check"></i><b>14.15.1</b> ITD Summary</a></li>
+<li class="chapter" data-level="14.9" data-path="engine.html"><a href="engine.html#height-normalization"><i class="fa fa-check"></i><b>14.9</b> Height normalization</a></li>
+<li class="chapter" data-level="14.10" data-path="engine.html"><a href="engine.html#area-based-approach"><i class="fa fa-check"></i><b>14.10</b> Area Based Approach</a><ul>
+<li class="chapter" data-level="14.10.1" data-path="engine.html"><a href="engine.html#summary-3"><i class="fa fa-check"></i><b>14.10.1</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.16" data-path="engine.html"><a href="engine.html#individual-tree-segmentation"><i class="fa fa-check"></i><b>14.16</b> Individual Tree Segmentation</a></li>
-<li class="chapter" data-level="14.17" data-path="engine.html"><a href="engine.html#retile-a-catalog"><i class="fa fa-check"></i><b>14.17</b> Retile a catalog</a><ul>
-<li class="chapter" data-level="14.17.1" data-path="engine.html"><a href="engine.html#retile-a-catalog-into-smaller-files"><i class="fa fa-check"></i><b>14.17.1</b> Retile a catalog into smaller files</a></li>
-<li class="chapter" data-level="14.17.2" data-path="engine.html"><a href="engine.html#add-a-buffer-around-each-file"><i class="fa fa-check"></i><b>14.17.2</b> Add a buffer around each file</a></li>
-<li class="chapter" data-level="14.17.3" data-path="engine.html"><a href="engine.html#create-a-new-collection-with-only-first-returns"><i class="fa fa-check"></i><b>14.17.3</b> Create a new collection with only first returns</a></li>
-<li class="chapter" data-level="14.17.4" data-path="engine.html"><a href="engine.html#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel"><i class="fa fa-check"></i><b>14.17.4</b> Create a new collection of small and buffered ground returns in parallel</a></li>
+<li class="chapter" data-level="14.11" data-path="engine.html"><a href="engine.html#individual-tree-detection"><i class="fa fa-check"></i><b>14.11</b> Individual Tree Detection</a><ul>
+<li class="chapter" data-level="14.11.1" data-path="engine.html"><a href="engine.html#summary-4"><i class="fa fa-check"></i><b>14.11.1</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.18" data-path="engine.html"><a href="engine.html#the-case-of-ground-inventories"><i class="fa fa-check"></i><b>14.18</b> The case of ground inventories</a></li>
-<li class="chapter" data-level="14.19" data-path="engine.html"><a href="engine.html#summary-2"><i class="fa fa-check"></i><b>14.19</b> Summary</a></li>
+<li class="chapter" data-level="14.12" data-path="engine.html"><a href="engine.html#individual-tree-segmentation"><i class="fa fa-check"></i><b>14.12</b> Individual Tree Segmentation</a></li>
+<li class="chapter" data-level="14.13" data-path="engine.html"><a href="engine.html#retile-a-catalog"><i class="fa fa-check"></i><b>14.13</b> Retile a catalog</a><ul>
+<li class="chapter" data-level="14.13.1" data-path="engine.html"><a href="engine.html#retile-a-catalog-into-smaller-files"><i class="fa fa-check"></i><b>14.13.1</b> Retile a catalog into smaller files</a></li>
+<li class="chapter" data-level="14.13.2" data-path="engine.html"><a href="engine.html#add-a-buffer-around-each-file"><i class="fa fa-check"></i><b>14.13.2</b> Add a buffer around each file</a></li>
+<li class="chapter" data-level="14.13.3" data-path="engine.html"><a href="engine.html#create-a-new-collection-with-only-first-returns"><i class="fa fa-check"></i><b>14.13.3</b> Create a new collection with only first returns</a></li>
+<li class="chapter" data-level="14.13.4" data-path="engine.html"><a href="engine.html#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel"><i class="fa fa-check"></i><b>14.13.4</b> Create a new collection of small and buffered ground returns in parallel</a></li>
+</ul></li>
+<li class="chapter" data-level="14.14" data-path="engine.html"><a href="engine.html#the-case-of-ground-inventories"><i class="fa fa-check"></i><b>14.14</b> The case of ground inventories</a></li>
+<li class="chapter" data-level="14.15" data-path="engine.html"><a href="engine.html#summary-5"><i class="fa fa-check"></i><b>14.15</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="engine2.html"><a href="engine2.html"><i class="fa fa-check"></i><b>15</b> LAScatalog processing engine (2/2)</a><ul>
 <li class="chapter" data-level="15.1" data-path="engine2.html"><a href="engine2.html#catalog_apply"><i class="fa fa-check"></i><b>15.1</b> <code>catalog_apply()</code></a></li>
@@ -309,21 +311,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">15</span> LAScatalog processing engine (2/2)</h1>
 <p>Chapter <a href="engine.html#engine">14</a> showed how to use the <code>LAScatalog</code> processing engine to apply <code>lidR</code> functions on a collection of files. This included how to process acquisitions in user defined chunk sizes, loading buffers on-the-fly, saving the output to disk, and parallelizing tasks. These examples all used existing functions provided with the <code>lidR</code> package. The power of the engine goes beyond limited used cases, allowing developers to design their own applications.</p>
 <p>Let’s imagine we want to normalize a data set <strong>and</strong> colorize it using RGB satellite data. According to the previous chapters we could do something like this:</p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb166-1" data-line-number="1"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_dtm&quot;</span>) <span class="co"># specify output DTM disk save location</span></a>
-<a class="sourceLine" id="cb166-2" data-line-number="2">dtm &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(ctg, <span class="dv">1</span>, <span class="kw">tin</span>()) <span class="co"># create DTMs</span></a>
-<a class="sourceLine" id="cb166-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb166-4" data-line-number="4"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_normalized&quot;</span>) <span class="co"># specify output normalized las disk save location</span></a>
-<a class="sourceLine" id="cb166-5" data-line-number="5">ctg_norm &lt;-<span class="st"> </span><span class="kw">normalize_height</span>(ctg, dtm) <span class="co"># normalize</span></a>
-<a class="sourceLine" id="cb166-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb166-7" data-line-number="7"><span class="co"># loop through catalog files and apply rgb colour</span></a>
-<a class="sourceLine" id="cb166-8" data-line-number="8"><span class="cf">for</span> (file <span class="cf">in</span> ctg<span class="op">$</span>filename)</a>
-<a class="sourceLine" id="cb166-9" data-line-number="9">{</a>
-<a class="sourceLine" id="cb166-10" data-line-number="10">  newname &lt;-<span class="st">  </span>tools<span class="op">::</span><span class="kw">file_path_sans_ext</span>(<span class="kw">basename</span>(file))</a>
-<a class="sourceLine" id="cb166-11" data-line-number="11">  newname &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;folder/, newname, &quot;</span>_colored.laz<span class="st">&quot;)</span></a>
-<a class="sourceLine" id="cb166-12" data-line-number="12"><span class="st">  las &lt;- readLAS(file)</span></a>
-<a class="sourceLine" id="cb166-13" data-line-number="13"><span class="st">  las &lt;- merge_spatial(las, rgb)</span></a>
-<a class="sourceLine" id="cb166-14" data-line-number="14"><span class="st">  writeLAS(las, newname)</span></a>
-<a class="sourceLine" id="cb166-15" data-line-number="15"><span class="st">}</span></a></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb168-1" data-line-number="1"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_dtm&quot;</span>) <span class="co"># specify output DTM disk save location</span></a>
+<a class="sourceLine" id="cb168-2" data-line-number="2">dtm &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(ctg, <span class="dv">1</span>, <span class="kw">tin</span>()) <span class="co"># create DTMs</span></a>
+<a class="sourceLine" id="cb168-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb168-4" data-line-number="4"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_normalized&quot;</span>) <span class="co"># specify output normalized las disk save location</span></a>
+<a class="sourceLine" id="cb168-5" data-line-number="5">ctg_norm &lt;-<span class="st"> </span><span class="kw">normalize_height</span>(ctg, dtm) <span class="co"># normalize</span></a>
+<a class="sourceLine" id="cb168-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb168-7" data-line-number="7"><span class="co"># loop through catalog files and apply rgb colour</span></a>
+<a class="sourceLine" id="cb168-8" data-line-number="8"><span class="cf">for</span> (file <span class="cf">in</span> ctg<span class="op">$</span>filename)</a>
+<a class="sourceLine" id="cb168-9" data-line-number="9">{</a>
+<a class="sourceLine" id="cb168-10" data-line-number="10">  newname &lt;-<span class="st">  </span>tools<span class="op">::</span><span class="kw">file_path_sans_ext</span>(<span class="kw">basename</span>(file))</a>
+<a class="sourceLine" id="cb168-11" data-line-number="11">  newname &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;folder/, newname, &quot;</span>_colored.laz<span class="st">&quot;)</span></a>
+<a class="sourceLine" id="cb168-12" data-line-number="12"><span class="st">  las &lt;- readLAS(file)</span></a>
+<a class="sourceLine" id="cb168-13" data-line-number="13"><span class="st">  las &lt;- merge_spatial(las, rgb)</span></a>
+<a class="sourceLine" id="cb168-14" data-line-number="14"><span class="st">  writeLAS(las, newname)</span></a>
+<a class="sourceLine" id="cb168-15" data-line-number="15"><span class="st">}</span></a></code></pre></div>
 <p>This method is however far from optimal. First, <strong>the whole</strong> point cloud is read 3 times:</p>
 <ol style="list-style-type: decimal">
 <li>To create the DTM</li>
@@ -337,178 +339,162 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In this chapter we outline the <code>catalog_apply()</code> function, which is used subliminally in every function seen in the chapter <a href="engine.html#engine">14</a>. Here we show how to leverage its versatility to design tools that do not yet exist like the DTM + normalization + colorization example from above but also more inovative processes.</p>
 <p>Again, the <code>LAScatalog</code> class and the <code>LAScatalog</code> engine are deeply documented in a two dedicated vignettes available <a href="https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-class.html">here</a> and <a href="https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-engine.html">here</a>. The purpose of these examples is to provide alternative, hands-on documentation with more applied examples and real use cases.</p>
 <p>In this chapter we will use the same 9 files used in chapter <a href="engine.html#engine">14</a> section <a href="engine.html#files">14.3</a> and an RGB raster that encompasses the collection of file.</p>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb167-1" data-line-number="1">ctg =<span class="st"> </span><span class="kw">readLAScatalog</span>(<span class="st">&quot;data/ENGINE/catalog/&quot;</span>)</a>
-<a class="sourceLine" id="cb167-2" data-line-number="2"><span class="kw">plot</span>(ctg)</a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-174-1.png" width="384" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" data-line-number="1">ctg &lt;-<span class="st"> </span><span class="kw">readLAScatalog</span>(<span class="st">&quot;data/ENGINE/catalog/&quot;</span>)</a>
+<a class="sourceLine" id="cb169-2" data-line-number="2"><span class="kw">plot</span>(ctg)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-ctg-engine2-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>Satellite images are available for download <a href="data/ENGINE/catalog/rgb.tif">here</a>.</p>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb168-1" data-line-number="1">rgbmap =<span class="st"> </span><span class="kw">stack</span>(<span class="st">&quot;data/ENGINE/catalog/rgb.tif&quot;</span>)</a>
-<a class="sourceLine" id="cb168-2" data-line-number="2"><span class="kw">plotRGB</span>(rgbmap)</a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-176-1.png" width="768" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb170-1" data-line-number="1">rgbmap &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="st">&quot;data/ENGINE/catalog/rgb.tif&quot;</span>)</a>
+<a class="sourceLine" id="cb170-2" data-line-number="2"><span class="kw">plotRGB</span>(rgbmap)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-rgbmap-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="create-user-defined-function" class="section level2">
 <h2><span class="header-section-number">15.2</span> Create user-defined function</h2>
-<p>The example presented here follows standard R syntax. For more details about how to write your own functions check out <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Writing-your-own-functions">this link</a></p>
 <p>First we need to create a function that combined the DTM + normalization + colorization steps. Let’s call it <code>dtm_norm_color()</code>. Its simple and uses only 3 functions.</p>
-<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" data-line-number="1">dtm_norm_color &lt;-<span class="st"> </span><span class="cf">function</span>(las, rgbmap) <span class="co"># create user-defined function</span></a>
-<a class="sourceLine" id="cb169-2" data-line-number="2">{</a>
-<a class="sourceLine" id="cb169-3" data-line-number="3">  dtm &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dv">1</span>, <span class="kw">tin</span>()) <span class="co"># create dtm</span></a>
-<a class="sourceLine" id="cb169-4" data-line-number="4">  nlas &lt;-<span class="st"> </span><span class="kw">normalize_height</span>(las, dtm) <span class="co"># normalize</span></a>
-<a class="sourceLine" id="cb169-5" data-line-number="5">  colorized &lt;-<span class="st"> </span><span class="kw">merge_spatial</span>(nlas, rgbmap) <span class="co"># colorize</span></a>
-<a class="sourceLine" id="cb169-6" data-line-number="6">  <span class="kw">return</span>(colorized) <span class="co"># output</span></a>
-<a class="sourceLine" id="cb169-7" data-line-number="7">}</a></code></pre></div>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb171-1" data-line-number="1">dtm_norm_color &lt;-<span class="st"> </span><span class="cf">function</span>(las, rgbmap) <span class="co"># create user-defined function</span></a>
+<a class="sourceLine" id="cb171-2" data-line-number="2">{</a>
+<a class="sourceLine" id="cb171-3" data-line-number="3">  dtm &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dv">1</span>, <span class="kw">tin</span>()) <span class="co"># create dtm</span></a>
+<a class="sourceLine" id="cb171-4" data-line-number="4">  nlas &lt;-<span class="st"> </span><span class="kw">normalize_height</span>(las, dtm) <span class="co"># normalize</span></a>
+<a class="sourceLine" id="cb171-5" data-line-number="5">  colorized &lt;-<span class="st"> </span><span class="kw">merge_spatial</span>(nlas, rgbmap) <span class="co"># colorize</span></a>
+<a class="sourceLine" id="cb171-6" data-line-number="6">  <span class="kw">return</span>(colorized) <span class="co"># output</span></a>
+<a class="sourceLine" id="cb171-7" data-line-number="7">}</a></code></pre></div>
 <p>Let’s try it on a sample plot.</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb170-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">clip_circle</span>(ctg, <span class="dv">338800</span>, <span class="dv">5238500</span>, <span class="dv">40</span>)</a>
-<a class="sourceLine" id="cb170-2" data-line-number="2">nlasrgb &lt;-<span class="st"> </span><span class="kw">dtm_norm_color</span>(las, rgbmap) <span class="co"># apply user defined function</span></a>
-<a class="sourceLine" id="cb170-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb170-4" data-line-number="4"><span class="kw">plot</span>(nlasrgb, <span class="dt">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">6</span>) <span class="co"># some plotting</span></a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-178-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>It works! We have a workable function that performs on a point cloud. Sadly, the 2D rendering in this book does not do justice to the beauty of the 3D rendering you get from R (try it yourself and see!). Remember that <code>dtm_norm_color()</code> is just an example. You could instead choose to make an algorithm for individual tree detection or a method to sample point of interest, <em>let your imagination run wild!</em></p>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb172-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">clip_circle</span>(ctg, <span class="dv">338800</span>, <span class="dv">5238500</span>, <span class="dv">40</span>)</a>
+<a class="sourceLine" id="cb172-2" data-line-number="2">nlasrgb &lt;-<span class="st"> </span><span class="kw">dtm_norm_color</span>(las, rgbmap) <span class="co"># apply user defined function</span></a>
+<a class="sourceLine" id="cb172-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb172-4" data-line-number="4"><span class="kw">plot</span>(nlasrgb, <span class="dt">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">6</span>) <span class="co"># some plotting</span></a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-las-rgb-colored-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>It works! We have a workable function that performs on a point cloud. Remember that <code>dtm_norm_color()</code> is just an example. You could instead choose to make an algorithm for individual tree detection or a method to sample point of interest, <em>let your imagination run wild!</em></p>
 <p>So far it works only when using a <code>LAS</code> object. Now let’s make it working with a <code>LAScatalog</code>.</p>
 </div>
 <div id="create-an-intermediate-function-for-catalog_apply" class="section level2">
 <h2><span class="header-section-number">15.3</span> Create an intermediate function for <code>catalog_apply()</code></h2>
 <p>The core engine is the function <code>catalog_apply()</code> but this function does not work with any user-defined function. User-defined functions must respect a specific template (take a look at the documentation in R) and is expected to perform some specific tasks. First, the primary variable must be a chunk from the catalog within the function (see <code>chunk</code> below), the function must read the chunk, check it is not empty, then perform the computation.</p>
 <p>A valid function is the following:</p>
-<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb171-1" data-line-number="1">dtm_norm_color_chunk &lt;-<span class="st"> </span><span class="cf">function</span>(chunk, rgbmap) <span class="co"># user defined function</span></a>
-<a class="sourceLine" id="cb171-2" data-line-number="2">{</a>
-<a class="sourceLine" id="cb171-3" data-line-number="3">  las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(chunk)                  <span class="co"># read the chunk</span></a>
-<a class="sourceLine" id="cb171-4" data-line-number="4">  <span class="cf">if</span> (<span class="kw">is.empty</span>(las)) <span class="kw">return</span>(<span class="ot">NULL</span>)        <span class="co"># check if it actually contain points</span></a>
-<a class="sourceLine" id="cb171-5" data-line-number="5">  nlasrgb &lt;-<span class="st"> </span><span class="kw">dtm_norm_color</span>(las, rgbmap) <span class="co"># apply computation of interest</span></a>
-<a class="sourceLine" id="cb171-6" data-line-number="6">  <span class="kw">return</span>(nlasrgb) <span class="co"># output</span></a>
-<a class="sourceLine" id="cb171-7" data-line-number="7">}</a></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb173-1" data-line-number="1">dtm_norm_color_chunk &lt;-<span class="st"> </span><span class="cf">function</span>(chunk, rgbmap) <span class="co"># user defined function</span></a>
+<a class="sourceLine" id="cb173-2" data-line-number="2">{</a>
+<a class="sourceLine" id="cb173-3" data-line-number="3">  las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(chunk)                  <span class="co"># read the chunk</span></a>
+<a class="sourceLine" id="cb173-4" data-line-number="4">  <span class="cf">if</span> (<span class="kw">is.empty</span>(las)) <span class="kw">return</span>(<span class="ot">NULL</span>)        <span class="co"># check if it actually contain points</span></a>
+<a class="sourceLine" id="cb173-5" data-line-number="5">  nlasrgb &lt;-<span class="st"> </span><span class="kw">dtm_norm_color</span>(las, rgbmap) <span class="co"># apply computation of interest</span></a>
+<a class="sourceLine" id="cb173-6" data-line-number="6">  <span class="kw">return</span>(nlasrgb) <span class="co"># output</span></a>
+<a class="sourceLine" id="cb173-7" data-line-number="7">}</a></code></pre></div>
 <p>This introduces an additional level of complexity that is crucial. First, catalog chunks will be sequentially fed into the function. Each chunk is read inside the user-defined function with all processing options being automatically respected (<code>filter</code>, <code>select</code>, <code>chunk_size</code>, <code>chunk_buffer</code> etc.). The <code>las</code> variable in the code snippet above is a point cloud extracted from the catalog that contains the chunks + a buffer. It’s important to check that the loaded portion of the collection is not empty or subsequent code will likely fail. This may happen depending on the size of the chunk and the <code>filter</code> options chosen.</p>
 <p>This function is <code>catalog_apply()</code> compatible and can be applied over the entire ALS acquisition. The output will be a point cloud, so we need to pay attention mitigate memory issues and save to disk. At this stage, we haven’t mitigated that problem yet so we add it below.</p>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb172-1" data-line-number="1"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>) <span class="co"># write to disk</span></a>
-<a class="sourceLine" id="cb172-2" data-line-number="2">output &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="dt">rgbmap =</span> rgbmap) <span class="co"># implement user-defined function using catalog_apply</span></a>
-<a class="sourceLine" id="cb172-3" data-line-number="3">output</a>
-<a class="sourceLine" id="cb172-4" data-line-number="4"><span class="co">#&gt; [[1]]</span></a>
-<a class="sourceLine" id="cb172-5" data-line-number="5"><span class="co">#&gt; [1] &quot;/tmp/RtmpyD2Tc8/tiles_338000_5238000_1_norm_rgb.las&quot;</span></a>
-<a class="sourceLine" id="cb172-6" data-line-number="6"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb172-7" data-line-number="7"><span class="co">#&gt; [[2]]</span></a>
-<a class="sourceLine" id="cb172-8" data-line-number="8"><span class="co">#&gt; [1] &quot;/tmp/RtmpyD2Tc8/tiles_338000_5238500_1_norm_rgb.las&quot;</span></a>
-<a class="sourceLine" id="cb172-9" data-line-number="9"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb172-10" data-line-number="10"><span class="co">#&gt; [[3]]</span></a>
-<a class="sourceLine" id="cb172-11" data-line-number="11"><span class="co">#&gt; [1] &quot;/tmp/RtmpyD2Tc8/tiles_338000_5239000_1_norm_rgb.las&quot;</span></a>
-<a class="sourceLine" id="cb172-12" data-line-number="12"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb172-13" data-line-number="13"><span class="co">#&gt; [[4]]</span></a>
-<a class="sourceLine" id="cb172-14" data-line-number="14"><span class="co">#&gt; [1] &quot;/tmp/RtmpyD2Tc8/tiles_338500_5238000_1_norm_rgb.las&quot;</span></a>
-<a class="sourceLine" id="cb172-15" data-line-number="15"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb172-16" data-line-number="16"><span class="co">#&gt; [[5]]</span></a>
-<a class="sourceLine" id="cb172-17" data-line-number="17"><span class="co">#&gt; [1] &quot;/tmp/RtmpyD2Tc8/tiles_338500_5238500_1_norm_rgb.las&quot;</span></a>
-<a class="sourceLine" id="cb172-18" data-line-number="18"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb172-19" data-line-number="19"><span class="co">#&gt; [[6]]</span></a>
-<a class="sourceLine" id="cb172-20" data-line-number="20"><span class="co">#&gt; [1] &quot;/tmp/RtmpyD2Tc8/tiles_338500_5239000_1_norm_rgb.las&quot;</span></a>
-<a class="sourceLine" id="cb172-21" data-line-number="21"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb172-22" data-line-number="22"><span class="co">#&gt; [[7]]</span></a>
-<a class="sourceLine" id="cb172-23" data-line-number="23"><span class="co">#&gt; [1] &quot;/tmp/RtmpyD2Tc8/tiles_339000_5238000_1_norm_rgb.las&quot;</span></a>
-<a class="sourceLine" id="cb172-24" data-line-number="24"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb172-25" data-line-number="25"><span class="co">#&gt; [[8]]</span></a>
-<a class="sourceLine" id="cb172-26" data-line-number="26"><span class="co">#&gt; [1] &quot;/tmp/RtmpyD2Tc8/tiles_339000_5238500_1_norm_rgb.las&quot;</span></a>
-<a class="sourceLine" id="cb172-27" data-line-number="27"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb172-28" data-line-number="28"><span class="co">#&gt; [[9]]</span></a>
-<a class="sourceLine" id="cb172-29" data-line-number="29"><span class="co">#&gt; [1] &quot;/tmp/RtmpyD2Tc8/tiles_339000_5239000_1_norm_rgb.las&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb174-1" data-line-number="1"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>) <span class="co"># write to disk</span></a>
+<a class="sourceLine" id="cb174-2" data-line-number="2">output &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="dt">rgbmap =</span> rgbmap) <span class="co"># implement user-defined function using catalog_apply</span></a>
+<a class="sourceLine" id="cb174-3" data-line-number="3"><span class="kw">head</span>(output,<span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb174-4" data-line-number="4"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb174-5" data-line-number="5"><span class="co">#&gt; [1] &quot;/tmp/Rtmp0QyrcP/tiles_338000_5238000_1_norm_rgb.las&quot;</span></a>
+<a class="sourceLine" id="cb174-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb174-7" data-line-number="7"><span class="co">#&gt; [[2]]</span></a>
+<a class="sourceLine" id="cb174-8" data-line-number="8"><span class="co">#&gt; [1] &quot;/tmp/Rtmp0QyrcP/tiles_338000_5238500_1_norm_rgb.las&quot;</span></a>
+<a class="sourceLine" id="cb174-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb174-10" data-line-number="10"><span class="co">#&gt; [[3]]</span></a>
+<a class="sourceLine" id="cb174-11" data-line-number="11"><span class="co">#&gt; [1] &quot;/tmp/Rtmp0QyrcP/tiles_338000_5239000_1_norm_rgb.las&quot;</span></a>
+<a class="sourceLine" id="cb174-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb174-13" data-line-number="13"><span class="co">#&gt; [[4]]</span></a>
+<a class="sourceLine" id="cb174-14" data-line-number="14"><span class="co">#&gt; [1] &quot;/tmp/Rtmp0QyrcP/tiles_338500_5238000_1_norm_rgb.las&quot;</span></a></code></pre></div>
 <p>We see that the output is a <code>list</code> with the name of each file written to disk. This is the default behavior of the engine. It returns a <code>list</code> with one element per chunk. This isn’t really convenient. We have seen in chapter <a href="engine.html#engine">14</a> that in the case of <code>LAS</code> files we can return a <code>LAScatalog</code>, which is far more convenient.</p>
 <p>We can use the option <code>automerge = TRUE</code> so <code>catalog_apply()</code> will automatically merge the list into something more user-friendly.</p>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb173-1" data-line-number="1"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</a>
-<a class="sourceLine" id="cb173-2" data-line-number="2">options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">automerge =</span> <span class="ot">TRUE</span>) <span class="co"># merge all the outputs</span></a>
-<a class="sourceLine" id="cb173-3" data-line-number="3">output &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="dt">rgbmap =</span> rgbmap, <span class="dt">.options =</span> options)</a>
-<a class="sourceLine" id="cb173-4" data-line-number="4">output</a>
-<a class="sourceLine" id="cb173-5" data-line-number="5"><span class="co">#&gt; class       : LAScatalog (v1.0 format 3)</span></a>
-<a class="sourceLine" id="cb173-6" data-line-number="6"><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500 (xmin, xmax, ymin, ymax)</span></a>
-<a class="sourceLine" id="cb173-7" data-line-number="7"><span class="co">#&gt; coord. ref. : +proj=utm +zone=19 +datum=WGS84 +units=m +no_defs </span></a>
-<a class="sourceLine" id="cb173-8" data-line-number="8"><span class="co">#&gt; area        : 2.62 km²</span></a>
-<a class="sourceLine" id="cb173-9" data-line-number="9"><span class="co">#&gt; points      : 1.07 million points</span></a>
-<a class="sourceLine" id="cb173-10" data-line-number="10"><span class="co">#&gt; density     : 0.4 points/m²</span></a>
-<a class="sourceLine" id="cb173-11" data-line-number="11"><span class="co">#&gt; num. files  : 9</span></a>
-<a class="sourceLine" id="cb173-12" data-line-number="12"><span class="kw">plot</span>(output)</a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-182-1.png" width="384" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb175-1" data-line-number="1"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</a>
+<a class="sourceLine" id="cb175-2" data-line-number="2">options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">automerge =</span> <span class="ot">TRUE</span>) <span class="co"># merge all the outputs</span></a>
+<a class="sourceLine" id="cb175-3" data-line-number="3">output &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="dt">rgbmap =</span> rgbmap, <span class="dt">.options =</span> options)</a>
+<a class="sourceLine" id="cb175-4" data-line-number="4">output</a>
+<a class="sourceLine" id="cb175-5" data-line-number="5"><span class="co">#&gt; class       : LAScatalog (v1.0 format 3)</span></a>
+<a class="sourceLine" id="cb175-6" data-line-number="6"><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500 (xmin, xmax, ymin, ymax)</span></a>
+<a class="sourceLine" id="cb175-7" data-line-number="7"><span class="co">#&gt; coord. ref. : +proj=utm +zone=19 +datum=WGS84 +units=m +no_defs </span></a>
+<a class="sourceLine" id="cb175-8" data-line-number="8"><span class="co">#&gt; area        : 2.62 km²</span></a>
+<a class="sourceLine" id="cb175-9" data-line-number="9"><span class="co">#&gt; points      : 1.07 million points</span></a>
+<a class="sourceLine" id="cb175-10" data-line-number="10"><span class="co">#&gt; density     : 0.4 points/m²</span></a>
+<a class="sourceLine" id="cb175-11" data-line-number="11"><span class="co">#&gt; num. files  : 9</span></a>
+<a class="sourceLine" id="cb175-12" data-line-number="12"><span class="kw">plot</span>(output)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-ctg-colored-overlaps-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>We still have a problem here. The files are overlapping because we read each file with a buffer and then the outputs have been written <strong>with their buffer</strong>. This is bad practice. Its important to always remove the buffer after the computation. In this specific case the output is a <code>LAS</code> file. When <code>readLAS()</code> reads a chunk from the catalog the points in the buffer are flagged so they can be easily manipulated. Since they are flagged, we can remove these points easily by adding this to our user-defined function. It is always the role of the user to remove the buffer of the output.</p>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb174-1" data-line-number="1">dtm_norm_color_chunk &lt;-<span class="st"> </span><span class="cf">function</span>(chunk, rgbmap)</a>
-<a class="sourceLine" id="cb174-2" data-line-number="2">{</a>
-<a class="sourceLine" id="cb174-3" data-line-number="3">  las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(chunk)</a>
-<a class="sourceLine" id="cb174-4" data-line-number="4">  <span class="cf">if</span> (<span class="kw">is.empty</span>(las)) <span class="kw">return</span>(<span class="ot">NULL</span>)</a>
-<a class="sourceLine" id="cb174-5" data-line-number="5">  nlasrgb &lt;-<span class="st"> </span><span class="kw">dtm_norm_color</span>(las, rgbmap)</a>
-<a class="sourceLine" id="cb174-6" data-line-number="6">  nlasrgb &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(nlasrgb, buffer <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) <span class="co"># remove buffer</span></a>
-<a class="sourceLine" id="cb174-7" data-line-number="7">  <span class="kw">return</span>(nlasrgb)</a>
-<a class="sourceLine" id="cb174-8" data-line-number="8">}</a>
-<a class="sourceLine" id="cb174-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb174-10" data-line-number="10"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</a>
-<a class="sourceLine" id="cb174-11" data-line-number="11">options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">automerge =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb174-12" data-line-number="12">output &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="dt">rgbmap =</span> rgbmap, <span class="dt">.options =</span> options)</a>
-<a class="sourceLine" id="cb174-13" data-line-number="13"><span class="kw">plot</span>(output)</a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-183-1.png" width="384" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb176-1" data-line-number="1">dtm_norm_color_chunk &lt;-<span class="st"> </span><span class="cf">function</span>(chunk, rgbmap)</a>
+<a class="sourceLine" id="cb176-2" data-line-number="2">{</a>
+<a class="sourceLine" id="cb176-3" data-line-number="3">  las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(chunk)</a>
+<a class="sourceLine" id="cb176-4" data-line-number="4">  <span class="cf">if</span> (<span class="kw">is.empty</span>(las)) <span class="kw">return</span>(<span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb176-5" data-line-number="5">  nlasrgb &lt;-<span class="st"> </span><span class="kw">dtm_norm_color</span>(las, rgbmap)</a>
+<a class="sourceLine" id="cb176-6" data-line-number="6">  nlasrgb &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(nlasrgb, buffer <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) <span class="co"># remove buffer</span></a>
+<a class="sourceLine" id="cb176-7" data-line-number="7">  <span class="kw">return</span>(nlasrgb)</a>
+<a class="sourceLine" id="cb176-8" data-line-number="8">}</a>
+<a class="sourceLine" id="cb176-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb176-10" data-line-number="10"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</a>
+<a class="sourceLine" id="cb176-11" data-line-number="11">options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">automerge =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb176-12" data-line-number="12">output &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="dt">rgbmap =</span> rgbmap, <span class="dt">.options =</span> options)</a>
+<a class="sourceLine" id="cb176-13" data-line-number="13"><span class="kw">plot</span>(output)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-ctg-colored-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>When the outputs are <code>Spatial*</code> or <code>Raster*</code> they can be cropped using the bounding box of the chunk accessible via <code>raster::extent(chunk)</code> or <code>sp::bbox(chunk)</code>.</p>
 <p>Nice! We created a custom function – <code>dtm_norm_color()</code> – and we upscale its definition to capably and efficiently process an entire ALS acquisition made up of hundreds of files. Using options described in chapter <a href="engine.html#engine">14</a>, we can also introduce paralellization, chunk size control, and buffer size control.</p>
-<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb175-1" data-line-number="1"><span class="kw">library</span>(future)</a>
-<a class="sourceLine" id="cb175-2" data-line-number="2"><span class="kw">plan</span>(multisession)</a>
-<a class="sourceLine" id="cb175-3" data-line-number="3"><span class="kw">opt_filter</span>(ctg) &lt;-<span class="st"> &quot;-keep_class 2&quot;</span></a>
-<a class="sourceLine" id="cb175-4" data-line-number="4"><span class="kw">opt_chunk_size</span>(ctg) &lt;-<span class="st"> </span><span class="dv">300</span></a>
-<a class="sourceLine" id="cb175-5" data-line-number="5"><span class="kw">opt_chunk_buffer</span>(ctg) &lt;-<span class="st"> </span><span class="dv">40</span></a>
-<a class="sourceLine" id="cb175-6" data-line-number="6"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</a>
-<a class="sourceLine" id="cb175-7" data-line-number="7">options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">automerge =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb175-8" data-line-number="8">output &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="dt">rgbmap =</span> rgbmap, <span class="dt">.options =</span> options)</a></code></pre></div>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb177-1" data-line-number="1"><span class="kw">library</span>(future)</a>
+<a class="sourceLine" id="cb177-2" data-line-number="2"><span class="kw">plan</span>(multisession)</a>
+<a class="sourceLine" id="cb177-3" data-line-number="3"><span class="kw">opt_filter</span>(ctg) &lt;-<span class="st"> &quot;-keep_class 2&quot;</span></a>
+<a class="sourceLine" id="cb177-4" data-line-number="4"><span class="kw">opt_chunk_size</span>(ctg) &lt;-<span class="st"> </span><span class="dv">300</span></a>
+<a class="sourceLine" id="cb177-5" data-line-number="5"><span class="kw">opt_chunk_buffer</span>(ctg) &lt;-<span class="st"> </span><span class="dv">40</span></a>
+<a class="sourceLine" id="cb177-6" data-line-number="6"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</a>
+<a class="sourceLine" id="cb177-7" data-line-number="7">options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">automerge =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb177-8" data-line-number="8">output &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="dt">rgbmap =</span> rgbmap, <span class="dt">.options =</span> options)</a></code></pre></div>
 <p>We can check that it worked by loading a sample from somewhere in our new catalog. According to the options put above we are expecting to get a normalized (we normalized), colored (we merged satellite image), ground points (we used <code>-keep_class 2</code>).</p>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb176-1" data-line-number="1"><span class="kw">opt_output_files</span>(output) &lt;-<span class="st"> &quot;&quot;</span></a>
-<a class="sourceLine" id="cb176-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">clip_circle</span>(output, <span class="dv">338800</span>, <span class="dv">5238500</span>, <span class="dv">40</span>)</a>
-<a class="sourceLine" id="cb176-3" data-line-number="3"><span class="kw">plot</span>(las, <span class="dt">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="dt">size =</span> <span class="dv">6</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>)</a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-184-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb178-1" data-line-number="1"><span class="kw">opt_output_files</span>(output) &lt;-<span class="st"> &quot;&quot;</span></a>
+<a class="sourceLine" id="cb178-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">clip_circle</span>(output, <span class="dv">338800</span>, <span class="dv">5238500</span>, <span class="dv">40</span>)</a>
+<a class="sourceLine" id="cb178-3" data-line-number="3"><span class="kw">plot</span>(las, <span class="dt">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="dt">size =</span> <span class="dv">6</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-cliped-gnd-colored-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="make-a-user-friendly-function-for-third-party-users" class="section level2">
 <h2><span class="header-section-number">15.4</span> Make a user-friendly function for third party users</h2>
 <p>When designing tools that will be used by third parties, we would like to hide <code>catalog_apply()</code> and intermediate functions inside a more user-friendly function similarly to how <code>lidR</code> functions that work the same both with a <code>LAS</code> or a <code>LAScatalog</code>. Moreover we would like to make the function foolproof for users. To do this we can create 3 functions <code>dtm_norm_color()</code> with a <a href="http://adv-r.had.co.nz/S3.html">S3 dispatch</a> as a function of the input.</p>
-<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb177-1" data-line-number="1"><span class="co"># Create a generic function</span></a>
-<a class="sourceLine" id="cb177-2" data-line-number="2">dtm_norm_color &lt;-<span class="st"> </span><span class="cf">function</span>(las, rgbmap)</a>
-<a class="sourceLine" id="cb177-3" data-line-number="3">{</a>
-<a class="sourceLine" id="cb177-4" data-line-number="4">  <span class="kw">UseMethod</span>(<span class="st">&quot;dtm_norm_color&quot;</span>, las)</a>
-<a class="sourceLine" id="cb177-5" data-line-number="5">}</a>
-<a class="sourceLine" id="cb177-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb177-7" data-line-number="7"><span class="co"># Create a method for LAS objects</span></a>
-<a class="sourceLine" id="cb177-8" data-line-number="8">dtm_norm_color.LAS &lt;-<span class="st"> </span><span class="cf">function</span>(las, rgbmap)</a>
-<a class="sourceLine" id="cb177-9" data-line-number="9">{</a>
-<a class="sourceLine" id="cb177-10" data-line-number="10">  dtm &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dv">1</span>, <span class="kw">tin</span>())</a>
-<a class="sourceLine" id="cb177-11" data-line-number="11">  nlas &lt;-<span class="st"> </span><span class="kw">normalize_height</span>(las, dtm)</a>
-<a class="sourceLine" id="cb177-12" data-line-number="12">  colorized &lt;-<span class="st"> </span><span class="kw">merge_spatial</span>(nlas, rgbmap)</a>
-<a class="sourceLine" id="cb177-13" data-line-number="13">  <span class="kw">return</span>(colorized)</a>
-<a class="sourceLine" id="cb177-14" data-line-number="14">}</a>
-<a class="sourceLine" id="cb177-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb177-16" data-line-number="16"><span class="co"># Create a method for LAScluster objects (chunk)</span></a>
-<a class="sourceLine" id="cb177-17" data-line-number="17">dtm_norm_color.LAScluster &lt;-<span class="st"> </span><span class="cf">function</span>(las, rgbmap)</a>
-<a class="sourceLine" id="cb177-18" data-line-number="18">{</a>
-<a class="sourceLine" id="cb177-19" data-line-number="19">  x &lt;-<span class="st"> </span><span class="kw">readLAS</span>(las)</a>
-<a class="sourceLine" id="cb177-20" data-line-number="20">  <span class="cf">if</span> (<span class="kw">is.empty</span>(x)) <span class="kw">return</span>(<span class="ot">NULL</span>)</a>
-<a class="sourceLine" id="cb177-21" data-line-number="21">  nlasrgb &lt;-<span class="st"> </span><span class="kw">dtm_norm_color</span>(x, rgbmap)</a>
-<a class="sourceLine" id="cb177-22" data-line-number="22">  nlasrgb &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(nlasrgb, buffer <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb177-23" data-line-number="23">  <span class="kw">return</span>(nlasrgb)</a>
-<a class="sourceLine" id="cb177-24" data-line-number="24">}</a>
-<a class="sourceLine" id="cb177-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb177-26" data-line-number="26"><span class="co"># Create a method for LAScatalog objects</span></a>
-<a class="sourceLine" id="cb177-27" data-line-number="27">dtm_norm_color.LAScatalog &lt;-<span class="st"> </span><span class="cf">function</span>(las, rgbmap)</a>
-<a class="sourceLine" id="cb177-28" data-line-number="28">{</a>
-<a class="sourceLine" id="cb177-29" data-line-number="29">  options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">automerge =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb177-30" data-line-number="30">  output &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="dt">rgbmap =</span> rgbmap, <span class="dt">.options =</span> options)</a>
-<a class="sourceLine" id="cb177-31" data-line-number="31">  <span class="kw">return</span>(output)</a>
-<a class="sourceLine" id="cb177-32" data-line-number="32">}</a></code></pre></div>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb179-1" data-line-number="1"><span class="co"># Create a generic function</span></a>
+<a class="sourceLine" id="cb179-2" data-line-number="2">dtm_norm_color &lt;-<span class="st"> </span><span class="cf">function</span>(las, rgbmap)</a>
+<a class="sourceLine" id="cb179-3" data-line-number="3">{</a>
+<a class="sourceLine" id="cb179-4" data-line-number="4">  <span class="kw">UseMethod</span>(<span class="st">&quot;dtm_norm_color&quot;</span>, las)</a>
+<a class="sourceLine" id="cb179-5" data-line-number="5">}</a>
+<a class="sourceLine" id="cb179-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb179-7" data-line-number="7"><span class="co"># Create a method for LAS objects</span></a>
+<a class="sourceLine" id="cb179-8" data-line-number="8">dtm_norm_color.LAS &lt;-<span class="st"> </span><span class="cf">function</span>(las, rgbmap)</a>
+<a class="sourceLine" id="cb179-9" data-line-number="9">{</a>
+<a class="sourceLine" id="cb179-10" data-line-number="10">  dtm &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dv">1</span>, <span class="kw">tin</span>())</a>
+<a class="sourceLine" id="cb179-11" data-line-number="11">  nlas &lt;-<span class="st"> </span><span class="kw">normalize_height</span>(las, dtm)</a>
+<a class="sourceLine" id="cb179-12" data-line-number="12">  colorized &lt;-<span class="st"> </span><span class="kw">merge_spatial</span>(nlas, rgbmap)</a>
+<a class="sourceLine" id="cb179-13" data-line-number="13">  <span class="kw">return</span>(colorized)</a>
+<a class="sourceLine" id="cb179-14" data-line-number="14">}</a>
+<a class="sourceLine" id="cb179-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb179-16" data-line-number="16"><span class="co"># Create a method for LAScluster objects (chunk)</span></a>
+<a class="sourceLine" id="cb179-17" data-line-number="17">dtm_norm_color.LAScluster &lt;-<span class="st"> </span><span class="cf">function</span>(las, rgbmap)</a>
+<a class="sourceLine" id="cb179-18" data-line-number="18">{</a>
+<a class="sourceLine" id="cb179-19" data-line-number="19">  x &lt;-<span class="st"> </span><span class="kw">readLAS</span>(las)</a>
+<a class="sourceLine" id="cb179-20" data-line-number="20">  <span class="cf">if</span> (<span class="kw">is.empty</span>(x)) <span class="kw">return</span>(<span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb179-21" data-line-number="21">  nlasrgb &lt;-<span class="st"> </span><span class="kw">dtm_norm_color</span>(x, rgbmap)</a>
+<a class="sourceLine" id="cb179-22" data-line-number="22">  nlasrgb &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(nlasrgb, buffer <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb179-23" data-line-number="23">  <span class="kw">return</span>(nlasrgb)</a>
+<a class="sourceLine" id="cb179-24" data-line-number="24">}</a>
+<a class="sourceLine" id="cb179-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb179-26" data-line-number="26"><span class="co"># Create a method for LAScatalog objects</span></a>
+<a class="sourceLine" id="cb179-27" data-line-number="27">dtm_norm_color.LAScatalog &lt;-<span class="st"> </span><span class="cf">function</span>(las, rgbmap)</a>
+<a class="sourceLine" id="cb179-28" data-line-number="28">{</a>
+<a class="sourceLine" id="cb179-29" data-line-number="29">  options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">automerge =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb179-30" data-line-number="30">  output &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="dt">rgbmap =</span> rgbmap, <span class="dt">.options =</span> options)</a>
+<a class="sourceLine" id="cb179-31" data-line-number="31">  <span class="kw">return</span>(output)</a>
+<a class="sourceLine" id="cb179-32" data-line-number="32">}</a></code></pre></div>
 <p>We now have a single function that can be used seamlessly on a <code>LAS</code> or a <code>LAScatalog</code> object.</p>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb178-1" data-line-number="1">las_norm_colored &lt;-<span class="st">  </span><span class="kw">dtm_norm_color</span>(las, rgbmap)</a>
-<a class="sourceLine" id="cb178-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb178-3" data-line-number="3"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</a>
-<a class="sourceLine" id="cb178-4" data-line-number="4">ctg_norm_colored &lt;-<span class="st">  </span><span class="kw">dtm_norm_color</span>(ctg, rgbmap)</a></code></pre></div>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb180-1" data-line-number="1">las_norm_colored &lt;-<span class="st">  </span><span class="kw">dtm_norm_color</span>(las, rgbmap)</a>
+<a class="sourceLine" id="cb180-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb180-3" data-line-number="3"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</a>
+<a class="sourceLine" id="cb180-4" data-line-number="4">ctg_norm_colored &lt;-<span class="st">  </span><span class="kw">dtm_norm_color</span>(ctg, rgbmap)</a></code></pre></div>
 </div>
 <div id="make-a-safe-function-for-third-party-users" class="section level2">
 <h2><span class="header-section-number">15.5</span> Make a safe function for third party users</h2>
 <p>At this stage our function is almost finished. However it is not foolproof. What if the user of this new function does not provide any output path template? The point cloud in each chunk will be loaded in memory and will be retained in memory until it eventually becomes full and R crashes. We must prevent the use of the function if no path to the disk is given.</p>
 <p>Also, the computation of a DTM requires a buffer. If the user sets a 0 m buffer the output of this function will be incorrect. We must prevent the use of the function if a buffer of 0 is given. These two cases are covered by the engine with the options <code>need_output_file = TRUE</code> and <code>need_buffer = TRUE</code>. To finish we would like to disable the ability to tune the <code>select</code> option to ensure no attribute is lost.</p>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb179-1" data-line-number="1">dtm_norm_color.LAScatalog &lt;-<span class="st"> </span><span class="cf">function</span>(las, rgbmap)</a>
-<a class="sourceLine" id="cb179-2" data-line-number="2">{</a>
-<a class="sourceLine" id="cb179-3" data-line-number="3">  <span class="kw">opt_select</span>(las) &lt;-<span class="st"> &quot;*&quot;</span> <span class="co">#disable select tuning</span></a>
-<a class="sourceLine" id="cb179-4" data-line-number="4">  options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">automerge =</span> <span class="ot">TRUE</span>, <span class="dt">need_output_file =</span> <span class="ot">TRUE</span>, <span class="dt">need_buffer =</span> <span class="ot">TRUE</span>) <span class="co">#require output path &amp; buffer size</span></a>
-<a class="sourceLine" id="cb179-5" data-line-number="5">  output &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="dt">rgbmap =</span> rgbmap, <span class="dt">.options =</span> options)</a>
-<a class="sourceLine" id="cb179-6" data-line-number="6">  <span class="kw">return</span>(output)</a>
-<a class="sourceLine" id="cb179-7" data-line-number="7">}</a></code></pre></div>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb181-1" data-line-number="1">dtm_norm_color.LAScatalog &lt;-<span class="st"> </span><span class="cf">function</span>(las, rgbmap)</a>
+<a class="sourceLine" id="cb181-2" data-line-number="2">{</a>
+<a class="sourceLine" id="cb181-3" data-line-number="3">  <span class="kw">opt_select</span>(las) &lt;-<span class="st"> &quot;*&quot;</span> <span class="co">#disable select tuning</span></a>
+<a class="sourceLine" id="cb181-4" data-line-number="4">  options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">automerge =</span> <span class="ot">TRUE</span>, <span class="dt">need_output_file =</span> <span class="ot">TRUE</span>, <span class="dt">need_buffer =</span> <span class="ot">TRUE</span>) <span class="co">#require output path &amp; buffer size</span></a>
+<a class="sourceLine" id="cb181-5" data-line-number="5">  output &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="dt">rgbmap =</span> rgbmap, <span class="dt">.options =</span> options)</a>
+<a class="sourceLine" id="cb181-6" data-line-number="6">  <span class="kw">return</span>(output)</a>
+<a class="sourceLine" id="cb181-7" data-line-number="7">}</a></code></pre></div>
 <p>We can test what happens if we use this function naively.</p>
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb180-1" data-line-number="1"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> &quot;&quot;</span></a>
-<a class="sourceLine" id="cb180-2" data-line-number="2">ctg_norm_colored &lt;-<span class="st"> </span><span class="kw">dtm_norm_color</span>(ctg, rgbmap)</a>
-<a class="sourceLine" id="cb180-3" data-line-number="3"><span class="co">#&gt; Error: This function requires that the LAScatalog provides an output file template.</span></a></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb182-1" data-line-number="1"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> &quot;&quot;</span></a>
+<a class="sourceLine" id="cb182-2" data-line-number="2">ctg_norm_colored &lt;-<span class="st"> </span><span class="kw">dtm_norm_color</span>(ctg, rgbmap)</a>
+<a class="sourceLine" id="cb182-3" data-line-number="3"><span class="co">#&gt; Error: This function requires that the LAScatalog provides an output file template.</span></a></code></pre></div>
 <p>It failed with an informative message!</p>
 <p>We are done. This is exactly how the <code>lidR</code> package works and we have presented all the tools needed to extent it with new applications.</p>
 <p>More examples can be found further along in this book. For example section <a href="outbox.html#outboxdistancereturn">17.1.1</a> presents how to compute a raster of the average distance between first and last returns, and section <a href="outbox.html#outboxrumple">17.1.2</a> presents how to compute a rumple index of the canopy from the point cloud and of course the documentation of the package itself is more comprehensive than this book.</p>

@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-07-07" />
+<meta name="date" content="2020-07-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -133,7 +133,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1.1" data-path="io.html"><a href="io.html#parameter-select"><i class="fa fa-check"></i><b>2.1.1</b> Parameter <code>select</code></a></li>
 <li class="chapter" data-level="2.1.2" data-path="io.html"><a href="io.html#filter"><i class="fa fa-check"></i><b>2.1.2</b> Parameter <code>filter</code></a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="io.html"><a href="io.html#validating-lidar-data"><i class="fa fa-check"></i><b>2.2</b> Validating lidar data</a></li>
+<li class="chapter" data-level="2.2" data-path="io.html"><a href="io.html#asprs-compliance"><i class="fa fa-check"></i><b>2.2</b> Validating lidar data</a></li>
 <li class="chapter" data-level="2.3" data-path="io.html"><a href="io.html#plot"><i class="fa fa-check"></i><b>2.3</b> Plotting</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="io.html"><a href="io.html#basic-3d-rendering"><i class="fa fa-check"></i><b>2.3.1</b> Basic 3D rendering</a></li>
 <li class="chapter" data-level="2.3.2" data-path="io.html"><a href="io.html#overlays"><i class="fa fa-check"></i><b>2.3.2</b> Overlays</a></li>
@@ -146,14 +146,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#cloth-simulation-function"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
 <li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#buffer"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
 <li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#how-to-choose-a-method-and-its-parameters"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other-methods"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a><ul>
 <li class="chapter" data-level="4.1" data-path="dtm.html"><a href="dtm.html#triangular-irregular-network"><i class="fa fa-check"></i><b>4.1</b> Triangular irregular network</a></li>
-<li class="chapter" data-level="4.2" data-path="dtm.html"><a href="dtm.html#invert-distance-weighting-idw"><i class="fa fa-check"></i><b>4.2</b> Invert distance weighting (IDW)</a></li>
+<li class="chapter" data-level="4.2" data-path="dtm.html"><a href="dtm.html#invert-distance-weighting"><i class="fa fa-check"></i><b>4.2</b> Invert distance weighting</a></li>
 <li class="chapter" data-level="4.3" data-path="dtm.html"><a href="dtm.html#kriging"><i class="fa fa-check"></i><b>4.3</b> Kriging</a></li>
 <li class="chapter" data-level="4.4" data-path="dtm.html"><a href="dtm.html#pros-and-cons"><i class="fa fa-check"></i><b>4.4</b> Pros and cons</a></li>
-<li class="chapter" data-level="4.5" data-path="dtm.html"><a href="dtm.html#other-methods"><i class="fa fa-check"></i><b>4.5</b> Other methods</a></li>
-<li class="chapter" data-level="4.6" data-path="dtm.html"><a href="dtm.html#render-shaded-dtm"><i class="fa fa-check"></i><b>4.6</b> Render shaded DTM</a></li>
+<li class="chapter" data-level="4.5" data-path="dtm.html"><a href="dtm.html#other-methods-1"><i class="fa fa-check"></i><b>4.5</b> Other methods</a></li>
+<li class="chapter" data-level="4.6" data-path="dtm.html"><a href="dtm.html#shaded-dtm"><i class="fa fa-check"></i><b>4.6</b> Render shaded DTM</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="norm.html"><a href="norm.html"><i class="fa fa-check"></i><b>5</b> Height normalization</a><ul>
 <li class="chapter" data-level="5.1" data-path="norm.html"><a href="norm.html#dtm-normalization"><i class="fa fa-check"></i><b>5.1</b> DTM normalization</a></li>
@@ -167,16 +168,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="chm.html"><a href="chm.html#pit-free-algorithm"><i class="fa fa-check"></i><b>6.3</b> Pit-free algorithm</a></li>
 <li class="chapter" data-level="6.4" data-path="chm.html"><a href="chm.html#post-processing-a-chm"><i class="fa fa-check"></i><b>6.4</b> Post-processing a CHM</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="itd.html"><a href="itd.html"><i class="fa fa-check"></i><b>7</b> Indivitual tree dectection and segmentation</a><ul>
-<li class="chapter" data-level="7.1" data-path="itd.html"><a href="itd.html#individual-tree-detection-itd"><i class="fa fa-check"></i><b>7.1</b> Individual Tree Detection (ITD)</a><ul>
-<li class="chapter" data-level="7.1.1" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-fixed-windows-size"><i class="fa fa-check"></i><b>7.1.1</b> Local Maximum Filter with fixed windows size</a></li>
-<li class="chapter" data-level="7.1.2" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-variable-windows-size"><i class="fa fa-check"></i><b>7.1.2</b> Local Maximum Filter with variable windows size</a></li>
-<li class="chapter" data-level="7.1.3" data-path="itd.html"><a href="itd.html#local-maximum-filter-on-a-chm"><i class="fa fa-check"></i><b>7.1.3</b> Local Maximum Filter on a CHM</a></li>
+<li class="chapter" data-level="7" data-path="itd-its.html"><a href="itd-its.html"><i class="fa fa-check"></i><b>7</b> Indivitual tree dectection and segmentation</a><ul>
+<li class="chapter" data-level="7.1" data-path="itd-its.html"><a href="itd-its.html#itd"><i class="fa fa-check"></i><b>7.1</b> Individual Tree Detection (ITD)</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="itd-its.html"><a href="itd-its.html#lmffw"><i class="fa fa-check"></i><b>7.1.1</b> Local Maximum Filter with fixed windows size</a></li>
+<li class="chapter" data-level="7.1.2" data-path="itd-its.html"><a href="itd-its.html#lmfvw"><i class="fa fa-check"></i><b>7.1.2</b> Local Maximum Filter with variable windows size</a></li>
+<li class="chapter" data-level="7.1.3" data-path="itd-its.html"><a href="itd-its.html#lmfchm"><i class="fa fa-check"></i><b>7.1.3</b> Local Maximum Filter on a CHM</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="itd.html"><a href="itd.html#individual-tree-segmentation-its"><i class="fa fa-check"></i><b>7.2</b> Individual Tree Segmentation (ITS)</a><ul>
-<li class="chapter" data-level="7.2.1" data-path="itd.html"><a href="itd.html#segmentation-of-the-point-cloud"><i class="fa fa-check"></i><b>7.2.1</b> Segmentation of the point-cloud</a></li>
-<li class="chapter" data-level="7.2.2" data-path="itd.html"><a href="itd.html#segmentation-of-the-chm"><i class="fa fa-check"></i><b>7.2.2</b> Segmentation of the CHM</a></li>
-<li class="chapter" data-level="7.2.3" data-path="itd.html"><a href="itd.html#comparaison-of-tree-segmentations"><i class="fa fa-check"></i><b>7.2.3</b> Comparaison of tree segmentations</a></li>
+<li class="chapter" data-level="7.2" data-path="itd-its.html"><a href="itd-its.html#its"><i class="fa fa-check"></i><b>7.2</b> Individual Tree Segmentation (ITS)</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="itd-its.html"><a href="itd-its.html#its-cloud"><i class="fa fa-check"></i><b>7.2.1</b> Segmentation of the point-cloud</a></li>
+<li class="chapter" data-level="7.2.2" data-path="itd-its.html"><a href="itd-its.html#its-chm"><i class="fa fa-check"></i><b>7.2.2</b> Segmentation of the CHM</a></li>
+<li class="chapter" data-level="7.2.3" data-path="itd-its.html"><a href="itd-its.html#comparaison-of-tree-segmentations"><i class="fa fa-check"></i><b>7.2.3</b> Comparaison of tree segmentations</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="metrics.html"><a href="metrics.html"><i class="fa fa-check"></i><b>8</b> Derived metrics</a><ul>
@@ -229,35 +230,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.6" data-path="engine.html"><a href="engine.html#modification-of-default-behavior"><i class="fa fa-check"></i><b>14.6</b> Modification of default behavior</a><ul>
 <li class="chapter" data-level="14.6.1" data-path="engine.html"><a href="engine.html#multiple-extractions-on-disk"><i class="fa fa-check"></i><b>14.6.1</b> Multiple extractions on disk</a></li>
 <li class="chapter" data-level="14.6.2" data-path="engine.html"><a href="engine.html#multiple-extraction-with-point-cloud-indexation"><i class="fa fa-check"></i><b>14.6.2</b> Multiple extraction with point cloud indexation</a></li>
+<li class="chapter" data-level="14.6.3" data-path="engine.html"><a href="engine.html#summary"><i class="fa fa-check"></i><b>14.6.3</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.7" data-path="engine.html"><a href="engine.html#summary"><i class="fa fa-check"></i><b>14.7</b> Summary</a></li>
-<li class="chapter" data-level="14.8" data-path="engine.html"><a href="engine.html#ground-classification"><i class="fa fa-check"></i><b>14.8</b> Ground classification</a><ul>
-<li class="chapter" data-level="14.8.1" data-path="engine.html"><a href="engine.html#chunk-processing"><i class="fa fa-check"></i><b>14.8.1</b> Chunk processing</a></li>
-<li class="chapter" data-level="14.8.2" data-path="engine.html"><a href="engine.html#modifying-buffers"><i class="fa fa-check"></i><b>14.8.2</b> Modifying buffers</a></li>
-<li class="chapter" data-level="14.8.3" data-path="engine.html"><a href="engine.html#modify-the-chunk-size"><i class="fa fa-check"></i><b>14.8.3</b> Modify the chunk size</a></li>
-<li class="chapter" data-level="14.8.4" data-path="engine.html"><a href="engine.html#parallel-processing"><i class="fa fa-check"></i><b>14.8.4</b> Parallel processing</a></li>
+<li class="chapter" data-level="14.7" data-path="engine.html"><a href="engine.html#ground-classification"><i class="fa fa-check"></i><b>14.7</b> Ground classification</a><ul>
+<li class="chapter" data-level="14.7.1" data-path="engine.html"><a href="engine.html#chunk-processing"><i class="fa fa-check"></i><b>14.7.1</b> Chunk processing</a></li>
+<li class="chapter" data-level="14.7.2" data-path="engine.html"><a href="engine.html#modifying-buffers"><i class="fa fa-check"></i><b>14.7.2</b> Modifying buffers</a></li>
+<li class="chapter" data-level="14.7.3" data-path="engine.html"><a href="engine.html#modify-the-chunk-size"><i class="fa fa-check"></i><b>14.7.3</b> Modify the chunk size</a></li>
+<li class="chapter" data-level="14.7.4" data-path="engine.html"><a href="engine.html#parallel-processing"><i class="fa fa-check"></i><b>14.7.4</b> Parallel processing</a></li>
+<li class="chapter" data-level="14.7.5" data-path="engine.html"><a href="engine.html#summary-1"><i class="fa fa-check"></i><b>14.7.5</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.9" data-path="engine.html"><a href="engine.html#summary-1"><i class="fa fa-check"></i><b>14.9</b> Summary</a></li>
-<li class="chapter" data-level="14.10" data-path="engine.html"><a href="engine.html#digital-terrain-model"><i class="fa fa-check"></i><b>14.10</b> Digital Terrain Model</a><ul>
-<li class="chapter" data-level="14.10.1" data-path="engine.html"><a href="engine.html#in-memory-dtm"><i class="fa fa-check"></i><b>14.10.1</b> In memory DTM</a></li>
-<li class="chapter" data-level="14.10.2" data-path="engine.html"><a href="engine.html#on-disk-dtm"><i class="fa fa-check"></i><b>14.10.2</b> On disk DTM</a></li>
+<li class="chapter" data-level="14.8" data-path="engine.html"><a href="engine.html#digital-terrain-model"><i class="fa fa-check"></i><b>14.8</b> Digital Terrain Model</a><ul>
+<li class="chapter" data-level="14.8.1" data-path="engine.html"><a href="engine.html#in-memory-dtm"><i class="fa fa-check"></i><b>14.8.1</b> In memory DTM</a></li>
+<li class="chapter" data-level="14.8.2" data-path="engine.html"><a href="engine.html#on-disk-dtm"><i class="fa fa-check"></i><b>14.8.2</b> On disk DTM</a></li>
+<li class="chapter" data-level="14.8.3" data-path="engine.html"><a href="engine.html#summary-2"><i class="fa fa-check"></i><b>14.8.3</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.11" data-path="engine.html"><a href="engine.html#storage-summary"><i class="fa fa-check"></i><b>14.11</b> Storage Summary</a></li>
-<li class="chapter" data-level="14.12" data-path="engine.html"><a href="engine.html#height-normalization"><i class="fa fa-check"></i><b>14.12</b> Height normalization</a></li>
-<li class="chapter" data-level="14.13" data-path="engine.html"><a href="engine.html#area-based-approach"><i class="fa fa-check"></i><b>14.13</b> Area Based Approach</a></li>
-<li class="chapter" data-level="14.14" data-path="engine.html"><a href="engine.html#height-aba-summary"><i class="fa fa-check"></i><b>14.14</b> Height &amp; ABA Summary</a></li>
-<li class="chapter" data-level="14.15" data-path="engine.html"><a href="engine.html#individual-tree-detection"><i class="fa fa-check"></i><b>14.15</b> Individual Tree Detection</a><ul>
-<li class="chapter" data-level="14.15.1" data-path="engine.html"><a href="engine.html#itd-summary"><i class="fa fa-check"></i><b>14.15.1</b> ITD Summary</a></li>
+<li class="chapter" data-level="14.9" data-path="engine.html"><a href="engine.html#height-normalization"><i class="fa fa-check"></i><b>14.9</b> Height normalization</a></li>
+<li class="chapter" data-level="14.10" data-path="engine.html"><a href="engine.html#area-based-approach"><i class="fa fa-check"></i><b>14.10</b> Area Based Approach</a><ul>
+<li class="chapter" data-level="14.10.1" data-path="engine.html"><a href="engine.html#summary-3"><i class="fa fa-check"></i><b>14.10.1</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.16" data-path="engine.html"><a href="engine.html#individual-tree-segmentation"><i class="fa fa-check"></i><b>14.16</b> Individual Tree Segmentation</a></li>
-<li class="chapter" data-level="14.17" data-path="engine.html"><a href="engine.html#retile-a-catalog"><i class="fa fa-check"></i><b>14.17</b> Retile a catalog</a><ul>
-<li class="chapter" data-level="14.17.1" data-path="engine.html"><a href="engine.html#retile-a-catalog-into-smaller-files"><i class="fa fa-check"></i><b>14.17.1</b> Retile a catalog into smaller files</a></li>
-<li class="chapter" data-level="14.17.2" data-path="engine.html"><a href="engine.html#add-a-buffer-around-each-file"><i class="fa fa-check"></i><b>14.17.2</b> Add a buffer around each file</a></li>
-<li class="chapter" data-level="14.17.3" data-path="engine.html"><a href="engine.html#create-a-new-collection-with-only-first-returns"><i class="fa fa-check"></i><b>14.17.3</b> Create a new collection with only first returns</a></li>
-<li class="chapter" data-level="14.17.4" data-path="engine.html"><a href="engine.html#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel"><i class="fa fa-check"></i><b>14.17.4</b> Create a new collection of small and buffered ground returns in parallel</a></li>
+<li class="chapter" data-level="14.11" data-path="engine.html"><a href="engine.html#individual-tree-detection"><i class="fa fa-check"></i><b>14.11</b> Individual Tree Detection</a><ul>
+<li class="chapter" data-level="14.11.1" data-path="engine.html"><a href="engine.html#summary-4"><i class="fa fa-check"></i><b>14.11.1</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.18" data-path="engine.html"><a href="engine.html#the-case-of-ground-inventories"><i class="fa fa-check"></i><b>14.18</b> The case of ground inventories</a></li>
-<li class="chapter" data-level="14.19" data-path="engine.html"><a href="engine.html#summary-2"><i class="fa fa-check"></i><b>14.19</b> Summary</a></li>
+<li class="chapter" data-level="14.12" data-path="engine.html"><a href="engine.html#individual-tree-segmentation"><i class="fa fa-check"></i><b>14.12</b> Individual Tree Segmentation</a></li>
+<li class="chapter" data-level="14.13" data-path="engine.html"><a href="engine.html#retile-a-catalog"><i class="fa fa-check"></i><b>14.13</b> Retile a catalog</a><ul>
+<li class="chapter" data-level="14.13.1" data-path="engine.html"><a href="engine.html#retile-a-catalog-into-smaller-files"><i class="fa fa-check"></i><b>14.13.1</b> Retile a catalog into smaller files</a></li>
+<li class="chapter" data-level="14.13.2" data-path="engine.html"><a href="engine.html#add-a-buffer-around-each-file"><i class="fa fa-check"></i><b>14.13.2</b> Add a buffer around each file</a></li>
+<li class="chapter" data-level="14.13.3" data-path="engine.html"><a href="engine.html#create-a-new-collection-with-only-first-returns"><i class="fa fa-check"></i><b>14.13.3</b> Create a new collection with only first returns</a></li>
+<li class="chapter" data-level="14.13.4" data-path="engine.html"><a href="engine.html#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel"><i class="fa fa-check"></i><b>14.13.4</b> Create a new collection of small and buffered ground returns in parallel</a></li>
+</ul></li>
+<li class="chapter" data-level="14.14" data-path="engine.html"><a href="engine.html#the-case-of-ground-inventories"><i class="fa fa-check"></i><b>14.14</b> The case of ground inventories</a></li>
+<li class="chapter" data-level="14.15" data-path="engine.html"><a href="engine.html#summary-5"><i class="fa fa-check"></i><b>14.15</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="engine2.html"><a href="engine2.html"><i class="fa fa-check"></i><b>15</b> LAScatalog processing engine (2/2)</a><ul>
 <li class="chapter" data-level="15.1" data-path="engine2.html"><a href="engine2.html#catalog_apply"><i class="fa fa-check"></i><b>15.1</b> <code>catalog_apply()</code></a></li>
@@ -309,89 +311,89 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">10</span> Derived metrics at the grid level</h1>
 <div id="overview-1" class="section level2">
 <h2><span class="header-section-number">10.1</span> Overview</h2>
-<p>The “grid” level of regularization corresponds to the computation of derived metrics for regularly spaced locations in 2D. Derived metrics calculated at grid level are the basis of the area-based approach (ABA) that we discuss with in more detail in chapter (<a href="modeling-aba.html#modeling-aba">16</a>). In brief, the ABA allows the creation of wall-to-wall predictions of forest inventory attributes (e.g. basal area or total volume per hectare) by linking ALS variables with field measured references. ABA is one application of derived metrics at the grid level but not the only one.</p>
+<p>The “grid” level of regularization corresponds to the computation of derived metrics for regularly spaced locations in 2D. Derived metrics calculated at grid level are the basis of the area-based approach (ABA) that we discuss with in more detail in chapter <a href="modeling-aba.html#modeling-aba">16</a>. In brief, the ABA allows the creation of wall-to-wall predictions of forest inventory attributes (e.g. basal area or total volume per hectare) by linking ALS variables with field measured references. ABA is one application of derived metrics at the grid level but not the only one.</p>
 <p>As seen in chapters <a href="metrics.html#metrics">8</a> and <a href="cba.html#cba">9</a> calculating derived metrics is straightforward. The user only needs to provide a formula to calculate the metric of interest. For example, to calculate the average height (<code>mean(Z)</code>) of all points within 10 x 10 m pixels we can run the following:</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1">hmean &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">mean</span>(Z), <span class="dv">10</span>) <span class="co"># calculate mean at 10 m</span></a>
-<a class="sourceLine" id="cb91-2" data-line-number="2"><span class="kw">plot</span>(hmean, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-105-1.png" width="768" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1">hmean &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">mean</span>(Z), <span class="dv">10</span>) <span class="co"># calculate mean at 10 m</span></a>
+<a class="sourceLine" id="cb92-2" data-line-number="2"><span class="kw">plot</span>(hmean, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-raster-hmean-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>The returned <code>hmean</code> object is a <code>RasterLayer</code>:</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1">hmean</a>
-<a class="sourceLine" id="cb92-2" data-line-number="2"><span class="co">#&gt; class      : RasterLayer </span></a>
-<a class="sourceLine" id="cb92-3" data-line-number="3"><span class="co">#&gt; dimensions : 50, 50, 2500  (nrow, ncol, ncell)</span></a>
-<a class="sourceLine" id="cb92-4" data-line-number="4"><span class="co">#&gt; resolution : 10, 10  (x, y)</span></a>
-<a class="sourceLine" id="cb92-5" data-line-number="5"><span class="co">#&gt; extent     : 338000, 338500, 5238500, 5239000  (xmin, xmax, ymin, ymax)</span></a>
-<a class="sourceLine" id="cb92-6" data-line-number="6"><span class="co">#&gt; crs        : +proj=utm +zone=19 +datum=WGS84 +units=m +no_defs </span></a>
-<a class="sourceLine" id="cb92-7" data-line-number="7"><span class="co">#&gt; source     : memory</span></a>
-<a class="sourceLine" id="cb92-8" data-line-number="8"><span class="co">#&gt; names      : V1 </span></a>
-<a class="sourceLine" id="cb92-9" data-line-number="9"><span class="co">#&gt; values     : 0.2670795, 14.08985  (min, max)</span></a></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1">hmean</a>
+<a class="sourceLine" id="cb93-2" data-line-number="2"><span class="co">#&gt; class      : RasterLayer </span></a>
+<a class="sourceLine" id="cb93-3" data-line-number="3"><span class="co">#&gt; dimensions : 50, 50, 2500  (nrow, ncol, ncell)</span></a>
+<a class="sourceLine" id="cb93-4" data-line-number="4"><span class="co">#&gt; resolution : 10, 10  (x, y)</span></a>
+<a class="sourceLine" id="cb93-5" data-line-number="5"><span class="co">#&gt; extent     : 338000, 338500, 5238500, 5239000  (xmin, xmax, ymin, ymax)</span></a>
+<a class="sourceLine" id="cb93-6" data-line-number="6"><span class="co">#&gt; crs        : +proj=utm +zone=19 +datum=WGS84 +units=m +no_defs </span></a>
+<a class="sourceLine" id="cb93-7" data-line-number="7"><span class="co">#&gt; source     : memory</span></a>
+<a class="sourceLine" id="cb93-8" data-line-number="8"><span class="co">#&gt; names      : V1 </span></a>
+<a class="sourceLine" id="cb93-9" data-line-number="9"><span class="co">#&gt; values     : 0.2670795, 14.08985  (min, max)</span></a></code></pre></div>
 <p>To calculate metrics for hexagonal cells instead, we can use the <code>hexbin_metrics()</code> function instead. In this case the resolution is defined as the square root of the hexagon area to be consitant with <code>grid_metrics()</code>.</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1">metrics_hex &lt;-<span class="st"> </span><span class="kw">hexbin_metrics</span>(las, <span class="op">~</span><span class="kw">mean</span>(Z), <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb93-2" data-line-number="2">col =<span class="st"> </span>grDevices<span class="op">::</span><span class="kw">colorRampPalette</span>(<span class="kw">height.colors</span>(<span class="dv">25</span>))</a>
-<a class="sourceLine" id="cb93-3" data-line-number="3"><span class="kw">plot</span>(metrics_hex, <span class="dt">colramp =</span> col)</a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-107-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1">metrics_hex &lt;-<span class="st"> </span><span class="kw">hexbin_metrics</span>(las, <span class="op">~</span><span class="kw">mean</span>(Z), <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb94-2" data-line-number="2">col &lt;-<span class="st"> </span>grDevices<span class="op">::</span><span class="kw">colorRampPalette</span>(<span class="kw">height.colors</span>(<span class="dv">25</span>))</a>
+<a class="sourceLine" id="cb94-3" data-line-number="3"><span class="kw">plot</span>(metrics_hex, <span class="dt">colramp =</span> col)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-hexbin-hmean-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>As described in sections <a href="metrics.html#metrics">8</a> and <a href="cba.html#cba">9</a>, to calculate more than one metric at a time a custom function needs to be created first. The function can contain any number of metrics but needs to return a labeled <code>list</code>. For example, to calculate the mean and standard deviation of point heights, the following function can be created. In this case the return object is a <code>RasterBrick</code> with two layers.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1">f &lt;-<span class="st"> </span><span class="cf">function</span>(x) { <span class="co"># user-defined fucntion</span></a>
-<a class="sourceLine" id="cb94-2" data-line-number="2">  <span class="kw">list</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(x), <span class="dt">sd =</span> <span class="kw">sd</span>(x))</a>
-<a class="sourceLine" id="cb94-3" data-line-number="3">}</a>
-<a class="sourceLine" id="cb94-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb94-5" data-line-number="5">metrics &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">f</span>(Z), <span class="dv">10</span>) <span class="co"># calculate grid metrics</span></a>
-<a class="sourceLine" id="cb94-6" data-line-number="6"><span class="kw">plot</span>(metrics, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>)) <span class="co"># some plotting</span></a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-108-1.png" width="960" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1">f &lt;-<span class="st"> </span><span class="cf">function</span>(x) { <span class="co"># user-defined fucntion</span></a>
+<a class="sourceLine" id="cb95-2" data-line-number="2">  <span class="kw">list</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(x), <span class="dt">sd =</span> <span class="kw">sd</span>(x))</a>
+<a class="sourceLine" id="cb95-3" data-line-number="3">}</a>
+<a class="sourceLine" id="cb95-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb95-5" data-line-number="5">metrics &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">f</span>(Z), <span class="dv">10</span>) <span class="co"># calculate grid metrics</span></a>
+<a class="sourceLine" id="cb95-6" data-line-number="6"><span class="kw">plot</span>(metrics, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>)) <span class="co"># some plotting</span></a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-raster-custom-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>The functions that specify which metrics to calculate can of course contain any number of metrics. The most commonly used metrics are already predefined in <code>lidR</code> - the <code>stdmetrics()</code> function contains metrics that summarize the vertical distribution of points, their intensities, and return structure. The complete list of all metrics can be found in the <a href="https://github.com/Jean-Romain/lidR/wiki/stdmetrics">lidR wiki page</a>. To use the predefined list of 56 metrics we can run the <code>grid_metrics()</code> function as follows:</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1">metrics &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, .stdmetrics, <span class="dv">10</span>) <span class="co"># calculate standard metrics</span></a>
-<a class="sourceLine" id="cb95-2" data-line-number="2"><span class="kw">plot</span>(metrics, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>)) <span class="co"># some plotting</span></a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-109-1.png" width="768" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1">metrics &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, .stdmetrics, <span class="dv">10</span>) <span class="co"># calculate standard metrics</span></a>
+<a class="sourceLine" id="cb96-2" data-line-number="2"><span class="kw">plot</span>(metrics, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>)) <span class="co"># some plotting</span></a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-raster-stdmetrics-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>Because of the flexibility in defining metrics, it is very easy to extend basic functionality to create new, non-standard metrics. For example, below we demonstrate how the coefficient of variation and inter-quartile range can be calculated:</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1">metrics_custom &lt;-<span class="st"> </span><span class="cf">function</span>(z) { <span class="co"># user defined function</span></a>
-<a class="sourceLine" id="cb96-2" data-line-number="2"><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb96-3" data-line-number="3">   <span class="dt">coef_var =</span>  <span class="kw">sd</span>(z) <span class="op">/</span><span class="st"> </span><span class="kw">mean</span>(z) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>, <span class="co"># coefficient of variation</span></a>
-<a class="sourceLine" id="cb96-4" data-line-number="4">   <span class="dt">iqr =</span> <span class="kw">IQR</span>(z)) <span class="co"># inter-quartile range</span></a>
-<a class="sourceLine" id="cb96-5" data-line-number="5">}</a>
-<a class="sourceLine" id="cb96-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb96-7" data-line-number="7">metrics &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">metrics_custom</span>(<span class="dt">z=</span>Z), <span class="dv">10</span>) <span class="co"># calculate grid metrics</span></a>
-<a class="sourceLine" id="cb96-8" data-line-number="8"><span class="kw">plot</span>(metrics, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>)) <span class="co"># some plotting</span></a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-110-1.png" width="960" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1">metrics_custom &lt;-<span class="st"> </span><span class="cf">function</span>(z) { <span class="co"># user defined function</span></a>
+<a class="sourceLine" id="cb97-2" data-line-number="2"><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb97-3" data-line-number="3">   <span class="dt">coef_var =</span>  <span class="kw">sd</span>(z) <span class="op">/</span><span class="st"> </span><span class="kw">mean</span>(z) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>, <span class="co"># coefficient of variation</span></a>
+<a class="sourceLine" id="cb97-4" data-line-number="4">   <span class="dt">iqr =</span> <span class="kw">IQR</span>(z)) <span class="co"># inter-quartile range</span></a>
+<a class="sourceLine" id="cb97-5" data-line-number="5">}</a>
+<a class="sourceLine" id="cb97-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb97-7" data-line-number="7">metrics &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">metrics_custom</span>(<span class="dt">z=</span>Z), <span class="dv">10</span>) <span class="co"># calculate grid metrics</span></a>
+<a class="sourceLine" id="cb97-8" data-line-number="8"><span class="kw">plot</span>(metrics, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>)) <span class="co"># some plotting</span></a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-raster-custom-2-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
 <div id="applications-1" class="section level2">
 <h2><span class="header-section-number">10.2</span> Applications</h2>
 <div id="modeling" class="section level3">
 <h3><span class="header-section-number">10.2.1</span> Modeling</h3>
 <p>All <code>*_metrics</code> functions can map any kind of formula as long as it returns a number or a list of numbers, meaning that that it’s possible to input an expression derived from a predictive model to map the resource. In the chapter <a href="cba.html#cba">9</a> we made a model that can be written <span class="math inline">\(0.7018 \times pzabove2 + 0.9268 \times zmax\)</span>. We can map this predictive model with a resolution of 10 meters:</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1">prediction &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="fl">0.7018</span> <span class="op">*</span><span class="st"> </span><span class="kw">sum</span>(Z <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>)<span class="op">/</span><span class="kw">length</span>(Z) <span class="op">+</span><span class="st"> </span><span class="fl">0.9268</span> <span class="op">*</span><span class="kw">max</span>(Z), <span class="dv">20</span>) <span class="co"># predicting model mapping</span></a>
-<a class="sourceLine" id="cb97-2" data-line-number="2"><span class="kw">plot</span>(prediction, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>)) <span class="co"># some plotting</span></a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-111-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1">prediction &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="fl">0.7018</span> <span class="op">*</span><span class="st"> </span><span class="kw">sum</span>(Z <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>)<span class="op">/</span><span class="kw">length</span>(Z) <span class="op">+</span><span class="st"> </span><span class="fl">0.9268</span> <span class="op">*</span><span class="kw">max</span>(Z), <span class="dv">20</span>) <span class="co"># predicting model mapping</span></a>
+<a class="sourceLine" id="cb98-2" data-line-number="2"><span class="kw">plot</span>(prediction, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>)) <span class="co"># some plotting</span></a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-raster-model-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="density" class="section level3">
 <h3><span class="header-section-number">10.2.2</span> Density</h3>
 <p>Point density is the number of points within a pixel divided by the area of the pixel.</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1">density &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">length</span>(Z)<span class="op">/</span><span class="dv">16</span>, <span class="dv">4</span>) <span class="co"># calculate density</span></a>
-<a class="sourceLine" id="cb98-2" data-line-number="2"><span class="kw">plot</span>(density, <span class="dt">col =</span> <span class="kw">gray.colors</span>(<span class="dv">50</span>,<span class="dv">0</span>,<span class="dv">1</span>)) <span class="co"># some plotting</span></a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-112-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1">density &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">length</span>(Z)<span class="op">/</span><span class="dv">16</span>, <span class="dv">4</span>) <span class="co"># calculate density</span></a>
+<a class="sourceLine" id="cb99-2" data-line-number="2"><span class="kw">plot</span>(density, <span class="dt">col =</span> <span class="kw">gray.colors</span>(<span class="dv">50</span>,<span class="dv">0</span>,<span class="dv">1</span>)) <span class="co"># some plotting</span></a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-raster-density-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>When using only the first returns, the same formula gives the pulse density instead of the point density</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1">density &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">length</span>(Z)<span class="op">/</span><span class="dv">16</span>, <span class="dv">4</span>, <span class="dt">filter =</span> <span class="op">~</span>ReturnNumber <span class="op">==</span><span class="st"> </span>1L)</a></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1">density &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">length</span>(Z)<span class="op">/</span><span class="dv">16</span>, <span class="dv">4</span>, <span class="dt">filter =</span> <span class="op">~</span>ReturnNumber <span class="op">==</span><span class="st"> </span>1L)</a></code></pre></div>
 </div>
 <div id="intensity" class="section level3">
 <h3><span class="header-section-number">10.2.3</span> Intensity</h3>
 <p>It’s possible to generate a map of the average intensity of first return only</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1">imap &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">mean</span>(Intensity), <span class="dv">4</span>, <span class="dt">filter =</span> <span class="op">~</span>ReturnNumber <span class="op">==</span><span class="st"> </span>1L) <span class="co"># mapping average intensity</span></a>
-<a class="sourceLine" id="cb100-2" data-line-number="2"><span class="kw">plot</span>(imap, <span class="dt">col =</span> <span class="kw">heat.colors</span>(<span class="dv">50</span>)) <span class="co"># some plotting</span></a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-113-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1">imap &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">mean</span>(Intensity), <span class="dv">4</span>, <span class="dt">filter =</span> <span class="op">~</span>ReturnNumber <span class="op">==</span><span class="st"> </span>1L) <span class="co"># mapping average intensity</span></a>
+<a class="sourceLine" id="cb101-2" data-line-number="2"><span class="kw">plot</span>(imap, <span class="dt">col =</span> <span class="kw">heat.colors</span>(<span class="dv">50</span>)) <span class="co"># some plotting</span></a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-raster-imean-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="other" class="section level3">
 <h3><span class="header-section-number">10.2.4</span> Other</h3>
-<p>Many other raster-based applications can be derived with adequate metrics. In section <a href="outbox.html#outbox">17</a> we will see some out of the box possibilities to demonstrate how the concept of metrics can be leveraged to design new applications. A simple uncommon application could be to map the ratio between multiple returns and single returns.</p>
+<p>Many other raster-based applications can be derived with adequate metrics. In chapter <a href="outbox.html#outbox">17</a> we will see some out of the box possibilities to demonstrate how the concept of metrics can be leveraged to design new applications. A simple uncommon application could be to map the ratio between multiple returns and single returns.</p>
 <p>To count single returns we can count the number of points where number of returns equal to 1. To count the number of multiple returns we can count the number of points with a return number equal to 1 <strong>AND</strong> a return number above 1.</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1">mymetric =<span class="st"> </span><span class="cf">function</span>(return_number, number_of_returns) { <span class="co">#user-defined function</span></a>
-<a class="sourceLine" id="cb101-2" data-line-number="2">  nsingle =<span class="st"> </span><span class="kw">sum</span>(number_of_returns <span class="op">==</span><span class="st"> </span>1L)</a>
-<a class="sourceLine" id="cb101-3" data-line-number="3">  nmultiple =<span class="st"> </span><span class="kw">sum</span>(return_number <span class="op">==</span><span class="st"> </span>1L <span class="op">&amp;</span><span class="st"> </span>number_of_returns <span class="op">&gt;</span><span class="st"> </span>1L)</a>
-<a class="sourceLine" id="cb101-4" data-line-number="4">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">n_single =</span> nsingle,</a>
-<a class="sourceLine" id="cb101-5" data-line-number="5">              <span class="dt">n_multiple =</span> nmultiple,</a>
-<a class="sourceLine" id="cb101-6" data-line-number="6">              <span class="dt">ratio =</span> nmultiple<span class="op">/</span>nsingle))</a>
-<a class="sourceLine" id="cb101-7" data-line-number="7">}</a>
-<a class="sourceLine" id="cb101-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb101-9" data-line-number="9">rmap &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">mymetric</span>(ReturnNumber, NumberOfReturns), <span class="dv">8</span>) <span class="co"># mapping retunrs</span></a>
-<a class="sourceLine" id="cb101-10" data-line-number="10"><span class="kw">plot</span>(rmap, <span class="dt">col =</span> viridis<span class="op">::</span><span class="kw">viridis</span>(<span class="dv">50</span>)) <span class="co"># some plotting</span></a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-114-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1">mymetric &lt;-<span class="st"> </span><span class="cf">function</span>(return_number, number_of_returns) { <span class="co">#user-defined function</span></a>
+<a class="sourceLine" id="cb102-2" data-line-number="2">  nsingle &lt;-<span class="st"> </span><span class="kw">sum</span>(number_of_returns <span class="op">==</span><span class="st"> </span>1L)</a>
+<a class="sourceLine" id="cb102-3" data-line-number="3">  nmultiple &lt;-<span class="st"> </span><span class="kw">sum</span>(return_number <span class="op">==</span><span class="st"> </span>1L <span class="op">&amp;</span><span class="st"> </span>number_of_returns <span class="op">&gt;</span><span class="st"> </span>1L)</a>
+<a class="sourceLine" id="cb102-4" data-line-number="4">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">n_single =</span> nsingle,</a>
+<a class="sourceLine" id="cb102-5" data-line-number="5">              <span class="dt">n_multiple =</span> nmultiple,</a>
+<a class="sourceLine" id="cb102-6" data-line-number="6">              <span class="dt">ratio =</span> nmultiple<span class="op">/</span>nsingle))</a>
+<a class="sourceLine" id="cb102-7" data-line-number="7">}</a>
+<a class="sourceLine" id="cb102-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb102-9" data-line-number="9">rmap &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">mymetric</span>(ReturnNumber, NumberOfReturns), <span class="dv">8</span>) <span class="co"># mapping retunrs</span></a>
+<a class="sourceLine" id="cb102-10" data-line-number="10"><span class="kw">plot</span>(rmap, <span class="dt">col =</span> viridis<span class="op">::</span><span class="kw">viridis</span>(<span class="dv">50</span>)) <span class="co"># some plotting</span></a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-raster-ratio-1.png" width="672" style="display: block; margin: auto;" /></p>
 
 </div>
 </div>

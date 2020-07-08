@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-07-07" />
+<meta name="date" content="2020-07-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -133,7 +133,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1.1" data-path="io.html"><a href="io.html#parameter-select"><i class="fa fa-check"></i><b>2.1.1</b> Parameter <code>select</code></a></li>
 <li class="chapter" data-level="2.1.2" data-path="io.html"><a href="io.html#filter"><i class="fa fa-check"></i><b>2.1.2</b> Parameter <code>filter</code></a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="io.html"><a href="io.html#validating-lidar-data"><i class="fa fa-check"></i><b>2.2</b> Validating lidar data</a></li>
+<li class="chapter" data-level="2.2" data-path="io.html"><a href="io.html#asprs-compliance"><i class="fa fa-check"></i><b>2.2</b> Validating lidar data</a></li>
 <li class="chapter" data-level="2.3" data-path="io.html"><a href="io.html#plot"><i class="fa fa-check"></i><b>2.3</b> Plotting</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="io.html"><a href="io.html#basic-3d-rendering"><i class="fa fa-check"></i><b>2.3.1</b> Basic 3D rendering</a></li>
 <li class="chapter" data-level="2.3.2" data-path="io.html"><a href="io.html#overlays"><i class="fa fa-check"></i><b>2.3.2</b> Overlays</a></li>
@@ -146,14 +146,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#cloth-simulation-function"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
 <li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#buffer"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
 <li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#how-to-choose-a-method-and-its-parameters"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other-methods"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a><ul>
 <li class="chapter" data-level="4.1" data-path="dtm.html"><a href="dtm.html#triangular-irregular-network"><i class="fa fa-check"></i><b>4.1</b> Triangular irregular network</a></li>
-<li class="chapter" data-level="4.2" data-path="dtm.html"><a href="dtm.html#invert-distance-weighting-idw"><i class="fa fa-check"></i><b>4.2</b> Invert distance weighting (IDW)</a></li>
+<li class="chapter" data-level="4.2" data-path="dtm.html"><a href="dtm.html#invert-distance-weighting"><i class="fa fa-check"></i><b>4.2</b> Invert distance weighting</a></li>
 <li class="chapter" data-level="4.3" data-path="dtm.html"><a href="dtm.html#kriging"><i class="fa fa-check"></i><b>4.3</b> Kriging</a></li>
 <li class="chapter" data-level="4.4" data-path="dtm.html"><a href="dtm.html#pros-and-cons"><i class="fa fa-check"></i><b>4.4</b> Pros and cons</a></li>
-<li class="chapter" data-level="4.5" data-path="dtm.html"><a href="dtm.html#other-methods"><i class="fa fa-check"></i><b>4.5</b> Other methods</a></li>
-<li class="chapter" data-level="4.6" data-path="dtm.html"><a href="dtm.html#render-shaded-dtm"><i class="fa fa-check"></i><b>4.6</b> Render shaded DTM</a></li>
+<li class="chapter" data-level="4.5" data-path="dtm.html"><a href="dtm.html#other-methods-1"><i class="fa fa-check"></i><b>4.5</b> Other methods</a></li>
+<li class="chapter" data-level="4.6" data-path="dtm.html"><a href="dtm.html#shaded-dtm"><i class="fa fa-check"></i><b>4.6</b> Render shaded DTM</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="norm.html"><a href="norm.html"><i class="fa fa-check"></i><b>5</b> Height normalization</a><ul>
 <li class="chapter" data-level="5.1" data-path="norm.html"><a href="norm.html#dtm-normalization"><i class="fa fa-check"></i><b>5.1</b> DTM normalization</a></li>
@@ -167,16 +168,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="chm.html"><a href="chm.html#pit-free-algorithm"><i class="fa fa-check"></i><b>6.3</b> Pit-free algorithm</a></li>
 <li class="chapter" data-level="6.4" data-path="chm.html"><a href="chm.html#post-processing-a-chm"><i class="fa fa-check"></i><b>6.4</b> Post-processing a CHM</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="itd.html"><a href="itd.html"><i class="fa fa-check"></i><b>7</b> Indivitual tree dectection and segmentation</a><ul>
-<li class="chapter" data-level="7.1" data-path="itd.html"><a href="itd.html#individual-tree-detection-itd"><i class="fa fa-check"></i><b>7.1</b> Individual Tree Detection (ITD)</a><ul>
-<li class="chapter" data-level="7.1.1" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-fixed-windows-size"><i class="fa fa-check"></i><b>7.1.1</b> Local Maximum Filter with fixed windows size</a></li>
-<li class="chapter" data-level="7.1.2" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-variable-windows-size"><i class="fa fa-check"></i><b>7.1.2</b> Local Maximum Filter with variable windows size</a></li>
-<li class="chapter" data-level="7.1.3" data-path="itd.html"><a href="itd.html#local-maximum-filter-on-a-chm"><i class="fa fa-check"></i><b>7.1.3</b> Local Maximum Filter on a CHM</a></li>
+<li class="chapter" data-level="7" data-path="itd-its.html"><a href="itd-its.html"><i class="fa fa-check"></i><b>7</b> Indivitual tree dectection and segmentation</a><ul>
+<li class="chapter" data-level="7.1" data-path="itd-its.html"><a href="itd-its.html#itd"><i class="fa fa-check"></i><b>7.1</b> Individual Tree Detection (ITD)</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="itd-its.html"><a href="itd-its.html#lmffw"><i class="fa fa-check"></i><b>7.1.1</b> Local Maximum Filter with fixed windows size</a></li>
+<li class="chapter" data-level="7.1.2" data-path="itd-its.html"><a href="itd-its.html#lmfvw"><i class="fa fa-check"></i><b>7.1.2</b> Local Maximum Filter with variable windows size</a></li>
+<li class="chapter" data-level="7.1.3" data-path="itd-its.html"><a href="itd-its.html#lmfchm"><i class="fa fa-check"></i><b>7.1.3</b> Local Maximum Filter on a CHM</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="itd.html"><a href="itd.html#individual-tree-segmentation-its"><i class="fa fa-check"></i><b>7.2</b> Individual Tree Segmentation (ITS)</a><ul>
-<li class="chapter" data-level="7.2.1" data-path="itd.html"><a href="itd.html#segmentation-of-the-point-cloud"><i class="fa fa-check"></i><b>7.2.1</b> Segmentation of the point-cloud</a></li>
-<li class="chapter" data-level="7.2.2" data-path="itd.html"><a href="itd.html#segmentation-of-the-chm"><i class="fa fa-check"></i><b>7.2.2</b> Segmentation of the CHM</a></li>
-<li class="chapter" data-level="7.2.3" data-path="itd.html"><a href="itd.html#comparaison-of-tree-segmentations"><i class="fa fa-check"></i><b>7.2.3</b> Comparaison of tree segmentations</a></li>
+<li class="chapter" data-level="7.2" data-path="itd-its.html"><a href="itd-its.html#its"><i class="fa fa-check"></i><b>7.2</b> Individual Tree Segmentation (ITS)</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="itd-its.html"><a href="itd-its.html#its-cloud"><i class="fa fa-check"></i><b>7.2.1</b> Segmentation of the point-cloud</a></li>
+<li class="chapter" data-level="7.2.2" data-path="itd-its.html"><a href="itd-its.html#its-chm"><i class="fa fa-check"></i><b>7.2.2</b> Segmentation of the CHM</a></li>
+<li class="chapter" data-level="7.2.3" data-path="itd-its.html"><a href="itd-its.html#comparaison-of-tree-segmentations"><i class="fa fa-check"></i><b>7.2.3</b> Comparaison of tree segmentations</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="metrics.html"><a href="metrics.html"><i class="fa fa-check"></i><b>8</b> Derived metrics</a><ul>
@@ -229,35 +230,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.6" data-path="engine.html"><a href="engine.html#modification-of-default-behavior"><i class="fa fa-check"></i><b>14.6</b> Modification of default behavior</a><ul>
 <li class="chapter" data-level="14.6.1" data-path="engine.html"><a href="engine.html#multiple-extractions-on-disk"><i class="fa fa-check"></i><b>14.6.1</b> Multiple extractions on disk</a></li>
 <li class="chapter" data-level="14.6.2" data-path="engine.html"><a href="engine.html#multiple-extraction-with-point-cloud-indexation"><i class="fa fa-check"></i><b>14.6.2</b> Multiple extraction with point cloud indexation</a></li>
+<li class="chapter" data-level="14.6.3" data-path="engine.html"><a href="engine.html#summary"><i class="fa fa-check"></i><b>14.6.3</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.7" data-path="engine.html"><a href="engine.html#summary"><i class="fa fa-check"></i><b>14.7</b> Summary</a></li>
-<li class="chapter" data-level="14.8" data-path="engine.html"><a href="engine.html#ground-classification"><i class="fa fa-check"></i><b>14.8</b> Ground classification</a><ul>
-<li class="chapter" data-level="14.8.1" data-path="engine.html"><a href="engine.html#chunk-processing"><i class="fa fa-check"></i><b>14.8.1</b> Chunk processing</a></li>
-<li class="chapter" data-level="14.8.2" data-path="engine.html"><a href="engine.html#modifying-buffers"><i class="fa fa-check"></i><b>14.8.2</b> Modifying buffers</a></li>
-<li class="chapter" data-level="14.8.3" data-path="engine.html"><a href="engine.html#modify-the-chunk-size"><i class="fa fa-check"></i><b>14.8.3</b> Modify the chunk size</a></li>
-<li class="chapter" data-level="14.8.4" data-path="engine.html"><a href="engine.html#parallel-processing"><i class="fa fa-check"></i><b>14.8.4</b> Parallel processing</a></li>
+<li class="chapter" data-level="14.7" data-path="engine.html"><a href="engine.html#ground-classification"><i class="fa fa-check"></i><b>14.7</b> Ground classification</a><ul>
+<li class="chapter" data-level="14.7.1" data-path="engine.html"><a href="engine.html#chunk-processing"><i class="fa fa-check"></i><b>14.7.1</b> Chunk processing</a></li>
+<li class="chapter" data-level="14.7.2" data-path="engine.html"><a href="engine.html#modifying-buffers"><i class="fa fa-check"></i><b>14.7.2</b> Modifying buffers</a></li>
+<li class="chapter" data-level="14.7.3" data-path="engine.html"><a href="engine.html#modify-the-chunk-size"><i class="fa fa-check"></i><b>14.7.3</b> Modify the chunk size</a></li>
+<li class="chapter" data-level="14.7.4" data-path="engine.html"><a href="engine.html#parallel-processing"><i class="fa fa-check"></i><b>14.7.4</b> Parallel processing</a></li>
+<li class="chapter" data-level="14.7.5" data-path="engine.html"><a href="engine.html#summary-1"><i class="fa fa-check"></i><b>14.7.5</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.9" data-path="engine.html"><a href="engine.html#summary-1"><i class="fa fa-check"></i><b>14.9</b> Summary</a></li>
-<li class="chapter" data-level="14.10" data-path="engine.html"><a href="engine.html#digital-terrain-model"><i class="fa fa-check"></i><b>14.10</b> Digital Terrain Model</a><ul>
-<li class="chapter" data-level="14.10.1" data-path="engine.html"><a href="engine.html#in-memory-dtm"><i class="fa fa-check"></i><b>14.10.1</b> In memory DTM</a></li>
-<li class="chapter" data-level="14.10.2" data-path="engine.html"><a href="engine.html#on-disk-dtm"><i class="fa fa-check"></i><b>14.10.2</b> On disk DTM</a></li>
+<li class="chapter" data-level="14.8" data-path="engine.html"><a href="engine.html#digital-terrain-model"><i class="fa fa-check"></i><b>14.8</b> Digital Terrain Model</a><ul>
+<li class="chapter" data-level="14.8.1" data-path="engine.html"><a href="engine.html#in-memory-dtm"><i class="fa fa-check"></i><b>14.8.1</b> In memory DTM</a></li>
+<li class="chapter" data-level="14.8.2" data-path="engine.html"><a href="engine.html#on-disk-dtm"><i class="fa fa-check"></i><b>14.8.2</b> On disk DTM</a></li>
+<li class="chapter" data-level="14.8.3" data-path="engine.html"><a href="engine.html#summary-2"><i class="fa fa-check"></i><b>14.8.3</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.11" data-path="engine.html"><a href="engine.html#storage-summary"><i class="fa fa-check"></i><b>14.11</b> Storage Summary</a></li>
-<li class="chapter" data-level="14.12" data-path="engine.html"><a href="engine.html#height-normalization"><i class="fa fa-check"></i><b>14.12</b> Height normalization</a></li>
-<li class="chapter" data-level="14.13" data-path="engine.html"><a href="engine.html#area-based-approach"><i class="fa fa-check"></i><b>14.13</b> Area Based Approach</a></li>
-<li class="chapter" data-level="14.14" data-path="engine.html"><a href="engine.html#height-aba-summary"><i class="fa fa-check"></i><b>14.14</b> Height &amp; ABA Summary</a></li>
-<li class="chapter" data-level="14.15" data-path="engine.html"><a href="engine.html#individual-tree-detection"><i class="fa fa-check"></i><b>14.15</b> Individual Tree Detection</a><ul>
-<li class="chapter" data-level="14.15.1" data-path="engine.html"><a href="engine.html#itd-summary"><i class="fa fa-check"></i><b>14.15.1</b> ITD Summary</a></li>
+<li class="chapter" data-level="14.9" data-path="engine.html"><a href="engine.html#height-normalization"><i class="fa fa-check"></i><b>14.9</b> Height normalization</a></li>
+<li class="chapter" data-level="14.10" data-path="engine.html"><a href="engine.html#area-based-approach"><i class="fa fa-check"></i><b>14.10</b> Area Based Approach</a><ul>
+<li class="chapter" data-level="14.10.1" data-path="engine.html"><a href="engine.html#summary-3"><i class="fa fa-check"></i><b>14.10.1</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.16" data-path="engine.html"><a href="engine.html#individual-tree-segmentation"><i class="fa fa-check"></i><b>14.16</b> Individual Tree Segmentation</a></li>
-<li class="chapter" data-level="14.17" data-path="engine.html"><a href="engine.html#retile-a-catalog"><i class="fa fa-check"></i><b>14.17</b> Retile a catalog</a><ul>
-<li class="chapter" data-level="14.17.1" data-path="engine.html"><a href="engine.html#retile-a-catalog-into-smaller-files"><i class="fa fa-check"></i><b>14.17.1</b> Retile a catalog into smaller files</a></li>
-<li class="chapter" data-level="14.17.2" data-path="engine.html"><a href="engine.html#add-a-buffer-around-each-file"><i class="fa fa-check"></i><b>14.17.2</b> Add a buffer around each file</a></li>
-<li class="chapter" data-level="14.17.3" data-path="engine.html"><a href="engine.html#create-a-new-collection-with-only-first-returns"><i class="fa fa-check"></i><b>14.17.3</b> Create a new collection with only first returns</a></li>
-<li class="chapter" data-level="14.17.4" data-path="engine.html"><a href="engine.html#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel"><i class="fa fa-check"></i><b>14.17.4</b> Create a new collection of small and buffered ground returns in parallel</a></li>
+<li class="chapter" data-level="14.11" data-path="engine.html"><a href="engine.html#individual-tree-detection"><i class="fa fa-check"></i><b>14.11</b> Individual Tree Detection</a><ul>
+<li class="chapter" data-level="14.11.1" data-path="engine.html"><a href="engine.html#summary-4"><i class="fa fa-check"></i><b>14.11.1</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.18" data-path="engine.html"><a href="engine.html#the-case-of-ground-inventories"><i class="fa fa-check"></i><b>14.18</b> The case of ground inventories</a></li>
-<li class="chapter" data-level="14.19" data-path="engine.html"><a href="engine.html#summary-2"><i class="fa fa-check"></i><b>14.19</b> Summary</a></li>
+<li class="chapter" data-level="14.12" data-path="engine.html"><a href="engine.html#individual-tree-segmentation"><i class="fa fa-check"></i><b>14.12</b> Individual Tree Segmentation</a></li>
+<li class="chapter" data-level="14.13" data-path="engine.html"><a href="engine.html#retile-a-catalog"><i class="fa fa-check"></i><b>14.13</b> Retile a catalog</a><ul>
+<li class="chapter" data-level="14.13.1" data-path="engine.html"><a href="engine.html#retile-a-catalog-into-smaller-files"><i class="fa fa-check"></i><b>14.13.1</b> Retile a catalog into smaller files</a></li>
+<li class="chapter" data-level="14.13.2" data-path="engine.html"><a href="engine.html#add-a-buffer-around-each-file"><i class="fa fa-check"></i><b>14.13.2</b> Add a buffer around each file</a></li>
+<li class="chapter" data-level="14.13.3" data-path="engine.html"><a href="engine.html#create-a-new-collection-with-only-first-returns"><i class="fa fa-check"></i><b>14.13.3</b> Create a new collection with only first returns</a></li>
+<li class="chapter" data-level="14.13.4" data-path="engine.html"><a href="engine.html#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel"><i class="fa fa-check"></i><b>14.13.4</b> Create a new collection of small and buffered ground returns in parallel</a></li>
+</ul></li>
+<li class="chapter" data-level="14.14" data-path="engine.html"><a href="engine.html#the-case-of-ground-inventories"><i class="fa fa-check"></i><b>14.14</b> The case of ground inventories</a></li>
+<li class="chapter" data-level="14.15" data-path="engine.html"><a href="engine.html#summary-5"><i class="fa fa-check"></i><b>14.15</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="engine2.html"><a href="engine2.html"><i class="fa fa-check"></i><b>15</b> LAScatalog processing engine (2/2)</a><ul>
 <li class="chapter" data-level="15.1" data-path="engine2.html"><a href="engine2.html#catalog_apply"><i class="fa fa-check"></i><b>15.1</b> <code>catalog_apply()</code></a></li>
@@ -309,92 +311,92 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">9</span> Derived metrics at the cloud level</h1>
 <div id="overview" class="section level2">
 <h2><span class="header-section-number">9.1</span> Overview</h2>
-<p>The “cloud” level of regularization corresponds to the computation of derived metrics using all available points. As seen in section <a href="metrics.html#metrics">8</a>, calculating derived metrics for the whole point cloud is straightforward and users only need to provide a formula to calculate metric(s) of interest. For example, to calculate the average height (<code>mean(Z)</code>) of all points we can run the following:</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1">LASfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Megaplot.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;lidR&quot;</span>)</a>
-<a class="sourceLine" id="cb85-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(LASfile)</a>
-<a class="sourceLine" id="cb85-3" data-line-number="3"><span class="kw">cloud_metrics</span>(las, <span class="dt">func =</span> <span class="op">~</span><span class="kw">mean</span>(Z)) <span class="co"># calculate mean height</span></a>
-<a class="sourceLine" id="cb85-4" data-line-number="4"><span class="co">#&gt; [1] 13.27202</span></a></code></pre></div>
-<p>To calculate more than one metric a custom function needs to be used, or one of the pre-defined functions within <code>lidR</code>. To calculate the whole suite of metrics defined in <code>stdmetrics_rn()</code> we can use <code>func = .stdmetrics_rn</code>. When several metrics are computed they are returned as a <code>list</code>.</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1">metrics &lt;-<span class="st"> </span><span class="kw">cloud_metrics</span>(las, <span class="dt">func =</span> .stdmetrics_rn)</a>
-<a class="sourceLine" id="cb86-2" data-line-number="2">metrics <span class="co"># output is a list</span></a>
-<a class="sourceLine" id="cb86-3" data-line-number="3"><span class="co">#&gt; $p1th</span></a>
-<a class="sourceLine" id="cb86-4" data-line-number="4"><span class="co">#&gt; [1] 68.33681</span></a>
-<a class="sourceLine" id="cb86-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb86-6" data-line-number="6"><span class="co">#&gt; $p2th</span></a>
-<a class="sourceLine" id="cb86-7" data-line-number="7"><span class="co">#&gt; [1] 26.34269</span></a>
-<a class="sourceLine" id="cb86-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb86-9" data-line-number="9"><span class="co">#&gt; $p3th</span></a>
-<a class="sourceLine" id="cb86-10" data-line-number="10"><span class="co">#&gt; [1] 4.901336</span></a>
-<a class="sourceLine" id="cb86-11" data-line-number="11"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb86-12" data-line-number="12"><span class="co">#&gt; $p4th</span></a>
-<a class="sourceLine" id="cb86-13" data-line-number="13"><span class="co">#&gt; [1] 0.419169</span></a>
-<a class="sourceLine" id="cb86-14" data-line-number="14"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb86-15" data-line-number="15"><span class="co">#&gt; $p5th</span></a>
-<a class="sourceLine" id="cb86-16" data-line-number="16"><span class="co">#&gt; [1] 0</span></a>
-<a class="sourceLine" id="cb86-17" data-line-number="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb86-18" data-line-number="18"><span class="co">#&gt; $pground</span></a>
-<a class="sourceLine" id="cb86-19" data-line-number="19"><span class="co">#&gt; [1] 9.056257</span></a></code></pre></div>
+<p>The “cloud” level of regularization corresponds to the computation of derived metrics using all available points. As seen in chapter <a href="metrics.html#metrics">8</a>, calculating derived metrics for the whole point cloud is straightforward and users only need to provide a formula to calculate metric(s) of interest. For example, to calculate the average height (<code>mean(Z)</code>) of all points we can run the following:</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1">LASfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Megaplot.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;lidR&quot;</span>)</a>
+<a class="sourceLine" id="cb86-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(LASfile)</a>
+<a class="sourceLine" id="cb86-3" data-line-number="3"><span class="kw">cloud_metrics</span>(las, <span class="dt">func =</span> <span class="op">~</span><span class="kw">mean</span>(Z)) <span class="co"># calculate mean height</span></a>
+<a class="sourceLine" id="cb86-4" data-line-number="4"><span class="co">#&gt; [1] 13.27202</span></a></code></pre></div>
+<p>To calculate more than one metric a custom function needs to be used, or one of the pre-defined functions within <code>lidR</code>. To calculate the whole suite of 36 metrics defined in <code>stdmetrics_z()</code> we can use <code>func = .stdmetrics_z</code>. When several metrics are computed they are returned as a <code>list</code>.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1">metrics &lt;-<span class="st"> </span><span class="kw">cloud_metrics</span>(las, <span class="dt">func =</span> .stdmetrics_z)</a>
+<a class="sourceLine" id="cb87-2" data-line-number="2"><span class="kw">head</span>(metrics) <span class="co"># output is a list</span></a>
+<a class="sourceLine" id="cb87-3" data-line-number="3"><span class="co">#&gt; $zmax</span></a>
+<a class="sourceLine" id="cb87-4" data-line-number="4"><span class="co">#&gt; [1] 29.97</span></a>
+<a class="sourceLine" id="cb87-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb87-6" data-line-number="6"><span class="co">#&gt; $zmean</span></a>
+<a class="sourceLine" id="cb87-7" data-line-number="7"><span class="co">#&gt; [1] 13.27202</span></a>
+<a class="sourceLine" id="cb87-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb87-9" data-line-number="9"><span class="co">#&gt; $zsd</span></a>
+<a class="sourceLine" id="cb87-10" data-line-number="10"><span class="co">#&gt; [1] 7.454766</span></a>
+<a class="sourceLine" id="cb87-11" data-line-number="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb87-12" data-line-number="12"><span class="co">#&gt; $zskew</span></a>
+<a class="sourceLine" id="cb87-13" data-line-number="13"><span class="co">#&gt; [1] -0.4756913</span></a>
+<a class="sourceLine" id="cb87-14" data-line-number="14"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb87-15" data-line-number="15"><span class="co">#&gt; $zkurt</span></a>
+<a class="sourceLine" id="cb87-16" data-line-number="16"><span class="co">#&gt; [1] 2.084898</span></a>
+<a class="sourceLine" id="cb87-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb87-18" data-line-number="18"><span class="co">#&gt; $zentropy</span></a>
+<a class="sourceLine" id="cb87-19" data-line-number="19"><span class="co">#&gt; [1] 0.9032599</span></a></code></pre></div>
 </div>
 <div id="applications" class="section level2">
 <h2><span class="header-section-number">9.2</span> Applications</h2>
 <p>Point cloud metrics become interesting when computed for a set of plot inventories. In this case it can serve to compute a set of metrics for each plot, where known attributes have been measured in the field to construct a predictive model.</p>
 <p>In the following example we load a collection of <code>.las</code> files storing clipped plot inventories and we apply <code>cloud_metrics()</code> on each file. We also load a file that contains the ground truth for the value of interest <code>G</code> measured in the field.</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1">plots &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="st">&quot;path/to/plot/inventory/&quot;</span>)</a>
-<a class="sourceLine" id="cb87-2" data-line-number="2">inventory &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;ground_inventory.txt&quot;</span>)</a>
-<a class="sourceLine" id="cb87-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb87-4" data-line-number="4">metrics &lt;-<span class="st"> </span><span class="kw">lapply</span>(plots, <span class="cf">function</span>(file) {</a>
-<a class="sourceLine" id="cb87-5" data-line-number="5">   las =<span class="st"> </span><span class="kw">readLAS</span>(file)</a>
-<a class="sourceLine" id="cb87-6" data-line-number="6">   <span class="kw">cloud_metrics</span>(las, .stdmetrics_z)</a>
-<a class="sourceLine" id="cb87-7" data-line-number="7">})</a>
-<a class="sourceLine" id="cb87-8" data-line-number="8">metrics &lt;-<span class="st"> </span>data.table<span class="op">::</span><span class="kw">rbindlist</span>(metrics)</a>
-<a class="sourceLine" id="cb87-9" data-line-number="9">metrics<span class="op">$</span>G &lt;-<span class="st"> </span>inventory<span class="op">$</span>G</a></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1">plots &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="st">&quot;path/to/plot/inventory/&quot;</span>)</a>
+<a class="sourceLine" id="cb88-2" data-line-number="2">inventory &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;ground_inventory.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb88-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb88-4" data-line-number="4">metrics &lt;-<span class="st"> </span><span class="kw">lapply</span>(plots, <span class="cf">function</span>(file) {</a>
+<a class="sourceLine" id="cb88-5" data-line-number="5">   las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(file)</a>
+<a class="sourceLine" id="cb88-6" data-line-number="6">   <span class="kw">cloud_metrics</span>(las, .stdmetrics_z)</a>
+<a class="sourceLine" id="cb88-7" data-line-number="7">})</a>
+<a class="sourceLine" id="cb88-8" data-line-number="8">metrics &lt;-<span class="st"> </span>data.table<span class="op">::</span><span class="kw">rbindlist</span>(metrics)</a>
+<a class="sourceLine" id="cb88-9" data-line-number="9">metrics<span class="op">$</span>G &lt;-<span class="st"> </span>inventory<span class="op">$</span>G</a></code></pre></div>
 <p>Look at the content of <code>inventory</code> and <code>metrics</code>. <code>inventory</code> contains the plot IDs, their coordinates, and <code>G</code> a value of interest. <code>metrics</code> contains 36 derived metrics for each plot.</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1"><span class="kw">head</span>(inventory)</a>
-<a class="sourceLine" id="cb88-2" data-line-number="2"><span class="co">#&gt;   ID       X       Y        G</span></a>
-<a class="sourceLine" id="cb88-3" data-line-number="3"><span class="co">#&gt; 1  1 5239065 5239065 82.24236</span></a>
-<a class="sourceLine" id="cb88-4" data-line-number="4"><span class="co">#&gt; 2  2 5238369 5238369 69.91174</span></a>
-<a class="sourceLine" id="cb88-5" data-line-number="5"><span class="co">#&gt; 3  3 5238584 5238584 75.40446</span></a>
-<a class="sourceLine" id="cb88-6" data-line-number="6"><span class="co">#&gt; 4  4 5238137 5238137 71.54276</span></a>
-<a class="sourceLine" id="cb88-7" data-line-number="7"><span class="co">#&gt; 5  5 5239443 5239443 83.12459</span></a>
-<a class="sourceLine" id="cb88-8" data-line-number="8"><span class="co">#&gt; 6  6 5238016 5238016 74.40816</span></a>
-<a class="sourceLine" id="cb88-9" data-line-number="9"><span class="kw">head</span>(metrics[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>])</a>
-<a class="sourceLine" id="cb88-10" data-line-number="10"><span class="co">#&gt;      zmax    zmean      zsd       zskew    zkurt pzabovezmean pzabove2   zq5</span></a>
-<a class="sourceLine" id="cb88-11" data-line-number="11"><span class="co">#&gt; 1: 23.201 9.681218 6.402809 -0.30240790 1.813378     59.29538 75.68418 0.000</span></a>
-<a class="sourceLine" id="cb88-12" data-line-number="12"><span class="co">#&gt; 2: 23.380 5.679787 5.455638  0.77187634 2.471706     39.83723 62.97050 0.000</span></a>
-<a class="sourceLine" id="cb88-13" data-line-number="13"><span class="co">#&gt; 3: 21.615 4.415224 3.709339  1.06118054 4.327286     44.71780 71.73868 0.000</span></a>
-<a class="sourceLine" id="cb88-14" data-line-number="14"><span class="co">#&gt; 4: 19.346 5.209481 4.231455  0.82882032 3.081719     42.35439 72.21651 0.000</span></a>
-<a class="sourceLine" id="cb88-15" data-line-number="15"><span class="co">#&gt; 5: 24.483 9.872234 6.574069 -0.52397026 1.779475     65.59885 71.73160 0.000</span></a>
-<a class="sourceLine" id="cb88-16" data-line-number="16"><span class="co">#&gt; 6: 17.771 6.612640 4.017413  0.03928507 2.251648     50.25947 83.27888 0.052</span></a></code></pre></div>
-<p>We have computed many metrics for each plot and the known value of interest. We can use that to build a linear model with some metrics.</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1">model =<span class="st"> </span><span class="kw">lm</span>(G<span class="op">~</span>zmax<span class="op">+</span>zmean<span class="op">+</span>pzabove2<span class="op">+</span>zq50<span class="op">+</span>zq90, <span class="dt">data =</span> metrics)</a>
-<a class="sourceLine" id="cb89-2" data-line-number="2"><span class="kw">summary</span>(model)</a>
-<a class="sourceLine" id="cb89-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb89-4" data-line-number="4"><span class="co">#&gt; Call:</span></a>
-<a class="sourceLine" id="cb89-5" data-line-number="5"><span class="co">#&gt; lm(formula = G ~ zmax + zmean + pzabove2 + zq50 + zq90, data = metrics)</span></a>
-<a class="sourceLine" id="cb89-6" data-line-number="6"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb89-7" data-line-number="7"><span class="co">#&gt; Residuals:</span></a>
-<a class="sourceLine" id="cb89-8" data-line-number="8"><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></a>
-<a class="sourceLine" id="cb89-9" data-line-number="9"><span class="co">#&gt; -5.1658 -2.0622 -0.2964  0.6061 11.5501 </span></a>
-<a class="sourceLine" id="cb89-10" data-line-number="10"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb89-11" data-line-number="11"><span class="co">#&gt; Coefficients:</span></a>
-<a class="sourceLine" id="cb89-12" data-line-number="12"><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></a>
-<a class="sourceLine" id="cb89-13" data-line-number="13"><span class="co">#&gt; (Intercept)  -0.5668     3.8345  -0.148   0.8840    </span></a>
-<a class="sourceLine" id="cb89-14" data-line-number="14"><span class="co">#&gt; zmax          0.9268     0.3123   2.968   0.0079 ** </span></a>
-<a class="sourceLine" id="cb89-15" data-line-number="15"><span class="co">#&gt; zmean        -1.6555     3.3459  -0.495   0.6264    </span></a>
-<a class="sourceLine" id="cb89-16" data-line-number="16"><span class="co">#&gt; pzabove2      0.7018     0.0763   9.198 1.99e-08 ***</span></a>
-<a class="sourceLine" id="cb89-17" data-line-number="17"><span class="co">#&gt; zq50          1.6215     1.4639   1.108   0.2818    </span></a>
-<a class="sourceLine" id="cb89-18" data-line-number="18"><span class="co">#&gt; zq90          0.3887     0.9608   0.405   0.6903    </span></a>
-<a class="sourceLine" id="cb89-19" data-line-number="19"><span class="co">#&gt; ---</span></a>
-<a class="sourceLine" id="cb89-20" data-line-number="20"><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a>
-<a class="sourceLine" id="cb89-21" data-line-number="21"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb89-22" data-line-number="22"><span class="co">#&gt; Residual standard error: 3.975 on 19 degrees of freedom</span></a>
-<a class="sourceLine" id="cb89-23" data-line-number="23"><span class="co">#&gt; Multiple R-squared:  0.9664, Adjusted R-squared:  0.9575 </span></a>
-<a class="sourceLine" id="cb89-24" data-line-number="24"><span class="co">#&gt; F-statistic: 109.3 on 5 and 19 DF,  p-value: 2.536e-13</span></a></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1"><span class="kw">head</span>(inventory)</a>
+<a class="sourceLine" id="cb89-2" data-line-number="2"><span class="co">#&gt;   ID       X       Y        G</span></a>
+<a class="sourceLine" id="cb89-3" data-line-number="3"><span class="co">#&gt; 1  1 5239065 5239065 82.24236</span></a>
+<a class="sourceLine" id="cb89-4" data-line-number="4"><span class="co">#&gt; 2  2 5238369 5238369 69.91174</span></a>
+<a class="sourceLine" id="cb89-5" data-line-number="5"><span class="co">#&gt; 3  3 5238584 5238584 75.40446</span></a>
+<a class="sourceLine" id="cb89-6" data-line-number="6"><span class="co">#&gt; 4  4 5238137 5238137 71.54276</span></a>
+<a class="sourceLine" id="cb89-7" data-line-number="7"><span class="co">#&gt; 5  5 5239443 5239443 83.12459</span></a>
+<a class="sourceLine" id="cb89-8" data-line-number="8"><span class="co">#&gt; 6  6 5238016 5238016 74.40816</span></a>
+<a class="sourceLine" id="cb89-9" data-line-number="9"><span class="kw">head</span>(metrics[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>])</a>
+<a class="sourceLine" id="cb89-10" data-line-number="10"><span class="co">#&gt;      zmax    zmean      zsd       zskew    zkurt pzabovezmean pzabove2   zq5</span></a>
+<a class="sourceLine" id="cb89-11" data-line-number="11"><span class="co">#&gt; 1: 23.201 9.681218 6.402809 -0.30240790 1.813378     59.29538 75.68418 0.000</span></a>
+<a class="sourceLine" id="cb89-12" data-line-number="12"><span class="co">#&gt; 2: 23.380 5.679787 5.455638  0.77187634 2.471706     39.83723 62.97050 0.000</span></a>
+<a class="sourceLine" id="cb89-13" data-line-number="13"><span class="co">#&gt; 3: 21.615 4.415224 3.709339  1.06118054 4.327286     44.71780 71.73868 0.000</span></a>
+<a class="sourceLine" id="cb89-14" data-line-number="14"><span class="co">#&gt; 4: 19.346 5.209481 4.231455  0.82882032 3.081719     42.35439 72.21651 0.000</span></a>
+<a class="sourceLine" id="cb89-15" data-line-number="15"><span class="co">#&gt; 5: 24.483 9.872234 6.574069 -0.52397026 1.779475     65.59885 71.73160 0.000</span></a>
+<a class="sourceLine" id="cb89-16" data-line-number="16"><span class="co">#&gt; 6: 17.771 6.612640 4.017413  0.03928507 2.251648     50.25947 83.27888 0.052</span></a></code></pre></div>
+<p>We have computed many metrics for each plot and we known the value of interest <code>G</code>. We can use that to build a linear model with some metrics.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">lm</span>(G<span class="op">~</span>zmax<span class="op">+</span>zmean<span class="op">+</span>pzabove2<span class="op">+</span>zq50<span class="op">+</span>zq90, <span class="dt">data =</span> metrics)</a>
+<a class="sourceLine" id="cb90-2" data-line-number="2"><span class="kw">summary</span>(model)</a>
+<a class="sourceLine" id="cb90-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb90-4" data-line-number="4"><span class="co">#&gt; Call:</span></a>
+<a class="sourceLine" id="cb90-5" data-line-number="5"><span class="co">#&gt; lm(formula = G ~ zmax + zmean + pzabove2 + zq50 + zq90, data = metrics)</span></a>
+<a class="sourceLine" id="cb90-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb90-7" data-line-number="7"><span class="co">#&gt; Residuals:</span></a>
+<a class="sourceLine" id="cb90-8" data-line-number="8"><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></a>
+<a class="sourceLine" id="cb90-9" data-line-number="9"><span class="co">#&gt; -5.1658 -2.0622 -0.2964  0.6061 11.5501 </span></a>
+<a class="sourceLine" id="cb90-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb90-11" data-line-number="11"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb90-12" data-line-number="12"><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></a>
+<a class="sourceLine" id="cb90-13" data-line-number="13"><span class="co">#&gt; (Intercept)  -0.5668     3.8345  -0.148   0.8840    </span></a>
+<a class="sourceLine" id="cb90-14" data-line-number="14"><span class="co">#&gt; zmax          0.9268     0.3123   2.968   0.0079 ** </span></a>
+<a class="sourceLine" id="cb90-15" data-line-number="15"><span class="co">#&gt; zmean        -1.6555     3.3459  -0.495   0.6264    </span></a>
+<a class="sourceLine" id="cb90-16" data-line-number="16"><span class="co">#&gt; pzabove2      0.7018     0.0763   9.198 1.99e-08 ***</span></a>
+<a class="sourceLine" id="cb90-17" data-line-number="17"><span class="co">#&gt; zq50          1.6215     1.4639   1.108   0.2818    </span></a>
+<a class="sourceLine" id="cb90-18" data-line-number="18"><span class="co">#&gt; zq90          0.3887     0.9608   0.405   0.6903    </span></a>
+<a class="sourceLine" id="cb90-19" data-line-number="19"><span class="co">#&gt; ---</span></a>
+<a class="sourceLine" id="cb90-20" data-line-number="20"><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a>
+<a class="sourceLine" id="cb90-21" data-line-number="21"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb90-22" data-line-number="22"><span class="co">#&gt; Residual standard error: 3.975 on 19 degrees of freedom</span></a>
+<a class="sourceLine" id="cb90-23" data-line-number="23"><span class="co">#&gt; Multiple R-squared:  0.9664, Adjusted R-squared:  0.9575 </span></a>
+<a class="sourceLine" id="cb90-24" data-line-number="24"><span class="co">#&gt; F-statistic: 109.3 on 5 and 19 DF,  p-value: 2.536e-13</span></a></code></pre></div>
 <p>We can see that the metrics <code>zmax</code> and <code>pzabove2</code> are the significant ones meaning that a predictive model of <code>G</code> can be written <span class="math inline">\(0.7018 \times pzabove2 + 0.9268 \times zmax\)</span>.</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1"><span class="kw">plot</span>(inventory<span class="op">$</span>G, <span class="fl">0.7018</span> <span class="op">*</span>metrics<span class="op">$</span>pzabove2 <span class="op">+</span><span class="st"> </span><span class="fl">0.9268</span> <span class="op">*</span><span class="st"> </span>metrics<span class="op">$</span>zmax, <span class="dt">xlab =</span> <span class="st">&quot;Measured&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Predicted&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">100</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">100</span>), <span class="dt">asp =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb90-2" data-line-number="2"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-102-1.png" width="336" style="display: block; margin: auto;" /></p>
-<p>This example can be improved. In chapter <a href="engine.html#engine">14</a> we will study how to extract a ground inventory and in section <a href="#modelling"><strong>??</strong></a> we will study more in depth modelling presenting a complete workflow from the plot extraction to the mapping of the predictive model.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="kw">plot</span>(inventory<span class="op">$</span>G, <span class="fl">0.7018</span> <span class="op">*</span>metrics<span class="op">$</span>pzabove2 <span class="op">+</span><span class="st"> </span><span class="fl">0.9268</span> <span class="op">*</span><span class="st"> </span>metrics<span class="op">$</span>zmax, <span class="dt">xlab =</span> <span class="st">&quot;Measured&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Predicted&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">100</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">100</span>), <span class="dt">asp =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb91-2" data-line-number="2"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-35-1.png" width="336" style="display: block; margin: auto;" /></p>
+<p>This example can be improved. In chapter <a href="engine.html#engine">14</a> we will study how to extract a ground inventory and in chapter <a href="modeling-aba.html#modeling-aba">16</a> we will study more in depth modeling presenting a complete workflow from the plot extraction to the mapping of the predictive model.</p>
 
 </div>
 </div>

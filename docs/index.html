@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-07-07" />
+<meta name="date" content="2020-07-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -133,7 +133,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1.1" data-path="io.html"><a href="io.html#parameter-select"><i class="fa fa-check"></i><b>2.1.1</b> Parameter <code>select</code></a></li>
 <li class="chapter" data-level="2.1.2" data-path="io.html"><a href="io.html#filter"><i class="fa fa-check"></i><b>2.1.2</b> Parameter <code>filter</code></a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="io.html"><a href="io.html#validating-lidar-data"><i class="fa fa-check"></i><b>2.2</b> Validating lidar data</a></li>
+<li class="chapter" data-level="2.2" data-path="io.html"><a href="io.html#asprs-compliance"><i class="fa fa-check"></i><b>2.2</b> Validating lidar data</a></li>
 <li class="chapter" data-level="2.3" data-path="io.html"><a href="io.html#plot"><i class="fa fa-check"></i><b>2.3</b> Plotting</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="io.html"><a href="io.html#basic-3d-rendering"><i class="fa fa-check"></i><b>2.3.1</b> Basic 3D rendering</a></li>
 <li class="chapter" data-level="2.3.2" data-path="io.html"><a href="io.html#overlays"><i class="fa fa-check"></i><b>2.3.2</b> Overlays</a></li>
@@ -146,14 +146,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#cloth-simulation-function"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
 <li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#buffer"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
 <li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#how-to-choose-a-method-and-its-parameters"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other-methods"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a><ul>
 <li class="chapter" data-level="4.1" data-path="dtm.html"><a href="dtm.html#triangular-irregular-network"><i class="fa fa-check"></i><b>4.1</b> Triangular irregular network</a></li>
-<li class="chapter" data-level="4.2" data-path="dtm.html"><a href="dtm.html#invert-distance-weighting-idw"><i class="fa fa-check"></i><b>4.2</b> Invert distance weighting (IDW)</a></li>
+<li class="chapter" data-level="4.2" data-path="dtm.html"><a href="dtm.html#invert-distance-weighting"><i class="fa fa-check"></i><b>4.2</b> Invert distance weighting</a></li>
 <li class="chapter" data-level="4.3" data-path="dtm.html"><a href="dtm.html#kriging"><i class="fa fa-check"></i><b>4.3</b> Kriging</a></li>
 <li class="chapter" data-level="4.4" data-path="dtm.html"><a href="dtm.html#pros-and-cons"><i class="fa fa-check"></i><b>4.4</b> Pros and cons</a></li>
-<li class="chapter" data-level="4.5" data-path="dtm.html"><a href="dtm.html#other-methods"><i class="fa fa-check"></i><b>4.5</b> Other methods</a></li>
-<li class="chapter" data-level="4.6" data-path="dtm.html"><a href="dtm.html#render-shaded-dtm"><i class="fa fa-check"></i><b>4.6</b> Render shaded DTM</a></li>
+<li class="chapter" data-level="4.5" data-path="dtm.html"><a href="dtm.html#other-methods-1"><i class="fa fa-check"></i><b>4.5</b> Other methods</a></li>
+<li class="chapter" data-level="4.6" data-path="dtm.html"><a href="dtm.html#shaded-dtm"><i class="fa fa-check"></i><b>4.6</b> Render shaded DTM</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="norm.html"><a href="norm.html"><i class="fa fa-check"></i><b>5</b> Height normalization</a><ul>
 <li class="chapter" data-level="5.1" data-path="norm.html"><a href="norm.html#dtm-normalization"><i class="fa fa-check"></i><b>5.1</b> DTM normalization</a></li>
@@ -167,16 +168,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="chm.html"><a href="chm.html#pit-free-algorithm"><i class="fa fa-check"></i><b>6.3</b> Pit-free algorithm</a></li>
 <li class="chapter" data-level="6.4" data-path="chm.html"><a href="chm.html#post-processing-a-chm"><i class="fa fa-check"></i><b>6.4</b> Post-processing a CHM</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="itd.html"><a href="itd.html"><i class="fa fa-check"></i><b>7</b> Indivitual tree dectection and segmentation</a><ul>
-<li class="chapter" data-level="7.1" data-path="itd.html"><a href="itd.html#individual-tree-detection-itd"><i class="fa fa-check"></i><b>7.1</b> Individual Tree Detection (ITD)</a><ul>
-<li class="chapter" data-level="7.1.1" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-fixed-windows-size"><i class="fa fa-check"></i><b>7.1.1</b> Local Maximum Filter with fixed windows size</a></li>
-<li class="chapter" data-level="7.1.2" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-variable-windows-size"><i class="fa fa-check"></i><b>7.1.2</b> Local Maximum Filter with variable windows size</a></li>
-<li class="chapter" data-level="7.1.3" data-path="itd.html"><a href="itd.html#local-maximum-filter-on-a-chm"><i class="fa fa-check"></i><b>7.1.3</b> Local Maximum Filter on a CHM</a></li>
+<li class="chapter" data-level="7" data-path="itd-its.html"><a href="itd-its.html"><i class="fa fa-check"></i><b>7</b> Indivitual tree dectection and segmentation</a><ul>
+<li class="chapter" data-level="7.1" data-path="itd-its.html"><a href="itd-its.html#itd"><i class="fa fa-check"></i><b>7.1</b> Individual Tree Detection (ITD)</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="itd-its.html"><a href="itd-its.html#lmffw"><i class="fa fa-check"></i><b>7.1.1</b> Local Maximum Filter with fixed windows size</a></li>
+<li class="chapter" data-level="7.1.2" data-path="itd-its.html"><a href="itd-its.html#lmfvw"><i class="fa fa-check"></i><b>7.1.2</b> Local Maximum Filter with variable windows size</a></li>
+<li class="chapter" data-level="7.1.3" data-path="itd-its.html"><a href="itd-its.html#lmfchm"><i class="fa fa-check"></i><b>7.1.3</b> Local Maximum Filter on a CHM</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="itd.html"><a href="itd.html#individual-tree-segmentation-its"><i class="fa fa-check"></i><b>7.2</b> Individual Tree Segmentation (ITS)</a><ul>
-<li class="chapter" data-level="7.2.1" data-path="itd.html"><a href="itd.html#segmentation-of-the-point-cloud"><i class="fa fa-check"></i><b>7.2.1</b> Segmentation of the point-cloud</a></li>
-<li class="chapter" data-level="7.2.2" data-path="itd.html"><a href="itd.html#segmentation-of-the-chm"><i class="fa fa-check"></i><b>7.2.2</b> Segmentation of the CHM</a></li>
-<li class="chapter" data-level="7.2.3" data-path="itd.html"><a href="itd.html#comparaison-of-tree-segmentations"><i class="fa fa-check"></i><b>7.2.3</b> Comparaison of tree segmentations</a></li>
+<li class="chapter" data-level="7.2" data-path="itd-its.html"><a href="itd-its.html#its"><i class="fa fa-check"></i><b>7.2</b> Individual Tree Segmentation (ITS)</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="itd-its.html"><a href="itd-its.html#its-cloud"><i class="fa fa-check"></i><b>7.2.1</b> Segmentation of the point-cloud</a></li>
+<li class="chapter" data-level="7.2.2" data-path="itd-its.html"><a href="itd-its.html#its-chm"><i class="fa fa-check"></i><b>7.2.2</b> Segmentation of the CHM</a></li>
+<li class="chapter" data-level="7.2.3" data-path="itd-its.html"><a href="itd-its.html#comparaison-of-tree-segmentations"><i class="fa fa-check"></i><b>7.2.3</b> Comparaison of tree segmentations</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="metrics.html"><a href="metrics.html"><i class="fa fa-check"></i><b>8</b> Derived metrics</a><ul>
@@ -229,35 +230,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.6" data-path="engine.html"><a href="engine.html#modification-of-default-behavior"><i class="fa fa-check"></i><b>14.6</b> Modification of default behavior</a><ul>
 <li class="chapter" data-level="14.6.1" data-path="engine.html"><a href="engine.html#multiple-extractions-on-disk"><i class="fa fa-check"></i><b>14.6.1</b> Multiple extractions on disk</a></li>
 <li class="chapter" data-level="14.6.2" data-path="engine.html"><a href="engine.html#multiple-extraction-with-point-cloud-indexation"><i class="fa fa-check"></i><b>14.6.2</b> Multiple extraction with point cloud indexation</a></li>
+<li class="chapter" data-level="14.6.3" data-path="engine.html"><a href="engine.html#summary"><i class="fa fa-check"></i><b>14.6.3</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.7" data-path="engine.html"><a href="engine.html#summary"><i class="fa fa-check"></i><b>14.7</b> Summary</a></li>
-<li class="chapter" data-level="14.8" data-path="engine.html"><a href="engine.html#ground-classification"><i class="fa fa-check"></i><b>14.8</b> Ground classification</a><ul>
-<li class="chapter" data-level="14.8.1" data-path="engine.html"><a href="engine.html#chunk-processing"><i class="fa fa-check"></i><b>14.8.1</b> Chunk processing</a></li>
-<li class="chapter" data-level="14.8.2" data-path="engine.html"><a href="engine.html#modifying-buffers"><i class="fa fa-check"></i><b>14.8.2</b> Modifying buffers</a></li>
-<li class="chapter" data-level="14.8.3" data-path="engine.html"><a href="engine.html#modify-the-chunk-size"><i class="fa fa-check"></i><b>14.8.3</b> Modify the chunk size</a></li>
-<li class="chapter" data-level="14.8.4" data-path="engine.html"><a href="engine.html#parallel-processing"><i class="fa fa-check"></i><b>14.8.4</b> Parallel processing</a></li>
+<li class="chapter" data-level="14.7" data-path="engine.html"><a href="engine.html#ground-classification"><i class="fa fa-check"></i><b>14.7</b> Ground classification</a><ul>
+<li class="chapter" data-level="14.7.1" data-path="engine.html"><a href="engine.html#chunk-processing"><i class="fa fa-check"></i><b>14.7.1</b> Chunk processing</a></li>
+<li class="chapter" data-level="14.7.2" data-path="engine.html"><a href="engine.html#modifying-buffers"><i class="fa fa-check"></i><b>14.7.2</b> Modifying buffers</a></li>
+<li class="chapter" data-level="14.7.3" data-path="engine.html"><a href="engine.html#modify-the-chunk-size"><i class="fa fa-check"></i><b>14.7.3</b> Modify the chunk size</a></li>
+<li class="chapter" data-level="14.7.4" data-path="engine.html"><a href="engine.html#parallel-processing"><i class="fa fa-check"></i><b>14.7.4</b> Parallel processing</a></li>
+<li class="chapter" data-level="14.7.5" data-path="engine.html"><a href="engine.html#summary-1"><i class="fa fa-check"></i><b>14.7.5</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.9" data-path="engine.html"><a href="engine.html#summary-1"><i class="fa fa-check"></i><b>14.9</b> Summary</a></li>
-<li class="chapter" data-level="14.10" data-path="engine.html"><a href="engine.html#digital-terrain-model"><i class="fa fa-check"></i><b>14.10</b> Digital Terrain Model</a><ul>
-<li class="chapter" data-level="14.10.1" data-path="engine.html"><a href="engine.html#in-memory-dtm"><i class="fa fa-check"></i><b>14.10.1</b> In memory DTM</a></li>
-<li class="chapter" data-level="14.10.2" data-path="engine.html"><a href="engine.html#on-disk-dtm"><i class="fa fa-check"></i><b>14.10.2</b> On disk DTM</a></li>
+<li class="chapter" data-level="14.8" data-path="engine.html"><a href="engine.html#digital-terrain-model"><i class="fa fa-check"></i><b>14.8</b> Digital Terrain Model</a><ul>
+<li class="chapter" data-level="14.8.1" data-path="engine.html"><a href="engine.html#in-memory-dtm"><i class="fa fa-check"></i><b>14.8.1</b> In memory DTM</a></li>
+<li class="chapter" data-level="14.8.2" data-path="engine.html"><a href="engine.html#on-disk-dtm"><i class="fa fa-check"></i><b>14.8.2</b> On disk DTM</a></li>
+<li class="chapter" data-level="14.8.3" data-path="engine.html"><a href="engine.html#summary-2"><i class="fa fa-check"></i><b>14.8.3</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.11" data-path="engine.html"><a href="engine.html#storage-summary"><i class="fa fa-check"></i><b>14.11</b> Storage Summary</a></li>
-<li class="chapter" data-level="14.12" data-path="engine.html"><a href="engine.html#height-normalization"><i class="fa fa-check"></i><b>14.12</b> Height normalization</a></li>
-<li class="chapter" data-level="14.13" data-path="engine.html"><a href="engine.html#area-based-approach"><i class="fa fa-check"></i><b>14.13</b> Area Based Approach</a></li>
-<li class="chapter" data-level="14.14" data-path="engine.html"><a href="engine.html#height-aba-summary"><i class="fa fa-check"></i><b>14.14</b> Height &amp; ABA Summary</a></li>
-<li class="chapter" data-level="14.15" data-path="engine.html"><a href="engine.html#individual-tree-detection"><i class="fa fa-check"></i><b>14.15</b> Individual Tree Detection</a><ul>
-<li class="chapter" data-level="14.15.1" data-path="engine.html"><a href="engine.html#itd-summary"><i class="fa fa-check"></i><b>14.15.1</b> ITD Summary</a></li>
+<li class="chapter" data-level="14.9" data-path="engine.html"><a href="engine.html#height-normalization"><i class="fa fa-check"></i><b>14.9</b> Height normalization</a></li>
+<li class="chapter" data-level="14.10" data-path="engine.html"><a href="engine.html#area-based-approach"><i class="fa fa-check"></i><b>14.10</b> Area Based Approach</a><ul>
+<li class="chapter" data-level="14.10.1" data-path="engine.html"><a href="engine.html#summary-3"><i class="fa fa-check"></i><b>14.10.1</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.16" data-path="engine.html"><a href="engine.html#individual-tree-segmentation"><i class="fa fa-check"></i><b>14.16</b> Individual Tree Segmentation</a></li>
-<li class="chapter" data-level="14.17" data-path="engine.html"><a href="engine.html#retile-a-catalog"><i class="fa fa-check"></i><b>14.17</b> Retile a catalog</a><ul>
-<li class="chapter" data-level="14.17.1" data-path="engine.html"><a href="engine.html#retile-a-catalog-into-smaller-files"><i class="fa fa-check"></i><b>14.17.1</b> Retile a catalog into smaller files</a></li>
-<li class="chapter" data-level="14.17.2" data-path="engine.html"><a href="engine.html#add-a-buffer-around-each-file"><i class="fa fa-check"></i><b>14.17.2</b> Add a buffer around each file</a></li>
-<li class="chapter" data-level="14.17.3" data-path="engine.html"><a href="engine.html#create-a-new-collection-with-only-first-returns"><i class="fa fa-check"></i><b>14.17.3</b> Create a new collection with only first returns</a></li>
-<li class="chapter" data-level="14.17.4" data-path="engine.html"><a href="engine.html#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel"><i class="fa fa-check"></i><b>14.17.4</b> Create a new collection of small and buffered ground returns in parallel</a></li>
+<li class="chapter" data-level="14.11" data-path="engine.html"><a href="engine.html#individual-tree-detection"><i class="fa fa-check"></i><b>14.11</b> Individual Tree Detection</a><ul>
+<li class="chapter" data-level="14.11.1" data-path="engine.html"><a href="engine.html#summary-4"><i class="fa fa-check"></i><b>14.11.1</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.18" data-path="engine.html"><a href="engine.html#the-case-of-ground-inventories"><i class="fa fa-check"></i><b>14.18</b> The case of ground inventories</a></li>
-<li class="chapter" data-level="14.19" data-path="engine.html"><a href="engine.html#summary-2"><i class="fa fa-check"></i><b>14.19</b> Summary</a></li>
+<li class="chapter" data-level="14.12" data-path="engine.html"><a href="engine.html#individual-tree-segmentation"><i class="fa fa-check"></i><b>14.12</b> Individual Tree Segmentation</a></li>
+<li class="chapter" data-level="14.13" data-path="engine.html"><a href="engine.html#retile-a-catalog"><i class="fa fa-check"></i><b>14.13</b> Retile a catalog</a><ul>
+<li class="chapter" data-level="14.13.1" data-path="engine.html"><a href="engine.html#retile-a-catalog-into-smaller-files"><i class="fa fa-check"></i><b>14.13.1</b> Retile a catalog into smaller files</a></li>
+<li class="chapter" data-level="14.13.2" data-path="engine.html"><a href="engine.html#add-a-buffer-around-each-file"><i class="fa fa-check"></i><b>14.13.2</b> Add a buffer around each file</a></li>
+<li class="chapter" data-level="14.13.3" data-path="engine.html"><a href="engine.html#create-a-new-collection-with-only-first-returns"><i class="fa fa-check"></i><b>14.13.3</b> Create a new collection with only first returns</a></li>
+<li class="chapter" data-level="14.13.4" data-path="engine.html"><a href="engine.html#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel"><i class="fa fa-check"></i><b>14.13.4</b> Create a new collection of small and buffered ground returns in parallel</a></li>
+</ul></li>
+<li class="chapter" data-level="14.14" data-path="engine.html"><a href="engine.html#the-case-of-ground-inventories"><i class="fa fa-check"></i><b>14.14</b> The case of ground inventories</a></li>
+<li class="chapter" data-level="14.15" data-path="engine.html"><a href="engine.html#summary-5"><i class="fa fa-check"></i><b>14.15</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="engine2.html"><a href="engine2.html"><i class="fa fa-check"></i><b>15</b> LAScatalog processing engine (2/2)</a><ul>
 <li class="chapter" data-level="15.1" data-path="engine2.html"><a href="engine2.html#catalog_apply"><i class="fa fa-check"></i><b>15.1</b> <code>catalog_apply()</code></a></li>
@@ -308,7 +310,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">The <code>lidR</code> package</h1>
 <p class="author"><em>Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski</em></p>
-<p class="date"><em>2020-07-07</em></p>
+<p class="date"><em>2020-07-08</em></p>
 </div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
@@ -316,9 +318,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>Read and write <code>.las</code> and <code>.laz</code> files and render customized point-cloud display (chapter <a href="io.html#io">2</a>)</li>
 <li>Process point clouds including point classification (chapter <a href="gnd.html#gnd">3</a>), digital terrain models (chapter <a href="dtm.html#dtm">4</a>), normalization (chapter <a href="norm.html#norm">5</a>) and digital surface models (chapter <a href="chm.html#chm">6</a>)</li>
-<li>Perform individual tree segmentation (chapter <a href="itd.html#itd">7</a>)</li>
+<li>Perform individual tree segmentation (chapter <a href="#itd-ts"><strong>??</strong></a>)</li>
 <li>Compute standard and user-defined metrics at different levels of regularisation (chapters <a href="metrics.html#metrics">8</a>, <a href="cba.html#cba">9</a>, <a href="aba.html#aba">10</a>, <a href="tba.html#tba">11</a>, <a href="vba.html#vba">12</a> and <a href="pba.html#pba">13</a>)</li>
-<li>Manage processing for sets of point-cloud files - referred to as a <code>LAScatalog</code> (chapter <a href="engine.html#engine">14</a> and <a href="engine2.html#engine2">15</a>)</li>
+<li>Manage processing for sets of point-cloud files - referred to as a <code>LAScatalog</code> (chapters <a href="engine.html#engine">14</a> and <a href="engine2.html#engine2">15</a>)</li>
 <li>Guidelines for implementing area-based approaches to forest modelling using ALS data (chapter <a href="modeling-aba.html#modeling-aba">16</a>)</li>
 <li>Facilitate user-defined processing streams for research and development (chapter <a href="outbox.html#outbox">17</a>)</li>
 <li>Discover the plugin system (chapter <a href="plugins.html#plugins">18</a>)</li>

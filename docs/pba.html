@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-07-07" />
+<meta name="date" content="2020-07-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -133,7 +133,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1.1" data-path="io.html"><a href="io.html#parameter-select"><i class="fa fa-check"></i><b>2.1.1</b> Parameter <code>select</code></a></li>
 <li class="chapter" data-level="2.1.2" data-path="io.html"><a href="io.html#filter"><i class="fa fa-check"></i><b>2.1.2</b> Parameter <code>filter</code></a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="io.html"><a href="io.html#validating-lidar-data"><i class="fa fa-check"></i><b>2.2</b> Validating lidar data</a></li>
+<li class="chapter" data-level="2.2" data-path="io.html"><a href="io.html#asprs-compliance"><i class="fa fa-check"></i><b>2.2</b> Validating lidar data</a></li>
 <li class="chapter" data-level="2.3" data-path="io.html"><a href="io.html#plot"><i class="fa fa-check"></i><b>2.3</b> Plotting</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="io.html"><a href="io.html#basic-3d-rendering"><i class="fa fa-check"></i><b>2.3.1</b> Basic 3D rendering</a></li>
 <li class="chapter" data-level="2.3.2" data-path="io.html"><a href="io.html#overlays"><i class="fa fa-check"></i><b>2.3.2</b> Overlays</a></li>
@@ -146,14 +146,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#cloth-simulation-function"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
 <li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#buffer"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
 <li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#how-to-choose-a-method-and-its-parameters"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other-methods"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a><ul>
 <li class="chapter" data-level="4.1" data-path="dtm.html"><a href="dtm.html#triangular-irregular-network"><i class="fa fa-check"></i><b>4.1</b> Triangular irregular network</a></li>
-<li class="chapter" data-level="4.2" data-path="dtm.html"><a href="dtm.html#invert-distance-weighting-idw"><i class="fa fa-check"></i><b>4.2</b> Invert distance weighting (IDW)</a></li>
+<li class="chapter" data-level="4.2" data-path="dtm.html"><a href="dtm.html#invert-distance-weighting"><i class="fa fa-check"></i><b>4.2</b> Invert distance weighting</a></li>
 <li class="chapter" data-level="4.3" data-path="dtm.html"><a href="dtm.html#kriging"><i class="fa fa-check"></i><b>4.3</b> Kriging</a></li>
 <li class="chapter" data-level="4.4" data-path="dtm.html"><a href="dtm.html#pros-and-cons"><i class="fa fa-check"></i><b>4.4</b> Pros and cons</a></li>
-<li class="chapter" data-level="4.5" data-path="dtm.html"><a href="dtm.html#other-methods"><i class="fa fa-check"></i><b>4.5</b> Other methods</a></li>
-<li class="chapter" data-level="4.6" data-path="dtm.html"><a href="dtm.html#render-shaded-dtm"><i class="fa fa-check"></i><b>4.6</b> Render shaded DTM</a></li>
+<li class="chapter" data-level="4.5" data-path="dtm.html"><a href="dtm.html#other-methods-1"><i class="fa fa-check"></i><b>4.5</b> Other methods</a></li>
+<li class="chapter" data-level="4.6" data-path="dtm.html"><a href="dtm.html#shaded-dtm"><i class="fa fa-check"></i><b>4.6</b> Render shaded DTM</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="norm.html"><a href="norm.html"><i class="fa fa-check"></i><b>5</b> Height normalization</a><ul>
 <li class="chapter" data-level="5.1" data-path="norm.html"><a href="norm.html#dtm-normalization"><i class="fa fa-check"></i><b>5.1</b> DTM normalization</a></li>
@@ -167,16 +168,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="chm.html"><a href="chm.html#pit-free-algorithm"><i class="fa fa-check"></i><b>6.3</b> Pit-free algorithm</a></li>
 <li class="chapter" data-level="6.4" data-path="chm.html"><a href="chm.html#post-processing-a-chm"><i class="fa fa-check"></i><b>6.4</b> Post-processing a CHM</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="itd.html"><a href="itd.html"><i class="fa fa-check"></i><b>7</b> Indivitual tree dectection and segmentation</a><ul>
-<li class="chapter" data-level="7.1" data-path="itd.html"><a href="itd.html#individual-tree-detection-itd"><i class="fa fa-check"></i><b>7.1</b> Individual Tree Detection (ITD)</a><ul>
-<li class="chapter" data-level="7.1.1" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-fixed-windows-size"><i class="fa fa-check"></i><b>7.1.1</b> Local Maximum Filter with fixed windows size</a></li>
-<li class="chapter" data-level="7.1.2" data-path="itd.html"><a href="itd.html#local-maximum-filter-with-variable-windows-size"><i class="fa fa-check"></i><b>7.1.2</b> Local Maximum Filter with variable windows size</a></li>
-<li class="chapter" data-level="7.1.3" data-path="itd.html"><a href="itd.html#local-maximum-filter-on-a-chm"><i class="fa fa-check"></i><b>7.1.3</b> Local Maximum Filter on a CHM</a></li>
+<li class="chapter" data-level="7" data-path="itd-its.html"><a href="itd-its.html"><i class="fa fa-check"></i><b>7</b> Indivitual tree dectection and segmentation</a><ul>
+<li class="chapter" data-level="7.1" data-path="itd-its.html"><a href="itd-its.html#itd"><i class="fa fa-check"></i><b>7.1</b> Individual Tree Detection (ITD)</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="itd-its.html"><a href="itd-its.html#lmffw"><i class="fa fa-check"></i><b>7.1.1</b> Local Maximum Filter with fixed windows size</a></li>
+<li class="chapter" data-level="7.1.2" data-path="itd-its.html"><a href="itd-its.html#lmfvw"><i class="fa fa-check"></i><b>7.1.2</b> Local Maximum Filter with variable windows size</a></li>
+<li class="chapter" data-level="7.1.3" data-path="itd-its.html"><a href="itd-its.html#lmfchm"><i class="fa fa-check"></i><b>7.1.3</b> Local Maximum Filter on a CHM</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="itd.html"><a href="itd.html#individual-tree-segmentation-its"><i class="fa fa-check"></i><b>7.2</b> Individual Tree Segmentation (ITS)</a><ul>
-<li class="chapter" data-level="7.2.1" data-path="itd.html"><a href="itd.html#segmentation-of-the-point-cloud"><i class="fa fa-check"></i><b>7.2.1</b> Segmentation of the point-cloud</a></li>
-<li class="chapter" data-level="7.2.2" data-path="itd.html"><a href="itd.html#segmentation-of-the-chm"><i class="fa fa-check"></i><b>7.2.2</b> Segmentation of the CHM</a></li>
-<li class="chapter" data-level="7.2.3" data-path="itd.html"><a href="itd.html#comparaison-of-tree-segmentations"><i class="fa fa-check"></i><b>7.2.3</b> Comparaison of tree segmentations</a></li>
+<li class="chapter" data-level="7.2" data-path="itd-its.html"><a href="itd-its.html#its"><i class="fa fa-check"></i><b>7.2</b> Individual Tree Segmentation (ITS)</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="itd-its.html"><a href="itd-its.html#its-cloud"><i class="fa fa-check"></i><b>7.2.1</b> Segmentation of the point-cloud</a></li>
+<li class="chapter" data-level="7.2.2" data-path="itd-its.html"><a href="itd-its.html#its-chm"><i class="fa fa-check"></i><b>7.2.2</b> Segmentation of the CHM</a></li>
+<li class="chapter" data-level="7.2.3" data-path="itd-its.html"><a href="itd-its.html#comparaison-of-tree-segmentations"><i class="fa fa-check"></i><b>7.2.3</b> Comparaison of tree segmentations</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="metrics.html"><a href="metrics.html"><i class="fa fa-check"></i><b>8</b> Derived metrics</a><ul>
@@ -229,35 +230,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.6" data-path="engine.html"><a href="engine.html#modification-of-default-behavior"><i class="fa fa-check"></i><b>14.6</b> Modification of default behavior</a><ul>
 <li class="chapter" data-level="14.6.1" data-path="engine.html"><a href="engine.html#multiple-extractions-on-disk"><i class="fa fa-check"></i><b>14.6.1</b> Multiple extractions on disk</a></li>
 <li class="chapter" data-level="14.6.2" data-path="engine.html"><a href="engine.html#multiple-extraction-with-point-cloud-indexation"><i class="fa fa-check"></i><b>14.6.2</b> Multiple extraction with point cloud indexation</a></li>
+<li class="chapter" data-level="14.6.3" data-path="engine.html"><a href="engine.html#summary"><i class="fa fa-check"></i><b>14.6.3</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.7" data-path="engine.html"><a href="engine.html#summary"><i class="fa fa-check"></i><b>14.7</b> Summary</a></li>
-<li class="chapter" data-level="14.8" data-path="engine.html"><a href="engine.html#ground-classification"><i class="fa fa-check"></i><b>14.8</b> Ground classification</a><ul>
-<li class="chapter" data-level="14.8.1" data-path="engine.html"><a href="engine.html#chunk-processing"><i class="fa fa-check"></i><b>14.8.1</b> Chunk processing</a></li>
-<li class="chapter" data-level="14.8.2" data-path="engine.html"><a href="engine.html#modifying-buffers"><i class="fa fa-check"></i><b>14.8.2</b> Modifying buffers</a></li>
-<li class="chapter" data-level="14.8.3" data-path="engine.html"><a href="engine.html#modify-the-chunk-size"><i class="fa fa-check"></i><b>14.8.3</b> Modify the chunk size</a></li>
-<li class="chapter" data-level="14.8.4" data-path="engine.html"><a href="engine.html#parallel-processing"><i class="fa fa-check"></i><b>14.8.4</b> Parallel processing</a></li>
+<li class="chapter" data-level="14.7" data-path="engine.html"><a href="engine.html#ground-classification"><i class="fa fa-check"></i><b>14.7</b> Ground classification</a><ul>
+<li class="chapter" data-level="14.7.1" data-path="engine.html"><a href="engine.html#chunk-processing"><i class="fa fa-check"></i><b>14.7.1</b> Chunk processing</a></li>
+<li class="chapter" data-level="14.7.2" data-path="engine.html"><a href="engine.html#modifying-buffers"><i class="fa fa-check"></i><b>14.7.2</b> Modifying buffers</a></li>
+<li class="chapter" data-level="14.7.3" data-path="engine.html"><a href="engine.html#modify-the-chunk-size"><i class="fa fa-check"></i><b>14.7.3</b> Modify the chunk size</a></li>
+<li class="chapter" data-level="14.7.4" data-path="engine.html"><a href="engine.html#parallel-processing"><i class="fa fa-check"></i><b>14.7.4</b> Parallel processing</a></li>
+<li class="chapter" data-level="14.7.5" data-path="engine.html"><a href="engine.html#summary-1"><i class="fa fa-check"></i><b>14.7.5</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.9" data-path="engine.html"><a href="engine.html#summary-1"><i class="fa fa-check"></i><b>14.9</b> Summary</a></li>
-<li class="chapter" data-level="14.10" data-path="engine.html"><a href="engine.html#digital-terrain-model"><i class="fa fa-check"></i><b>14.10</b> Digital Terrain Model</a><ul>
-<li class="chapter" data-level="14.10.1" data-path="engine.html"><a href="engine.html#in-memory-dtm"><i class="fa fa-check"></i><b>14.10.1</b> In memory DTM</a></li>
-<li class="chapter" data-level="14.10.2" data-path="engine.html"><a href="engine.html#on-disk-dtm"><i class="fa fa-check"></i><b>14.10.2</b> On disk DTM</a></li>
+<li class="chapter" data-level="14.8" data-path="engine.html"><a href="engine.html#digital-terrain-model"><i class="fa fa-check"></i><b>14.8</b> Digital Terrain Model</a><ul>
+<li class="chapter" data-level="14.8.1" data-path="engine.html"><a href="engine.html#in-memory-dtm"><i class="fa fa-check"></i><b>14.8.1</b> In memory DTM</a></li>
+<li class="chapter" data-level="14.8.2" data-path="engine.html"><a href="engine.html#on-disk-dtm"><i class="fa fa-check"></i><b>14.8.2</b> On disk DTM</a></li>
+<li class="chapter" data-level="14.8.3" data-path="engine.html"><a href="engine.html#summary-2"><i class="fa fa-check"></i><b>14.8.3</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.11" data-path="engine.html"><a href="engine.html#storage-summary"><i class="fa fa-check"></i><b>14.11</b> Storage Summary</a></li>
-<li class="chapter" data-level="14.12" data-path="engine.html"><a href="engine.html#height-normalization"><i class="fa fa-check"></i><b>14.12</b> Height normalization</a></li>
-<li class="chapter" data-level="14.13" data-path="engine.html"><a href="engine.html#area-based-approach"><i class="fa fa-check"></i><b>14.13</b> Area Based Approach</a></li>
-<li class="chapter" data-level="14.14" data-path="engine.html"><a href="engine.html#height-aba-summary"><i class="fa fa-check"></i><b>14.14</b> Height &amp; ABA Summary</a></li>
-<li class="chapter" data-level="14.15" data-path="engine.html"><a href="engine.html#individual-tree-detection"><i class="fa fa-check"></i><b>14.15</b> Individual Tree Detection</a><ul>
-<li class="chapter" data-level="14.15.1" data-path="engine.html"><a href="engine.html#itd-summary"><i class="fa fa-check"></i><b>14.15.1</b> ITD Summary</a></li>
+<li class="chapter" data-level="14.9" data-path="engine.html"><a href="engine.html#height-normalization"><i class="fa fa-check"></i><b>14.9</b> Height normalization</a></li>
+<li class="chapter" data-level="14.10" data-path="engine.html"><a href="engine.html#area-based-approach"><i class="fa fa-check"></i><b>14.10</b> Area Based Approach</a><ul>
+<li class="chapter" data-level="14.10.1" data-path="engine.html"><a href="engine.html#summary-3"><i class="fa fa-check"></i><b>14.10.1</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.16" data-path="engine.html"><a href="engine.html#individual-tree-segmentation"><i class="fa fa-check"></i><b>14.16</b> Individual Tree Segmentation</a></li>
-<li class="chapter" data-level="14.17" data-path="engine.html"><a href="engine.html#retile-a-catalog"><i class="fa fa-check"></i><b>14.17</b> Retile a catalog</a><ul>
-<li class="chapter" data-level="14.17.1" data-path="engine.html"><a href="engine.html#retile-a-catalog-into-smaller-files"><i class="fa fa-check"></i><b>14.17.1</b> Retile a catalog into smaller files</a></li>
-<li class="chapter" data-level="14.17.2" data-path="engine.html"><a href="engine.html#add-a-buffer-around-each-file"><i class="fa fa-check"></i><b>14.17.2</b> Add a buffer around each file</a></li>
-<li class="chapter" data-level="14.17.3" data-path="engine.html"><a href="engine.html#create-a-new-collection-with-only-first-returns"><i class="fa fa-check"></i><b>14.17.3</b> Create a new collection with only first returns</a></li>
-<li class="chapter" data-level="14.17.4" data-path="engine.html"><a href="engine.html#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel"><i class="fa fa-check"></i><b>14.17.4</b> Create a new collection of small and buffered ground returns in parallel</a></li>
+<li class="chapter" data-level="14.11" data-path="engine.html"><a href="engine.html#individual-tree-detection"><i class="fa fa-check"></i><b>14.11</b> Individual Tree Detection</a><ul>
+<li class="chapter" data-level="14.11.1" data-path="engine.html"><a href="engine.html#summary-4"><i class="fa fa-check"></i><b>14.11.1</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.18" data-path="engine.html"><a href="engine.html#the-case-of-ground-inventories"><i class="fa fa-check"></i><b>14.18</b> The case of ground inventories</a></li>
-<li class="chapter" data-level="14.19" data-path="engine.html"><a href="engine.html#summary-2"><i class="fa fa-check"></i><b>14.19</b> Summary</a></li>
+<li class="chapter" data-level="14.12" data-path="engine.html"><a href="engine.html#individual-tree-segmentation"><i class="fa fa-check"></i><b>14.12</b> Individual Tree Segmentation</a></li>
+<li class="chapter" data-level="14.13" data-path="engine.html"><a href="engine.html#retile-a-catalog"><i class="fa fa-check"></i><b>14.13</b> Retile a catalog</a><ul>
+<li class="chapter" data-level="14.13.1" data-path="engine.html"><a href="engine.html#retile-a-catalog-into-smaller-files"><i class="fa fa-check"></i><b>14.13.1</b> Retile a catalog into smaller files</a></li>
+<li class="chapter" data-level="14.13.2" data-path="engine.html"><a href="engine.html#add-a-buffer-around-each-file"><i class="fa fa-check"></i><b>14.13.2</b> Add a buffer around each file</a></li>
+<li class="chapter" data-level="14.13.3" data-path="engine.html"><a href="engine.html#create-a-new-collection-with-only-first-returns"><i class="fa fa-check"></i><b>14.13.3</b> Create a new collection with only first returns</a></li>
+<li class="chapter" data-level="14.13.4" data-path="engine.html"><a href="engine.html#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel"><i class="fa fa-check"></i><b>14.13.4</b> Create a new collection of small and buffered ground returns in parallel</a></li>
+</ul></li>
+<li class="chapter" data-level="14.14" data-path="engine.html"><a href="engine.html#the-case-of-ground-inventories"><i class="fa fa-check"></i><b>14.14</b> The case of ground inventories</a></li>
+<li class="chapter" data-level="14.15" data-path="engine.html"><a href="engine.html#summary-5"><i class="fa fa-check"></i><b>14.15</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="engine2.html"><a href="engine2.html"><i class="fa fa-check"></i><b>15</b> LAScatalog processing engine (2/2)</a><ul>
 <li class="chapter" data-level="15.1" data-path="engine2.html"><a href="engine2.html#catalog_apply"><i class="fa fa-check"></i><b>15.1</b> <code>catalog_apply()</code></a></li>
@@ -317,141 +319,141 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>The k nearest neighbors but with a limited radius search.</li>
 </ol>
 <p>The syntax for these 3 options is given below:</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1">LASfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Megaplot.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;lidR&quot;</span>)</a>
-<a class="sourceLine" id="cb112-2" data-line-number="2">las =<span class="st"> </span><span class="kw">readLAS</span>(LASfile) <span class="co"># read file</span></a>
-<a class="sourceLine" id="cb112-3" data-line-number="3">metrics &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">list</span>(<span class="dt">imean =</span> <span class="kw">mean</span>(Intensity)), <span class="dt">k =</span> <span class="dv">7</span>)        <span class="co"># 1</span></a>
-<a class="sourceLine" id="cb112-4" data-line-number="4">metrics &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">list</span>(<span class="dt">imean =</span> <span class="kw">mean</span>(Intensity)), <span class="dt">r =</span> <span class="dv">3</span>)        <span class="co"># 2</span></a>
-<a class="sourceLine" id="cb112-5" data-line-number="5">metrics &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">list</span>(<span class="dt">imean =</span> <span class="kw">mean</span>(Intensity)), <span class="dt">k =</span> <span class="dv">7</span>, <span class="dt">r =</span> <span class="dv">3</span>) <span class="co"># 3</span></a></code></pre></div>
-<p>The output is a <code>data.table</code> with the ID of the reference points and the metric(s) foe each.</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" data-line-number="1">metrics</a>
-<a class="sourceLine" id="cb113-2" data-line-number="2"><span class="co">#&gt;        pointID     imean</span></a>
-<a class="sourceLine" id="cb113-3" data-line-number="3"><span class="co">#&gt;     1:       1 41.428571</span></a>
-<a class="sourceLine" id="cb113-4" data-line-number="4"><span class="co">#&gt;     2:       2 41.428571</span></a>
-<a class="sourceLine" id="cb113-5" data-line-number="5"><span class="co">#&gt;     3:       3 33.714286</span></a>
-<a class="sourceLine" id="cb113-6" data-line-number="6"><span class="co">#&gt;     4:       4  3.000000</span></a>
-<a class="sourceLine" id="cb113-7" data-line-number="7"><span class="co">#&gt;     5:       5 29.285714</span></a>
-<a class="sourceLine" id="cb113-8" data-line-number="8"><span class="co">#&gt;    ---                  </span></a>
-<a class="sourceLine" id="cb113-9" data-line-number="9"><span class="co">#&gt; 81586:   81586  3.857143</span></a>
-<a class="sourceLine" id="cb113-10" data-line-number="10"><span class="co">#&gt; 81587:   81587 18.333333</span></a>
-<a class="sourceLine" id="cb113-11" data-line-number="11"><span class="co">#&gt; 81588:   81588  3.285714</span></a>
-<a class="sourceLine" id="cb113-12" data-line-number="12"><span class="co">#&gt; 81589:   81589  4.500000</span></a>
-<a class="sourceLine" id="cb113-13" data-line-number="13"><span class="co">#&gt; 81590:   81590  4.500000</span></a></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" data-line-number="1">LASfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Megaplot.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;lidR&quot;</span>)</a>
+<a class="sourceLine" id="cb113-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(LASfile) <span class="co"># read file</span></a>
+<a class="sourceLine" id="cb113-3" data-line-number="3">metrics &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">list</span>(<span class="dt">imean =</span> <span class="kw">mean</span>(Intensity)), <span class="dt">k =</span> <span class="dv">7</span>)        <span class="co"># 1</span></a>
+<a class="sourceLine" id="cb113-4" data-line-number="4">metrics &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">list</span>(<span class="dt">imean =</span> <span class="kw">mean</span>(Intensity)), <span class="dt">r =</span> <span class="dv">3</span>)        <span class="co"># 2</span></a>
+<a class="sourceLine" id="cb113-5" data-line-number="5">metrics &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">list</span>(<span class="dt">imean =</span> <span class="kw">mean</span>(Intensity)), <span class="dt">k =</span> <span class="dv">7</span>, <span class="dt">r =</span> <span class="dv">3</span>) <span class="co"># 3</span></a></code></pre></div>
+<p>The output is a <code>data.table</code> with the ID of the reference points and the metric(s) for each.</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1">metrics</a>
+<a class="sourceLine" id="cb114-2" data-line-number="2"><span class="co">#&gt;        pointID     imean</span></a>
+<a class="sourceLine" id="cb114-3" data-line-number="3"><span class="co">#&gt;     1:       1 41.428571</span></a>
+<a class="sourceLine" id="cb114-4" data-line-number="4"><span class="co">#&gt;     2:       2 41.428571</span></a>
+<a class="sourceLine" id="cb114-5" data-line-number="5"><span class="co">#&gt;     3:       3 33.714286</span></a>
+<a class="sourceLine" id="cb114-6" data-line-number="6"><span class="co">#&gt;     4:       4  3.000000</span></a>
+<a class="sourceLine" id="cb114-7" data-line-number="7"><span class="co">#&gt;     5:       5 29.285714</span></a>
+<a class="sourceLine" id="cb114-8" data-line-number="8"><span class="co">#&gt;    ---                  </span></a>
+<a class="sourceLine" id="cb114-9" data-line-number="9"><span class="co">#&gt; 81586:   81586  3.857143</span></a>
+<a class="sourceLine" id="cb114-10" data-line-number="10"><span class="co">#&gt; 81587:   81587 18.333333</span></a>
+<a class="sourceLine" id="cb114-11" data-line-number="11"><span class="co">#&gt; 81588:   81588  3.285714</span></a>
+<a class="sourceLine" id="cb114-12" data-line-number="12"><span class="co">#&gt; 81589:   81589  4.500000</span></a>
+<a class="sourceLine" id="cb114-13" data-line-number="13"><span class="co">#&gt; 81590:   81590  4.500000</span></a></code></pre></div>
 <p>Instead of the ID, one may prefer to get the coordinates with <code>xyz = TRUE</code>:</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1">metrics &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">list</span>(<span class="dt">imean =</span> <span class="kw">mean</span>(Intensity)), <span class="dt">k =</span> <span class="dv">7</span>, <span class="dt">xyz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1">metrics &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">list</span>(<span class="dt">imean =</span> <span class="kw">mean</span>(Intensity)), <span class="dt">k =</span> <span class="dv">7</span>, <span class="dt">xyz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>It is also possible to process a selection of points (excluding some points) without creating a copy of the point cloud. In the following, the mean intensity is computed excluding outliers with an intensity above 100. No metric is computed for outliers, and they are not used to get the local neighborhood of the other points.</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1">metrics &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">list</span>(<span class="dt">imean =</span> <span class="kw">mean</span>(Intensity)), <span class="dt">k =</span> <span class="dv">7</span>, <span class="dt">filter =</span> <span class="op">~</span>Intensity <span class="op">&lt;</span><span class="st"> </span><span class="dv">100</span> ) <span class="co"># calculate mean intensity and exclude outliers</span></a>
-<a class="sourceLine" id="cb115-2" data-line-number="2">metrics</a>
-<a class="sourceLine" id="cb115-3" data-line-number="3"><span class="co">#&gt;        pointID     imean</span></a>
-<a class="sourceLine" id="cb115-4" data-line-number="4"><span class="co">#&gt;     1:       1 41.428571</span></a>
-<a class="sourceLine" id="cb115-5" data-line-number="5"><span class="co">#&gt;     2:       2 41.428571</span></a>
-<a class="sourceLine" id="cb115-6" data-line-number="6"><span class="co">#&gt;     3:       3 33.714286</span></a>
-<a class="sourceLine" id="cb115-7" data-line-number="7"><span class="co">#&gt;     4:       4 16.571429</span></a>
-<a class="sourceLine" id="cb115-8" data-line-number="8"><span class="co">#&gt;     5:       5 29.285714</span></a>
-<a class="sourceLine" id="cb115-9" data-line-number="9"><span class="co">#&gt;    ---                  </span></a>
-<a class="sourceLine" id="cb115-10" data-line-number="10"><span class="co">#&gt; 81456:   81586  3.857143</span></a>
-<a class="sourceLine" id="cb115-11" data-line-number="11"><span class="co">#&gt; 81457:   81587 18.142857</span></a>
-<a class="sourceLine" id="cb115-12" data-line-number="12"><span class="co">#&gt; 81458:   81588  3.285714</span></a>
-<a class="sourceLine" id="cb115-13" data-line-number="13"><span class="co">#&gt; 81459:   81589  3.857143</span></a>
-<a class="sourceLine" id="cb115-14" data-line-number="14"><span class="co">#&gt; 81460:   81590  3.857143</span></a></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" data-line-number="1">metrics &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">list</span>(<span class="dt">imean =</span> <span class="kw">mean</span>(Intensity)), <span class="dt">k =</span> <span class="dv">7</span>, <span class="dt">filter =</span> <span class="op">~</span>Intensity <span class="op">&lt;</span><span class="st"> </span><span class="dv">100</span> ) <span class="co"># calculate mean intensity and exclude outliers</span></a>
+<a class="sourceLine" id="cb116-2" data-line-number="2">metrics</a>
+<a class="sourceLine" id="cb116-3" data-line-number="3"><span class="co">#&gt;        pointID     imean</span></a>
+<a class="sourceLine" id="cb116-4" data-line-number="4"><span class="co">#&gt;     1:       1 41.428571</span></a>
+<a class="sourceLine" id="cb116-5" data-line-number="5"><span class="co">#&gt;     2:       2 41.428571</span></a>
+<a class="sourceLine" id="cb116-6" data-line-number="6"><span class="co">#&gt;     3:       3 33.714286</span></a>
+<a class="sourceLine" id="cb116-7" data-line-number="7"><span class="co">#&gt;     4:       4 16.571429</span></a>
+<a class="sourceLine" id="cb116-8" data-line-number="8"><span class="co">#&gt;     5:       5 29.285714</span></a>
+<a class="sourceLine" id="cb116-9" data-line-number="9"><span class="co">#&gt;    ---                  </span></a>
+<a class="sourceLine" id="cb116-10" data-line-number="10"><span class="co">#&gt; 81456:   81586  3.857143</span></a>
+<a class="sourceLine" id="cb116-11" data-line-number="11"><span class="co">#&gt; 81457:   81587 18.142857</span></a>
+<a class="sourceLine" id="cb116-12" data-line-number="12"><span class="co">#&gt; 81458:   81588  3.285714</span></a>
+<a class="sourceLine" id="cb116-13" data-line-number="13"><span class="co">#&gt; 81459:   81589  3.857143</span></a>
+<a class="sourceLine" id="cb116-14" data-line-number="14"><span class="co">#&gt; 81460:   81590  3.857143</span></a></code></pre></div>
 </div>
 <div id="applications-4" class="section level2">
 <h2><span class="header-section-number">13.2</span> Applications</h2>
 <div id="roof-segmentation" class="section level3">
 <h3><span class="header-section-number">13.2.1</span> Roof segmentation</h3>
 <p>Roofs are flat areas. <a href="https://doi.org/10.1016/j.patcog.2014.12.020">Limberger et al. (2015)</a> described a method to find flat areas in a point clouds using an eigen values decomposition. Using a user-defined function we can use <code>point_metrics()</code> to create this algorithm. In this example we will use the following urban scene:</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(<span class="st">&quot;data/chap11/building_WilliamsAZ_Urban_normalized.laz&quot;</span>)</a>
-<a class="sourceLine" id="cb116-2" data-line-number="2"><span class="kw">plot</span>(las, <span class="dt">size =</span> <span class="dv">3</span>)</a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-131-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(<span class="st">&quot;data/chap11/building_WilliamsAZ_Urban_normalized.laz&quot;</span>)</a>
+<a class="sourceLine" id="cb117-2" data-line-number="2"><span class="kw">plot</span>(las, <span class="dt">size =</span> <span class="dv">3</span>)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-las-building-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>First we need to define a function that computes the eigen value decomposition of a set of points and estimates if the set of points is flat according to the <a href="https://doi.org/10.1016/j.patcog.2014.12.020">Limberger et al. (2015)</a> criteria.</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1">is.planar =<span class="st"> </span><span class="cf">function</span>(x, y, z, <span class="dt">th1 =</span> <span class="dv">25</span>, <span class="dt">th2 =</span> <span class="dv">6</span>) {</a>
-<a class="sourceLine" id="cb117-2" data-line-number="2">  xyz &lt;-<span class="st"> </span><span class="kw">cbind</span>(x,y,z)</a>
-<a class="sourceLine" id="cb117-3" data-line-number="3">  cov_m &lt;-<span class="st"> </span><span class="kw">cov</span>(xyz)</a>
-<a class="sourceLine" id="cb117-4" data-line-number="4">  eigen_m &lt;-<span class="st"> </span><span class="kw">eigen</span>(cov_m)<span class="op">$</span>value</a>
-<a class="sourceLine" id="cb117-5" data-line-number="5">  is_planar &lt;-<span class="st"> </span>eigen_m[<span class="dv">2</span>] <span class="op">&gt;</span><span class="st"> </span>(th1<span class="op">*</span>eigen_m[<span class="dv">3</span>]) <span class="op">&amp;&amp;</span><span class="st"> </span>(th2<span class="op">*</span>eigen_m[<span class="dv">2</span>]) <span class="op">&gt;</span><span class="st"> </span>eigen_m[<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb117-6" data-line-number="6">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">planar =</span> is_planar))</a>
-<a class="sourceLine" id="cb117-7" data-line-number="7">}</a></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" data-line-number="1">is.planar =<span class="st"> </span><span class="cf">function</span>(x, y, z, <span class="dt">th1 =</span> <span class="dv">25</span>, <span class="dt">th2 =</span> <span class="dv">6</span>) {</a>
+<a class="sourceLine" id="cb118-2" data-line-number="2">  xyz &lt;-<span class="st"> </span><span class="kw">cbind</span>(x,y,z)</a>
+<a class="sourceLine" id="cb118-3" data-line-number="3">  cov_m &lt;-<span class="st"> </span><span class="kw">cov</span>(xyz)</a>
+<a class="sourceLine" id="cb118-4" data-line-number="4">  eigen_m &lt;-<span class="st"> </span><span class="kw">eigen</span>(cov_m)<span class="op">$</span>value</a>
+<a class="sourceLine" id="cb118-5" data-line-number="5">  is_planar &lt;-<span class="st"> </span>eigen_m[<span class="dv">2</span>] <span class="op">&gt;</span><span class="st"> </span>(th1<span class="op">*</span>eigen_m[<span class="dv">3</span>]) <span class="op">&amp;&amp;</span><span class="st"> </span>(th2<span class="op">*</span>eigen_m[<span class="dv">2</span>]) <span class="op">&gt;</span><span class="st"> </span>eigen_m[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb118-6" data-line-number="6">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">planar =</span> is_planar))</a>
+<a class="sourceLine" id="cb118-7" data-line-number="7">}</a></code></pre></div>
 <p>We then apply this function using 20 neighbors. We also use <code>filter = ~Classification != LASGROUND</code> to not process points classified as ground. We do this first, because the scene is normalized so by definition each ground point is expected to be part of a flat planar surface, and second, because it will speed-up computation because fewer points will be considered.</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" data-line-number="1">M &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">is.planar</span>(X,Y,Z), <span class="dt">k =</span> <span class="dv">20</span>, <span class="dt">filter =</span> <span class="op">~</span>Classification <span class="op">!=</span><span class="st"> </span>LASGROUND)</a></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1">M &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">is.planar</span>(X,Y,Z), <span class="dt">k =</span> <span class="dv">20</span>, <span class="dt">filter =</span> <span class="op">~</span>Classification <span class="op">!=</span><span class="st"> </span>LASGROUND)</a></code></pre></div>
 <p>We finally merge the output with the point cloud to visualize the result:</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">add_attribute</span>(las, <span class="ot">FALSE</span>, <span class="st">&quot;planar&quot;</span>)</a>
-<a class="sourceLine" id="cb119-2" data-line-number="2">las<span class="op">$</span>planar[M<span class="op">$</span>pointID] &lt;-<span class="st"> </span>M<span class="op">$</span>planar</a>
-<a class="sourceLine" id="cb119-3" data-line-number="3"><span class="kw">plot</span>(las, <span class="dt">color =</span> <span class="st">&quot;planar&quot;</span>)</a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-132-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">add_attribute</span>(las, <span class="ot">FALSE</span>, <span class="st">&quot;planar&quot;</span>)</a>
+<a class="sourceLine" id="cb120-2" data-line-number="2">las<span class="op">$</span>planar[M<span class="op">$</span>pointID] &lt;-<span class="st"> </span>M<span class="op">$</span>planar</a>
+<a class="sourceLine" id="cb120-3" data-line-number="3"><span class="kw">plot</span>(las, <span class="dt">color =</span> <span class="st">&quot;planar&quot;</span>)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-las-building-segmented-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We can eventually set a valid classification (<code>LASBUILDING</code>) to those points:</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1">las<span class="op">$</span>Classification[M<span class="op">$</span>pointID] &lt;-<span class="st"> </span>LASBUILDING</a></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1">las<span class="op">$</span>Classification[M<span class="op">$</span>pointID] &lt;-<span class="st"> </span>LASBUILDING</a></code></pre></div>
 <p>The function <code>is.planar()</code> is highly inefficient because <code>eigen()</code> is very slow. We can rewrite the eigen decomposition in C++ with <code>Rcpp</code> to make the function 10 times faster!</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1">Rcpp<span class="op">::</span><span class="kw">sourceCpp</span>(<span class="dt">code =</span> <span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb121-2" data-line-number="2"><span class="st">#include &lt;RcppArmadillo.h&gt;</span></a>
-<a class="sourceLine" id="cb121-3" data-line-number="3"><span class="st">// [[Rcpp::depends(RcppArmadillo)]]</span></a>
-<a class="sourceLine" id="cb121-4" data-line-number="4"><span class="st">// [[Rcpp::export]]</span></a>
-<a class="sourceLine" id="cb121-5" data-line-number="5"><span class="st">arma::vec eigen_values(arma::mat A) {</span></a>
-<a class="sourceLine" id="cb121-6" data-line-number="6"><span class="st">arma::mat coeff, score;</span></a>
-<a class="sourceLine" id="cb121-7" data-line-number="7"><span class="st">arma::vec latent;</span></a>
-<a class="sourceLine" id="cb121-8" data-line-number="8"><span class="st">arma::princomp(coeff, score, latent, A);</span></a>
-<a class="sourceLine" id="cb121-9" data-line-number="9"><span class="st">return(latent);</span></a>
-<a class="sourceLine" id="cb121-10" data-line-number="10"><span class="st">}&quot;</span>)</a>
-<a class="sourceLine" id="cb121-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb121-12" data-line-number="12">is.planar =<span class="st"> </span><span class="cf">function</span>(x, y, z, <span class="dt">th1 =</span> <span class="dv">25</span>, <span class="dt">th2 =</span> <span class="dv">6</span>) {</a>
-<a class="sourceLine" id="cb121-13" data-line-number="13">  xyz &lt;-<span class="st"> </span><span class="kw">cbind</span>(x,y,z)</a>
-<a class="sourceLine" id="cb121-14" data-line-number="14">  eigen_m &lt;-<span class="st"> </span><span class="kw">eigen_values</span>(xyz)</a>
-<a class="sourceLine" id="cb121-15" data-line-number="15">  is_planar &lt;-<span class="st"> </span>eigen_m[<span class="dv">2</span>] <span class="op">&gt;</span><span class="st"> </span>(th1<span class="op">*</span>eigen_m[<span class="dv">3</span>]) <span class="op">&amp;&amp;</span><span class="st"> </span>(th2<span class="op">*</span>eigen_m[<span class="dv">2</span>]) <span class="op">&gt;</span><span class="st"> </span>eigen_m[<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb121-16" data-line-number="16">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">planar =</span> is_planar))</a>
-<a class="sourceLine" id="cb121-17" data-line-number="17">}</a></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" data-line-number="1">Rcpp<span class="op">::</span><span class="kw">sourceCpp</span>(<span class="dt">code =</span> <span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb122-2" data-line-number="2"><span class="st">#include &lt;RcppArmadillo.h&gt;</span></a>
+<a class="sourceLine" id="cb122-3" data-line-number="3"><span class="st">// [[Rcpp::depends(RcppArmadillo)]]</span></a>
+<a class="sourceLine" id="cb122-4" data-line-number="4"><span class="st">// [[Rcpp::export]]</span></a>
+<a class="sourceLine" id="cb122-5" data-line-number="5"><span class="st">arma::vec eigen_values(arma::mat A) {</span></a>
+<a class="sourceLine" id="cb122-6" data-line-number="6"><span class="st">arma::mat coeff, score;</span></a>
+<a class="sourceLine" id="cb122-7" data-line-number="7"><span class="st">arma::vec latent;</span></a>
+<a class="sourceLine" id="cb122-8" data-line-number="8"><span class="st">arma::princomp(coeff, score, latent, A);</span></a>
+<a class="sourceLine" id="cb122-9" data-line-number="9"><span class="st">return(latent);</span></a>
+<a class="sourceLine" id="cb122-10" data-line-number="10"><span class="st">}&quot;</span>)</a>
+<a class="sourceLine" id="cb122-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb122-12" data-line-number="12">is.planar =<span class="st"> </span><span class="cf">function</span>(x, y, z, <span class="dt">th1 =</span> <span class="dv">25</span>, <span class="dt">th2 =</span> <span class="dv">6</span>) {</a>
+<a class="sourceLine" id="cb122-13" data-line-number="13">  xyz &lt;-<span class="st"> </span><span class="kw">cbind</span>(x,y,z)</a>
+<a class="sourceLine" id="cb122-14" data-line-number="14">  eigen_m &lt;-<span class="st"> </span><span class="kw">eigen_values</span>(xyz)</a>
+<a class="sourceLine" id="cb122-15" data-line-number="15">  is_planar &lt;-<span class="st"> </span>eigen_m[<span class="dv">2</span>] <span class="op">&gt;</span><span class="st"> </span>(th1<span class="op">*</span>eigen_m[<span class="dv">3</span>]) <span class="op">&amp;&amp;</span><span class="st"> </span>(th2<span class="op">*</span>eigen_m[<span class="dv">2</span>]) <span class="op">&gt;</span><span class="st"> </span>eigen_m[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb122-16" data-line-number="16">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">planar =</span> is_planar))</a>
+<a class="sourceLine" id="cb122-17" data-line-number="17">}</a></code></pre></div>
 <p>We can do this… but we know that not everyone is well versed in C++. <code>lidR</code> therefore has a dedicated and even faster function (<code>segment_shape()</code>) for this specific task because we believe that it’s of high interest to provide a specialized and faster version of this tool.</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">segment_shape</span>(las, <span class="kw">shp_plane</span>(<span class="dt">k =</span> <span class="dv">25</span>), <span class="st">&quot;planar&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">segment_shape</span>(las, <span class="kw">shp_plane</span>(<span class="dt">k =</span> <span class="dv">25</span>), <span class="st">&quot;planar&quot;</span>)</a></code></pre></div>
 </div>
 <div id="lake-and-wire-segmentation" class="section level3">
 <h3><span class="header-section-number">13.2.2</span> Lake and wire segmentation</h3>
 <p>Eigen value decomposition applied using <code>point_metrics()</code> opens a lot of possibilities. For example, by tweaking the previous example we can design a lake segmentation algorithm. A lake is a planar region with a vertical normal vector, so to create a lake segmentation we simply need to add such constraints in <code>is.planar()</code>.</p>
 <p>We can also design a wire segmentation algorithm. For a wire we can change the <a href="https://doi.org/10.1016/j.patcog.2014.12.020">Limberger et al. (2015)</a> constrains to enable the detection of elongated linear features instead of flat feature.</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1">is.linear =<span class="st"> </span><span class="cf">function</span>(x, y, z, <span class="dt">th =</span> <span class="dv">10</span>) {</a>
-<a class="sourceLine" id="cb123-2" data-line-number="2">  xyz &lt;-<span class="st"> </span><span class="kw">cbind</span>(x,y,z)</a>
-<a class="sourceLine" id="cb123-3" data-line-number="3">  eigen_m &lt;-<span class="st"> </span><span class="kw">eigen_values</span>(xyz)</a>
-<a class="sourceLine" id="cb123-4" data-line-number="4">  is_linear &lt;-<span class="st">  </span>th<span class="op">*</span>eigen_m[<span class="dv">3</span>] <span class="op">&lt;</span><span class="st"> </span>eigen_m[<span class="dv">1</span>] <span class="op">&amp;&amp;</span><span class="st"> </span>th<span class="op">*</span>eigen_m[<span class="dv">2</span>] <span class="op">&lt;</span><span class="st"> </span>eigen_m[<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb123-5" data-line-number="5">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">linear =</span> is_linear))</a>
-<a class="sourceLine" id="cb123-6" data-line-number="6">}</a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-134-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-135-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb124-1" data-line-number="1">is.linear =<span class="st"> </span><span class="cf">function</span>(x, y, z, <span class="dt">th =</span> <span class="dv">10</span>) {</a>
+<a class="sourceLine" id="cb124-2" data-line-number="2">  xyz &lt;-<span class="st"> </span><span class="kw">cbind</span>(x,y,z)</a>
+<a class="sourceLine" id="cb124-3" data-line-number="3">  eigen_m &lt;-<span class="st"> </span><span class="kw">eigen_values</span>(xyz)</a>
+<a class="sourceLine" id="cb124-4" data-line-number="4">  is_linear &lt;-<span class="st">  </span>th<span class="op">*</span>eigen_m[<span class="dv">3</span>] <span class="op">&lt;</span><span class="st"> </span>eigen_m[<span class="dv">1</span>] <span class="op">&amp;&amp;</span><span class="st"> </span>th<span class="op">*</span>eigen_m[<span class="dv">2</span>] <span class="op">&lt;</span><span class="st"> </span>eigen_m[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb124-5" data-line-number="5">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">linear =</span> is_linear))</a>
+<a class="sourceLine" id="cb124-6" data-line-number="6">}</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-las-wire-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="lidR-book_files/figure-html/plot-las-wire-segmented-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Again, <code>lidR</code> has a dedicated function for this specific task because we believe that it is of high interest to provide a specialized and faster version of this tool.</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb124-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">segment_shape</span>(las, <span class="kw">shp_line</span>(<span class="dt">th =</span> <span class="dv">8</span>, <span class="dt">k =</span> <span class="dv">15</span>), <span class="st">&quot;linear&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">segment_shape</span>(las, <span class="kw">shp_line</span>(<span class="dt">th =</span> <span class="dv">8</span>, <span class="dt">k =</span> <span class="dv">15</span>), <span class="st">&quot;linear&quot;</span>)</a></code></pre></div>
 </div>
 <div id="sec:pba-mscoloring" class="section level3">
 <h3><span class="header-section-number">13.2.3</span> Multi-spectral coloring</h3>
 <p><code>point_metrics()</code> is not limited to eigen value related metrics. It is only limited by a users imagination. In the following example we will demonstrate how it an be used to attribute false colors to a multi-spectral point cloud. Multi-spectral ALS data are sampled with 3 scanners each emitting a different wavelength. The point cloud is usually provided in the form of 3 <code>.las</code> files where each file corresponds to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red and the third as green, and thus consider that each point has a pure color.</p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1">f1 =<span class="st"> &quot;data/chap11/PR1107_c1_ar_c.laz&quot;</span></a>
-<a class="sourceLine" id="cb125-2" data-line-number="2">f2 =<span class="st"> &quot;data/chap11/PR1107_c2_ar_c.laz&quot;</span></a>
-<a class="sourceLine" id="cb125-3" data-line-number="3">f3 =<span class="st"> &quot;data/chap11/PR1107_c3_ar_c.laz&quot;</span></a>
-<a class="sourceLine" id="cb125-4" data-line-number="4">las &lt;-<span class="st"> </span><span class="kw">readMSLAS</span>(f1, f2, f3,  <span class="dt">filter =</span> <span class="st">&quot;-keep_z_below 300&quot;</span>)</a>
-<a class="sourceLine" id="cb125-5" data-line-number="5"><span class="kw">plot</span>(las, <span class="dt">color =</span> <span class="st">&quot;ScannerChannel&quot;</span>, <span class="dt">size =</span> <span class="dv">5</span>)</a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-137-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" data-line-number="1">f1 &lt;-<span class="st"> &quot;data/chap11/PR1107_c1_ar_c.laz&quot;</span></a>
+<a class="sourceLine" id="cb126-2" data-line-number="2">f2 &lt;-<span class="st"> &quot;data/chap11/PR1107_c2_ar_c.laz&quot;</span></a>
+<a class="sourceLine" id="cb126-3" data-line-number="3">f3 &lt;-<span class="st"> &quot;data/chap11/PR1107_c3_ar_c.laz&quot;</span></a>
+<a class="sourceLine" id="cb126-4" data-line-number="4">las &lt;-<span class="st"> </span><span class="kw">readMSLAS</span>(f1, f2, f3,  <span class="dt">filter =</span> <span class="st">&quot;-keep_z_below 300&quot;</span>)</a>
+<a class="sourceLine" id="cb126-5" data-line-number="5"><span class="kw">plot</span>(las, <span class="dt">color =</span> <span class="st">&quot;ScannerChannel&quot;</span>, <span class="dt">size =</span> <span class="dv">5</span>)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-las-multispectral-pba-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We now want to attribute an RGB value to each point. A single point being sampled with a single ‘color’ we need to use its neighborhood to define 3 bands. For each point we look in its neighbourhood, where some points are red, some are blue, and some are green. We average the intensities of each color and we consider these 3 values as the RGB color of the central point. Because some points are likely to have 0 red/blue/green neighbours we can set R, G, and B equal to <code>NA</code> for those points and later discard those points.</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" data-line-number="1">set.color =<span class="st"> </span><span class="cf">function</span>(intensity, channel)</a>
-<a class="sourceLine" id="cb126-2" data-line-number="2">{</a>
-<a class="sourceLine" id="cb126-3" data-line-number="3">  <span class="co"># Slit the intensities of each channel</span></a>
-<a class="sourceLine" id="cb126-4" data-line-number="4">  i1 =<span class="st"> </span>intensity[channel <span class="op">==</span><span class="st"> </span><span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb126-5" data-line-number="5">  i2 =<span class="st"> </span>intensity[channel <span class="op">==</span><span class="st"> </span><span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb126-6" data-line-number="6">  i3 =<span class="st"> </span>intensity[channel <span class="op">==</span><span class="st"> </span><span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb126-7" data-line-number="7">  </a>
-<a class="sourceLine" id="cb126-8" data-line-number="8">  <span class="co"># If one channel is missing return RGB = NA</span></a>
-<a class="sourceLine" id="cb126-9" data-line-number="9">  <span class="cf">if</span> (<span class="kw">length</span>(i1) <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span><span class="kw">length</span>(i2) <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span><span class="kw">length</span>(i3) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb126-10" data-line-number="10">    <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">R =</span> <span class="ot">NA_integer_</span>, <span class="dt">G =</span> <span class="ot">NA_integer_</span>, <span class="dt">B =</span> <span class="ot">NA_integer_</span>))</a>
-<a class="sourceLine" id="cb126-11" data-line-number="11">  </a>
-<a class="sourceLine" id="cb126-12" data-line-number="12">  <span class="co"># Average and normalise the intensities</span></a>
-<a class="sourceLine" id="cb126-13" data-line-number="13">  i1 =<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">mean</span>(i1))</a>
-<a class="sourceLine" id="cb126-14" data-line-number="14">  i2 =<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">mean</span>(i2))</a>
-<a class="sourceLine" id="cb126-15" data-line-number="15">  i3 =<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">mean</span>(i3))</a>
-<a class="sourceLine" id="cb126-16" data-line-number="16">  <span class="cf">if</span> (i1 <span class="op">&gt;</span><span class="st"> </span>255L) i1 =<span class="st"> </span>255L</a>
-<a class="sourceLine" id="cb126-17" data-line-number="17">  <span class="cf">if</span> (i2 <span class="op">&gt;</span><span class="st"> </span>255L) i2 =<span class="st"> </span>255L</a>
-<a class="sourceLine" id="cb126-18" data-line-number="18">  <span class="cf">if</span> (i3 <span class="op">&gt;</span><span class="st"> </span>255L) i3 =<span class="st"> </span>255L</a>
-<a class="sourceLine" id="cb126-19" data-line-number="19">  </a>
-<a class="sourceLine" id="cb126-20" data-line-number="20">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">R =</span> i1, <span class="dt">G =</span> i2, <span class="dt">B =</span> i3))</a>
-<a class="sourceLine" id="cb126-21" data-line-number="21">}</a></code></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" data-line-number="1">set.color =<span class="st"> </span><span class="cf">function</span>(intensity, channel)</a>
+<a class="sourceLine" id="cb127-2" data-line-number="2">{</a>
+<a class="sourceLine" id="cb127-3" data-line-number="3">  <span class="co"># Split the intensities of each channel</span></a>
+<a class="sourceLine" id="cb127-4" data-line-number="4">  i1 &lt;-<span class="st"> </span>intensity[channel <span class="op">==</span><span class="st"> </span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb127-5" data-line-number="5">  i2 &lt;-<span class="st"> </span>intensity[channel <span class="op">==</span><span class="st"> </span><span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb127-6" data-line-number="6">  i3 &lt;-<span class="st"> </span>intensity[channel <span class="op">==</span><span class="st"> </span><span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb127-7" data-line-number="7">  </a>
+<a class="sourceLine" id="cb127-8" data-line-number="8">  <span class="co"># If one channel is missing return RGB = NA</span></a>
+<a class="sourceLine" id="cb127-9" data-line-number="9">  <span class="cf">if</span> (<span class="kw">length</span>(i1) <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span><span class="kw">length</span>(i2) <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span><span class="kw">length</span>(i3) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb127-10" data-line-number="10">    <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">R =</span> <span class="ot">NA_integer_</span>, <span class="dt">G =</span> <span class="ot">NA_integer_</span>, <span class="dt">B =</span> <span class="ot">NA_integer_</span>))</a>
+<a class="sourceLine" id="cb127-11" data-line-number="11">  </a>
+<a class="sourceLine" id="cb127-12" data-line-number="12">  <span class="co"># Average and normalise the intensities</span></a>
+<a class="sourceLine" id="cb127-13" data-line-number="13">  i1 &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">mean</span>(i1))</a>
+<a class="sourceLine" id="cb127-14" data-line-number="14">  i2 &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">mean</span>(i2))</a>
+<a class="sourceLine" id="cb127-15" data-line-number="15">  i3 &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">mean</span>(i3))</a>
+<a class="sourceLine" id="cb127-16" data-line-number="16">  <span class="cf">if</span> (i1 <span class="op">&gt;</span><span class="st"> </span>255L) i1 &lt;-<span class="st"> </span>255L</a>
+<a class="sourceLine" id="cb127-17" data-line-number="17">  <span class="cf">if</span> (i2 <span class="op">&gt;</span><span class="st"> </span>255L) i2 &lt;-<span class="st"> </span>255L</a>
+<a class="sourceLine" id="cb127-18" data-line-number="18">  <span class="cf">if</span> (i3 <span class="op">&gt;</span><span class="st"> </span>255L) i3 &lt;-<span class="st"> </span>255L</a>
+<a class="sourceLine" id="cb127-19" data-line-number="19">  </a>
+<a class="sourceLine" id="cb127-20" data-line-number="20">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">R =</span> i1, <span class="dt">G =</span> i2, <span class="dt">B =</span> i3))</a>
+<a class="sourceLine" id="cb127-21" data-line-number="21">}</a></code></pre></div>
 <p>We can then apply this function with <code>point_metrics()</code> using a spherical neighborhood. The next steps being to assign the output of <code>point_metrics()</code> back into the <code>LAS</code> object for a nice display.</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" data-line-number="1">M =<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">set.color</span>(Intensity, ScannerChannel), <span class="dt">r =</span> <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb127-2" data-line-number="2">las =<span class="st"> </span><span class="kw">add_lasrgb</span>(las, M<span class="op">$</span>R, M<span class="op">$</span>G, M<span class="op">$</span>B)</a>
-<a class="sourceLine" id="cb127-3" data-line-number="3">colored &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, <span class="op">!</span><span class="kw">is.na</span>(R)) <span class="co"># remove RGB = NA</span></a>
-<a class="sourceLine" id="cb127-4" data-line-number="4"><span class="kw">plot</span>(colored, <span class="dt">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="dt">size =</span> <span class="dv">3</span>)</a></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-139-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb128-1" data-line-number="1">M &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">set.color</span>(Intensity, ScannerChannel), <span class="dt">r =</span> <span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb128-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">add_lasrgb</span>(las, M<span class="op">$</span>R, M<span class="op">$</span>G, M<span class="op">$</span>B)</a>
+<a class="sourceLine" id="cb128-3" data-line-number="3">colored &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, <span class="op">!</span><span class="kw">is.na</span>(R)) <span class="co"># remove RGB = NA</span></a>
+<a class="sourceLine" id="cb128-4" data-line-number="4"><span class="kw">plot</span>(colored, <span class="dt">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="dt">size =</span> <span class="dv">3</span>)</a></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-las-multispectral-rgb-pba-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>This method is a bit naive ‘as is’. First, the intensities returned by each channel are not comparable and required to be normalized. We could also argue about the choice of discarding RGB = <code>NA</code>. Instead we could have chosen to set a pure color. To finish, enforcing a maximum value to 255 works in this specific example because very few intensity values are actually above 255 but is meaningless in a general case. Either way, this is only a demo to show how to think out of the box with <code>point_metrics()</code>.</p>
 </div>
 <div id="outlier-filtering" class="section level3">
