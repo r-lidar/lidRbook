@@ -28,7 +28,7 @@ Generating a Digital Terrain Model (DTM) is usually the second step in processin
 
 The construction of a DTM starts with known or sampled ground points and uses various spatial interpolation techniques to infer ground points at unsampled locations. Accuracy of the DTM is very important because errors will propagate to future processing stages like tree height estimation. A wide range of methods exist for  spatial interpolation of points. In the following chapter we will use the classified `Topography.laz` data set, which is included internally within `lidR` to create reproducible examples.
 
-```{r, rgl = TRUE, warning=FALSE}
+```{r plot-las-topo-dtm, rgl = TRUE, warning=FALSE}
 LASfile <- system.file("extdata", "Topography.laz", package="lidR")
 las <- readLAS(LASfile, select = "xyzc")
 plot(las, size = 3, bg = "white")
@@ -74,7 +74,7 @@ plot_dtm3d(dtm_idw, bg = "white")
 
 Notice the bumpy nature of the DTM compared to the previous one generated with `tin()`. In 1D and IDW interpolation looks like:
 
-```{r, echo = FALSE, fig.height=2, fig.width=6}
+```{r plot-1d-idw, echo = FALSE, fig.height=2, fig.width=6}
 set.seed(43)
 x = runif(20, 0, 20)
 z = 2*sin(x)+2
@@ -130,7 +130,7 @@ mba <- function(n = 1, m = 1, h = 8, extend = TRUE)
 }
 ```
 
-```{r, rgl = TRUE}
+```{r plot-dtm-3d, rgl = TRUE}
 dtm_mba <- grid_terrain(las, algorithm = mba())
 plot_dtm3d(dtm_mba, bg = "white")
 ```
@@ -139,7 +139,7 @@ plot_dtm3d(dtm_mba, bg = "white")
 
 Generating a hillshade layer in R is relatively straight forward and is done using functions from the `raster` package. The `terrain()` and `hillShade()` functions can be combined to take the DTM raster layers as input and return a hillshade raster:
 
-```{r, fig.height=5.85, fig.width=6, warning=FALSE}
+```{r plot-dtm-shaded, fig.height=5.85, fig.width=6, warning=FALSE}
 dtm_tin <- crop(dtm_tin, extent(dtm_tin) - 3) # Remove 3 m of buffer
 dtm_prod <- terrain(dtm_tin, opt = c("slope", "aspect"))
 dtm_tin_hillshade <- hillShade(slope = dtm_prod$slope, aspect = dtm_prod$aspect)
@@ -161,13 +161,13 @@ map <- elmat %>%
 
 2D plot
 
-```{r}
+```{r plot-2d-dtm-rayshaded}
 plot_map(map)
 ```
 
 3D plot
 
-```{r, rgl = TRUE, warning  = FALSE, fig.height=15}
+```{r plot-3d-dtm-rayshaded, rgl = TRUE, warning  = FALSE, fig.height=15}
 plot_3d(map, elmat, zscale = 1, windowsize = c(800, 800))
 ```
 

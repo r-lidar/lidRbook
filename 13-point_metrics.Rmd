@@ -59,7 +59,7 @@ metrics
 
 Roofs are flat areas. [Limberger et al. (2015)](https://doi.org/10.1016/j.patcog.2014.12.020) described a method to find flat areas in a point clouds using an eigen values decomposition. Using a user-defined function we can use `point_metrics()` to create this algorithm. In this example we will use the following urban scene:
 
-```{r, rgl = TRUE}
+```{r plot-las-building, rgl = TRUE}
 las <- readLAS("data/chap11/building_WilliamsAZ_Urban_normalized.laz")
 plot(las, size = 3)
 ```
@@ -90,7 +90,7 @@ las$planar[M$pointID] <- M$planar
 plot(las, color = "planar")
 ```
 
-```{r, echo = FALSE, rgl = TRUE}
+```{r plot-las-building-segmented, echo = FALSE, rgl = TRUE}
 # here I'm cheating for the rendering the example above being too long to compute
 options(lidR.progress = FALSE)
 las <- readLAS("data/chap11/building_WilliamsAZ_Urban_normalized.laz")
@@ -147,13 +147,13 @@ is.linear = function(x, y, z, th = 10) {
 }
 ```
 
-```{r, echo = FALSE, rgl = TRUE}
+```{r plot-las-wire, echo = FALSE, rgl = TRUE}
 las <- readLAS("data/chap11/wires.laz", filter = "-keep_random_fraction 0.3")
 las <- lasdetectshape(las, shp_line(th1 = 8, k = 15), "linear", filter = ~Classification != LASGROUND)
 plot(las, size = 5)
 ```
 
-```{r, echo = FALSE, rgl = TRUE}
+```{r  plot-las-wire-segmented, echo = FALSE, rgl = TRUE}
 plot(las, color = "linear", size = 5)
 ```
 
@@ -171,7 +171,7 @@ las <- segment_shape(las, shp_line(th = 8, k = 15), "linear")
 
 `point_metrics()` is not limited to eigen value related metrics. It is only limited by a users imagination. In the following example we will demonstrate how it an be used to attribute false colors to a multi-spectral point cloud. Multi-spectral ALS data are sampled with 3 scanners each emitting a different wavelength. The point cloud is usually provided in the form of 3 `.las` files where each file corresponds to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red and the third as green, and thus consider that each point has a pure color.
 
-```{r, rgl = TRUE, message=FALSE}
+```{r  plot-las-multispectral-pba, rgl = TRUE, message=FALSE}
 f1 <- "data/chap11/PR1107_c1_ar_c.laz"
 f2 <- "data/chap11/PR1107_c2_ar_c.laz"
 f3 <- "data/chap11/PR1107_c3_ar_c.laz"
@@ -208,7 +208,7 @@ set.color = function(intensity, channel)
 
 We can then apply this function with `point_metrics()` using a spherical neighborhood. The next steps being to assign the output of `point_metrics()` back into the `LAS` object for a nice display.
 
-```{r, rgl = TRUE}
+```{r plot-las-multispectral-rgb-pba, rgl = TRUE}
 M <- point_metrics(las, ~set.color(Intensity, ScannerChannel), r = 0.5)
 las <- add_lasrgb(las, M$R, M$G, M$B)
 colored <- filter_poi(las, !is.na(R)) # remove RGB = NA

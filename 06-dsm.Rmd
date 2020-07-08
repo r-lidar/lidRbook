@@ -37,7 +37,7 @@ plot(las, size = 3,bg = "white")
 Point-to-raster algorithms are conceptually simple, consisting of establishing a grid at a user defined resolution and attributing the elevation of the highest point to each pixel. Algorithmic implementations are computationally simple and extremely fast. In the first example we will set the pixel size to `1` and set `algorithm = p2r()`.
 
 
-```{r, fig.height=5.9, fig.width=6}
+```{r plot-chm-p2r, fig.height=5.9, fig.width=6}
 chm <- grid_canopy(las, res = 1, algorithm = p2r())
 col <- height.colors(50)
 plot(chm, col = col)
@@ -47,7 +47,7 @@ One drawback of the point-to-raster method is that some pixels can be empty if t
 
 In the following example we will use the exact same method, but increase the spatial resolution of the raster by changing the pixel size to 0.5 m.
 
-```{r, fig.height=5.9, fig.width=6}
+```{r plot-chm-p2r-2, fig.height=5.9, fig.width=6}
 chm <- grid_canopy(las, res = 0.5, algorithm = p2r())
 plot(chm, col = col)
 ```
@@ -56,14 +56,14 @@ We can clearly see that there are a lot of empty pixels in the derived surface t
 
 One option to reduce the number of voids in the surface model is to replace every point in the point cloud with a disk of a know radius (e.g. 15 cm). This operation is meant to simulate the fact that the laser footprint is not a point, but rather a circular area. It is equivalent to computing the CHM from a densified point cloud in a way that tries to have a physical meaning.
 
-```{r, fig.height=5.9, fig.width=6}
+```{r plot-chm-p2r-subcirc, fig.height=5.9, fig.width=6}
 chm <- grid_canopy(las, res = 0.5, algorithm = p2r(subcircle = 0.15))
 plot(chm, col = col)
 ```
 
 This CHM is the CHM computed *"as if"* the point cloud was the following
 
-```{r, rgl = TRUE, echo = FALSE, fig.height=5.9, fig.width=6}
+```{r plot-las-subcircled, rgl = TRUE, echo = FALSE, fig.height=5.9, fig.width=6}
 data = lidR:::subcircled(las@data, r = 0.15, 8)
 las2 = suppressWarnings(LAS(data, las@header))
 plot(las2, size = 3, bg = "white")
@@ -71,7 +71,7 @@ plot(las2, size = 3, bg = "white")
 
 We can zoom in to see the small disks that replace each point.
 
-```{r, rgl = TRUE, echo = FALSE}
+```{r plot-las-subcircled-zoom, rgl = TRUE, echo = FALSE}
 r3dDefaults = rgl::r3dDefaults
 m2 = structure(c(0.852, -0.496, 
     -0.162, 0, 0.472, 0.865, 
@@ -88,7 +88,7 @@ r3dDefaults$zoom = 0.75
 
 The `p2r()` function contains one additional argument that allows to interpolate the remaining empty pixels. Empty pixels are interpolated using methods described in section \@ref(dtm).
 
-```{r, warning=F, message=F, fig.height=5.9, fig.width=6}
+```{r plot-chm-p2r-nafill, warning=F, message=F, fig.height=5.9, fig.width=6}
 chm <- grid_canopy(las, res = 0.5, p2r(0.2, na.fill = tin()))
 plot(chm, col = col)
 ```
@@ -99,29 +99,30 @@ The triangulation algorithm works by first creating a triangular irregular netwo
 
 Like point-to-raster however, the TIN method can lead to gaps and other noise in the surface - referred to as “pits” - that are attributable to first returns that penetrated deep into the canopy. Pits can make individual tree segmentation more difficult and change the texture of the canopy in a unrealistic way. To avoid this issue the CHM is often smoothed in post processing in an attempt to produce a more realistic surface with fewer pits and less noise. To create a surface model using triangulation we use `algorithm = dsmtin()`.
 
-```{r, fig.height=5.9, fig.width=6}
+```{r plot-chm-dsmtin, fig.height=5.9, fig.width=6}
 chm <- grid_canopy(las, res = 0.5, algorithm = dsmtin())
 plot(chm, col = col)
 ```
 
 The triangulation method may also be weak when a lot of points are missing. We can generate an example using the `Topography.laz` data set that contains empty lakes.
 
- ```{r, rgl = TRUE}
+```{r plot-las-topo-chm, rgl = TRUE}
 LASfile <- system.file("extdata", "Topography.laz", package = "lidR")
 las2 <- readLAS(LASfile)
 las2 <- normalize_height(las2, algorithm = tin())
 plot(las2, size = 3, bg = "white")
 ```
+
 In this case the CHM is incorrectly computed in the empty lakes
 
-```{r, fig.height=5.9, fig.width=6, warning=FALSE}
+```{r plot-chm-dsmtin-lakes, fig.height=5.9, fig.width=6, warning=FALSE}
 chm <- grid_canopy(las2, res = 0.5, algorithm = dsmtin())
 plot(chm, col = col)
 ```
 
 To fix this, one option is to use the `max_edge` argument, which defines the maximum edge of a triangle allowed in the Delaunay triangulation. By default this argument is set to `0` meaning that no triangle are removed. If set to e.g. 8 it means that every triangle with an edge longer than 8 will be discarded from the triangulation.
  
-```{r, fig.height=5.9, fig.width=6,warning=FALSE}
+```{r plot-chm-dsmtin-maxedge, fig.height=5.9, fig.width=6,warning=FALSE}
 chm <- grid_canopy(las2, res = 0.5, algorithm = dsmtin(max_edge = 8))
 plot(chm, col = col)
 ```
@@ -136,7 +137,7 @@ More advanced algorithms have also been designed that avoid pits during the comp
 
 To understand this method better, we can reproduce the figure above with `algorithm = dsmtin()`:
 
-```{r, fig.height=6.6, fig.width=7.4}
+```{r plot-chm-pitfree-build, fig.height=6.6, fig.width=7.4}
 # The first layer is a regular triangulation
 layer0 <- grid_canopy(las, res = 0.5, algorithm = dsmtin())
 
@@ -159,14 +160,14 @@ plot(layers, col = col)
 
 In practice, the internal implementation of `pitfree()` works much like the example above but is easier to use.
 
-```{r, fig.height=5.9, fig.width=6}
+```{r plot-chm-pitfree, fig.height=5.9, fig.width=6}
 chm <- grid_canopy(las, res = 0.5, pitfree(thresholds = c(0, 10, 20), max_edge = c(0, 1.5)))
 plot(chm, col = col)
 ```
 
 By increasing the `max_edge` argument for the pit-free triangulation part from `1.5` to `2` the CHM becomes smoother but also less realistic:
 
-```{r, fig.height=5.9, fig.width=6}
+```{r plot-chm-pitfree-maxedge, fig.height=5.9, fig.width=6}
 chm <- grid_canopy(las, res = 0.5, pitfree(max_edge = c(0, 2)))
 plot(chm, col = col)
 ```
@@ -174,7 +175,7 @@ plot(chm, col = col)
 Similarly to point-to-raster, the pit-free algorithm in `lidR` also includes a `subcircle` option that replaces each first return by a disk made of 8 points. Because it would be too computationally demanding to triangulate 8 times more points, the choice was made to select only the highest point of each pixel after subcircling to perform the triangulation.
 
 
-```{r, fig.height=5.9, fig.width=6}
+```{r plot-chm-pitfree-subcirc, fig.height=5.9, fig.width=6}
 chm <- grid_canopy(las, res = 0.5, pitfree(subcircle = 0.15))
 plot(chm, col = col)
 ```
@@ -183,7 +184,7 @@ plot(chm, col = col)
 
 CHMs are usually post-processed to smooth or to fill empty pixels. This is mainly because most publications use a point-to-raster approach without any tweaks. One may want to apply a post-processing step to the CHM. Sadly `lidR` does not provide any tools for that. `lidR` is a point cloud oriented software. Once a function has returned a raster, the job of the `lidR` package has ended. Futher work requires other dedicated tools to process rasters. The `raster` package is one of those. The code below presents a simple option to fill NAs and smooth a CHM with the `raster` package. For more details see the documentation of the package `raster`.
 
-```{r, fig.height=6.6, fig.width=7.4}
+```{r plot-chm-postprod, fig.height=6.6, fig.width=7.4}
 fill.na <- function(x, i=5) { if (is.na(x)[i]) { return(mean(x, na.rm = TRUE)) } else { return(x[i]) }}
 w <- matrix(1, 3, 3)
 

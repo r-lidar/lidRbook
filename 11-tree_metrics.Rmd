@@ -32,7 +32,7 @@ metrics
 
 The XY coordinates of the points correspond to the XY coordinates of the highest point within each tree and each point is associated to 3 attributes `treeID` + the two user-defined metrics. The output can be visualized using the standard `plot()` function, however other plotting functions specific to `sp` objects may also be used. In the plot below the output is visualized using color to depict the `z_max` metrics.
 
-```{r}
+```{r spplot-tba-metrics}
 spplot(metrics, zcol="z_max", col.regions = hcl.colors(5)) # plot using z_max
 ```
 
@@ -52,7 +52,7 @@ custom_tree_metrics = function(z, i) { # user-defined function
 
 In section \@ref(itd) we described the `delineate_crowns()` function. This function also supports the computation of metrics in a similar way but returns polygons instead of points.
 
-```{r}
+```{r spplot-tba-custom-metrics}
 crowns_metrics <- delineate_crowns(las, func = ~custom_tree_metrics(z = Z, i = Intensity)) # delineate crowns
 spplot(crowns_metrics, "z_max", col.regions = hcl.colors(30)) # some plotting
 ```
@@ -63,7 +63,7 @@ spplot(crowns_metrics, "z_max", col.regions = hcl.colors(30)) # some plotting
 
 `tree_metrics()` gives the ID of trees and associated metrics. We can use these data to filter the scene and remove trees with a low intensity.
 
-```{r, rgl = TRUE}
+```{r plot-las-selected-trees, rgl = TRUE}
 metrics <- tree_metrics(las, ~list(imean = mean(Intensity))) # calculate tree intensity metrics
 metrics <- metrics[metrics$imean > 80,] # filter intensity
 
@@ -76,7 +76,7 @@ plot(subset, add = x + c(-100, 0), size = 5) # some plotting
 
 Assuming we know a relationship between the derived metrics and a value of interest `G` - such as the biomass of a tree - we can map the resource. Lets assume that $G = 0.7 \times z_{max} + 0.1 \times i_{mean}$. In real life a value of interest is more likely to be related to the crown size, but this is a simplified example. First we can compute `G` for each tree:
 
-```{r}
+```{r spplot-tba-G}
 metrics <- tree_metrics(las, func = ~custom_tree_metrics(Z, Intensity)) # calculate intensity metrics
 metrics$G <- 0.7 * metrics$z_max + 0.1 * metrics$i_mean # set value of interest
 spplot(metrics, "G", col.regions = hcl.colors(5)) # some plotting
@@ -84,7 +84,7 @@ spplot(metrics, "G", col.regions = hcl.colors(5)) # some plotting
 
 Then using the `raster` package, we can rasterize the map. Here we get the sum of `G` from each tree within each 15 m pixel to get the total value of `G` for a given pixel. The final output is a predictive model that mixes the area-based approach and the tree-based-approach.
 
-```{r, fig.height=5.9, fig.width=6}
+```{r plot-raster-sumG, fig.height=5.9, fig.width=6}
 r <- raster(extent(las)) # rasterize map
 res(r) <- 15 # set resolution
 map <- rasterize(metrics, r, field = "G", fun = sum) # extract sum of G at 15m

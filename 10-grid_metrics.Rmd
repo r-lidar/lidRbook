@@ -22,10 +22,10 @@ As seen in chapters \@ref(metrics) and \@ref(cba) calculating derived metrics is
 
 ```{r, echo=FALSE}
 las <- readLAS("data/ENGINE/catalog/tiles_338000_5238500_1.laz") # read file
-las <- lasnormalize(las, tin()) # normalize
+las <- normalize_height(las, tin()) # normalize
 ```
 
-```{r, fig.height=7.9, fig.width=8}
+```{r plot-raster-hmean, fig.height=7.9, fig.width=8}
 hmean <- grid_metrics(las, ~mean(Z), 10) # calculate mean at 10 m
 plot(hmean, col = height.colors(50))
 ```
@@ -38,7 +38,7 @@ hmean
 
 To calculate metrics for hexagonal cells instead, we can use the `hexbin_metrics()` function instead. In this case the resolution is defined as the square root of the hexagon area to be consitant with `grid_metrics()`.
 
-```{r}
+```{r, plot-hexbin-hmean}
 metrics_hex <- hexbin_metrics(las, ~mean(Z), 10)
 col <- grDevices::colorRampPalette(height.colors(25))
 plot(metrics_hex, colramp = col)
@@ -46,7 +46,7 @@ plot(metrics_hex, colramp = col)
 
 As described in sections \@ref(metrics) and \@ref(cba), to calculate more than one metric at a time a custom function needs to be created first. The function can contain any number of metrics but needs to return a labeled `list`. For example, to calculate the mean and standard deviation of point heights, the following function can be created. In this case the return object is a `RasterBrick` with two layers.
 
-```{r, fig.height=4.6, fig.width=10}
+```{r plot-raster-custom, fig.height=4.6, fig.width=10}
 f <- function(x) { # user-defined fucntion
   list(mean = mean(x), sd = sd(x))
 }
@@ -57,14 +57,14 @@ plot(metrics, col = height.colors(50)) # some plotting
 
 The functions that specify which metrics to calculate can of course contain any number of metrics. The most commonly used metrics are already predefined in `lidR` - the `stdmetrics()` function contains metrics that summarize the vertical distribution of points, their intensities, and return structure. The complete list of all metrics can be found in the [lidR wiki page]( https://github.com/Jean-Romain/lidR/wiki/stdmetrics). To use the predefined list of 56 metrics we can run the `grid_metrics()` function as follows:
 
-```{r, fig.height=7, fig.width=8}
+```{r plot-raster-stdmetrics, fig.height=7, fig.width=8}
 metrics <- grid_metrics(las, .stdmetrics, 10) # calculate standard metrics
 plot(metrics, col = height.colors(50)) # some plotting
 ```
 
 Because of the flexibility in defining metrics, it is very easy to extend basic functionality to create new, non-standard metrics. For example, below we demonstrate how the coefficient of variation and inter-quartile range can be calculated:
 
-```{r, fig.height=4.6, fig.width=10}
+```{r plot-raster-custom-2, fig.height=4.6, fig.width=10}
 metrics_custom <- function(z) { # user defined function
 list(
    coef_var =  sd(z) / mean(z) * 100, # coefficient of variation
@@ -81,7 +81,7 @@ plot(metrics, col = height.colors(50)) # some plotting
 
 All `*_metrics` functions can map any kind of formula as long as it returns a number or a list of numbers, meaning that that it's possible to input an expression derived from a predictive model to map the resource. In the chapter \@ref(cba) we made a model that can be written $0.7018 \times pzabove2 + 0.9268 \times zmax$. We can map this predictive model with a resolution of 10 meters:
 
-```{r, fig.height=6.9, fig.width=7}
+```{r plot-raster-model, fig.height=6.9, fig.width=7}
 prediction <- grid_metrics(las, ~0.7018 * sum(Z > 2)/length(Z) + 0.9268 *max(Z), 20) # predicting model mapping
 plot(prediction, col = height.colors(50)) # some plotting
 ```
@@ -90,7 +90,7 @@ plot(prediction, col = height.colors(50)) # some plotting
 
 Point density is the number of points within a pixel divided by the area of the pixel.
 
-```{r, fig.height=6.9, fig.width=7}
+```{r plot-raster-density, fig.height=6.9, fig.width=7}
 density <- grid_metrics(las, ~length(Z)/16, 4) # calculate density
 plot(density, col = gray.colors(50,0,1)) # some plotting
 ```
@@ -105,7 +105,7 @@ density <- grid_metrics(las, ~length(Z)/16, 4, filter = ~ReturnNumber == 1L)
 
 It's possible to generate a map of the average intensity of first return only
 
-```{r, fig.height=6.9, fig.width=7}
+```{r plot-raster-imean, fig.height=6.9, fig.width=7}
 imap <- grid_metrics(las, ~mean(Intensity), 4, filter = ~ReturnNumber == 1L) # mapping average intensity
 plot(imap, col = heat.colors(50)) # some plotting
 ```
@@ -116,7 +116,7 @@ Many other raster-based applications can be derived with adequate metrics. In ch
 
 To count single returns we can count the number of points where number of returns equal to 1. To count the number of multiple returns we can count the number of points with a return number equal to 1 **AND** a return number above 1.
 
-```{r, fig.height=6.2, fig.width=7}
+```{r plot-raster-ratio, fig.height=6.2, fig.width=7}
 mymetric <- function(return_number, number_of_returns) { #user-defined function
   nsingle <- sum(number_of_returns == 1L)
   nmultiple <- sum(return_number == 1L & number_of_returns > 1L)

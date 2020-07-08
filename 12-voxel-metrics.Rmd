@@ -34,7 +34,7 @@ vox_met <- voxel_metrics(las, ~list(N = length(Z)), 4) # calculate voxel metrics
 
 In this example the point cloud is first converted into 4 m voxels, then the function `length(Z)` is applied to all points located inside every voxel. The output is a `data.table` that contains the X, Y, and Z coordinates of voxels, and the calculated number of points and can be visualized in 3D using the `plot()` function as follows:
 
-```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
+```{r plot-vox-metrics, rgl = TRUE, fig.width = 4, fig.height = 3}
 plot(vox_met, color="N", colorPalette = heat.colors(50), size = 4, bg = "white")
 ```
 

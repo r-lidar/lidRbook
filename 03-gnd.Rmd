@@ -46,13 +46,13 @@ las <- classify_ground(las, algorithm = pmf(ws = 5, th = 3))
 
 We can now visualize the result:
 
-```{r rgl=TRUE}
+```{r plot-gnd-classification, rgl=TRUE}
 plot(las, color = "Classification", size = 3, bg = "white") 
 ```
 
 To better illustrate the classification results we can generate and plot a cross section of the point cloud (see section \@ref(crossection)).
 
-```{r, fig.height=2, fig.width=8}
+```{r plot-gnd-crossection, fig.height=2, fig.width=8}
 p1 <- c(273420, 5274455)
 p2 <- c(273570, 5274460)
 plot_crossection(las, p1 , p2, colour_by = factor(Classification))
@@ -68,7 +68,7 @@ las <- classify_ground(las, algorithm = pmf(ws = ws, th = th))
 
 After this adjustment the classification result changed, and points in the canopy are no longer classified as "ground".
 
-```{r, fig.height=2, fig.width=8}
+```{r plot-gnd-crossection-2, fig.height=2, fig.width=8}
 plot_crossection(las, p1 = p1, p2 = p2, colour_by = factor(Classification))
 ```
 
@@ -88,13 +88,13 @@ las <- classify_ground(las, algorithm = csf())
 
 Similar to the previous examples, classification results can be assessed using a cross section:
 
-```{r, fig.height=2, fig.width=8}
+```{r plot-gnd-crossection-3, fig.height=2, fig.width=8}
 plot_crossection(las, p1 = p1, p2 = p2, colour_by = factor(Classification))
 ```
 
 While the default parameters of `csf()` are designed to be universal and provide accurate classification results, according to the original paper, it's apparent that the algorithm did not work properly in our example because a significant portion of points located in the ground were not classified. In such cases the algorithm parameters need to be tuned to improve the result. For this particular data set a set of parameters that resulted in an improved classification result were formulated as follows:
 
-```{r, fig.height=2, fig.width=8, message=FALSE}
+```{r plot-gnd-crossection-4, fig.height=2, fig.width=8, message=FALSE}
 mycsf <- csf(sloop_smooth = TRUE, class_threshold = 1, cloth_resolution = 1, time_step = 1)
 las <- classify_ground(las, mycsf)
 plot_crossection(las, p1 = p1, p2 = p2, colour_by = factor(Classification))
@@ -102,7 +102,7 @@ plot_crossection(las, p1 = p1, p2 = p2, colour_by = factor(Classification))
 
 We can also subset only the ground points to display the results in 3D
 
-```{r, rgl = TRUE}
+```{r plot-gnd, rgl = TRUE}
 gnd <- filter_ground(las)
 plot(gnd, size = 3, bg = "white") 
 ```

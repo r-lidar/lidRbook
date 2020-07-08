@@ -62,13 +62,13 @@ las <- filter_poi(las, !is.na(d))
 
 We can now plot the first returns colored by their distance to the last return.
 
-```{r, rgl = TRUE}
+```{r plot-las-dreturns, rgl = TRUE}
 plot(las, bg = "white", color = "d", colorPalette = viridis::magma(50), size = 4)
 ```
 
 Now we can compute the average in an ABA (see chapter \@ref(aba)).
 
-```{r, fig.width=5.4, fig.height=5.2}
+```{r plot-raster-avg-dreturns, fig.width=5.4, fig.height=5.2}
 d_first_last <- grid_metrics(las, ~mean(d), 15)
 plot(d_first_last, col = height.colors(50))
 ```
@@ -115,7 +115,7 @@ And we are done. Our innovative metric is computing with real-time monitoring. I
 plot(metrics, col = height.colors(50))
 ```
 
-```{r, displaymap, echo=FALSE, fig.width=6.2, fig.height=6.5}
+```{r displaymap, echo=FALSE, fig.width=6.2, fig.height=6.5}
 m = raster("data/chap12/distancefl.grd")
 plot(m, col = height.colors(50))
 raster::scalebar(500, type = "bar")
@@ -166,7 +166,7 @@ We have already seen a multi-spectral coloring example in section \@ref(sec:pba-
 
 Multi-spectral ALS data are sampled with 3 devices each emitting a different wavelength. The point cloud is usually provided in the form of 3 `LAS` files, each file corresponding to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red, and the third as green, and thus consider that each point has a pure color.
 
-```{r, rgl = TRUE, message=FALSE}
+```{r plot-las-multispectral-otb, rgl = TRUE, message=FALSE}
 f1 <- "data/chap11/PR1107_c1_ar_c.laz"
 f2 <- "data/chap11/PR1107_c2_ar_c.laz"
 f3 <- "data/chap11/PR1107_c3_ar_c.laz"
@@ -176,7 +176,7 @@ plot(las, color = "ScannerChannel", size = 6)
 
 Each channel's returns vary in intensities as seen in the figure below because of the wavelength reflectance properties of the targets. A first step could be to normalize the intensities. For this example we won't do that to keep things simple. 
 
-```{r}
+```{r ggplot-hist-intensities}
 library(ggplot2)
 ggplot(las@data) +
   aes(x = Intensity, fill = as.factor(ScannerChannel)) + 
@@ -216,14 +216,14 @@ colorize <- function(intensity, channel)
 
 Now we can use this function with different levels of regularization. We can use `colorize()` with `grid_metrics()` in an ABA. It returns a multi-layer raster that can be interpreted as RGB
 
-```{r}
+```{r plot-raster-multispectral-rgb}
 rgb <- grid_metrics(las, ~colorize(Intensity, ScannerChannel), 2)
 plotRGB(rgb, axes = T)
 ```
 
 We can also attribute an RGB color per voxel, discarding the voxels where `RGB = NA` by using `colorize()` with `voxel_metrics()` (see chapter \@ref(vba)).
 
-```{r, rgl = TRUE, warning=FALSE}
+```{r plot-voxel-multispectral-rgb, rgl = TRUE, warning=FALSE}
 rgb <- voxel_metrics(las, ~colorize(Intensity, ScannerChannel), 2)
 rgb <- rgb[!is.na(R)] # Remove NAs
 rgb <- LAS(rgb, las@header) # Convert to LAS for display
@@ -232,7 +232,7 @@ plot(rgb, color = "RGB", nbits = 8, size = 5)
 
 To finish we can `colorize()` with `point_metrics()` (see chapter \@ref(pba)). This has the advantage of maintaining much more points compared to the voxel-based version and to preserve coordinates.
 
-```{r, rgl = TRUE}
+```{r plot-las-multispectral-rgb-otb, rgl = TRUE}
 rgb <- point_metrics(las, ~colorize(Intensity, ScannerChannel), r = 0.5)
 las <- add_lasrgb(las, rgb$R, rgb$G, rgb$B)
 colored <- filter_poi(las, !is.na(R)) # Remove NAs

@@ -44,7 +44,7 @@ las <- readLAS("files.las")
 ```
 When printed it displays a summary of its content in a similar way to the `sp` package.
 
-```{r}
+```{r print-las}
 print(las)
 ```
 
@@ -102,13 +102,13 @@ las$Classification[1:2] <- 2L
 las$ReturnNumber[3] <- 0L
 ```
 
-```{r}
+```{r check-las}
 las_check(las)
 ```
 
 A check is performed at read time regardless, but the read time check is not as thorough as `las_check()` for computation time reasons. For example duplicated points are not checked at read time.
 
-```{r, warning = TRUE}
+```{r read-corrupted, warning = TRUE}
 las <- readLAS("data/chap1/corrupted.laz")
 ```
 
@@ -129,13 +129,13 @@ The very basic way to render a point cloud is the function `plot()`.
 plot(las)
 ```
 
-```{r, echo = FALSE, rgl = TRUE, fig.width = 4, fig.height = 3}
+```{r plot-las, echo = FALSE, rgl = TRUE, fig.width = 4, fig.height = 3}
 plot(las, size = 3)
 ```
 
 Users can change the attributes used for coloring by providing the name of the attribute used to colorize the points. The background color of the viewer can also be changed by assigning a color using the `bg` argument. Axes can also be added and point sizes can be changed.
 
-```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
+```{r plot-las-custom, rgl = TRUE, fig.width = 4, fig.height = 3}
 # Plot las object by scan angle, make the background white, display XYZ axis and Z scale colors
 plot(las, color = "ScanAngleRank", bg = "white", axis = TRUE, legend = TRUE)
 ```
@@ -148,7 +148,7 @@ plot(las, color ="RGB")
 
 The `trim` parameter enables trimming of values when outliers break the color palette range. For example, intensity often contains large outliers. The palette range would be too large and most of the values will be considered as "very low", so everything will appear in the same color. Using `trim` as an outlier threshold enable to print every value higher than `trim` using the same color.
 
-```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
+```{r plot-las-fail, rgl = TRUE, fig.width = 4, fig.height = 3}
 plot(las, color = "Intensity", trim = 1800, bg = "white")
 ```
 
@@ -161,7 +161,7 @@ dtm <- grid_terrain(las, 2, tin())
 las <- clip_circle(las, 273516, 5274496, 100)
 ```
 
-```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
+```{r plot-las-dtm, rgl = TRUE, fig.width = 4, fig.height = 3}
 x <- plot(las, bg = "white", size = 3)
 add_dtm3d(x, dtm)
 ```
@@ -173,7 +173,7 @@ las <- readLAS(LASfile, select = "xyzc")
 ttops <- find_trees(las, lmf(ws = 5))
 ```
 
-```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
+```{r plot-las-trees, rgl = TRUE, fig.width = 4, fig.height = 3}
 x <- plot(las, bg = "white", size = 3)
 add_treetops3d(x, ttops)
 ```
@@ -185,7 +185,7 @@ r3dDefaults$zoom = 0.3
 las = readLAS("data/chap11/building_WilliamsAZ_Urban_normalized.laz", filter = "-thin_random_fraction 0.4")
 ```
 
-```{r, rgl = TRUE, fig.width=8, fig.height=3}
+```{r plot-las-add, rgl = TRUE, fig.width=8, fig.height=3}
 nonveg <- filter_poi(las, Classification != LASHIGHVEGETATION)
 veg <- filter_poi(las, Classification == LASHIGHVEGETATION)
 
@@ -197,7 +197,7 @@ plot(veg, add = x)
 
 With `lidR` being based on `rgl` it is easy to add objects in the main rendering using `rgl` functions such as `rgl::point3d()`, `rgl::text()`, `rgl::surface3d()` and so on to produce publication ready rendering.  However `lidR` introduced an additional challenge because it does not display the points with their actual coordinates. The points are shifted to be rendered close to (0, 0) (a matter of accuracy because `rgl` uses `float` (decimal numbers on 32 bits) instead of `double` (decimal numbers on 64 bits)). When `plot()` is used it invisibly returns the shift values that can be used later to realign other objects.
 
-```{r}
+```{r print-offset}
 offsets <- plot(las)
 print(offsets)
 ```
@@ -214,7 +214,7 @@ r3dDefaults$userMatrix = m
 r3dDefaults$zoom = 0.75
 ```
 
-```{r, rgl = TRUE, fig.width = 4, fig.height = 3}
+```{r plot-las-truncks, rgl = TRUE, fig.width = 4, fig.height = 3}
 LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
 las <- readLAS(LASfile, select = "xyzc")
 
@@ -265,7 +265,7 @@ las_tr <- clip_transect(las, p1, p2, width = 4, xz = TRUE)
 
 Rendering can be achieved with base plot or `ggplot2`. Notice the use of `@data` to extract the `data.frame` from the `LAS` object.
 
-```{r, fig.height=1.5, fig.width=8}
+```{r ggplot-transect, fig.height=1.5, fig.width=8}
 ggplot(las_tr@data, aes(X,Z, color = Z)) + 
   geom_point(size = 0.5) + 
   coord_equal() + 
@@ -281,6 +281,6 @@ The two steps required to create a cross section (clipping the point cloud and p
 
 Then we can used the function:
 
-```{r, fig.height=1.5, fig.width=8}
+```{r ggplot-transect-2, fig.height=1.5, fig.width=8}
 plot_crossection(las, colour_by = factor(Classification))
 ```

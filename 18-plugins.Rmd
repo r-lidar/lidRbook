@@ -94,14 +94,14 @@ algo
 
 We can now use it like any other `lidR` algorithm:
 
-```{r, fig.height=7.5, fig.width=7.7, warning=FALSE}
+```{r plot-raster-mab, fig.height=7.5, fig.width=7.7, warning=FALSE}
 LASfile <- system.file("extdata", "Topography.laz", package="lidR")
 las <- readLAS(LASfile)
 dtm <- grid_terrain(las, algorithm = mba())
 plot(dtm, col = gray.colors(50, 0, 1))
 ```
 
-```{r, rgl = TRUE}
+```{r plot-raster-3d-mba, rgl = TRUE}
 plot_dtm3d(dtm, bg = "white")
 ```
 

@@ -24,7 +24,7 @@ rgdal::set_thin_PROJ6_warnings(TRUE)
 
 So far we have demonstrated how to process a point cloud file using `readLAS()`. In practice, ALS acquisitions are made up of hundreds or even thousands of files, not being feasible (or possible!) for all to be loaded at once into memory. For example, the image below shows an acquisition split into 320 1 km² tiles:
 
-```{r, echo=FALSE, warning=FALSE}
+```{r plot-catalog-hali, echo=FALSE, warning=FALSE}
 haliburton <- readRDS("data/ENGINE/haliburton.lascatalog")
 projection(haliburton) <- sp::CRS("+proj=utm +zone=17 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0")
 plot(haliburton)
@@ -45,14 +45,14 @@ This however is very bad practice because each file is loaded without a buffer, 
 
 Let's compute a DTM (see chapter \@ref(dtm)) as an example, where we use a `for` loop on 4 contiguous files. We can see the obvious invalidity of the DTM between the files, but also at the periphery, even if less obvious.
 
-```{r, echo=FALSE, fig.height=7.9, fig.width=8,warning=FALSE}
+```{r plot-dtm-artifact, echo=FALSE, fig.height=7.9, fig.width=8,warning=FALSE}
 dtms = stack("data/ENGINE/DTMs.grd")
 plot(dtms[[1]], col = gray.colors(50, 0, 1), legend = FALSE)
 ```
 
 For comparison, see the accurate DTM below, that was generated with the `LAScatalog` processing engine. The benefit here is the ability to manage (among a variety of other capabilities) on-the-fly buffering.
 
-```{r, echo=FALSE, fig.height=7.9, fig.width=8, warning = FALSE}
+```{r plot-dtm-no-artifact, echo=FALSE, fig.height=7.9, fig.width=8, warning = FALSE}
 plot(dtms[[2]], col = gray.colors(50, 0, 1), legend = FALSE)
 ```
 
@@ -76,7 +76,7 @@ ctg <- readLAScatalog("path/to/folder/")
 ctg = haliburton
 ```
 
-```{r}
+```{r plot-catalog-hali-2}
 ctg
 plot(ctg)
 ```
@@ -93,7 +93,7 @@ In this and the following chapter (chapter \@ref(engine2)) we will use a collect
 8. [data/ENGINE/catalog/tiles_339000_5238500.laz](tiles_339000_5238500.laz)
 9. [data/ENGINE/catalog/tiles_339000_5239000.laz](tiles_339000_5239000.laz)
 
-```{r, fig.height=4, fig.width=4}
+```{r plot-ctg-book-1, fig.height=4, fig.width=4}
 ctg <- readLAScatalog("data/ENGINE/catalog/")
 ctg
 plot(ctg)
@@ -107,7 +107,7 @@ opt_progress(ctg) <- FALSE
 
 Similar to chapter \@ref(io), an important first step in ALS data processing is ensuring that your data is complete and valid. The `las_check()` function performs an inspection of `LAScatalog` objects for file consistency.
 
-```{r}
+```{r, validate-catalog}
 las_check(ctg)
 ```
 
@@ -125,7 +125,7 @@ plot <- clip_circle(las, x = 338700, y = 5238650, radius = 15)
 
 This can be extended to a `LAScatalog` seamlessly. The engine searches in which file(s) the ROI belongs and extracts corresponding regions from all applicable files. The output is a `LAS` object.
 
-```{r, rgl = TRUE, fig.height=4, fig.width=4}
+```{r plot-cliped-roi-1, rgl = TRUE, fig.height=4, fig.width=4}
 roi <- clip_circle(ctg, x = 338700, y = 5238650, radius = 40)
 plot(roi, bg = "white", size = 4)
 ```
@@ -134,7 +134,7 @@ plot(roi, bg = "white", size = 4)
 
 Multiple extractions is also possible and is performed the same way by searching the corresponding files and then querying in each file no matter if the region of interest is situated in one or several files. The output becomes `list` of `LAS` objects.
 
-```{r, fig.height=4, fig.width=4}
+```{r plot-ctg-plots, fig.height=4, fig.width=4}
 x <- c(339348.8, 339141.9, 338579.6, 338520.8, 338110.0, 339385)
 y <- c(5239254, 5238717, 5238169, 5239318, 5239247, 5239290)
 r <- 40
@@ -158,7 +158,7 @@ The engine has the ability to write generated results to disk storage rather tha
 
 In the following example, several `LAS` files will be written to disk with names like `339348.8_5239254_1.las` (center coordinates from each file) and the function returns a `LAScatalog` object that references all the new files instead of a list of `LAS` object.
 
-```{r, fig.height=4, fig.width=4}
+```{r plot-extracted-plots, fig.height=4, fig.width=4}
 opt_output_files(ctg) <- paste0(tempdir(), "/{XCENTER}_{YCENTER}_{ID}")
 rois <- clip_circle(ctg, x, y, r)
 rois
@@ -207,7 +207,7 @@ classified_ctg <- classify_ground(ctg, csf())
 
 It is possible to modify the behavior of the engine by modifying the size of the buffer with `opt_chunk_buffer() <-`. The option `chunk = TRUE` of the function `plot()` allows visualization of how an option affects the processing pattern. The red boundaries show the chunks that will be sequentially processed and the green dotted lines show the extended regions used for buffering each chunk.
 
-```{r buffer, fig.show='hold', fig.height=4, fig.width=4}
+```{r plot-buffer-pattern, fig.show='hold', fig.height=4, fig.width=4}
 opt_chunk_buffer(ctg) <- 20
 plot(ctg, chunk = TRUE)
 
@@ -221,7 +221,7 @@ Depending on the point cloud density and the processes applied, it might be nece
 
 In the example above we have seen that each chunk is actually a file. This is the default behavior because it corresponds to the physical splitting pattern. The engine can however sequentially process a `LAScatalog` in any arbitrarily sized chunk. This may be useful when each file is too big to be loaded in memory, and reducing the size of each processing region may be suitable. Sometimes increasing chunk size to process more than a single file might be useful as well. This is controlled by `opt_chunk_size() <- `, and again the function `plot()` enables the preview of the processing pattern.
 
-```{r chunk, fig.show='hold', fig.height=4, fig.width=4}
+```{r plot-chunk-pattern, fig.show='hold', fig.height=4, fig.width=4}
 # Process sequentially tiny 250 x 250 chunks with 10 m buffer
 opt_chunk_size(ctg) <- 250
 opt_chunk_buffer(ctg) <- 10
@@ -280,7 +280,7 @@ dtm <- grid_terrain(ctg, 2, tin())
 
 We can render a shaded DTM to better see the output:
 
-```{r, fig.height=7.9, fig.width=8, cache = TRUE, warning= FALSE}
+```{r plot-shaded-dtm-catalog, fig.height=7.9, fig.width=8, cache = TRUE, warning= FALSE}
 dtm_prod <- terrain(dtm, opt = c("slope", "aspect"))
 dtm_hillshade <- hillShade(slope = dtm_prod$slope, aspect = dtm_prod$aspect)
 plot(dtm_hillshade, col = gray.colors(50, 0 ,1), legend = FALSE)
@@ -337,7 +337,7 @@ opt_progress(ctg_norm) <- FALSE
 
 Used in conjunction with `grid_metrics()`, these enable computation on a selected set of points (first returns for example), loading only user specified attributes. This is useful mainly to save processing memory but may also have a small favorable impact on computation time.
 
-```{r, fig.height=7, fig.width=7.1, cache = TRUE}
+```{r plot-raster-hmean-catalog, fig.height=7, fig.width=7.1, cache = TRUE}
 opt_select(ctg_norm) <- "xyz"
 hmean <- grid_metrics(ctg_norm, ~mean(Z), 10)
 
@@ -367,7 +367,7 @@ opt_chunk_buffer(ctg_norm) <- 30
 opt_output_files(ctg_norm) <- ""
 ```
 
-```{r, cache = TRUE, fig.height=7, fig.width=7, warning=FALSE}
+```{r plot-tree-catalog, cache = TRUE, fig.height=7, fig.width=7, warning=FALSE}
 ttops <- find_trees(ctg_norm, lmf(4))
 ttops
 plot(ttops, cex = 0.04)
@@ -415,7 +415,7 @@ Individual tree segmentation with `segment_trees()` is the most complicated func
 
 First we create a 1 m resolution CHM stored on disk and returned as a light virtual raster. 
 
-```{r, cache = TRUE, fig.height=7, fig.width=7.1, warning=FALSE}
+```{r plot-chm-catalog, cache = TRUE, fig.height=7, fig.width=7.1, warning=FALSE}
 opt_output_files(ctg_norm) <- paste0(tempdir(), "/chm_{*}")
 chm <- grid_canopy(ctg_norm, 1, p2r(0.15))
 plot(chm, col = height.colors(50))
@@ -438,7 +438,7 @@ ctg_segmented <- segment_trees(ctg_norm, algo)
 
 The new `LAScatalog` that is returned is made up of files that have an extra attribute named `treeID` where each point is labelled with an ID thats unique for each tree, even those that belong between two or more files that were processed independently. We can load a plot between two files to check:
 
-```{r, rgl = TRUE}
+```{r plot-las-tree-segmented-cliped, rgl = TRUE}
 opt_output_files(ctg_segmented) <- ""
 lasplot <- clip_circle(ctg_segmented, 338500, 5238600, 40)
 plot(lasplot, color = "treeID", bg = "white", size = 4)
@@ -454,7 +454,7 @@ The function `catalog_retile()` allows for retiling an ALS acquisition of files.
 
 `catalog_retile()` allows for retiling the acquisition of files in tiles of any size.
 
-```{r, fig.height=4, fig.width=4}
+```{r plot-retiled-small, fig.height=4, fig.width=4}
 opt_output_files(ctg) <- paste0(tempdir(), "/{XLEFT}_{YBOTTOM}") # label outputs based on coordinates
 opt_chunk_buffer(ctg) <- 0
 opt_chunk_size(ctg) <- 250 # retile to 250 m
@@ -466,7 +466,7 @@ plot(small) # some plotting
 
 `catalog_retile()` is a special case where the buffer **is not** removed after computation. The function does not compute anything, but only streams point from inputs files to output files. It can be used to add a buffer around each file.
 
-```{r, fig.height=4, fig.width=4}
+```{r plot-retiled-buffer, fig.height=4, fig.width=4}
 opt_chunk_buffer(ctg) <- 20 # set buffer to 20
 opt_chunk_size(ctg) <- 0 # no change to chunk size
 opt_output_files(ctg) <- paste0(tempdir(), "/{ORIGINALFILENAME}_buffered") # name outputs with original name ant "_buffered"
@@ -492,7 +492,7 @@ first <- catalog_retile(ctg)
 
 We can combine all the options seen in this section to generate a buffered set of tiny files containing only ground returns. We present that here in parallel.
 
-```{r, fig.height=4, fig.width=4, message=FALSE}
+```{r plot-retiled-all, fig.height=4, fig.width=4, message=FALSE}
 library(future)
 plan(multisession)
 
@@ -508,7 +508,7 @@ plot(newctg)
 
 The case of ground inventories or more generally independent files is particular. We generated such collections in the first example of this chapter.
 
-```{r, echo=FALSE, fig.height=4, fig.width=4}
+```{r plot-catalog-inventory, echo=FALSE, fig.height=4, fig.width=4}
 plot(rois)
 ```
 
@@ -518,7 +518,7 @@ For example on the top right of the previous collection we can see two overlappi
 
 The engine can however do it with appropriate options. In this case the `LAScatalog` processing engine becomes more or less a parallelizable `for` loop with a real time monitoring.
 
-```{r, fig.height=4, fig.width=4,warning=FALSE}
+```{r plot-dtm-inventory, fig.height=4, fig.width=4,warning=FALSE}
 opt_chunk_size(rois) <- 0 # processing by files
 opt_chunk_buffer(rois) <- 0 # no buffer
 opt_wall_to_wall(rois) <- FALSE # disable internal checks to ensure a valid output. Free wheel mode
