@@ -14,7 +14,7 @@ description: "A guide to the `lidR` package"
 
 * Read and write `.las` and `.laz` files and render customized point-cloud display (chapter \@ref(io))
 * Process point clouds including point classification (chapter \@ref(gnd)),  digital terrain models (chapter \@ref(dtm)), normalization (chapter \@ref(norm)) and digital surface models (chapter \@ref(chm))
-* Perform individual tree segmentation (chapter \@ref(itd-ts))
+* Perform individual tree segmentation (chapter \@ref(its))
 * Compute standard and user-defined metrics at different levels of regularisation (chapters \@ref(metrics), \@ref(cba), \@ref(aba), \@ref(tba), \@ref(vba) and \@ref(pba))
 * Manage processing for sets of point-cloud files - referred to as a `LAScatalog` (chapters \@ref(engine) and \@ref(engine2))
 * Guidelines for implementing area-based approaches to forest modelling using ALS data (chapter \@ref(modeling-aba))
