@@ -20,7 +20,7 @@ rgdal::set_thin_PROJ6_warnings(TRUE)
 
 # LAScatalog processing engine (2/2) {#engine2}
 
-Chapter \@ref(engine) showed how to use the `LAScatalog` processing engine to apply `lidR` functions on a collection of files. This included how to process acquisitions in user defined chunk sizes, loading buffers on-the-fly, saving the output to disk, and parallelizing tasks. These examples all used existing functions provided with the `lidR` package. The power of the engine goes beyond limited used cases, allowing developers to design their own applications. 
+Section \@ref(engine) showed how to use the `LAScatalog` processing engine to apply `lidR` functions on a collection of files. This included how to process acquisitions in user defined chunk sizes, loading buffers on-the-fly, saving the output to disk, and parallelizing tasks. These examples all used existing functions provided with the `lidR` package. The power of the engine goes beyond limited used cases, allowing developers to design their own applications. 
 
 Let's imagine we want to normalize a data set **and** colorize it using RGB satellite data. According to the previous chapters we could do something like this:
 
@@ -262,4 +262,4 @@ It failed with an informative message!
 
 We are done. This is exactly how the `lidR` package works and we have presented all the tools needed to extent it with new applications. 
 
-More examples can be found further along in this book. For example section \@ref(outboxdistancereturn) presents how to compute a raster of the average distance between first and last returns, and section \@ref(outboxrumple) presents how to compute a rumple index of the canopy from the point cloud and of course the documentation of the package itself is more comprehensive than this book.
+More examples can be found further along in this book. For example section \@ref(outbox-dr) presents how to compute a raster of the average distance between first and last returns, and section \@ref(outbox-rumple) presents how to compute a rumple index of the canopy from the point cloud and of course the documentation of the package itself is more comprehensive than this book.

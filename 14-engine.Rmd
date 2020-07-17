@@ -278,7 +278,7 @@ opt_chunk_buffer(ctg) <- 30
 dtm <- grid_terrain(ctg, 2, tin())
 ```
 
-We can render a shaded DTM to better see the output:
+We can render a shaded DTM like that from section \@ref(hillshade) to better visualize the output:
 
 ```{r plot-shaded-dtm-catalog, fig.height=7.9, fig.width=8, cache = TRUE, warning= FALSE}
 dtm_prod <- terrain(dtm, opt = c("slope", "aspect"))
@@ -543,12 +543,12 @@ The engine processes the covered area by chunk. A chunk is an arbitraty square r
 - `opt_chunk_buffer(ctg) <- 40` controls the size of the buffer around each chunks.
 - `opt_chunk_alignment(ctg) <- c(100, 200)` controls the aligment of the chunks
 - `opt_output_file(ctg) <- "{TEMPLATE}` redirects the results in files named after the templated name.
-- `opt_select(ctg) <- "xyzi"` loads only the attributes of interest when querying a chunk (see also `readLAS()`)
-- `opt_filter(ctg) <- "-keep_first"` loads only the points of interest when querying a chunk (see also `readLAS()`)
+- `opt_select(ctg) <- "xyzi"` loads only the attributes of interest when querying a chunk, in this case the xyz and intensity values (see `readLAS()` - section \@ref(read))
+- `opt_filter(ctg) <- "-keep_first"` loads only the points of interest when querying a chunk (see `readLAS()` - section \@ref(read))
 - `opt_wall_to_wall(ctg) <- FALSE` disables some internal control that guarantee that output will be strictly wall-to-wall. It should not be used actually because `opt_independent_files()` should cover the vast majority of cases
 - `opt_independent_files() <- TRUE` to configure the processing for the special case of independent files (typically plot inventories). It turns the engine into a simple loop and the notion of chunks covering the area is lost.
 - `opt_merge(ctg) <- FALSE` disables the final merging. In this case a `list` is returned in all cases.
-- `opt_progress(ctg) <- FALSE` disables progress estimation.
+- `opt_progress(ctg) <- FALSE` disables progress estimation ticker.
 - `opt_stop_early(ctg) <- FALSE` disable early exit. If a chunk throws an error the processing keeps going and this chunk will be missing in the output.
 - Use `future` and register a parallelization plan to process several chunks at a time taking advantage of multiple cores or multiple machines architectures.
 

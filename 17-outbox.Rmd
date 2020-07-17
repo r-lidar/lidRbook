@@ -24,7 +24,7 @@ We have presented many common processes through these tutorials. Most examples p
 
 ## New complex metrics in ABA
 
-### Distance between returns {#outboxdistancereturn}
+### Distance between returns {#outbox-dr}
 
 In forestry, simple metrics can be derived from first returns. But what about metrics that estimate the average distance between first and last returns? Is it a valuable metric for characterizing of forest stucture? Can we refine the prediction with such metric? Nobody knows, but we can try. 
 
@@ -73,7 +73,7 @@ d_first_last <- grid_metrics(las, ~mean(d), 15)
 plot(d_first_last, col = height.colors(50))
 ```
 
-Now we have a working method, we can extend the idea to apply it over a broad coverage using the `LAScatalog` processing engine (chapter \@ref(engine)). First we create a function that does this job. This is not mandatory but factorizing the code is good practice.
+Now we have a working method, we can extend the idea to apply it over a broad coverage using the `LAScatalog` processing engine (section \@ref(engine)). First we create a function that does this job. This is not mandatory but factorizing the code is good practice.
 
 ```{r}
 grid_distance_first_last = function(las, res) {
@@ -87,7 +87,7 @@ grid_distance_first_last = function(las, res) {
 }
 ```
 
-Then we define a function that respects some requirement imposed by the `LAScatalog` processing engine (chapter \@ref(engine2)).
+Then we define a function that respects some requirement imposed by the `LAScatalog` processing engine (section \@ref(engine2)).
 
 ```{r}
 my_routine <- function(chunk, res) {
@@ -121,7 +121,7 @@ plot(m, col = height.colors(50))
 raster::scalebar(500, type = "bar")
 ```
 
-### Rumple index  {#outboxrumple}
+### Rumple index  {#outbox-rumple}
 
 Another interesting metric that could be computed is the rumple index (see [Kane et al. (2008)](https://gis.ess.washington.edu/keck/ESS_421_additional_reading/Kane_Interpretation_and_topographic.pdf)).
 

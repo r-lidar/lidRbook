@@ -135,7 +135,7 @@ dtm_mba <- grid_terrain(las, algorithm = mba())
 plot_dtm3d(dtm_mba, bg = "white")
 ```
 
-## Render shaded DTM {#shaded-dtm}
+## Render shaded DTM {#hillshade}
 
 Generating a hillshade layer in R is relatively straight forward and is done using functions from the `raster` package. The `terrain()` and `hillShade()` functions can be combined to take the DTM raster layers as input and return a hillshade raster:
 
