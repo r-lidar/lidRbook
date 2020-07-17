@@ -154,7 +154,7 @@ plot(las, color = "Intensity", trim = 1800, bg = "white")
 
 ### Overlays
 
-The package also provides some easy to use functions for common overlay. For example `add_dtm3d()` to add a digital terrain model (chapter \@ref(dtm)) and `add_treetops3d()` to visualize the output of an individual tree detection (chapter \@ref(itd))
+The package also provides some easy to use functions for common overlay. For example `add_dtm3d()` to add a digital terrain model (section \@ref(dtm)) and `add_treetops3d()` to visualize the output of an individual tree detection (section \@ref(itd))
 
 ```{r, echo = FALSE, warning=FALSE}
 dtm <- grid_terrain(las, 2, tin())
@@ -202,7 +202,7 @@ offsets <- plot(las)
 print(offsets)
 ```
 
-The coordinates of the objects must be corrected to align with the point cloud. In the following we will add lines to render the trunks. We read a file, we locate the trees (see chapter \@ref(itd)), we extract the coordinates and sizes of the trees and plot lines with `rgl::segment3d()`.
+The coordinates of the objects must be corrected to align with the point cloud. In the following we will add lines to render the trunks. We read a file, we locate the trees (see section \@ref(itd)), we extract the coordinates and sizes of the trees and plot lines with `rgl::segment3d()`.
 
 ```{r, echo=FALSE}
 r3dDefaults = rgl::r3dDefaults

@@ -20,7 +20,7 @@ library(lidR)
 
 # Indivitual tree dectection and segmentation {#itd-its}
 
-**Individual tree detection (ITD)** is the process of spatially locating trees and extracting height information. **Individual tree segmentation (ITS)** is the process of individually delineating detected trees. In `lidR`, detecting and segmenting functions are decoupled to maximize flexibility. Tree tops are first detected using the `find_trees()` function, followed crown delineation using `segment_trees()`. In the following chapter we will use the `MixedConifer.laz` data set, which is included internally within `lidR` to demonstrate both ITD and ITS with reproducible examples. We will also generate a CHM (chapter \@ref(chm)) to help visualize the results.
+**Individual tree detection (ITD)** is the process of spatially locating trees and extracting height information. **Individual tree segmentation (ITS)** is the process of individually delineating detected trees. In `lidR`, detecting and segmenting functions are decoupled to maximize flexibility. Tree tops are first detected using the `find_trees()` function, followed crown delineation using `segment_trees()`. In the following section we will use the `MixedConifer.laz` data set, which is included internally within `lidR` to demonstrate both ITD and ITS with reproducible examples. We will also generate a CHM (section \@ref(chm)) to help visualize the results.
 
 ```{r plot-las-mixed-itd, rgl = TRUE, fig.width = 5, fig.height = 4}
 LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
@@ -108,7 +108,7 @@ plot(heights, ws, type = "l",  ylim = c(0,5))
 
 ### Local Maximum Filter on a CHM {#lmfchm}
 
-So far tree detection was performed on a point cloud. A CHM can however also be used to find trees instead of the point cloud. This is also a perfectly valid way to process ALS data. Performing the detection on a CHM is faster because there are less data to process, but it is also more complex because the output depends on how the CHM has been built. The spatial resolution (i.e. pixel size), the algorithm used (see chapter \@ref(chm)), and any additional post-processing steps will influence tree detection results.
+So far tree detection was performed on a point cloud. A CHM can however also be used to find trees instead of the point cloud. This is also a perfectly valid way to process ALS data. Performing the detection on a CHM is faster because there are less data to process, but it is also more complex because the output depends on how the CHM has been built. The spatial resolution (i.e. pixel size), the algorithm used (see section \@ref(chm)), and any additional post-processing steps will influence tree detection results.
 
 In the examples below we run tree detection on CHMs generated with different algorithms (`p2r`, `pitfree`), different resolutions (0.5 and 1 m), and different post-processing smoothing steps with a median filter applied. 
 
@@ -192,7 +192,7 @@ par(mar=rep(0,4))
 plot(crowns)
 ```
 
-It's also possible to compute metrics for each tree. We go further into this functionality chapter \@ref(tba), but here is a brief example where crowns are colored by their area.
+It's also possible to compute metrics for each tree. We go further into this functionality in section \@ref(tba), but here is a brief example where crowns are colored by their area.
 
 ```{r plot-tree-hulls-metrics-its, fig.height=4, fig.width=4}
 crowns <- delineate_crowns(las, func = .stdtreemetrics)
@@ -217,8 +217,8 @@ The output is a `RasterLayer`, for which `lidR` does not provide any processing 
 At the point cloud level it's pretty easy to compare tree segmentations by choosing a different attribute name for each method. For example we can compare `dalponte2016` (which is a raster based methods in two steps) and `li2012` (which is an *"all-in-one"* point cloud based method) side by side.
 
 ```{r, echo = FALSE}
-r3dDefaults = rgl::r3dDefaults
-r3dDefaults$zoom = 0.7
+r3dDefaults <-  rgl::r3dDefaults
+r3dDefaults$zoom <- 0.7
 ```
 
 ```{r plot-compare-its, rgl = TRUE, warning = FALSE, fig.height=6, fig.width=8}

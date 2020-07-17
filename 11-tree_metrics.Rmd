@@ -18,9 +18,9 @@ library(lidR)
 
 The "tree" level of regularization corresponds to the computation of derived metrics centered on each tree using the points that belong to each tree. Derived metrics calculated at tree level are the basis for an inventory at the individual tree level or the basis for individual species identification.
 
-Similarly to what we have seen in chapters \@ref(metrics), \@ref(cba), and \@ref(aba) calculating derived metrics is straightforward and works exactly the same way as in `cloud_metrics()` or `grid_metrics()`. Derived tree metrics are calculated using the `tree_metrics()` function. The input data for this function is a point cloud that needs to contain information from tree segmentation (e.g. usually the `treeID` attribute). In the majority of cases `tree_metrics()` is run after segmenting tree crowns with `segment_trees()` (chapter \@ref(itd-its)) but the segmentation could also be performed in another way independently of `lidR`.
+Similarly to what we have seen in sections \@ref(metrics), \@ref(cba), and \@ref(aba) calculating derived metrics is straightforward and works exactly the same way as in `cloud_metrics()` or `grid_metrics()`. Derived tree metrics are calculated using the `tree_metrics()` function. The input data for this function is a point cloud that needs to contain information from tree segmentation (e.g. usually the `treeID` attribute). In the majority of cases `tree_metrics()` is run after segmenting tree crowns with `segment_trees()` (section \@ref(itd-its)) but the segmentation could also be performed in another way independently of `lidR`.
 
-In the example below we show the basic use of the `tree_metrics()` function on the files we used in chapter \@ref(itd-its). This file already stores an ID for each point referring to each tree, so we don't need to perform the segmentation first. We compute two metrics  `z_max` and `z_mean` using the formula `list(z_max = max(Z), z_mean = mean(Z)`. The output is a `SpatialPointsDataFrame`.
+In the example below we show the basic use of the `tree_metrics()` function on the files we used in section \@ref(itd-its). This file already stores an ID for each point referring to each tree, so we don't need to perform the segmentation first. We compute two metrics  `z_max` and `z_mean` using the formula `list(z_max = max(Z), z_mean = mean(Z)`. The output is a `SpatialPointsDataFrame`.
 
 ```{r}
 LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR") 
@@ -36,15 +36,15 @@ The XY coordinates of the points correspond to the XY coordinates of the highest
 spplot(metrics, zcol="z_max", col.regions = hcl.colors(5)) # plot using z_max
 ```
 
-Like other functions seen in chapters \@ref(cba) and \@ref(aba), users can create their own custom functions containing all of the metrics of interest. In the example below we show how to calculate metrics that are based both on point heights and intensities.
+Like other functions seen in sections \@ref(cba) and \@ref(aba), users can create their own custom functions containing all of the metrics of interest. In the example below we show how to calculate metrics that are based both on point heights and intensities.
 
 ```{r}
-custom_tree_metrics = function(z, i) { # user-defined function
-  metrics = list(
-     z_max = max(z),     # max height
-     z_sd = sd(z),       # vertical variability of points
-     i_mean = mean(i), # mean intensity
-     i_max  = max(i)   # max intensity
+custom_tree_metrics <- function(z, i) { # user-defined function
+  metrics <- list(
+     z_max <- max(z),     # max height
+     z_sd <- sd(z),       # vertical variability of points
+     i_mean <- mean(i), # mean intensity
+     i_max  <- max(i)   # max intensity
    )
    return(metrics) # output
 }

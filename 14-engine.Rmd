@@ -43,10 +43,10 @@ for (file in files) {
 
 This however is very bad practice because each file is loaded without a buffer, meaning outputs will be invalid or weak at the edges because of the absence of spatial context. 
 
-Let's compute a DTM (see chapter \@ref(dtm)) as an example, where we use a `for` loop on 4 contiguous files. We can see the obvious invalidity of the DTM between the files, but also at the periphery, even if less obvious.
+Let's compute a DTM (see section \@ref(dtm)) as an example, where we use a `for` loop on 4 contiguous files. We can see the obvious invalidity of the DTM between the files, but also at the periphery, even if less obvious.
 
 ```{r plot-dtm-artifact, echo=FALSE, fig.height=7.9, fig.width=8,warning=FALSE}
-dtms = stack("data/ENGINE/DTMs.grd")
+dtms <- stack("data/ENGINE/DTMs.grd")
 plot(dtms[[1]], col = gray.colors(50, 0, 1), legend = FALSE)
 ```
 
@@ -58,9 +58,9 @@ plot(dtms[[2]], col = gray.colors(50, 0, 1), legend = FALSE)
 
 ## The `LAScatalog` engine
 
-The `lidR` package provides a powerful and versatile set of tools to work with collections of files and enables the application of workflow with an automatic management of tile buffering, on disk storage, parallelization of tasks and so on. While the engine is powerful and versatile, it's also a complex tool, so we have dedicated two chapter to its description. 
+The `lidR` package provides a powerful and versatile set of tools to work with collections of files and enables the application of workflow with an automatic management of tile buffering, on disk storage, parallelization of tasks and so on. While the engine is powerful and versatile, it's also a complex tool, so we have dedicated two section to its description. 
 
-This chapter presents the justification for the engine and demonstrates how to use it by applying common `lidR` functions seen in previous section. The next section goes deeper into the engine to demonstrate how developers can leverage the internal functionality of `lidR` to create their own applications.
+This section presents the justification for the engine and demonstrates how to use it by applying common `lidR` functions seen in previous section. The next section goes deeper into the engine to demonstrate how developers can leverage the internal functionality of `lidR` to create their own applications.
 
 The `LAScatalog` class and the `LAScatalog` engine are intricately documented in two dedicated vignettes available [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-class.html) and [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-engine.html). The purpose of this book is to propose alternative documentation with more illustrated examples and real use cases.
 
@@ -73,7 +73,7 @@ ctg <- readLAScatalog("path/to/folder/")
 ```
 
 ```{r, echo = FALSE}
-ctg = haliburton
+ctg <- haliburton
 ```
 
 ```{r plot-catalog-hali-2}
@@ -81,7 +81,7 @@ ctg
 plot(ctg)
 ```
 
-In this and the following chapter (chapter \@ref(engine2)) we will use a collection of nine 500 x 500 m files to create examples. The nine files can be downloaded here:
+In this and the following section (section \@ref(engine2)) we will use a collection of nine 500 x 500 m files to create examples. The nine files can be downloaded here:
 
 1. [data/ENGINE/catalog/tiles_338000_5238000.laz](tiles_338000_5238000.laz)
 2. [data/ENGINE/catalog/tiles_338000_5238500.laz](tiles_338000_5238500.laz)
@@ -105,7 +105,7 @@ opt_progress(ctg) <- FALSE
 
 ## Validation
 
-Similar to chapter \@ref(io), an important first step in ALS data processing is ensuring that your data is complete and valid. The `las_check()` function performs an inspection of `LAScatalog` objects for file consistency.
+Similar to section \@ref(io), an important first step in ALS data processing is ensuring that your data is complete and valid. The `las_check()` function performs an inspection of `LAScatalog` objects for file consistency.
 
 ```{r, validate-catalog}
 las_check(ctg)
@@ -150,7 +150,7 @@ rois[1:2]
 
 When processing a `LAScatalog`, no matter with which function, it internally uses what we called the `LAScatalog` processing engine. This is what happened _under the hood_ when using `clip_cirle()` in above examples. The default behavior of the engine is set in such a way that it returns what is most likely to be expected by the users. However the behavior of the engine can be tuned to optimize  processing. Engine options, at the user level, can be modified with `opt_*()` functions. 
 
-The goal of this chapter is to present these options and how they affect the behavior of the engine.
+The goal of this section is to present these options and how they affect the behavior of the engine.
 
 ### Multiple extractions on disk
 
@@ -187,9 +187,9 @@ We have learned several things about the `LAScatalog` engine in this section:
 
 ### Chunk processing
 
-`classify_ground()` (see chapter \@ref(gnd)) is an important function of `lidR`, which works seamlessly with the `LAScatalog` engine. An ALS acquisition is processed in pieces, referred to here as **chunks**. An acquisition is usually split into chunks where files correspond to a tiling pattern. Using `classify_ground()` within the `LAScatalog` engine will process each file sequentially. Given that we emphasize the importance of processing point clouds including a buffer, the engine loads a buffer on-the-fly around each tile before any processing is conducted.
+`classify_ground()` (see section \@ref(gnd)) is an important function of `lidR`, which works seamlessly with the `LAScatalog` engine. An ALS acquisition is processed in pieces, referred to here as **chunks**. An acquisition is usually split into chunks where files correspond to a tiling pattern. Using `classify_ground()` within the `LAScatalog` engine will process each file sequentially. Given that we emphasize the importance of processing point clouds including a buffer, the engine loads a buffer on-the-fly around each tile before any processing is conducted.
 
-The most basic implementation is very similar to examples in chapter \@ref(gnd). In this case we first specify where to write the outputs using `opt_output_files()`. The files written on disk will be `LAS` files, while the output in R will be a `LAScatalog`. If we don't write to disk, the result of each chunk will be stored into memory, potentially leading to memory issues.
+The most basic implementation is very similar to examples in section \@ref(gnd). In this case we first specify where to write the outputs using `opt_output_files()`. The files written on disk will be `LAS` files, while the output in R will be a `LAScatalog`. If we don't write to disk, the result of each chunk will be stored into memory, potentially leading to memory issues.
 
 ```r
 opt_output_files(ctg) <- paste0(tempdir(), "{*}_classified")
@@ -263,7 +263,7 @@ We have learned several things about the engine in this section
 
 ## Digital Terrain Model
 
-So far we have learned enough about the engine to generate a nice and valid DTM using `grid_terrain()` (see chapter \@ref(dtm)).
+So far we have learned enough about the engine to generate a nice and valid DTM using `grid_terrain()` (see section \@ref(dtm)).
 
 ### In memory DTM
 
@@ -307,7 +307,7 @@ In this section we learned several the following about the engine in this sectio
 
 ## Height normalization
 
-Previous sections detail considerations for using the `LAScatalog` engine to perform point cloud normalization using `normalize_height()` (see chapter \@ref(norm)). We created a DTM in the previous section, so we use it here to normalize.
+Previous sections detail considerations for using the `LAScatalog` engine to perform point cloud normalization using `normalize_height()` (see section \@ref(norm)). We created a DTM in the previous section, so we use it here to normalize.
 
 ```{r normalize, cache = TRUE}
 opt_output_files(ctg) <-  paste0(tempdir(), "/{*}_norm")
@@ -323,7 +323,7 @@ ctg_norm <- normalize_height(ctg, tin())
 
 ## Area Based Approach
 
-Area based approach (`grid_metrics()`) outputs are raster objects like a DTM. Two more options of the engine do exist that are not controllable in every function. When reading a LAS file with `readLAS()` two options `select` and `filter` are offered (see chapter \@ref(io)). When processing a collection of files `readLAS()` is called internally and it is not possible to modify these parameters. Instead we can use the options `opt_filter()` and `opt_select()` to propagate these arguments.
+Area based approach (`grid_metrics()`) outputs are raster objects like a DTM. Two more options of the engine do exist that are not controllable in every function. When reading a LAS file with `readLAS()` two options `select` and `filter` are offered (see section \@ref(io)). When processing a collection of files `readLAS()` is called internally and it is not possible to modify these parameters. Instead we can use the options `opt_filter()` and `opt_select()` to propagate these arguments.
 
 ```r
 opt_select(ctg) <- "xyzci"
@@ -411,7 +411,7 @@ We have learned several things about the engine in this section
 
 ## Individual Tree Segmentation
 
-Individual tree segmentation with `segment_trees()` is the most complicated function to use with a `LAScatalog` because there are many different algorithms. Some imply the use of an in memory `RasterLayer` and an in memory `SpatialPointDataFrame`, some require only an in memory `RasterLayer` and some require only a point cloud (see chapter \ref@(itd)). Moreover it is complex to manage edge artifacts. Imagine there is a tree that is situated exactly on the edge between two files. The first half on one file, the second half on another. The two files will be processed independently - maybe on different remote computers. Both sides of the tree must be attributed the same ID independently to get something that is strictly continuous. The function `segment_trees()` manages all these points. The example below uses the `dalponte2016()` algorithm.
+Individual tree segmentation with `segment_trees()` is the most complicated function to use with a `LAScatalog` because there are many different algorithms. Some imply the use of an in memory `RasterLayer` and an in memory `SpatialPointDataFrame`, some require only an in memory `RasterLayer` and some require only a point cloud (see section \ref@(itd)). Moreover it is complex to manage edge artifacts. Imagine there is a tree that is situated exactly on the edge between two files. The first half on one file, the second half on another. The two files will be processed independently - maybe on different remote computers. Both sides of the tree must be attributed the same ID independently to get something that is strictly continuous. The function `segment_trees()` manages all these points. The example below uses the `dalponte2016()` algorithm.
 
 First we create a 1 m resolution CHM stored on disk and returned as a light virtual raster. 
 
@@ -506,7 +506,7 @@ plot(newctg)
 
 ## The case of ground inventories
 
-The case of ground inventories or more generally independent files is particular. We generated such collections in the first example of this chapter.
+The case of ground inventories or more generally independent files is particular. We generated such collections in the first example of this section.
 
 ```{r plot-catalog-inventory, echo=FALSE, fig.height=4, fig.width=4}
 plot(rois)
@@ -514,7 +514,7 @@ plot(rois)
 
 `rois` is made of unrelated circular files. Loading a buffer is meaningless because there is no neighboring files. Creating chunks is meaningless as well because we usually want one output per file without generating a wall-to-wall object. Worse even, with the wrong options the output might be incorrect. 
 
-For example on the top right of the previous collection we can see two overlapping files. If processed by chunk and with a buffer this will load the same points twice in the overlapping area, plus some extra points from the other plot that are not related at all to the first plot. In short, in the case of ground plot inventories 99% of the cases consist in processing iteratively by file, without a buffer and without returning a single aggregated object. This case actually corresponds to a regular `for` loop, as shown in the introduction of this chapter. Thus there is no need for all the features provided by the `LAScatalog` engine and anyone with any background in programming can write a small script that does this job.
+For example on the top right of the previous collection we can see two overlapping files. If processed by chunk and with a buffer this will load the same points twice in the overlapping area, plus some extra points from the other plot that are not related at all to the first plot. In short, in the case of ground plot inventories 99% of the cases consist in processing iteratively by file, without a buffer and without returning a single aggregated object. This case actually corresponds to a regular `for` loop, as shown in the introduction of this section. Thus there is no need for all the features provided by the `LAScatalog` engine and anyone with any background in programming can write a small script that does this job.
 
 The engine can however do it with appropriate options. In this case the `LAScatalog` processing engine becomes more or less a parallelizable `for` loop with a real time monitoring.
 

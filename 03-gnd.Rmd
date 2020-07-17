@@ -109,7 +109,7 @@ plot(gnd, size = 3, bg = "white")
 
 ## Edge artifacts {#buffer}
 
-No matter which algorithm is used in `lidR` or other software, ground classification will be weaker at the edges of point clouds as the algorithm must analyze the local neighbourhood (which is missing on edges). To find ground points, an algorithm need to analyze the local neighborhood or local context that is missing at edge areas. When processing point clouds it's important to always consider a buffer around the region of interest to avoid edge artifacts. `lidR` has tools to manage buffered tiles and this advanced use of the package will be covered in chapter \@ref(engine).
+No matter which algorithm is used in `lidR` or other software, ground classification will be weaker at the edges of point clouds as the algorithm must analyze the local neighbourhood (which is missing on edges). To find ground points, an algorithm need to analyze the local neighborhood or local context that is missing at edge areas. When processing point clouds it's important to always consider a buffer around the region of interest to avoid edge artifacts. `lidR` has tools to manage buffered tiles and this advanced use of the package will be covered in section \@ref(engine).
 
 ## How to choose a method and its parameters?
 

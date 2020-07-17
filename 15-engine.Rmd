@@ -22,7 +22,7 @@ rgdal::set_thin_PROJ6_warnings(TRUE)
 
 Section \@ref(engine) showed how to use the `LAScatalog` processing engine to apply `lidR` functions on a collection of files. This included how to process acquisitions in user defined chunk sizes, loading buffers on-the-fly, saving the output to disk, and parallelizing tasks. These examples all used existing functions provided with the `lidR` package. The power of the engine goes beyond limited used cases, allowing developers to design their own applications. 
 
-Let's imagine we want to normalize a data set **and** colorize it using RGB satellite data. According to the previous chapters we could do something like this:
+Let's imagine we want to normalize a data set **and** colorize it using RGB satellite data. According to the previous sections we could do something like this:
 
 ```r
 opt_output_files(ctg) <- paste0(tempdir(), "/{*}_dtm") # specify output DTM disk save location
@@ -54,11 +54,11 @@ This takes a significant amount of time. It also implies the need to create copi
 
 ## `catalog_apply()`
 
-In this chapter we outline the `catalog_apply()` function, which is used subliminally in every function seen in the chapter \@ref(engine). Here we show how to leverage its versatility to design tools that do not yet exist like the DTM + normalization + colorization example from above but also more inovative processes. 
+In this section we outline the `catalog_apply()` function, which is used subliminally in every function seen in the section \@ref(engine). Here we show how to leverage its versatility to design tools that do not yet exist like the DTM + normalization + colorization example from above but also more inovative processes. 
 
 Again, the `LAScatalog` class and the `LAScatalog` engine are deeply documented in a two dedicated vignettes available [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-class.html) and [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-engine.html). The purpose of these examples is to provide alternative, hands-on documentation with more applied examples and real use cases. 
 
-In this chapter we will use the same 9 files used in chapter \@ref(engine) section \@ref(files) and an RGB raster that encompasses the collection of file.
+In this section we will use the same 9 files used in section \@ref(engine) section \@ref(files) and an RGB raster that encompasses the collection of file.
 
 ```{r plot-ctg-engine2, fig.height=4, fig.width=4}
 ctg <- readLAScatalog("data/ENGINE/catalog/")
@@ -134,7 +134,7 @@ output <- catalog_apply(ctg, dtm_norm_color_chunk, rgbmap = rgbmap) # implement 
 head(output,4)
 ```
 
-We see that the output is a `list` with the name of each file written to disk. This is the default behavior of the engine. It returns a `list` with one element per chunk. This isn't really convenient. We have seen in chapter \@ref(engine) that in the case of `LAS` files we can return a `LAScatalog`, which is far more convenient. 
+We see that the output is a `list` with the name of each file written to disk. This is the default behavior of the engine. It returns a `list` with one element per chunk. This isn't really convenient. We have seen in section \@ref(engine) that in the case of `LAS` files we can return a `LAScatalog`, which is far more convenient. 
 
 We can use the option `automerge = TRUE` so `catalog_apply()` will automatically merge the list into something more user-friendly.
 
@@ -166,7 +166,7 @@ plot(output)
 
 When the outputs are `Spatial*` or `Raster*` they can be cropped using the bounding box of the chunk accessible via `raster::extent(chunk)` or `sp::bbox(chunk)`.
 
-Nice! We created a custom function -- `dtm_norm_color()` -- and we upscale its definition to capably and efficiently process an entire ALS acquisition made up of hundreds of files. Using options described in chapter \@ref(engine), we can also introduce paralellization, chunk size control, and buffer size control.
+Nice! We created a custom function -- `dtm_norm_color()` -- and we upscale its definition to capably and efficiently process an entire ALS acquisition made up of hundreds of files. Using options described in section \@ref(engine), we can also introduce paralellization, chunk size control, and buffer size control.
 
 ```r
 library(future)

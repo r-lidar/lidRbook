@@ -17,7 +17,7 @@ library(lidR)
 
 ## Overview
 
-The "cloud" level of regularization corresponds to the computation of derived metrics using all available points. As seen in chapter \@ref(metrics), calculating derived metrics for the whole point cloud is straightforward and users only need to provide a formula to calculate metric(s) of interest. For example, to calculate the average height (`mean(Z)`) of all points we can run the following:
+The "cloud" level of regularization corresponds to the computation of derived metrics using all available points. As seen in section \@ref(metrics), calculating derived metrics for the whole point cloud is straightforward and users only need to provide a formula to calculate metric(s) of interest. For example, to calculate the average height (`mean(Z)`) of all points we can run the following:
 
 ```{r}
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
@@ -41,9 +41,9 @@ Point cloud metrics become interesting when computed for a set of plot inventori
 ctg <- readLAScatalog("data/ENGINE/catalog/") # our lascatalog
 opt_progress(ctg) <- FALSE
 set.seed(4)
-x = runif(25, 338000, 339500)
+x <-  runif(25, 338000, 339500)
 set.seed(13)
-y = runif(25, 5238000, 5239500)
+y <-  runif(25, 5238000, 5239500)
 opt_output_files(ctg) <- "{tempdir()}/{ID}" # output location
 plots <- clip_circle(ctg, x, y, 20) # clip plots
 opt_independent_files(plots) <- TRUE
@@ -58,8 +58,8 @@ metrics <- lapply(plots$filename, function(file) # calculate metrics
 
 metrics <- data.table::rbindlist(metrics) # combine metrics
 
-G = metrics$zmax + 0.5*metrics$zmean + 0.7*metrics$pzabove2 + rnorm(25, 0, 4) # modelling
-inventory = data.frame(ID = 1:25, X = y, Y = y, G = G )
+G <-  metrics$zmax + 0.5*metrics$zmean + 0.7*metrics$pzabove2 + rnorm(25, 0, 4) # modelling
+inventory <-  data.frame(ID = 1:25, X = y, Y = y, G = G )
 metrics$G <- G
 metrics$zentropy <- NULL
 ```
@@ -99,4 +99,4 @@ plot(inventory$G, 0.7018 *metrics$pzabove2 + 0.9268 * metrics$zmax, xlab = "Meas
 abline(0,1)
 ```
 
-This example can be improved. In chapter \@ref(engine) we will study how to extract a ground inventory and in chapter \@ref(modeling-aba) we will study more in depth modeling presenting a complete workflow from the plot extraction to the mapping of the predictive model.
+This example can be improved. In section \@ref(engine) we will study how to extract a ground inventory and in section \@ref(modeling-aba) we will study more in depth modeling presenting a complete workflow from the plot extraction to the mapping of the predictive model.

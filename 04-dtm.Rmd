@@ -24,9 +24,9 @@ rgdal::set_thin_PROJ6_warnings(TRUE)
 
 # Digital terrain model {#dtm}
 
-Generating a Digital Terrain Model (DTM) is usually the second step in processing that follows classification of ground points (chapter \@ref(gnd)). Put simply, a DTM can be described as an "image" of the ground. Methods to generate DTMs have been intensively studied and several algorithms have been proposed for various terrain situations. DTMs are used for a variety of purposes in practice, such as determination of the catchment basins of water retention and stream flow, or the identification of drivable roads to access resources. It also enables users to normalize point clouds i.e. subtract the local terrain from the elevation of points to allow a manipulation of point clouds as if they were acquired on a flat surface (chapter \@ref(norm)).
+Generating a Digital Terrain Model (DTM) is usually the second step in processing that follows classification of ground points (section \@ref(gnd)). Put simply, a DTM can be described as an "image" of the ground. Methods to generate DTMs have been intensively studied and several algorithms have been proposed for various terrain situations. DTMs are used for a variety of purposes in practice, such as determination of the catchment basins of water retention and stream flow, or the identification of drivable roads to access resources. It also enables users to normalize point clouds i.e. subtract the local terrain from the elevation of points to allow a manipulation of point clouds as if they were acquired on a flat surface (section \@ref(norm)).
 
-The construction of a DTM starts with known or sampled ground points and uses various spatial interpolation techniques to infer ground points at unsampled locations. Accuracy of the DTM is very important because errors will propagate to future processing stages like tree height estimation. A wide range of methods exist for  spatial interpolation of points. In the following chapter we will use the classified `Topography.laz` data set, which is included internally within `lidR` to create reproducible examples.
+The construction of a DTM starts with known or sampled ground points and uses various spatial interpolation techniques to infer ground points at unsampled locations. Accuracy of the DTM is very important because errors will propagate to future processing stages like tree height estimation. A wide range of methods exist for  spatial interpolation of points. In the following section we will use the classified `Topography.laz` data set, which is included internally within `lidR` to create reproducible examples.
 
 ```{r plot-las-topo-dtm, rgl = TRUE, warning=FALSE}
 LASfile <- system.file("extdata", "Topography.laz", package="lidR")
@@ -53,7 +53,7 @@ Planar facets of each generated triangle are used to interpolate. Used with a De
 To generate a DTM model with the TIN algorithm we use `grid_terrain()` where `algorithm = tin()`.
 
 ```{r tin-dtm, rgl = TRUE}
-dtm_tin = grid_terrain(las, res = 1, algorithm = tin())
+dtm_tin <- grid_terrain(las, res = 1, algorithm = tin())
 plot_dtm3d(dtm_tin, bg = "white") 
 ```
 
@@ -68,7 +68,7 @@ Compared to `tin()` this method is more robust to edge artifacts because it uses
 To generate a DTM model with the IDW algorithm we use `grid_terrain()`  where `algorithm = knnidw()`.
 
 ```{r idw-dtm, rgl = TRUE}
-dtm_idw = grid_terrain(las, algorithm = knnidw(k = 10L, p = 2))
+dtm_idw <- grid_terrain(las, algorithm = knnidw(k = 10L, p = 2))
 plot_dtm3d(dtm_idw, bg = "white") 
 ```
 
@@ -76,17 +76,17 @@ Notice the bumpy nature of the DTM compared to the previous one generated with `
 
 ```{r plot-1d-idw, echo = FALSE, fig.height=2, fig.width=6}
 set.seed(43)
-x = runif(20, 0, 20)
-z = 2*sin(x)+2
-y = rep(0, 20)
+x <- runif(20, 0, 20)
+z <- 2*sin(x)+2
+y <- rep(0, 20)
 
-X = seq(0,20,0.1)
-Y = rep(201, 0)
+X <- seq(0,20,0.1)
+Y <- rep(201, 0)
 
-Z = lidR:::C_knnidw(x,y,z, X, Y, 7, 2, 100, 1)
+Z <- lidR:::C_knnidw(x,y,z, X, Y, 7, 2, 100, 1)
 
-opar = par(mar = c(0,0,0,0))
-plot(x,z, asp = 1, xlab = "", ylab = "", xaxt='n', yaxt = "n", ann=FALSE)
+opar <- par(mar = c(0,0,0,0))
+plot(x,z, asp = 1, xlab = "", ylab = "", xaxt <- 'n', yaxt = "n", ann=FALSE)
 lines(X,Z)
 par(opar)
 ```
@@ -98,7 +98,7 @@ Kriging is the most advanced approach and utilizes advanced geostatistical inter
 To generate a DTM model with the kriging algorithm we use `grid_terrain()`  where `algorithm = kriging()`.
 
 ```{r kri-dtm, message=F, warning=F, rgl = TRUE}
-dtm_kriging = grid_terrain(las, algorithm = kriging(k = 40))
+dtm_kriging <- grid_terrain(las, algorithm = kriging(k = 40))
 plot_dtm3d(dtm_kriging, bg = "white") 
 ```
 

@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 # Thinking outside the box {#outbox}
 
-We have presented many common processes through these tutorials. Most examples presented could have been done with other softwares, but what we have seen is only the tip of the `lidR` iceberg! In fact, `lidR` was never designed with common processes in mind, but instead to explore new ones and push innovation in this field. Some examples might be found here and there in the book. The following chapter presents some applications that are likely to be impossible to reproduce in other softwares, demonstrating how we can go from a novel idea to a fully functional tool using `lidR`. 
+We have presented many common processes through these tutorials. Most examples presented could have been done with other softwares, but what we have seen is only the tip of the `lidR` iceberg! In fact, `lidR` was never designed with common processes in mind, but instead to explore new ones and push innovation in this field. Some examples might be found here and there in the book. The following section presents some applications that are likely to be impossible to reproduce in other softwares, demonstrating how we can go from a novel idea to a fully functional tool using `lidR`. 
 
 ## New complex metrics in ABA
 
@@ -31,7 +31,7 @@ In forestry, simple metrics can be derived from first returns. But what about me
 ```{r, echo = FALSE, message=FALSE}
 library(lidR)
 LASfile <- "data/ENGINE/catalog/tiles_338000_5239000_1.laz"
-las = readLAS(LASfile)
+las <- readLAS(LASfile)
 ```
 
 First, we need to retrieve each emitted pulse and keep only the first and last point of each sequence excluding sequences with only one return.
@@ -49,8 +49,8 @@ las@data[, d := Z[1]-Z[2], by = pulseID]
 ```
 
 ```{r, echo = FALSE}
-u = las@data[, .(d = Z[1]-Z[2]), by = pulseID]
-las@data = las@data[u, on = "pulseID"]
+u <- las@data[, .(d = Z[1]-Z[2]), by = pulseID]
+las@data <- las@data[u, on = "pulseID"]
 ```
 
 At this stage our data set contains distances twice. **1** associated with the first return and **2** with the last return. We only need a single value, so lets keep only first returns. Some distances are `NA` and correspond to pulses at the very edge of the file. We can discard those case for the moment.
@@ -66,7 +66,7 @@ We can now plot the first returns colored by their distance to the last return.
 plot(las, bg = "white", color = "d", colorPalette = viridis::magma(50), size = 4)
 ```
 
-Now we can compute the average in an ABA (see chapter \@ref(aba)).
+Now we can compute the average in an ABA (see section \@ref(aba)).
 
 ```{r plot-raster-avg-dreturns, fig.width=5.4, fig.height=5.2}
 d_first_last <- grid_metrics(las, ~mean(d), 15)
@@ -76,7 +76,7 @@ plot(d_first_last, col = height.colors(50))
 Now we have a working method, we can extend the idea to apply it over a broad coverage using the `LAScatalog` processing engine (section \@ref(engine)). First we create a function that does this job. This is not mandatory but factorizing the code is good practice.
 
 ```{r}
-grid_distance_first_last = function(las, res) {
+grid_distance_first_last <- function(las, res) {
   las <- retrieve_pulses(las)
   las <- filter_firstlast(las)
   las <- filter_poi(las, NumberOfReturns > 1)
@@ -116,7 +116,7 @@ plot(metrics, col = height.colors(50))
 ```
 
 ```{r displaymap, echo=FALSE, fig.width=6.2, fig.height=6.5}
-m = raster("data/chap12/distancefl.grd")
+m <- raster("data/chap12/distancefl.grd")
 plot(m, col = height.colors(50))
 raster::scalebar(500, type = "bar")
 ```
@@ -128,7 +128,7 @@ Another interesting metric that could be computed is the rumple index (see [Kane
 To compute a rumple index we can triangulate points, measure the surface created, and divide by the projected surface. Rumple index is however expected to measure surface roughness of the canopy and it doesn't makes sense to triangulate every point. An option is to triangulate each first return but yet first returns are not all representative of the canopy. In the following example we are using the surface points every 1 m.
 
 ```{r}
-grid_rumple_index = function(las, res) { # user-defined function
+grid_rumple_index <- function(las, res) { # user-defined function
   las <- filter_surfacepoints(las, 1)
   return(grid_metrics(las, ~rumple_index(X, Y, Z), res))
 }
@@ -154,7 +154,7 @@ plot(metrics, col = height.colors(50))
 ```
 
 ```{r, displaymap2, echo=FALSE, fig.width=6.2, fig.height=6.5}
-m = raster("data/chap12/rumple.grd")
+m <- raster("data/chap12/rumple.grd")
 plot(m, col = height.colors(50))
 raster::scalebar(500, type = "bar")
 ```
@@ -221,7 +221,7 @@ rgb <- grid_metrics(las, ~colorize(Intensity, ScannerChannel), 2)
 plotRGB(rgb, axes = T)
 ```
 
-We can also attribute an RGB color per voxel, discarding the voxels where `RGB = NA` by using `colorize()` with `voxel_metrics()` (see chapter \@ref(vba)).
+We can also attribute an RGB color per voxel, discarding the voxels where `RGB = NA` by using `colorize()` with `voxel_metrics()` (see section \@ref(vba)).
 
 ```{r plot-voxel-multispectral-rgb, rgl = TRUE, warning=FALSE}
 rgb <- voxel_metrics(las, ~colorize(Intensity, ScannerChannel), 2)
@@ -230,7 +230,7 @@ rgb <- LAS(rgb, las@header) # Convert to LAS for display
 plot(rgb, color = "RGB", nbits = 8, size = 5)
 ```
 
-To finish we can `colorize()` with `point_metrics()` (see chapter \@ref(pba)). This has the advantage of maintaining much more points compared to the voxel-based version and to preserve coordinates.
+To finish we can `colorize()` with `point_metrics()` (see section \@ref(pba)). This has the advantage of maintaining much more points compared to the voxel-based version and to preserve coordinates.
 
 ```{r plot-las-multispectral-rgb-otb, rgl = TRUE}
 rgb <- point_metrics(las, ~colorize(Intensity, ScannerChannel), r = 0.5)

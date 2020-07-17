@@ -37,12 +37,12 @@ plot(gnd, size = 3, bg = "white", color = "Classification")
 
 The goal of normalization is to get a flat terrain. Two normalization approaches are most commonly used:
 
-1. Subtract the derived raster DTM (chapter \@ref(dtm)) elevation from all non-ground returns.
+1. Subtract the derived raster DTM (section \@ref(dtm)) elevation from all non-ground returns.
 2. Interpolate ground points directly and subtract beneath the non-ground returns.
 
 ## DTM normalization
 
-To normalize points using a DTM we first need to create the DTM itself. For this we use the `grid_terrain()` function (see chapter \@ref(dtm)). For this example we chose to use a grid resolution of 1 m and to use the `knnidw()` algorithm with default parameters.
+To normalize points using a DTM we first need to create the DTM itself. For this we use the `grid_terrain()` function (see section \@ref(dtm)). For this example we chose to use a grid resolution of 1 m and to use the `knnidw()` algorithm with default parameters.
 
 ```{r plot-dtm-norm, rgl=TRUE, fig.height=5.85, fig.width=6}
 dtm <- grid_terrain(las, 1, knnidw())
@@ -78,7 +78,7 @@ In this case it doesn't seem to have helped, perhaps even making it worse. This 
 Point cloud normalization without a DTM interpolates the elevation of every single point locations using ground points. It no longer uses elevations at discrete predefined locations. Thus the methods is exact, **computationally speaking**. It means that it is equivalent to using a continuous DTM but it is important to recall that all interpolation methods are interpolation and by definition make guesses with different strategies. Thus by "exact" we mean "continuous". To compute the continuous normalization, we can feed `normalize_height()` with an algorithm for spatial interpolation instead of a `RasterLayer`.
 
 ```{r, rgl = TRUE}
-nlas = normalize_height(las, knnidw())
+nlas <- normalize_height(las, knnidw())
 ```
 
 All the ground points should be exactly 0. Let check it:

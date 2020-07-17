@@ -16,9 +16,9 @@ library(lidR)
 
 ## Overview
 
-The "grid" level of regularization corresponds to the computation of derived metrics for regularly spaced locations in 2D. Derived metrics calculated at grid level are the basis of the area-based approach (ABA) that we discuss with in more detail in chapter \@ref(modeling-aba). In brief, the ABA allows the creation of wall-to-wall predictions of forest inventory attributes (e.g. basal area or total volume per hectare) by linking ALS variables with field measured references. ABA is one application of derived metrics at the grid level but not the only one.
+The "grid" level of regularization corresponds to the computation of derived metrics for regularly spaced locations in 2D. Derived metrics calculated at grid level are the basis of the area-based approach (ABA) that we discuss with in more detail in section \@ref(modeling-aba). In brief, the ABA allows the creation of wall-to-wall predictions of forest inventory attributes (e.g. basal area or total volume per hectare) by linking ALS variables with field measured references. ABA is one application of derived metrics at the grid level but not the only one.
 
-As seen in chapters \@ref(metrics) and \@ref(cba) calculating derived metrics is straightforward. The user only needs to provide a formula to calculate the metric of interest. For example, to calculate the average height (`mean(Z)`) of all points within 10 x 10 m pixels we can run the following:
+As seen in sections \@ref(metrics) and \@ref(cba) calculating derived metrics is straightforward. The user only needs to provide a formula to calculate the metric of interest. For example, to calculate the average height (`mean(Z)`) of all points within 10 x 10 m pixels we can run the following:
 
 ```{r, echo=FALSE}
 las <- readLAS("data/ENGINE/catalog/tiles_338000_5238500_1.laz") # read file
@@ -67,8 +67,8 @@ Because of the flexibility in defining metrics, it is very easy to extend basic 
 ```{r plot-raster-custom-2, fig.height=4.6, fig.width=10}
 metrics_custom <- function(z) { # user defined function
 list(
-   coef_var =  sd(z) / mean(z) * 100, # coefficient of variation
-   iqr = IQR(z)) # inter-quartile range
+   coef_var <-   sd(z) / mean(z) * 100, # coefficient of variation
+   iqr <-  IQR(z)) # inter-quartile range
 }
 
 metrics <- grid_metrics(las, ~metrics_custom(z=Z), 10) # calculate grid metrics
@@ -79,7 +79,7 @@ plot(metrics, col = height.colors(50)) # some plotting
 
 ### Modeling
 
-All `*_metrics` functions can map any kind of formula as long as it returns a number or a list of numbers, meaning that that it's possible to input an expression derived from a predictive model to map the resource. In the chapter \@ref(cba) we made a model that can be written $0.7018 \times pzabove2 + 0.9268 \times zmax$. We can map this predictive model with a resolution of 10 meters:
+All `*_metrics` functions can map any kind of formula as long as it returns a number or a list of numbers, meaning that that it's possible to input an expression derived from a predictive model to map the resource. In the section \@ref(cba) we made a model that can be written $0.7018 \times pzabove2 + 0.9268 \times zmax$. We can map this predictive model with a resolution of 10 meters:
 
 ```{r plot-raster-model, fig.height=6.9, fig.width=7}
 prediction <- grid_metrics(las, ~0.7018 * sum(Z > 2)/length(Z) + 0.9268 *max(Z), 20) # predicting model mapping
@@ -112,7 +112,7 @@ plot(imap, col = heat.colors(50)) # some plotting
 
 ### Other
 
-Many other raster-based applications can be derived with adequate metrics. In chapter \@ref(outbox) we will see some out of the box possibilities to demonstrate how the concept of metrics can be leveraged to design new applications. A simple uncommon application could be to map the ratio between multiple returns and single returns. 
+Many other raster-based applications can be derived with adequate metrics. In section \@ref(outbox) we will see some out of the box possibilities to demonstrate how the concept of metrics can be leveraged to design new applications. A simple uncommon application could be to map the ratio between multiple returns and single returns. 
 
 To count single returns we can count the number of points where number of returns equal to 1. To count the number of multiple returns we can count the number of points with a return number equal to 1 **AND** a return number above 1.
 

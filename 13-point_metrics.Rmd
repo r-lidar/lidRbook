@@ -16,7 +16,7 @@ library(lidR)
 
 ## Overview
 
-The "point" level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The `point_metrics()` function allows calculation of point-based metrics and works like `cloud_metrics()`, `grid_metrics()`, `hexbin_metrics()`, `tree_metrics()` or `voxel_metrics()` seen in chapter \@ref(metrics), \@ref(cba), \@ref(aba), \@ref(tba) and \@ref(vba). Refer to these sections for a more comprehensive overview.
+The "point" level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The `point_metrics()` function allows calculation of point-based metrics and works like `cloud_metrics()`, `grid_metrics()`, `hexbin_metrics()`, `tree_metrics()` or `voxel_metrics()` seen in section \@ref(metrics), \@ref(cba), \@ref(aba), \@ref(tba) and \@ref(vba). Refer to these sections for a more comprehensive overview.
 
 For each point, the neighbourhood can be either:
 
@@ -67,7 +67,7 @@ plot(las, size = 3)
 First we need to define a function that computes the eigen value decomposition of a set of points and estimates if the set of points is flat according to the [Limberger et al. (2015)](https://doi.org/10.1016/j.patcog.2014.12.020) criteria.
 
 ```r
-is.planar = function(x, y, z, th1 = 25, th2 = 6) {
+is.planar <- function(x, y, z, th1 = 25, th2 = 6) {
   xyz <- cbind(x,y,z)
   cov_m <- cov(xyz)
   eigen_m <- eigen(cov_m)$value
@@ -118,7 +118,7 @@ arma::princomp(coeff, score, latent, A);
 return(latent);
 }")
 
-is.planar = function(x, y, z, th1 = 25, th2 = 6) {
+is.planar <- function(x, y, z, th1 = 25, th2 = 6) {
   xyz <- cbind(x,y,z)
   eigen_m <- eigen_values(xyz)
   is_planar <- eigen_m[2] > (th1*eigen_m[3]) && (th2*eigen_m[2]) > eigen_m[1]
@@ -139,7 +139,7 @@ Eigen value decomposition applied using `point_metrics()` opens a lot of possibi
 We can also design a wire segmentation algorithm. For a wire we can change the [Limberger et al. (2015)](https://doi.org/10.1016/j.patcog.2014.12.020) constrains to enable the detection of elongated linear features instead of flat feature.
 
 ```{r, warning =FALSE}
-is.linear = function(x, y, z, th = 10) {
+is.linear <- function(x, y, z, th = 10) {
   xyz <- cbind(x,y,z)
   eigen_m <- eigen_values(xyz)
   is_linear <-  th*eigen_m[3] < eigen_m[1] && th*eigen_m[2] < eigen_m[1]
@@ -158,7 +158,7 @@ plot(las, color = "linear", size = 5)
 ```
 
 ```{r, echo = FALSE}
-r3dDefaults$zoom = 0.7
+r3dDefaults$zoom <- 0.7
 ```
 
 Again, `lidR` has a dedicated function for this specific task because we believe that it is of high interest to provide a specialized and faster version of this tool.
@@ -183,7 +183,7 @@ We now want to attribute an RGB value to each point. A single point being sample
 
 
 ```{r}
-set.color = function(intensity, channel)
+set.color <- function(intensity, channel)
 {
   # Split the intensities of each channel
   i1 <- intensity[channel == 1]

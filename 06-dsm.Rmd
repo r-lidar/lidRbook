@@ -64,26 +64,26 @@ plot(chm, col = col)
 This CHM is the CHM computed *"as if"* the point cloud was the following
 
 ```{r plot-las-subcircled, rgl = TRUE, echo = FALSE, fig.height=5.9, fig.width=6}
-data = lidR:::subcircled(las@data, r = 0.15, 8)
-las2 = suppressWarnings(LAS(data, las@header))
+data <- lidR:::subcircled(las@data, r = 0.15, 8)
+las2 <- suppressWarnings(LAS(data, las@header))
 plot(las2, size = 3, bg = "white")
 ```
 
 We can zoom in to see the small disks that replace each point.
 
 ```{r plot-las-subcircled-zoom, rgl = TRUE, echo = FALSE}
-r3dDefaults = rgl::r3dDefaults
-m2 = structure(c(0.852, -0.496, 
+r3dDefaults <- rgl::r3dDefaults
+m2 <- structure(c(0.852, -0.496, 
     -0.162, 0, 0.472, 0.865, 
     -0.165, 0, 0.222, 0.064, 
     0.972, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
-r3dDefaults$FOV = 30
-r3dDefaults$userMatrix = m2
-r3dDefaults$zoom = 0.1
+r3dDefaults$FOV <- 30
+r3dDefaults$userMatrix <- m2
+r3dDefaults$zoom <- 0.1
 plot(las2, size = 5, bg = "white")
-r3dDefaults$FOV = 40
-r3dDefaults$userMatrix = m
-r3dDefaults$zoom = 0.75
+r3dDefaults$FOV <- 40
+r3dDefaults$userMatrix <- m
+r3dDefaults$zoom <- 0.75
 ```
 
 The `p2r()` function contains one additional argument that allows to interpolate the remaining empty pixels. Empty pixels are interpolated using methods described in section \@ref(dtm).

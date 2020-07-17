@@ -4,7 +4,7 @@ library(lidR)
 
 # The Area-Based Approach (ABA) to forest modelling {#modeling-aba}
 
-This chapter presents a complete workflow about processing ALS point cloud data to create wall-to-wall predictions of selected forest stand attributes using an area-based approach (ABA) to forest inventories. The steps used in this vignette as well as further details about enhanced forest inventories (EFI) are described in depth in [White et al. 2013](https://cfs.nrcan.gc.ca/publications?id=34887) and [White et al. 2017](https://cfs.nrcan.gc.ca/publications?id=38945). This vignette assumes that the user has a directory of classified and normalized `.las/.laz` files.  First we load the package `sf` to work with spatial data.
+This section presents a complete workflow about processing ALS point cloud data to create wall-to-wall predictions of selected forest stand attributes using an area-based approach (ABA) to forest inventories. The steps used in this vignette as well as further details about enhanced forest inventories (EFI) are described in depth in [White et al. 2013](https://cfs.nrcan.gc.ca/publications?id=34887) and [White et al. 2017](https://cfs.nrcan.gc.ca/publications?id=38945). This vignette assumes that the user has a directory of classified and normalized `.las/.laz` files.  First we load the package `sf` to work with spatial data.
 
 ```r
 library(sf)
@@ -12,7 +12,7 @@ library(sf)
 
 ## Read in data
 
-The function `readLAScatalog()` seen in chapter \@ref(engine) builds a `LAScatalog` object from a folder. Make sure the ALS files have associated index files - for details see: [Speed-up the computations on a LAScatalog](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html).
+The function `readLAScatalog()` seen in section \@ref(engine) builds a `LAScatalog` object from a folder. Make sure the ALS files have associated index files - for details see: [Speed-up the computations on a LAScatalog](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html).
 
 ```r
 ctg <- readLAScatalog("folder/")
@@ -75,7 +75,7 @@ We have now prepared both our ALS and plot inventory data and can begin ABA proc
 
 ### Step 1 - Clip ALS ground inventory
 
-The functions `clip_*` allow to extract regions of interest as seen in chapter \@ref(engine). `clip_roi()` is capable of extraction from a shapefile. First we set `opt_output_files()` option to write the results on disc. This is an important option to set. The clipped plots will be saved on disk and not kept in memory. We also use the `opt_filter()` function to ignore noise below 0 m so that they do not influence future processing. We clip discs with a `radius` of  14.1 meters because our plot radius is 14.1 m. The `plots_ALS_clipped` object is now a `LAScatalog` object containing all clipped plots.
+The functions `clip_*` allow to extract regions of interest as seen in section \@ref(engine). `clip_roi()` is capable of extraction from a shapefile. First we set `opt_output_files()` option to write the results on disc. This is an important option to set. The clipped plots will be saved on disk and not kept in memory. We also use the `opt_filter()` function to ignore noise below 0 m so that they do not influence future processing. We clip discs with a `radius` of  14.1 meters because our plot radius is 14.1 m. The `plots_ALS_clipped` object is now a `LAScatalog` object containing all clipped plots.
 
 ```r
 opt_output_files(ctg) <- paste0(tempdir(), "/{PlotID}") # Write files to disc
@@ -95,7 +95,7 @@ plots_ALS_clipped
 
 ### Step 2 - Calculate plot metrics
 
-As seen in chapter \@ref(engine) ground inventories are special cases of independent files. We first set some adequate processing options. We also use `opt_output_files() <- ""` to have plot metrics stored in memory instead of on disc.
+As seen in section \@ref(engine) ground inventories are special cases of independent files. We first set some adequate processing options. We also use `opt_output_files() <- ""` to have plot metrics stored in memory instead of on disc.
 
 ```r
 opt_independant_files(plots_ALS_clipped) <- TRUE
