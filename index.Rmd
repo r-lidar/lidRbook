@@ -27,6 +27,10 @@ Development of the `lidR` package between 2015 and 2018 was made possible thanks
 
 Development of the `lidR` package between 2018 and 2020 was made possible thanks to the financial support of the [Ministère des Forêts, de la Faune et des Parcs of Québec](https://mffp.gouv.qc.ca/).
 
+The book is shared under [CC-BY-NC-SA 2.0](https://creativecommons.org/licenses/by-nc-sa/2.0/)
+
+[![](https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-sa.svg)](https://creativecommons.org/licenses/by-nc-sa/2.0/)
+
 --------
 
 _This book was created to provide hands on descriptions and tutorials for using `lidR` and is **not** the formal package documentation. The comprehensive package documentation is shipped with the package._
