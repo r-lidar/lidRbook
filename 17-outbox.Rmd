@@ -162,7 +162,7 @@ raster::scalebar(500, type = "bar")
 
 ## Multi-spectral coloring {#outbox-multispectral-coloring}
 
-We have already seen a multi-spectral coloring example in section \@ref(#pba-applications-coloring). This is truly a good example of how to think outside the box with `lidR`, so we show several variants here. The goal is to use multi-spectral data to generate false coloring and see how false coloring may be used for further analyses.
+We have already seen a multi-spectral coloring example in section \@ref(pba-applications-coloring). This is truly a good example of how to think outside the box with `lidR`, so we show several variants here. The goal is to use multi-spectral data to generate false coloring and see how false coloring may be used for further analyses.
 
 Multi-spectral ALS data are sampled with 3 devices each emitting a different wavelength. The point cloud is usually provided in the form of 3 `LAS` files, each file corresponding to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red, and the third as green, and thus consider that each point has a pure color.
 
