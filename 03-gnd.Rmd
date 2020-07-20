@@ -27,7 +27,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows creation of a continuous model of terrain elevation (see section \@ref(dtm)). Many algorithms have been reported in the literature and `lidR` currently (v3.0.2) provides two of them: Progressive Morphological Filter (PMF) and Cloth Simulation Function (CSF) usable with the function `classify_ground()`.
 
-## Progressive Morphological Filter
+## Progressive Morphological Filter {#pmf}
 
 The implementation of PMF algorithm in `lidR` is based on the method described in [Zhang et al. (2003) ](https://ieeexplore.ieee.org/document/1202973) with some technical modifications. The original method is raster-based, while `lidR` performs point-based morphological operations because `lidR` is a point cloud oriented software. The main step of the methods are summarised in the figure below:
 
@@ -50,7 +50,7 @@ We can now visualize the result:
 plot(las, color = "Classification", size = 3, bg = "white") 
 ```
 
-To better illustrate the classification results we can generate and plot a cross section of the point cloud (see section \@ref(crossection)).
+To better illustrate the classification results we can generate and plot a cross section of the point cloud (see section \@ref(plot-crossection)).
 
 ```{r plot-gnd-crossection, fig.height=2, fig.width=8}
 p1 <- c(273420, 5274455)
@@ -72,7 +72,7 @@ After this adjustment the classification result changed, and points in the canop
 plot_crossection(las, p1 = p1, p2 = p2, colour_by = factor(Classification))
 ```
 
-## Cloth Simulation Function
+## Cloth Simulation Function {#csf}
 
 Cloth simulation filtering (CSF) is based on [Zhang et al 2016](http://www.mdpi.com/2072-4292/8/6/501/htm) and consists of simulating a piece of cloth draped over a reversed point cloud. In this method the point cloud is turned upside down and then a  cloth is dropped on the inverted surface. Ground points are determined by analyzing the interactions between the nodes of the cloth and the inverted surface. The cloth simulation itself is based on a grid that consists of particles with mass and interconnections that together determine the three-dimensional position and shape of the cloth.
 
@@ -107,17 +107,17 @@ gnd <- filter_ground(las)
 plot(gnd, size = 3, bg = "white") 
 ```
 
-## Edge artifacts {#buffer}
+## Edge artifacts {#edge-artifact}
 
 No matter which algorithm is used in `lidR` or other software, ground classification will be weaker at the edges of point clouds as the algorithm must analyze the local neighbourhood (which is missing on edges). To find ground points, an algorithm need to analyze the local neighborhood or local context that is missing at edge areas. When processing point clouds it's important to always consider a buffer around the region of interest to avoid edge artifacts. `lidR` has tools to manage buffered tiles and this advanced use of the package will be covered in section \@ref(engine).
 
-## How to choose a method and its parameters?
+## How to choose a method and its parameters? {#method-selection}
 
 Identifying the optimal algorithm parameters is not a trivial task and often requires several trial runs. `lidR` proposes several algorithms, and may propose even more in future versions, however the main goal is to provide a mean to compare outputs. We don't know which one is better, and we don't know which parameters best suit a given terrain. It's likely that parameters need to be dynamically adjusted to the local context, providing reasoning for why parameters works in one file may provide inadequate results in another.
 
 If available, we recommend using classifications given by the data provider. `classify_ground()`is useful for small to medium size unclassified region of interests because it is feasible to visually assess classification results. For large acquisitions where visual assessment is no longer feasible, we do not recommend performing ground classification without studying its accuracy ahead of time.
 
-## Other methods
+## Other methods {#other}
 
 Ground segmentation is not limited to the 2 methods described above. Many more have been presented and described in the literature. In section \@ref(plugins) we will learn how to create a plugin algorithm and test it seamlessly in R with `lidR` using a syntax like:
 

@@ -212,7 +212,7 @@ plot(crowns, col = pastel.colors(200))
 
 The output is a `RasterLayer`, for which `lidR` does not provide any processing tools. At this stage it is up to the user to find the required tools to perform more analysis. The `raster` package is a good place to start!
 
-### Comparaison of tree segmentations
+### Comparaison of tree segmentations {#its-comparaison}
 
 At the point cloud level it's pretty easy to compare tree segmentations by choosing a different attribute name for each method. For example we can compare `dalponte2016` (which is a raster based methods in two steps) and `li2012` (which is an *"all-in-one"* point cloud based method) side by side.
 

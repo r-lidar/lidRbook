@@ -37,7 +37,7 @@ Let's continue with the bicubic spline interpolation method for creating a digit
 dtm <- grid_terrain(las, algorithm = mba(n = 1, h = 8))
 ```
 
-## Understanding lidR algorithms
+## Understanding lidR algorithms {#plugin-system}
 
 In `lidR`, an algorithm such as `tin()`, `p2r()` or `lmf()` is a function factory. The output is functions with extra classes so regular users wont immediately recognize that they are functions.
 
@@ -62,7 +62,7 @@ function(what, where, scales = c(0,0), offsets = c(0,0))
 
 When creating a new algorithm for spatial interpolation, the function factory must return a function similar to what you see above. In the case of spatial interpolation `what` is a `data.frame` with X Y and Z coordinates of ground points. `where` is a `data.frame` with the X Y coordinates of the location where we want to interpolate Z. It also receives `scale` and `offset` but we can ignore them in this case. The function returns a vector of Z coordinates at these locations.
 
-## Creation of the `mba` algorithm
+## Creation of the `mba` algorithm {#plugin-creation}
 
 Now let's create our `mba` algorithm. 
 
@@ -111,6 +111,6 @@ It will even fail nicely if used poorly!
 grid_canopy(las, 1, mba())
 ```
 
-## What about other algorithms?
+## What about other algorithms? {#plugin-extensions}
 
 `lidR` has algorithms for canopy height models, individual tree segmentation, individual tree detection, sensor tracking, snag segmentation and so on. They all have different behaviors and this is why it's difficult to document. If you want to create a new algorithm the best first step is to communicate directly with `lidR` developers :). The [`lidRplugins`](https://github.com/Jean-Romain/lidRplugins) package makes heavy use of the plugins system to provide extra methods for diverse tasks.

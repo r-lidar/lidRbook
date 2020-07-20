@@ -14,7 +14,7 @@ library(lidR)
 
 # Derived metrics at the tree level {#tba}
 
-## Overview
+## Overview {#tba-overview}
 
 The "tree" level of regularization corresponds to the computation of derived metrics centered on each tree using the points that belong to each tree. Derived metrics calculated at tree level are the basis for an inventory at the individual tree level or the basis for individual species identification.
 
@@ -41,10 +41,10 @@ Like other functions seen in sections \@ref(cba) and \@ref(aba), users can creat
 ```{r}
 custom_tree_metrics <- function(z, i) { # user-defined function
   metrics <- list(
-     z_max <- max(z),     # max height
-     z_sd <- sd(z),       # vertical variability of points
-     i_mean <- mean(i), # mean intensity
-     i_max  <- max(i)   # max intensity
+     z_max = max(z),     # max height
+     z_sd = sd(z),       # vertical variability of points
+     i_mean = mean(i), # mean intensity
+     i_max  = max(i)   # max intensity
    )
    return(metrics) # output
 }
@@ -57,9 +57,9 @@ crowns_metrics <- delineate_crowns(las, func = ~custom_tree_metrics(z = Z, i = I
 spplot(crowns_metrics, "z_max", col.regions = hcl.colors(30)) # some plotting
 ```
 
-## Applications
+## Applications {#tba-applications}
 
-### Selection of trees
+### Selection of trees {#tba-applications-tree-selection}
 
 `tree_metrics()` gives the ID of trees and associated metrics. We can use these data to filter the scene and remove trees with a low intensity.
 
@@ -72,7 +72,7 @@ x <- plot(las, bg = "white", size = 4)
 plot(subset, add = x + c(-100, 0), size = 5) # some plotting
 ```
 
-### Tree based inventory
+### Tree based inventory {#tba-applications-tree-inventory}
 
 Assuming we know a relationship between the derived metrics and a value of interest `G` - such as the biomass of a tree - we can map the resource. Lets assume that $G = 0.7 \times z_{max} + 0.1 \times i_{mean}$. In real life a value of interest is more likely to be related to the crown size, but this is a simplified example. First we can compute `G` for each tree:
 

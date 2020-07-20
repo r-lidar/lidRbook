@@ -35,7 +35,7 @@ plot(las, size = 3, bg = "white")
 ```
 
 
-## Triangular irregular network
+## Triangular irregular network {#tin}
 
 This method is based on triangular irregular network (TIN) of ground point data to derive a bivariate function for each triangle, which is then used to estimate the values at unsampled locations (between known ground points). 
 
@@ -59,7 +59,7 @@ plot_dtm3d(dtm_tin, bg = "white")
 
 Notice the ugly edge interpolations. This occurs because we didn't process with a buffer.
 
-## Invert distance weighting
+## Invert distance weighting {#idw}
 
 Invert distance weighting (IDW) is one of the simplest and most readily available methods that can be applied to create DTMs. It is based on an assumption that the value at an unsampled point can be approximated as a weighted average of values at points within a certain cut-off distance _d_, or from a given number _k_ of closest neighbours. Weights are usually inversely proportional to a power _p_ of the distance between the location and the neighbour, which leads to the computing of an estimator.
 
@@ -91,7 +91,7 @@ lines(X,Z)
 par(opar)
 ```
 
-## Kriging
+## Kriging {#kriging}
 
 Kriging is the most advanced approach and utilizes advanced geostatistical interpolation methods that take into account the relationships between the returns and their respective distances from each other. `lidR` uses the package `gstat` to perform the kriging. This method is very advanced, difficult to manipulate, and extremely slow to compute, but probably provides the best results with minimal edge artifacts.
 
@@ -104,7 +104,7 @@ plot_dtm3d(dtm_kriging, bg = "white")
 
 Notice that the algorithm has issues interpolating regions with missing point such as lakes.
 
-## Pros and cons
+## Pros and cons {#dtm-pros-cons}
 
 - **Triangulation** is a very fast and efficient method that generates very good DTMs and is robust to empty regions inside the point cloud. It is however weak at edges. Although `lidR` uses the nearest neighbour to complete the missing pixel out of the convex hull of the ground points the interpolation remains poor. This algorithm must therefore always be used with a buffer of extra points to ensure that the region of interest is not on an edge. The TIN method is recommended for broad DTM computation but should be avoided for small regions of interest loaded without buffers.
 
@@ -114,7 +114,7 @@ Notice that the algorithm has issues interpolating regions with missing point su
 
 Whatever the method used, edges are critical. Results will always be weak if the method needs to guess the local topography with only partial information on the neighborhood. Though different methods provide better and worse estimates in these regions, best practice is to **always** use a buffer to obtain some information about the neighborhood and remove the buffer once the terrain is computed.
 
-## Other methods
+## Other methods {#dtm-other}
 
 Spatial interpolation is not limited to the 3 methods described above. Many more have been presented and described in the literature. In section \@ref(plugins) we will learn how to create a plugin algorithm compatible with `grid_terrain()` based on a multilevel B-spline approximation (MBA) using the [`MBA`](https://cran.r-project.org/web/packages/MBA/index.html) package.
 

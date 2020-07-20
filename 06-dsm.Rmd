@@ -32,7 +32,7 @@ las <- readLAS(LASfile)
 plot(las, size = 3,bg = "white")
 ```
 
-## Point-to-raster
+## Point-to-raster {#p2r}
 
 Point-to-raster algorithms are conceptually simple, consisting of establishing a grid at a user defined resolution and attributing the elevation of the highest point to each pixel. Algorithmic implementations are computationally simple and extremely fast. In the first example we will set the pixel size to `1` and set `algorithm = p2r()`.
 
@@ -93,7 +93,7 @@ chm <- grid_canopy(las, res = 0.5, p2r(0.2, na.fill = tin()))
 plot(chm, col = col)
 ```
 
-## Triangulation
+## Triangulation {#chm-tin}
 
 The triangulation algorithm works by first creating a triangular irregular network (TIN) using first returns only, followed by interpolation within each triangle to compute an elevation value for each pixel of a raster. In its simplest form, this method consists of a strict 2-D triangulation of first returns. Despite being more complex compared to the point-to-raster algorithm, an advantage of the triangulation approach is that it is parameter free and it does not output empty pixels, regardless of the resolution of the output raster (i.e. the entire area is interpolated). 
 
@@ -127,7 +127,7 @@ chm <- grid_canopy(las2, res = 0.5, algorithm = dsmtin(max_edge = 8))
 plot(chm, col = col)
 ```
 
-## Pit-free algorithm
+## Pit-free algorithm {#pitfree}
 
 More advanced algorithms have also been designed that avoid pits during the computation step instead of requiring post-processing. [Khosravipour et al. (2014)](https://www.ingentaconnect.com/content/asprs/pers/2014/00000080/00000009/art00003?crawler=true) proposed a ‘pit-free’ algorithm, which consists of a series of sequential height thresholds where Delaunay triangulations are applied to first returns. For each threshold, the triangulation is cleaned of triangles that are too wide, similar to the example given in the previous section. In a final step, the partial rasters are stacked and only the highest pixels of each raster are retained (figure below). The output is a DSM that is expected to be natively free of pits without using any post-processing or correction methods. 
 
@@ -180,7 +180,7 @@ chm <- grid_canopy(las, res = 0.5, pitfree(subcircle = 0.15))
 plot(chm, col = col)
 ```
 
-## Post-processing a CHM
+## Post-processing a CHM {#chm-post-process}
 
 CHMs are usually post-processed to smooth or to fill empty pixels. This is mainly because most publications use a point-to-raster approach without any tweaks. One may want to apply a post-processing step to the CHM. Sadly `lidR` does not provide any tools for that. `lidR` is a point cloud oriented software. Once a function has returned a raster, the job of the `lidR` package has ended. Futher work requires other dedicated tools to process rasters. The `raster` package is one of those. The code below presents a simple option to fill NAs and smooth a CHM with the `raster` package. For more details see the documentation of the package `raster`.
 

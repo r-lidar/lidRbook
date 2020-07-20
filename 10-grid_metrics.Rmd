@@ -14,7 +14,7 @@ library(lidR)
 
 # Derived metrics at the grid level {#aba}
 
-## Overview
+## Overview {#aba-overview}
 
 The "grid" level of regularization corresponds to the computation of derived metrics for regularly spaced locations in 2D. Derived metrics calculated at grid level are the basis of the area-based approach (ABA) that we discuss with in more detail in section \@ref(modeling-aba). In brief, the ABA allows the creation of wall-to-wall predictions of forest inventory attributes (e.g. basal area or total volume per hectare) by linking ALS variables with field measured references. ABA is one application of derived metrics at the grid level but not the only one.
 
@@ -75,9 +75,9 @@ metrics <- grid_metrics(las, ~metrics_custom(z=Z), 10) # calculate grid metrics
 plot(metrics, col = height.colors(50)) # some plotting
 ```
 
-## Applications
+## Applications {#aba-applications}
 
-### Modeling
+### Modeling {#aba-applications-modeling}
 
 All `*_metrics` functions can map any kind of formula as long as it returns a number or a list of numbers, meaning that that it's possible to input an expression derived from a predictive model to map the resource. In the section \@ref(cba) we made a model that can be written $0.7018 \times pzabove2 + 0.9268 \times zmax$. We can map this predictive model with a resolution of 10 meters:
 
@@ -86,7 +86,7 @@ prediction <- grid_metrics(las, ~0.7018 * sum(Z > 2)/length(Z) + 0.9268 *max(Z),
 plot(prediction, col = height.colors(50)) # some plotting
 ```
 
-### Density
+### Density {#aba-applications-density}
 
 Point density is the number of points within a pixel divided by the area of the pixel.
 
@@ -101,7 +101,7 @@ When using only the first returns, the same formula gives the pulse density inst
 density <- grid_metrics(las, ~length(Z)/16, 4, filter = ~ReturnNumber == 1L)
 ```
 
-### Intensity
+### Intensity {#aba-applications-intensity}
 
 It's possible to generate a map of the average intensity of first return only
 
@@ -110,7 +110,7 @@ imap <- grid_metrics(las, ~mean(Intensity), 4, filter = ~ReturnNumber == 1L) # m
 plot(imap, col = heat.colors(50)) # some plotting
 ```
 
-### Other
+### Other {#aba-applications-other}
 
 Many other raster-based applications can be derived with adequate metrics. In section \@ref(outbox) we will see some out of the box possibilities to demonstrate how the concept of metrics can be leveraged to design new applications. A simple uncommon application could be to map the ratio between multiple returns and single returns. 
 

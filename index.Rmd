@@ -12,25 +12,23 @@ description: "A guide to the `lidR` package"
 
 `lidR` is an R package for manipulating and visualizating airborne laser scanning (ALS) data with an emphasis on forestry applications. The package is entirely open source and is integrated within the geospatial R ecosytem (i.e. `raster`, `sp`, `sf`, `rgdal` etc.). This guide has been written to help both the ALS novice, as well as seasoned point cloud processing veterans. Key functionality of `lidR` includes functions to:
 
-* Read and write `.las` and `.laz` files and render customized point-cloud display (chapter \@ref(io))
-* Process point clouds including point classification (chapter \@ref(gnd)),  digital terrain models (chapter \@ref(dtm)), normalization (chapter \@ref(norm)) and digital surface models (chapter \@ref(chm))
-* Perform individual tree segmentation (chapter \@ref(its))
-* Compute standard and user-defined metrics at different levels of regularisation (chapters \@ref(metrics), \@ref(cba), \@ref(aba), \@ref(tba), \@ref(vba) and \@ref(pba))
-* Manage processing for sets of point-cloud files - referred to as a `LAScatalog` (chapters \@ref(engine) and \@ref(engine2))
-* Guidelines for implementing area-based approaches to forest modelling using ALS data (chapter \@ref(modeling-aba))
-* Facilitate user-defined processing streams for research and development (chapter \@ref(outbox))
-* Discover the plugin system (chapter \@ref(plugins))
+* Read and write `.las` and `.laz` files and render customized point-cloud display (section \@ref(io))
+* Process point clouds including point classification (section \@ref(gnd)),  digital terrain models (section \@ref(dtm)), normalization (section \@ref(norm)) and digital surface models (section \@ref(chm))
+* Perform individual tree segmentation (section \@ref(itd-its))
+* Compute standard and user-defined metrics at different levels of regularisation (sections \@ref(metrics), \@ref(cba), \@ref(aba), \@ref(tba), \@ref(vba) and \@ref(pba))
+* Manage processing for sets of point-cloud files - referred to as a `LAScatalog` (sections \@ref(engine) and \@ref(engine2))
+* Guidelines for implementing area-based approaches to forest modelling using ALS data (section \@ref(modeling-aba))
+* Facilitate user-defined processing streams for research and development (section \@ref(outbox))
+* Discover the plugin system (section \@ref(plugins))
 
 The current release version of `lidR` can be found on [CRAN](https://cran.r-project.org/web/packages/lidR/) and the source code is hosted on [GitHub](https://github.com/Jean-Romain/lidR).
 
 Development of the `lidR` package between 2015 and 2018 was made possible thanks to the financial support of the AWARE project [NSERC CRDPJ 462973-14](https://aware.forestry.ubc.ca/); grantee [Prof. Nicholas C. Coops](https://profiles.forestry.ubc.ca/person/nicholas-coops/).
 
-Development of the `lidR` package between 2018 and 2020 was made possible thanks to the financial support of the Ministère des Forêts, de la Faune et des Parcs of Québec.
+Development of the `lidR` package between 2018 and 2020 was made possible thanks to the financial support of the [Ministère des Forêts, de la Faune et des Parcs of Québec](https://mffp.gouv.qc.ca/).
 
 --------
 
 _This book was created to provide hands on descriptions and tutorials for using `lidR` and is **not** the formal package documentation. The comprehensive package documentation is shipped with the package._
 
-<center>
 ![](images/logo.png)
-</center>

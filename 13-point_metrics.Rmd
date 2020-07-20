@@ -14,7 +14,7 @@ library(lidR)
 
 # Derived metrics at point level {#pba}
 
-## Overview
+## Overview {#pba-overview}
 
 The "point" level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The `point_metrics()` function allows calculation of point-based metrics and works like `cloud_metrics()`, `grid_metrics()`, `hexbin_metrics()`, `tree_metrics()` or `voxel_metrics()` seen in section \@ref(metrics), \@ref(cba), \@ref(aba), \@ref(tba) and \@ref(vba). Refer to these sections for a more comprehensive overview.
 
@@ -53,9 +53,9 @@ metrics <- point_metrics(las, ~list(imean = mean(Intensity)), k = 7, filter = ~I
 metrics
 ```
 
-## Applications
+## Applications {#pba-applications}
 
-### Roof segmentation
+### Roof segmentation {#pba-applications-roof}
 
 Roofs are flat areas. [Limberger et al. (2015)](https://doi.org/10.1016/j.patcog.2014.12.020) described a method to find flat areas in a point clouds using an eigen values decomposition. Using a user-defined function we can use `point_metrics()` to create this algorithm. In this example we will use the following urban scene:
 
@@ -132,7 +132,7 @@ We can do this... but we know that not everyone is well versed in C++. `lidR` th
 las <- segment_shape(las, shp_plane(k = 25), "planar")
 ```
 
-### Lake and wire segmentation
+### Lake and wire segmentation {#pba-applications-wire}
 
 Eigen value decomposition applied using `point_metrics()` opens a lot of possibilities. For example, by tweaking the previous example we can design a lake segmentation algorithm. A lake is a planar region with a vertical normal vector, so to create a lake segmentation we simply need to add such constraints in `is.planar()`.
 
@@ -167,7 +167,7 @@ Again, `lidR` has a dedicated function for this specific task because we believe
 las <- segment_shape(las, shp_line(th = 8, k = 15), "linear")
 ```
 
-### Multi-spectral coloring {#sec:pba-mscoloring}
+### Multi-spectral coloring {#pba-applications-coloring}
 
 `point_metrics()` is not limited to eigen value related metrics. It is only limited by a users imagination. In the following example we will demonstrate how it an be used to attribute false colors to a multi-spectral point cloud. Multi-spectral ALS data are sampled with 3 scanners each emitting a different wavelength. The point cloud is usually provided in the form of 3 `.las` files where each file corresponds to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red and the third as green, and thus consider that each point has a pure color.
 
@@ -217,7 +217,7 @@ plot(colored, color = "RGB", size = 3)
 
 This method is a bit naive 'as is'. First, the intensities returned by each channel are not comparable and required to be normalized. We could also argue about the choice of discarding RGB = `NA`. Instead we could have chosen to set a pure color. To finish, enforcing a maximum value to 255 works in this specific example because very few intensity values are actually above 255 but is meaningless in a general case. Either way, this is only a demo to show how to think out of the box with `point_metrics()`.
 
-### Outlier filtering
+### Outlier filtering {#pba-applications-outliers}
 
 An outlier is a point that is alone compared to other points. Outliers are usually high points with no close neighbors. The term "no close neighbor" can have several formal definitions such as *no neighbors closer than x meters* or *less than n neighbors within a distance x meter* among others. In all cases, it can be estimated with metrics and thus `point_metrics()` enables the design of an outlier filter method. 
 

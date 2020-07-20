@@ -10,7 +10,7 @@ This section presents a complete workflow about processing ALS point cloud data 
 library(sf)
 ```
 
-## Read in data
+## Read in data {#modeling-read-data}
 
 The function `readLAScatalog()` seen in section \@ref(engine) builds a `LAScatalog` object from a folder. Make sure the ALS files have associated index files - for details see: [Speed-up the computations on a LAScatalog](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html).
 
@@ -71,7 +71,7 @@ plot(plots, add = TRUE, col = "red")
 
 We have now prepared both our ALS and plot inventory data and can begin ABA processing.
 
-## ABA Processing
+## ABA Processing {#modeling-build-model}
 
 ### Step 1 - Clip ALS ground inventory
 

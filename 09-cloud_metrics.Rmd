@@ -15,7 +15,7 @@ library(lidR)
 
 # Derived metrics at the cloud level {#cba}
 
-## Overview
+## Overview {#cba-overview}
 
 The "cloud" level of regularization corresponds to the computation of derived metrics using all available points. As seen in section \@ref(metrics), calculating derived metrics for the whole point cloud is straightforward and users only need to provide a formula to calculate metric(s) of interest. For example, to calculate the average height (`mean(Z)`) of all points we can run the following:
 
@@ -33,7 +33,7 @@ metrics <- cloud_metrics(las, func = .stdmetrics_z)
 head(metrics) # output is a list
 ```
 
-## Applications
+## Applications {#cba-applications}
 
 Point cloud metrics become interesting when computed for a set of plot inventories. In this case it can serve to compute a set of metrics for each plot, where known attributes have been measured in the field to construct a predictive model.
 

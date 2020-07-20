@@ -52,13 +52,13 @@ This takes a significant amount of time. It also implies the need to create copi
 
 **What if we were able to do that in a single run?**
 
-## `catalog_apply()`
+## `catalog_apply()` {#engine-catalog-apply}
 
 In this section we outline the `catalog_apply()` function, which is used subliminally in every function seen in the section \@ref(engine). Here we show how to leverage its versatility to design tools that do not yet exist like the DTM + normalization + colorization example from above but also more inovative processes. 
 
 Again, the `LAScatalog` class and the `LAScatalog` engine are deeply documented in a two dedicated vignettes available [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-class.html) and [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-engine.html). The purpose of these examples is to provide alternative, hands-on documentation with more applied examples and real use cases. 
 
-In this section we will use the same 9 files used in section \@ref(engine) section \@ref(files) and an RGB raster that encompasses the collection of file.
+In this section we will use the same 9 files used in section \@ref(engine) and an RGB raster that encompasses the collection of file.
 
 ```{r plot-ctg-engine2, fig.height=4, fig.width=4}
 ctg <- readLAScatalog("data/ENGINE/catalog/")
@@ -76,7 +76,7 @@ rgbmap <- stack("data/ENGINE/catalog/rgb.tif")
 plotRGB(rgbmap)
 ```
 
-## Create user-defined function
+## Create user-defined function {#engine-user-function-generic}
 
 First we need to create a function that combined the DTM + normalization + colorization steps. Let's call it `dtm_norm_color()`. Its simple and uses only 3 functions.
 
@@ -103,7 +103,7 @@ It works! We have a workable function that performs on a point cloud. Remember t
 
 So far it works only when using a `LAS` object. Now let's make it working with a `LAScatalog`.
 
-## Create an intermediate function for `catalog_apply()`
+## Create an intermediate function for `catalog_apply()` {#engine-user-function-extended}
 
 The core engine is the function `catalog_apply()` but this function does not work with any user-defined function. User-defined functions must respect a specific template (take a look at the documentation in R) and is expected to perform some specific tasks. First, the primary variable must be a chunk from the catalog within the function (see `chunk` below), the function must read the chunk, check it is not empty, then perform the computation.
 
@@ -187,7 +187,7 @@ las <- clip_circle(output, 338800, 5238500, 40)
 plot(las, color = "RGB", size = 6, bg = "white")
 ```
 
-## Make a user-friendly function for third party users
+## Make a user-friendly function for third party users {#engine-user-function-lascatalog}
 
 When designing tools that will be used by third parties, we would like to hide `catalog_apply()` and intermediate functions inside a more user-friendly function similarly to how `lidR` functions that work the same both with a `LAS` or a `LAScatalog`. Moreover we would like to make the function foolproof for users. To do this we can create 3 functions `dtm_norm_color()` with a [S3 dispatch](http://adv-r.had.co.nz/S3.html) as a function of the input. 
 
@@ -235,7 +235,7 @@ opt_output_files(ctg) <- paste0(tempdir(), "/{*}_norm_rgb")
 ctg_norm_colored <-  dtm_norm_color(ctg, rgbmap)
 ```
 
-## Make a safe function for third party users
+## Make a safe function for third party users {#engine-user-function-safe}
 
 At this stage our function is almost finished. However it is not foolproof. What if the user of this new function does not provide any output path template? The point cloud in each chunk will be loaded in memory and will be retained in memory until it eventually becomes full and R crashes. We must prevent the use of the function if no path to the disk is given.
 
@@ -262,4 +262,4 @@ It failed with an informative message!
 
 We are done. This is exactly how the `lidR` package works and we have presented all the tools needed to extent it with new applications. 
 
-More examples can be found further along in this book. For example section \@ref(outbox-dr) presents how to compute a raster of the average distance between first and last returns, and section \@ref(outbox-rumple) presents how to compute a rumple index of the canopy from the point cloud and of course the documentation of the package itself is more comprehensive than this book.
+More examples can be found further along in this book. For example section \@ref(outbox-distance-returns) presents how to compute a raster of the average distance between first and last returns, and section \@ref(outbox-rumple-index) presents how to compute a rumple index of the canopy from the point cloud and of course the documentation of the package itself is more comprehensive than this book.

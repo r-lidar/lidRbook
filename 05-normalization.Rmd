@@ -40,7 +40,7 @@ The goal of normalization is to get a flat terrain. Two normalization approaches
 1. Subtract the derived raster DTM (section \@ref(dtm)) elevation from all non-ground returns.
 2. Interpolate ground points directly and subtract beneath the non-ground returns.
 
-## DTM normalization
+## DTM normalization {#norm-dtm}
 
 To normalize points using a DTM we first need to create the DTM itself. For this we use the `grid_terrain()` function (see section \@ref(dtm)). For this example we chose to use a grid resolution of 1 m and to use the `knnidw()` algorithm with default parameters.
 
@@ -73,7 +73,7 @@ hist(filter_ground(nlas)$Z, breaks = seq(-0.45, 0.45, 0.01), main = "", xlab = "
 
 In this case it doesn't seem to have helped, perhaps even making it worse. This is the limit of the raster-based method. It does not come from how the DTM has been built but how the DTM has been stored. A raster is a discretized storage mode, a DTM is a continuous structure. Storing the last in the first implies information loss.
 
-## Point cloud normalization
+## Point cloud normalization  {#norm-point-cloud}
 
 Point cloud normalization without a DTM interpolates the elevation of every single point locations using ground points. It no longer uses elevations at discrete predefined locations. Thus the methods is exact, **computationally speaking**. It means that it is equivalent to using a continuous DTM but it is important to recall that all interpolation methods are interpolation and by definition make guesses with different strategies. Thus by "exact" we mean "continuous". To compute the continuous normalization, we can feed `normalize_height()` with an algorithm for spatial interpolation instead of a `RasterLayer`.
 
@@ -89,11 +89,11 @@ hist(filter_ground(nlas)$Z, breaks = seq(-0.45, 0.45, 0.01), main = "", xlab = "
 
 One can reproduce this with other algorithm such as `tin()`. It's also important to recall buffer and edge artifacts also apply here
 
-## Pros and cons
+## Pros and cons {#norm-pros-cons}
 
 Point cloud based normalization is superior in terms of compuational accuracy by normalizing with a continuous terrain instead of a discretized terrain. It is however computationally intensive compared to a raster-based method. In addition raster DTMs are storable on disk and can be loaded quicky to be used to normalize different data sets, while point cloud based methods need to be recomputed for each point cloud. It's up to the user to choose which method best suits their needs. `lidR` provides the options.
 
-## Reversing normalization
+## Reversing normalization {#norm-reverse}
 
 `lidR` also has the capacity to reverse normalization using the `unnormalize_height` function. This reverts the normalized point cloud to its pre-normalized state.
 

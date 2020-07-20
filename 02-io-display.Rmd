@@ -50,7 +50,7 @@ print(las)
 
 For a more in-depth print out of the data use the function `summary()` instead of `print()`.
 
-### Parameter `select`
+### Parameter `select` {#select}
 
 A LAS file stores the `X Y Z` coordinates of each point as well as many other data such as intensity, incidence angle, and return sequence position. We call these data *attributes*. In pratice many attributes are not actually useful but they are loaded anyway by default. This can take up a lot of processing memory because R is a language that does not allow for choosing data storage modes (see [this vignette]((https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAS-class.html)) for more details).
 
@@ -121,7 +121,7 @@ las <- readLAS(LASfile)
 
 The `lidR` package takes advantage of the [`rgl`](https://cran.r-project.org/package=rgl) package to provide a versatile and interactive 3D viewer with points colored by Z coordinates on a black background as default.
 
-### Basic 3D rendering
+### Basic 3D rendering {#plot-3d}
 
 The very basic way to render a point cloud is the function `plot()`.
 
@@ -152,7 +152,7 @@ The `trim` parameter enables trimming of values when outliers break the color pa
 plot(las, color = "Intensity", trim = 1800, bg = "white")
 ```
 
-### Overlays
+### Overlays {#plot-overlay}
 
 The package also provides some easy to use functions for common overlay. For example `add_dtm3d()` to add a digital terrain model (section \@ref(dtm)) and `add_treetops3d()` to visualize the output of an individual tree detection (section \@ref(itd))
 
@@ -193,7 +193,7 @@ x <- plot(nonveg, color = "Classification", bg = "white", size = 3)
 plot(veg, add = x)
 ```
 
-### Advanced 3D rendering
+### Advanced 3D rendering {plot-advanced}
 
 With `lidR` being based on `rgl` it is easy to add objects in the main rendering using `rgl` functions such as `rgl::point3d()`, `rgl::text()`, `rgl::surface3d()` and so on to produce publication ready rendering.  However `lidR` introduced an additional challenge because it does not display the points with their actual coordinates. The points are shifted to be rendered close to (0, 0) (a matter of accuracy because `rgl` uses `float` (decimal numbers on 32 bits) instead of `double` (decimal numbers on 64 bits)). When `plot()` is used it invisibly returns the shift values that can be used later to realign other objects.
 
@@ -241,7 +241,7 @@ for (i in 1:length(ttops)) {
 }
 ```
 
-### Cross sections 2D rendering {#crossection}
+### Cross sections 2D rendering {#plot-crossection}
 
 ```{r, echo=F}
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")

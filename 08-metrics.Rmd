@@ -33,7 +33,7 @@ In the majority of cases, derived metrics are calculated based on point heights 
 
 A metric is simply a number derived from the attribute of a subset of points. Thus the potential number of metrics that can be calculated is very large and only limited by user's imagination. There are however published studies that discuss the usefulness of different metrics for modeling and standard sets of metrics exist.
 
-## The basics
+## The basics {#metrics-basics}
 
 While there are some differences between functions dedicated to metric computations the basic idea is the same for all of them. In addition to the input point cloud, the user needs to provide a formula to calculate the metric(s) of interest. For example, the average height of points for the point cloud, for each pixel, for each tree crown, or for each voxel can be be calculated using `mean(Z)`.
 
@@ -46,7 +46,7 @@ voxel_metrics(las, func = ~mean(Z))
 
 All the functions work the same way but the output format depends on the regularization level. In each case, outputs will be a different class (i.e. a `list`, a `RasterBrick`, a `SpatialPointsDataFrame` or a `data.frame`) to take advantage of the best storage method, but the same two metrics will be calculated for every unit of analysis. 
 
-## User-defined metrics
+## User-defined metrics {#metrics-user-defined}
 
 In the example above only a single metric is calculated - the mean elevation of the points. Calculations can however be easily extended to any number of user-defined metrics. To do this, users can design custom functions. The function can contain any number of metrics, but needs to return a labeled `list`. For example, to calculate the mean of elevation, and the standard deviation and mean of intensity, the following function can be used:
 
@@ -70,7 +70,7 @@ voxel_metrics(las, func = ~f(Z, Intensity))
 
 While any metric can be computed at any level of regularization, it's important to recognize that they may not all be meaningful. For example, the average elevation of points has a meaning at the pixel level or at the tree level but not at the voxel level. Indeed at the voxel level it corresponds to the average elevation of the points within the voxel i.e. more or less the Z coordinate of the voxel. This in the end needs to be conisered by the user. Perhaps asking _"does this metric make sense?"_ is a good place to start!
 
-## Pre-defined metrics
+## Pre-defined metrics {#metrics-pre-defined}
 
 The most commonly used metrics are already predefined in `lidR` - the `stdmetrics*()` group of functions contain metrics that summarize the vertical distribution of points, their intensities, and return structure. 
 
