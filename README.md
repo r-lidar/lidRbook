@@ -2,4 +2,8 @@ This online book provides tangible examples and insight for using the `lidR` pac
 
 **[Read the book :book:](https://jean-romain.github.io/lidRbook/)**
 
+The book is shared under [CC-BY-NC-SA 2.0](https://creativecommons.org/licenses/by-nc-sa/2.0/)
+
+[![](https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-sa.svg)](https://creativecommons.org/licenses/by-nc-sa/2.0/)
+
 To compile the book written with `bookdown` you need the following packages: `lidR` with main and suggested dependencies + `viridis`, `rayshader`, `deldir`, `forcat`, `ggplot2`, `magick`, `bookdown`, `MBA`. The compilation takes 10 minutes approximately.
