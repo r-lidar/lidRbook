@@ -83,15 +83,15 @@ plot(ctg)
 
 In this and the following section (section \@ref(engine2)) we will use a collection of nine 500 x 500 m files to create examples. The nine files can be downloaded here:
 
-1. [data/ENGINE/catalog/tiles_338000_5238000.laz](tiles_338000_5238000.laz)
-2. [data/ENGINE/catalog/tiles_338000_5238500.laz](tiles_338000_5238500.laz)
-3. [data/ENGINE/catalog/tiles_338000_5239000.laz](tiles_338000_5239000.laz)
-4. [data/ENGINE/catalog/tiles_338500_5238000.laz](tiles_338500_5238000.laz)
-5. [data/ENGINE/catalog/tiles_338500_5238500.laz](tiles_338500_5238500.laz)
-6. [data/ENGINE/catalog/tiles_338500_5239000.laz](tiles_338500_5239000.laz)
-7. [data/ENGINE/catalog/tiles_339000_5238000.laz](tiles_339000_5238000.laz)
-8. [data/ENGINE/catalog/tiles_339000_5238500.laz](tiles_339000_5238500.laz)
-9. [data/ENGINE/catalog/tiles_339000_5239000.laz](tiles_339000_5239000.laz)
+1. [tiles_338000_5238000.laz](data/ENGINE/catalog/tiles_338000_5238000.laz)
+2. [tiles_338000_5238500.laz](data/ENGINE/catalog/tiles_338000_5238500.laz)
+3. [tiles_338000_5239000.laz](data/ENGINE/catalog/tiles_338000_5239000.laz)
+4. [tiles_338500_5238000.laz](data/ENGINE/catalog/tiles_338500_5238000.laz)
+5. [tiles_338500_5238500.laz](data/ENGINE/catalog/tiles_338500_5238500.laz)
+6. [tiles_338500_5239000.laz](data/ENGINE/catalog/tiles_338500_5239000.laz)
+7. [tiles_339000_5238000.laz](data/ENGINE/catalog/tiles_339000_5238000.laz)
+8. [tiles_339000_5238500.laz](data/ENGINE/catalog/tiles_339000_5238500.laz)
+9. [tiles_339000_5239000.laz](data/ENGINE/catalog/tiles_339000_5239000.laz)
 
 ```{r plot-ctg-book-1, fig.height=4, fig.width=4}
 ctg <- readLAScatalog("data/ENGINE/catalog/")
