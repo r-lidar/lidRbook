@@ -346,17 +346,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; num. files  : 361</span></a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw">plot</span>(ctg)</a></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-catalog-hali-2-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>In this and the following section (section <a href="engine2.html#engine2">15</a>) we will use a collection of nine 500 x 500 m files to create examples. The nine files can be downloaded here:
-<a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000_1.laz" class="uri">https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000_1.laz</a>
-1. <a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000_1.laz">tiles_338000_5238000.laz</a>
-2. <a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238500_1.laz">tiles_338000_5238500.laz</a>
-3. <a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5239000_1.laz">tiles_338000_5239000.laz</a>
-4. <a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238000_1.laz">tiles_338500_5238000.laz</a>
-5. <a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238500_1.laz">tiles_338500_5238500.laz</a>
-6. <a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5239000_1.laz">tiles_338500_5239000.laz</a>
-7. <a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238000_1.laz">tiles_339000_5238000.laz</a>
-8. <a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238500_1.laz">tiles_339000_5238500.laz</a>
-9. <a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5239000_1.laz">tiles_339000_5239000.laz</a></p>
+<p>In this and the following section (section <a href="engine2.html#engine2">15</a>) we will use a collection of nine 500 x 500 m files to create examples. The nine files can be downloaded here:</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000_1.laz">tiles_338000_5238000.laz</a></li>
+<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238500_1.laz">tiles_338000_5238500.laz</a></li>
+<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5239000_1.laz">tiles_338000_5239000.laz</a></li>
+<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238000_1.laz">tiles_338500_5238000.laz</a></li>
+<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238500_1.laz">tiles_338500_5238500.laz</a></li>
+<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5239000_1.laz">tiles_338500_5239000.laz</a></li>
+<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238000_1.laz">tiles_339000_5238000.laz</a></li>
+<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238500_1.laz">tiles_339000_5238500.laz</a></li>
+<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5239000_1.laz">tiles_339000_5239000.laz</a></li>
+</ol>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">ctg &lt;-<span class="st"> </span><span class="kw">readLAScatalog</span>(<span class="st">&quot;data/ENGINE/catalog/&quot;</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">ctg</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; class       : LAScatalog (v1.0 format 1)</span></a>
@@ -457,12 +458,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="lidR-book_files/figure-html/plot-extracted-plots-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>We can check the files that were written on disk and see that the names match the template.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">rois<span class="op">$</span>filename</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; [1] &quot;/tmp/RtmpdGFsp5/339348.8_5239254_1.las&quot;</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; [2] &quot;/tmp/RtmpdGFsp5/339141.9_5238717_2.las&quot;</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; [3] &quot;/tmp/RtmpdGFsp5/338579.6_5238169_3.las&quot;</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; [4] &quot;/tmp/RtmpdGFsp5/338520.8_5239318_4.las&quot;</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; [5] &quot;/tmp/RtmpdGFsp5/338110_5239247_5.las&quot;  </span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; [6] &quot;/tmp/RtmpdGFsp5/339385_5239290_6.las&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; [1] &quot;/tmp/Rtmp88B3Tq/339348.8_5239254_1.las&quot;</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; [2] &quot;/tmp/Rtmp88B3Tq/339141.9_5238717_2.las&quot;</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; [3] &quot;/tmp/Rtmp88B3Tq/338579.6_5238169_3.las&quot;</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; [4] &quot;/tmp/Rtmp88B3Tq/338520.8_5239318_4.las&quot;</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; [5] &quot;/tmp/Rtmp88B3Tq/338110_5239247_5.las&quot;  </span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; [6] &quot;/tmp/Rtmp88B3Tq/339385_5239290_6.las&quot;</span></a></code></pre></div>
 </div>
 <div id="engine-options-index" class="section level3">
 <h3><span class="header-section-number">14.6.2</span> Multiple extraction with point cloud indexation</h3>
@@ -565,7 +566,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co">#&gt; resolution : 1, 1  (x, y)</span></a>
 <a class="sourceLine" id="cb19-7" data-line-number="7"><span class="co">#&gt; extent     : 338000, 339500, 5238000, 5239500  (xmin, xmax, ymin, ymax)</span></a>
 <a class="sourceLine" id="cb19-8" data-line-number="8"><span class="co">#&gt; crs        : +proj=utm +zone=19 +datum=WGS84 +units=m +no_defs </span></a>
-<a class="sourceLine" id="cb19-9" data-line-number="9"><span class="co">#&gt; source     : /tmp/RtmpdGFsp5/grid_terrain.vrt </span></a>
+<a class="sourceLine" id="cb19-9" data-line-number="9"><span class="co">#&gt; source     : /tmp/Rtmp88B3Tq/grid_terrain.vrt </span></a>
 <a class="sourceLine" id="cb19-10" data-line-number="10"><span class="co">#&gt; names      : layer </span></a>
 <a class="sourceLine" id="cb19-11" data-line-number="11"><span class="co">#&gt; values     : 534.024, 803.364  (min, max)</span></a>
 <a class="sourceLine" id="cb19-12" data-line-number="12"><span class="kw">inMemory</span>(dtm)</a>
@@ -649,15 +650,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In all the previous examples we have seen that the engine takes care of merging intermediate results into a single usable object. When intermediate results are stored on disk, the final results in R is a single lightweight object such as a <code>LAScatalog</code> or a Virtual Data set. This is not true for <code>find_trees()</code> and other functions that return <code>Spatial*</code> objects. The default behavior is to write shapefiles (<code>.shp</code>) and there is no way to build a light weight object. What is returned is thus a vector of written files.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">opt_output_files</span>(ctg_norm) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}&quot;</span>)</a>
 <a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw">find_trees</span>(ctg_norm, <span class="kw">lmf</span>(<span class="dv">4</span>), <span class="dt">uniqueness =</span> <span class="st">&quot;bitmerge&quot;</span>)</a>
-<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="co">#&gt; [1] &quot;/tmp/RtmpdGFsp5/tiles_338000_5238000_1_norm.shp&quot;</span></a>
-<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="co">#&gt; [2] &quot;/tmp/RtmpdGFsp5/tiles_338000_5238500_1_norm.shp&quot;</span></a>
-<a class="sourceLine" id="cb28-5" data-line-number="5"><span class="co">#&gt; [3] &quot;/tmp/RtmpdGFsp5/tiles_338000_5239000_1_norm.shp&quot;</span></a>
-<a class="sourceLine" id="cb28-6" data-line-number="6"><span class="co">#&gt; [4] &quot;/tmp/RtmpdGFsp5/tiles_338500_5238000_1_norm.shp&quot;</span></a>
-<a class="sourceLine" id="cb28-7" data-line-number="7"><span class="co">#&gt; [5] &quot;/tmp/RtmpdGFsp5/tiles_338500_5238500_1_norm.shp&quot;</span></a>
-<a class="sourceLine" id="cb28-8" data-line-number="8"><span class="co">#&gt; [6] &quot;/tmp/RtmpdGFsp5/tiles_338500_5239000_1_norm.shp&quot;</span></a>
-<a class="sourceLine" id="cb28-9" data-line-number="9"><span class="co">#&gt; [7] &quot;/tmp/RtmpdGFsp5/tiles_339000_5238000_1_norm.shp&quot;</span></a>
-<a class="sourceLine" id="cb28-10" data-line-number="10"><span class="co">#&gt; [8] &quot;/tmp/RtmpdGFsp5/tiles_339000_5238500_1_norm.shp&quot;</span></a>
-<a class="sourceLine" id="cb28-11" data-line-number="11"><span class="co">#&gt; [9] &quot;/tmp/RtmpdGFsp5/tiles_339000_5239000_1_norm.shp&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="co">#&gt; [1] &quot;/tmp/Rtmp88B3Tq/tiles_338000_5238000_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="co">#&gt; [2] &quot;/tmp/Rtmp88B3Tq/tiles_338000_5238500_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb28-5" data-line-number="5"><span class="co">#&gt; [3] &quot;/tmp/Rtmp88B3Tq/tiles_338000_5239000_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb28-6" data-line-number="6"><span class="co">#&gt; [4] &quot;/tmp/Rtmp88B3Tq/tiles_338500_5238000_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb28-7" data-line-number="7"><span class="co">#&gt; [5] &quot;/tmp/Rtmp88B3Tq/tiles_338500_5238500_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb28-8" data-line-number="8"><span class="co">#&gt; [6] &quot;/tmp/Rtmp88B3Tq/tiles_338500_5239000_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb28-9" data-line-number="9"><span class="co">#&gt; [7] &quot;/tmp/Rtmp88B3Tq/tiles_339000_5238000_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb28-10" data-line-number="10"><span class="co">#&gt; [8] &quot;/tmp/Rtmp88B3Tq/tiles_339000_5238500_1_norm.shp&quot;</span></a>
+<a class="sourceLine" id="cb28-11" data-line-number="11"><span class="co">#&gt; [9] &quot;/tmp/Rtmp88B3Tq/tiles_339000_5239000_1_norm.shp&quot;</span></a></code></pre></div>
 <div id="summary-4" class="section level3">
 <h3><span class="header-section-number">14.11.1</span> Summary</h3>
 <p>We have learned several things about the engine in this section</p>

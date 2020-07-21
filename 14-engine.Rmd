@@ -82,7 +82,7 @@ plot(ctg)
 ```
 
 In this and the following section (section \@ref(engine2)) we will use a collection of nine 500 x 500 m files to create examples. The nine files can be downloaded here:
-https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000_1.laz
+
 1. [tiles_338000_5238000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000_1.laz)
 2. [tiles_338000_5238500.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238500_1.laz)
 3. [tiles_338000_5239000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5239000_1.laz)
