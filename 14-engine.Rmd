@@ -82,16 +82,16 @@ plot(ctg)
 ```
 
 In this and the following section (section \@ref(engine2)) we will use a collection of nine 500 x 500 m files to create examples. The nine files can be downloaded here:
-
-1. [tiles_338000_5238000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000.laz)
-2. [tiles_338000_5238500.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238500.laz)
-3. [tiles_338000_5239000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5239000.laz)
-4. [tiles_338500_5238000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238000.laz)
-5. [tiles_338500_5238500.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238500.laz)
-6. [tiles_338500_5239000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5239000.laz)
-7. [tiles_339000_5238000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238000.laz)
-8. [tiles_339000_5238500.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238500.laz)
-9. [tiles_339000_5239000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5239000.laz)
+https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000_1.laz
+1. [tiles_338000_5238000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000_1.laz)
+2. [tiles_338000_5238500.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238500_1.laz)
+3. [tiles_338000_5239000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5239000_1.laz)
+4. [tiles_338500_5238000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238000_1.laz)
+5. [tiles_338500_5238500.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238500_1.laz)
+6. [tiles_338500_5239000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5239000_1.laz)
+7. [tiles_339000_5238000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238000_1.laz)
+8. [tiles_339000_5238500.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238500_1.laz)
+9. [tiles_339000_5239000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5239000_1.laz)
 
 ```{r plot-ctg-book-1, fig.height=4, fig.width=4}
 ctg <- readLAScatalog("data/ENGINE/catalog/")
