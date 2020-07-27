@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-07-20" />
+<meta name="date" content="2020-07-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -137,7 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3" data-path="io.html"><a href="io.html#plot"><i class="fa fa-check"></i><b>2.3</b> Plotting</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="io.html"><a href="io.html#plot-3d"><i class="fa fa-check"></i><b>2.3.1</b> Basic 3D rendering</a></li>
 <li class="chapter" data-level="2.3.2" data-path="io.html"><a href="io.html#plot-overlay"><i class="fa fa-check"></i><b>2.3.2</b> Overlays</a></li>
-<li class="chapter" data-level="2.3.3" data-path="io.html"><a href="io.html#advanced-3d-rendering-plot-advanced"><i class="fa fa-check"></i><b>2.3.3</b> Advanced 3D rendering {plot-advanced}</a></li>
+<li class="chapter" data-level="2.3.3" data-path="io.html"><a href="io.html#plot-advanced"><i class="fa fa-check"></i><b>2.3.3</b> Advanced 3D rendering</a></li>
 <li class="chapter" data-level="2.3.4" data-path="io.html"><a href="io.html#plot-crossection"><i class="fa fa-check"></i><b>2.3.4</b> Cross sections 2D rendering</a></li>
 </ul></li>
 </ul></li>
@@ -383,16 +383,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb174-2" data-line-number="2">output &lt;-<span class="st"> </span><span class="kw">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="dt">rgbmap =</span> rgbmap) <span class="co"># implement user-defined function using catalog_apply</span></a>
 <a class="sourceLine" id="cb174-3" data-line-number="3"><span class="kw">head</span>(output,<span class="dv">4</span>)</a>
 <a class="sourceLine" id="cb174-4" data-line-number="4"><span class="co">#&gt; [[1]]</span></a>
-<a class="sourceLine" id="cb174-5" data-line-number="5"><span class="co">#&gt; [1] &quot;/tmp/RtmpwO6JeO/tiles_338000_5238000_1_norm_rgb.las&quot;</span></a>
+<a class="sourceLine" id="cb174-5" data-line-number="5"><span class="co">#&gt; [1] &quot;/tmp/RtmpZ2TulT/tiles_338000_5238000_1_norm_rgb.las&quot;</span></a>
 <a class="sourceLine" id="cb174-6" data-line-number="6"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb174-7" data-line-number="7"><span class="co">#&gt; [[2]]</span></a>
-<a class="sourceLine" id="cb174-8" data-line-number="8"><span class="co">#&gt; [1] &quot;/tmp/RtmpwO6JeO/tiles_338000_5238500_1_norm_rgb.las&quot;</span></a>
+<a class="sourceLine" id="cb174-8" data-line-number="8"><span class="co">#&gt; [1] &quot;/tmp/RtmpZ2TulT/tiles_338000_5238500_1_norm_rgb.las&quot;</span></a>
 <a class="sourceLine" id="cb174-9" data-line-number="9"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb174-10" data-line-number="10"><span class="co">#&gt; [[3]]</span></a>
-<a class="sourceLine" id="cb174-11" data-line-number="11"><span class="co">#&gt; [1] &quot;/tmp/RtmpwO6JeO/tiles_338000_5239000_1_norm_rgb.las&quot;</span></a>
+<a class="sourceLine" id="cb174-11" data-line-number="11"><span class="co">#&gt; [1] &quot;/tmp/RtmpZ2TulT/tiles_338000_5239000_1_norm_rgb.las&quot;</span></a>
 <a class="sourceLine" id="cb174-12" data-line-number="12"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb174-13" data-line-number="13"><span class="co">#&gt; [[4]]</span></a>
-<a class="sourceLine" id="cb174-14" data-line-number="14"><span class="co">#&gt; [1] &quot;/tmp/RtmpwO6JeO/tiles_338500_5238000_1_norm_rgb.las&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb174-14" data-line-number="14"><span class="co">#&gt; [1] &quot;/tmp/RtmpZ2TulT/tiles_338500_5238000_1_norm_rgb.las&quot;</span></a></code></pre></div>
 <p>We see that the output is a <code>list</code> with the name of each file written to disk. This is the default behavior of the engine. It returns a <code>list</code> with one element per chunk. This isn’t really convenient. We have seen in section <a href="engine.html#engine">14</a> that in the case of <code>LAS</code> files we can return a <code>LAScatalog</code>, which is far more convenient.</p>
 <p>We can use the option <code>automerge = TRUE</code> so <code>catalog_apply()</code> will automatically merge the list into something more user-friendly.</p>
 <div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb175-1" data-line-number="1"><span class="kw">opt_output_files</span>(ctg) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</a>

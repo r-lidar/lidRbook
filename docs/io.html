@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-07-20" />
+<meta name="date" content="2020-07-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -137,7 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3" data-path="io.html"><a href="io.html#plot"><i class="fa fa-check"></i><b>2.3</b> Plotting</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="io.html"><a href="io.html#plot-3d"><i class="fa fa-check"></i><b>2.3.1</b> Basic 3D rendering</a></li>
 <li class="chapter" data-level="2.3.2" data-path="io.html"><a href="io.html#plot-overlay"><i class="fa fa-check"></i><b>2.3.2</b> Overlays</a></li>
-<li class="chapter" data-level="2.3.3" data-path="io.html"><a href="io.html#advanced-3d-rendering-plot-advanced"><i class="fa fa-check"></i><b>2.3.3</b> Advanced 3D rendering {plot-advanced}</a></li>
+<li class="chapter" data-level="2.3.3" data-path="io.html"><a href="io.html#plot-advanced"><i class="fa fa-check"></i><b>2.3.3</b> Advanced 3D rendering</a></li>
 <li class="chapter" data-level="2.3.4" data-path="io.html"><a href="io.html#plot-crossection"><i class="fa fa-check"></i><b>2.3.4</b> Cross sections 2D rendering</a></li>
 </ul></li>
 </ul></li>
@@ -438,8 +438,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb16-5" data-line-number="5"><span class="kw">plot</span>(veg, <span class="dt">add =</span> x)</a></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-add-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
-<div id="advanced-3d-rendering-plot-advanced" class="section level3">
-<h3><span class="header-section-number">2.3.3</span> Advanced 3D rendering {plot-advanced}</h3>
+<div id="plot-advanced" class="section level3">
+<h3><span class="header-section-number">2.3.3</span> Advanced 3D rendering</h3>
 <p>With <code>lidR</code> being based on <code>rgl</code> it is easy to add objects in the main rendering using <code>rgl</code> functions such as <code>rgl::point3d()</code>, <code>rgl::text()</code>, <code>rgl::surface3d()</code> and so on to produce publication ready rendering. However <code>lidR</code> introduced an additional challenge because it does not display the points with their actual coordinates. The points are shifted to be rendered close to (0, 0) (a matter of accuracy because <code>rgl</code> uses <code>float</code> (decimal numbers on 32 bits) instead of <code>double</code> (decimal numbers on 64 bits)). When <code>plot()</code> is used it invisibly returns the shift values that can be used later to realign other objects.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">offsets &lt;-<span class="st"> </span><span class="kw">plot</span>(las)</a>
 <a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw">print</span>(offsets)</a>

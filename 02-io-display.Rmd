@@ -193,7 +193,7 @@ x <- plot(nonveg, color = "Classification", bg = "white", size = 3)
 plot(veg, add = x)
 ```
 
-### Advanced 3D rendering {plot-advanced}
+### Advanced 3D rendering {#plot-advanced}
 
 With `lidR` being based on `rgl` it is easy to add objects in the main rendering using `rgl` functions such as `rgl::point3d()`, `rgl::text()`, `rgl::surface3d()` and so on to produce publication ready rendering.  However `lidR` introduced an additional challenge because it does not display the points with their actual coordinates. The points are shifted to be rendered close to (0, 0) (a matter of accuracy because `rgl` uses `float` (decimal numbers on 32 bits) instead of `double` (decimal numbers on 64 bits)). When `plot()` is used it invisibly returns the shift values that can be used later to realign other objects.
 

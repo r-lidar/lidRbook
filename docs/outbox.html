@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-07-20" />
+<meta name="date" content="2020-07-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -137,7 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3" data-path="io.html"><a href="io.html#plot"><i class="fa fa-check"></i><b>2.3</b> Plotting</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="io.html"><a href="io.html#plot-3d"><i class="fa fa-check"></i><b>2.3.1</b> Basic 3D rendering</a></li>
 <li class="chapter" data-level="2.3.2" data-path="io.html"><a href="io.html#plot-overlay"><i class="fa fa-check"></i><b>2.3.2</b> Overlays</a></li>
-<li class="chapter" data-level="2.3.3" data-path="io.html"><a href="io.html#advanced-3d-rendering-plot-advanced"><i class="fa fa-check"></i><b>2.3.3</b> Advanced 3D rendering {plot-advanced}</a></li>
+<li class="chapter" data-level="2.3.3" data-path="io.html"><a href="io.html#plot-advanced"><i class="fa fa-check"></i><b>2.3.3</b> Advanced 3D rendering</a></li>
 <li class="chapter" data-level="2.3.4" data-path="io.html"><a href="io.html#plot-crossection"><i class="fa fa-check"></i><b>2.3.4</b> Cross sections 2D rendering</a></li>
 </ul></li>
 </ul></li>
@@ -316,72 +316,72 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">17.1.1</span> Distance between returns</h3>
 <p>In forestry, simple metrics can be derived from first returns. But what about metrics that estimate the average distance between first and last returns? Is it a valuable metric for characterizing of forest stucture? Can we refine the prediction with such metric? Nobody knows, but we can try.</p>
 <p>First, we need to retrieve each emitted pulse and keep only the first and last point of each sequence excluding sequences with only one return.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">retrieve_pulses</span>(las)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">filter_firstlast</span>(las)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">las &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, NumberOfReturns <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb198-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">retrieve_pulses</span>(las)</a>
+<a class="sourceLine" id="cb198-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">filter_firstlast</span>(las)</a>
+<a class="sourceLine" id="cb198-3" data-line-number="3">las &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, NumberOfReturns <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)</a></code></pre></div>
 <p>Using the <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html"><code>data.table</code> syntax</a> we can compute the distance between first and last returns for each pulse. It could be done with <code>dplyr</code> as well using <code>group_by() %&gt;%  mutate()</code> but we are proponent of using <code>data.table()</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">las<span class="op">@</span>data[, d <span class="op">:</span><span class="er">=</span><span class="st"> </span>Z[<span class="dv">1</span>]<span class="op">-</span>Z[<span class="dv">2</span>], by =<span class="st"> </span>pulseID]</a></code></pre></div>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb199-1" data-line-number="1">las<span class="op">@</span>data[, d <span class="op">:</span><span class="er">=</span><span class="st"> </span>Z[<span class="dv">1</span>]<span class="op">-</span>Z[<span class="dv">2</span>], by =<span class="st"> </span>pulseID]</a></code></pre></div>
 <p>At this stage our data set contains distances twice. <strong>1</strong> associated with the first return and <strong>2</strong> with the last return. We only need a single value, so lets keep only first returns. Some distances are <code>NA</code> and correspond to pulses at the very edge of the file. We can discard those case for the moment.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">filter_first</span>(las)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, <span class="op">!</span><span class="kw">is.na</span>(d))</a></code></pre></div>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb200-1" data-line-number="1">las &lt;-<span class="st"> </span><span class="kw">filter_first</span>(las)</a>
+<a class="sourceLine" id="cb200-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, <span class="op">!</span><span class="kw">is.na</span>(d))</a></code></pre></div>
 <p>We can now plot the first returns colored by their distance to the last return.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">plot</span>(las, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">color =</span> <span class="st">&quot;d&quot;</span>, <span class="dt">colorPalette =</span> viridis<span class="op">::</span><span class="kw">magma</span>(<span class="dv">50</span>), <span class="dt">size =</span> <span class="dv">4</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb201-1" data-line-number="1"><span class="kw">plot</span>(las, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">color =</span> <span class="st">&quot;d&quot;</span>, <span class="dt">colorPalette =</span> viridis<span class="op">::</span><span class="kw">magma</span>(<span class="dv">50</span>), <span class="dt">size =</span> <span class="dv">4</span>)</a></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-dreturns-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Now we can compute the average in an ABA (see section <a href="aba.html#aba">10</a>).</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">d_first_last &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">mean</span>(d), <span class="dv">15</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">plot</span>(d_first_last, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb202-1" data-line-number="1">d_first_last &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">mean</span>(d), <span class="dv">15</span>)</a>
+<a class="sourceLine" id="cb202-2" data-line-number="2"><span class="kw">plot</span>(d_first_last, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</a></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-raster-avg-dreturns-1.png" width="518.4" style="display: block; margin: auto;" /></p>
 <p>Now we have a working method, we can extend the idea to apply it over a broad coverage using the <code>LAScatalog</code> processing engine (section <a href="engine.html#engine">14</a>). First we create a function that does this job. This is not mandatory but factorizing the code is good practice.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">grid_distance_first_last &lt;-<span class="st"> </span><span class="cf">function</span>(las, res) {</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">  las &lt;-<span class="st"> </span><span class="kw">retrieve_pulses</span>(las)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">  las &lt;-<span class="st"> </span><span class="kw">filter_firstlast</span>(las)</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">  las &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, NumberOfReturns <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">  las<span class="op">@</span>data[, d <span class="op">:</span><span class="er">=</span><span class="st"> </span>Z[<span class="dv">1</span>]<span class="op">-</span>Z[<span class="dv">2</span>], by =<span class="st"> </span>pulseID]</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">  las &lt;-<span class="st"> </span><span class="kw">filter_first</span>(las)</a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">  las &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, <span class="op">!</span><span class="kw">is.na</span>(d))</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8">  <span class="kw">return</span>(<span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">mean</span>(d), res))</a>
-<a class="sourceLine" id="cb6-9" data-line-number="9">}</a></code></pre></div>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb203-1" data-line-number="1">grid_distance_first_last &lt;-<span class="st"> </span><span class="cf">function</span>(las, res) {</a>
+<a class="sourceLine" id="cb203-2" data-line-number="2">  las &lt;-<span class="st"> </span><span class="kw">retrieve_pulses</span>(las)</a>
+<a class="sourceLine" id="cb203-3" data-line-number="3">  las &lt;-<span class="st"> </span><span class="kw">filter_firstlast</span>(las)</a>
+<a class="sourceLine" id="cb203-4" data-line-number="4">  las &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, NumberOfReturns <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb203-5" data-line-number="5">  las<span class="op">@</span>data[, d <span class="op">:</span><span class="er">=</span><span class="st"> </span>Z[<span class="dv">1</span>]<span class="op">-</span>Z[<span class="dv">2</span>], by =<span class="st"> </span>pulseID]</a>
+<a class="sourceLine" id="cb203-6" data-line-number="6">  las &lt;-<span class="st"> </span><span class="kw">filter_first</span>(las)</a>
+<a class="sourceLine" id="cb203-7" data-line-number="7">  las &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, <span class="op">!</span><span class="kw">is.na</span>(d))</a>
+<a class="sourceLine" id="cb203-8" data-line-number="8">  <span class="kw">return</span>(<span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">mean</span>(d), res))</a>
+<a class="sourceLine" id="cb203-9" data-line-number="9">}</a></code></pre></div>
 <p>Then we define a function that respects some requirement imposed by the <code>LAScatalog</code> processing engine (section <a href="engine2.html#engine2">15</a>).</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">my_routine &lt;-<span class="st"> </span><span class="cf">function</span>(chunk, res) {</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">  bbox &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extent</span>(chunk)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">  las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(chunk)</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">  <span class="cf">if</span> (<span class="kw">is.empty</span>(las)) <span class="kw">return</span>(<span class="ot">NULL</span>)</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">  metric &lt;-<span class="st"> </span><span class="kw">grid_distance_first_last</span>(las, res)</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">  metric &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">crop</span>(metric, bbox)</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">  <span class="kw">return</span>(metric)</a>
-<a class="sourceLine" id="cb7-8" data-line-number="8">}</a></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb204-1" data-line-number="1">my_routine &lt;-<span class="st"> </span><span class="cf">function</span>(chunk, res) {</a>
+<a class="sourceLine" id="cb204-2" data-line-number="2">  bbox &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extent</span>(chunk)</a>
+<a class="sourceLine" id="cb204-3" data-line-number="3">  las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(chunk)</a>
+<a class="sourceLine" id="cb204-4" data-line-number="4">  <span class="cf">if</span> (<span class="kw">is.empty</span>(las)) <span class="kw">return</span>(<span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb204-5" data-line-number="5">  metric &lt;-<span class="st"> </span><span class="kw">grid_distance_first_last</span>(las, res)</a>
+<a class="sourceLine" id="cb204-6" data-line-number="6">  metric &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">crop</span>(metric, bbox)</a>
+<a class="sourceLine" id="cb204-7" data-line-number="7">  <span class="kw">return</span>(metric)</a>
+<a class="sourceLine" id="cb204-8" data-line-number="8">}</a></code></pre></div>
 <p>To finish we use the <code>LAScatalog</code> processing engine with <code>catalog_sapply()</code>. We need to process with a buffer to avoid the case where pulses are separated in two files, so we use <code>opt_chunk_buffer(ctg) &lt;- 2</code>. In addition, with the output being a raster, we ensure alignment of the chunk with the raster.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">ctg &lt;-<span class="st"> </span><span class="kw">readLAScatalog</span>(<span class="st">&quot;folder/&quot;</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">opt_chunk_buffer</span>(ctg) &lt;-<span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">raster_alignment =</span> <span class="dv">15</span>)</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">metrics &lt;-<span class="st"> </span><span class="kw">catalog_sapply</span>(ctg, my_routine, <span class="dt">res =</span> <span class="dv">15</span>, <span class="dt">.options =</span> options)</a></code></pre></div>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb205-1" data-line-number="1">ctg &lt;-<span class="st"> </span><span class="kw">readLAScatalog</span>(<span class="st">&quot;folder/&quot;</span>)</a>
+<a class="sourceLine" id="cb205-2" data-line-number="2"><span class="kw">opt_chunk_buffer</span>(ctg) &lt;-<span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb205-3" data-line-number="3">options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">raster_alignment =</span> <span class="dv">15</span>)</a>
+<a class="sourceLine" id="cb205-4" data-line-number="4">metrics &lt;-<span class="st"> </span><span class="kw">catalog_sapply</span>(ctg, my_routine, <span class="dt">res =</span> <span class="dv">15</span>, <span class="dt">.options =</span> options)</a></code></pre></div>
 <p>And we are done. Our innovative metric is computing with real-time monitoring. It can run in parallel on a single machine or in parallel on several machines. At the end, the output is a wall-to-wall raster map of the average distance between first and last returns for beams that return multiple returns. In 19 lines of code!</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">plot</span>(metrics, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb206-1" data-line-number="1"><span class="kw">plot</span>(metrics, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</a></code></pre></div>
 <p><img src="lidR-book_files/figure-html/displaymap-1.png" width="595.2" style="display: block; margin: auto;" /></p>
 </div>
 <div id="outbox-rumple-index" class="section level3">
 <h3><span class="header-section-number">17.1.2</span> Rumple index</h3>
 <p>Another interesting metric that could be computed is the rumple index (see <a href="https://gis.ess.washington.edu/keck/ESS_421_additional_reading/Kane_Interpretation_and_topographic.pdf">Kane et al. (2008)</a>).</p>
 <p>To compute a rumple index we can triangulate points, measure the surface created, and divide by the projected surface. Rumple index is however expected to measure surface roughness of the canopy and it doesn’t makes sense to triangulate every point. An option is to triangulate each first return but yet first returns are not all representative of the canopy. In the following example we are using the surface points every 1 m.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">grid_rumple_index &lt;-<span class="st"> </span><span class="cf">function</span>(las, res) { <span class="co"># user-defined function</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">  las &lt;-<span class="st"> </span><span class="kw">filter_surfacepoints</span>(las, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">  <span class="kw">return</span>(<span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">rumple_index</span>(X, Y, Z), res))</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">}</a></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb207-1" data-line-number="1">grid_rumple_index &lt;-<span class="st"> </span><span class="cf">function</span>(las, res) { <span class="co"># user-defined function</span></a>
+<a class="sourceLine" id="cb207-2" data-line-number="2">  las &lt;-<span class="st"> </span><span class="kw">filter_surfacepoints</span>(las, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb207-3" data-line-number="3">  <span class="kw">return</span>(<span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">rumple_index</span>(X, Y, Z), res))</a>
+<a class="sourceLine" id="cb207-4" data-line-number="4">}</a></code></pre></div>
 <p>Then the code is pretty much the same than in previous section</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">my_routine &lt;-<span class="st"> </span><span class="cf">function</span>(chunk, res) {</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">  bbox &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extent</span>(chunk)</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">  las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(chunk)</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="cf">if</span> (<span class="kw">is.empty</span>(las)) <span class="kw">return</span>(<span class="ot">NULL</span>)</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">  metric &lt;-<span class="st"> </span><span class="kw">grid_rumple_index</span>(las, res)</a>
-<a class="sourceLine" id="cb11-6" data-line-number="6">  metric &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">crop</span>(metric, bbox)</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7">  <span class="kw">return</span>(metric)</a>
-<a class="sourceLine" id="cb11-8" data-line-number="8">}</a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb11-10" data-line-number="10">ctg &lt;-<span class="st"> </span><span class="kw">readLAScatalog</span>(<span class="st">&quot;folder/&quot;</span>)</a>
-<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="kw">opt_chunk_buffer</span>(ctg) &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb11-12" data-line-number="12">options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">raster_alignment =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb11-13" data-line-number="13">metrics &lt;-<span class="st"> </span><span class="kw">catalog_sapply</span>(ctg, my_routine, <span class="dt">res =</span> <span class="dv">20</span>, <span class="dt">.options =</span> options)</a>
-<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="kw">plot</span>(metrics, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb208-1" data-line-number="1">my_routine &lt;-<span class="st"> </span><span class="cf">function</span>(chunk, res) {</a>
+<a class="sourceLine" id="cb208-2" data-line-number="2">  bbox &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extent</span>(chunk)</a>
+<a class="sourceLine" id="cb208-3" data-line-number="3">  las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(chunk)</a>
+<a class="sourceLine" id="cb208-4" data-line-number="4">  <span class="cf">if</span> (<span class="kw">is.empty</span>(las)) <span class="kw">return</span>(<span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb208-5" data-line-number="5">  metric &lt;-<span class="st"> </span><span class="kw">grid_rumple_index</span>(las, res)</a>
+<a class="sourceLine" id="cb208-6" data-line-number="6">  metric &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">crop</span>(metric, bbox)</a>
+<a class="sourceLine" id="cb208-7" data-line-number="7">  <span class="kw">return</span>(metric)</a>
+<a class="sourceLine" id="cb208-8" data-line-number="8">}</a>
+<a class="sourceLine" id="cb208-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb208-10" data-line-number="10">ctg &lt;-<span class="st"> </span><span class="kw">readLAScatalog</span>(<span class="st">&quot;folder/&quot;</span>)</a>
+<a class="sourceLine" id="cb208-11" data-line-number="11"><span class="kw">opt_chunk_buffer</span>(ctg) &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb208-12" data-line-number="12">options &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">raster_alignment =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb208-13" data-line-number="13">metrics &lt;-<span class="st"> </span><span class="kw">catalog_sapply</span>(ctg, my_routine, <span class="dt">res =</span> <span class="dv">20</span>, <span class="dt">.options =</span> options)</a>
+<a class="sourceLine" id="cb208-14" data-line-number="14"><span class="kw">plot</span>(metrics, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</a></code></pre></div>
 <p><img src="lidR-book_files/figure-html/displaymap2-1.png" width="595.2" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -389,56 +389,56 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">17.2</span> Multi-spectral coloring</h2>
 <p>We have already seen a multi-spectral coloring example in section <a href="pba.html#pba-applications-coloring">13.2.3</a>. This is truly a good example of how to think outside the box with <code>lidR</code>, so we show several variants here. The goal is to use multi-spectral data to generate false coloring and see how false coloring may be used for further analyses.</p>
 <p>Multi-spectral ALS data are sampled with 3 devices each emitting a different wavelength. The point cloud is usually provided in the form of 3 <code>LAS</code> files, each file corresponding to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red, and the third as green, and thus consider that each point has a pure color.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">f1 &lt;-<span class="st"> &quot;data/chap11/PR1107_c1_ar_c.laz&quot;</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">f2 &lt;-<span class="st"> &quot;data/chap11/PR1107_c2_ar_c.laz&quot;</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">f3 &lt;-<span class="st"> &quot;data/chap11/PR1107_c3_ar_c.laz&quot;</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">las &lt;-<span class="st"> </span><span class="kw">readMSLAS</span>(f1, f2, f3,  <span class="dt">filter =</span> <span class="st">&quot;-keep_z_below 300&quot;</span>)</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="kw">plot</span>(las, <span class="dt">color =</span> <span class="st">&quot;ScannerChannel&quot;</span>, <span class="dt">size =</span> <span class="dv">6</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb209-1" data-line-number="1">f1 &lt;-<span class="st"> &quot;data/chap11/PR1107_c1_ar_c.laz&quot;</span></a>
+<a class="sourceLine" id="cb209-2" data-line-number="2">f2 &lt;-<span class="st"> &quot;data/chap11/PR1107_c2_ar_c.laz&quot;</span></a>
+<a class="sourceLine" id="cb209-3" data-line-number="3">f3 &lt;-<span class="st"> &quot;data/chap11/PR1107_c3_ar_c.laz&quot;</span></a>
+<a class="sourceLine" id="cb209-4" data-line-number="4">las &lt;-<span class="st"> </span><span class="kw">readMSLAS</span>(f1, f2, f3,  <span class="dt">filter =</span> <span class="st">&quot;-keep_z_below 300&quot;</span>)</a>
+<a class="sourceLine" id="cb209-5" data-line-number="5"><span class="kw">plot</span>(las, <span class="dt">color =</span> <span class="st">&quot;ScannerChannel&quot;</span>, <span class="dt">size =</span> <span class="dv">6</span>)</a></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-multispectral-otb-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Each channel’s returns vary in intensities as seen in the figure below because of the wavelength reflectance properties of the targets. A first step could be to normalize the intensities. For this example we won’t do that to keep things simple.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">ggplot</span>(las<span class="op">@</span>data) <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw">aes</span>(<span class="dt">x =</span> Intensity, <span class="dt">fill =</span> <span class="kw">as.factor</span>(ScannerChannel)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(.<span class="dv">9</span>, <span class="fl">.90</span>),</a>
-<a class="sourceLine" id="cb13-7" data-line-number="7">        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb210-1" data-line-number="1"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb210-2" data-line-number="2"><span class="kw">ggplot</span>(las<span class="op">@</span>data) <span class="op">+</span></a>
+<a class="sourceLine" id="cb210-3" data-line-number="3"><span class="st">  </span><span class="kw">aes</span>(<span class="dt">x =</span> Intensity, <span class="dt">fill =</span> <span class="kw">as.factor</span>(ScannerChannel)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb210-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb210-5" data-line-number="5"><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb210-6" data-line-number="6"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(.<span class="dv">9</span>, <span class="fl">.90</span>),</a>
+<a class="sourceLine" id="cb210-7" data-line-number="7">        <span class="dt">legend.title =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
 <p><img src="lidR-book_files/figure-html/ggplot-hist-intensities-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>In this specific example, notice that only few intensities are above 255, So intensity ranges from 0 to almost 255. This is very convenient because we will be able to use the raw values as color without transformation. We will simply force values above 255 to be 255. This is a dirty solution but fair enough for the example which is not about intensity normalization.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">las<span class="op">@</span>data[Intensity <span class="op">&gt;</span><span class="st"> </span>255L, Intensity <span class="op">:</span><span class="er">=</span><span class="st"> </span>255L]</a></code></pre></div>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb211-1" data-line-number="1">las<span class="op">@</span>data[Intensity <span class="op">&gt;</span><span class="st"> </span>255L, Intensity <span class="op">:</span><span class="er">=</span><span class="st"> </span>255L]</a></code></pre></div>
 <p>To finish, we define a function that takes the intensities and the associated channel as inputs. This function decomposes the 3 channels, computes the average intensity of each channel, and returns these 3 values that will later be interpreted as RGB. Also if one color is missing we force RGB to be NA.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">colorize &lt;-<span class="st"> </span><span class="cf">function</span>(intensity, channel)</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">{</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">  <span class="co"># Split the intensities of each channel</span></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">  i1 &lt;-<span class="st"> </span>intensity[channel <span class="op">==</span><span class="st"> </span>1L]</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">  i2 &lt;-<span class="st"> </span>intensity[channel <span class="op">==</span><span class="st"> </span>2L]</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">  i3 &lt;-<span class="st"> </span>intensity[channel <span class="op">==</span><span class="st"> </span>3L]</a>
-<a class="sourceLine" id="cb15-7" data-line-number="7">  </a>
-<a class="sourceLine" id="cb15-8" data-line-number="8">  <span class="co"># If one channel is missing return RGB = NA</span></a>
-<a class="sourceLine" id="cb15-9" data-line-number="9">  <span class="cf">if</span> (<span class="kw">length</span>(i1) <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span><span class="kw">length</span>(i2) <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span><span class="kw">length</span>(i3) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb15-10" data-line-number="10">    <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">R =</span> <span class="ot">NA_integer_</span>, <span class="dt">G =</span> <span class="ot">NA_integer_</span>, <span class="dt">B =</span> <span class="ot">NA_integer_</span>))</a>
-<a class="sourceLine" id="cb15-11" data-line-number="11">  </a>
-<a class="sourceLine" id="cb15-12" data-line-number="12">  i1 &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">mean</span>(i1))</a>
-<a class="sourceLine" id="cb15-13" data-line-number="13">  i2 &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">mean</span>(i2))</a>
-<a class="sourceLine" id="cb15-14" data-line-number="14">  i3 &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">mean</span>(i3))</a>
-<a class="sourceLine" id="cb15-15" data-line-number="15">  </a>
-<a class="sourceLine" id="cb15-16" data-line-number="16">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">R =</span> i1, <span class="dt">G =</span> i2, <span class="dt">B =</span> i3))</a>
-<a class="sourceLine" id="cb15-17" data-line-number="17">}</a></code></pre></div>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb212-1" data-line-number="1">colorize &lt;-<span class="st"> </span><span class="cf">function</span>(intensity, channel)</a>
+<a class="sourceLine" id="cb212-2" data-line-number="2">{</a>
+<a class="sourceLine" id="cb212-3" data-line-number="3">  <span class="co"># Split the intensities of each channel</span></a>
+<a class="sourceLine" id="cb212-4" data-line-number="4">  i1 &lt;-<span class="st"> </span>intensity[channel <span class="op">==</span><span class="st"> </span>1L]</a>
+<a class="sourceLine" id="cb212-5" data-line-number="5">  i2 &lt;-<span class="st"> </span>intensity[channel <span class="op">==</span><span class="st"> </span>2L]</a>
+<a class="sourceLine" id="cb212-6" data-line-number="6">  i3 &lt;-<span class="st"> </span>intensity[channel <span class="op">==</span><span class="st"> </span>3L]</a>
+<a class="sourceLine" id="cb212-7" data-line-number="7">  </a>
+<a class="sourceLine" id="cb212-8" data-line-number="8">  <span class="co"># If one channel is missing return RGB = NA</span></a>
+<a class="sourceLine" id="cb212-9" data-line-number="9">  <span class="cf">if</span> (<span class="kw">length</span>(i1) <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span><span class="kw">length</span>(i2) <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span><span class="kw">length</span>(i3) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb212-10" data-line-number="10">    <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">R =</span> <span class="ot">NA_integer_</span>, <span class="dt">G =</span> <span class="ot">NA_integer_</span>, <span class="dt">B =</span> <span class="ot">NA_integer_</span>))</a>
+<a class="sourceLine" id="cb212-11" data-line-number="11">  </a>
+<a class="sourceLine" id="cb212-12" data-line-number="12">  i1 &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">mean</span>(i1))</a>
+<a class="sourceLine" id="cb212-13" data-line-number="13">  i2 &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">mean</span>(i2))</a>
+<a class="sourceLine" id="cb212-14" data-line-number="14">  i3 &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">mean</span>(i3))</a>
+<a class="sourceLine" id="cb212-15" data-line-number="15">  </a>
+<a class="sourceLine" id="cb212-16" data-line-number="16">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">R =</span> i1, <span class="dt">G =</span> i2, <span class="dt">B =</span> i3))</a>
+<a class="sourceLine" id="cb212-17" data-line-number="17">}</a></code></pre></div>
 <p>Now we can use this function with different levels of regularization. We can use <code>colorize()</code> with <code>grid_metrics()</code> in an ABA. It returns a multi-layer raster that can be interpreted as RGB</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">rgb &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">colorize</span>(Intensity, ScannerChannel), <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw">plotRGB</span>(rgb, <span class="dt">axes =</span> T)</a></code></pre></div>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb213-1" data-line-number="1">rgb &lt;-<span class="st"> </span><span class="kw">grid_metrics</span>(las, <span class="op">~</span><span class="kw">colorize</span>(Intensity, ScannerChannel), <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb213-2" data-line-number="2"><span class="kw">plotRGB</span>(rgb, <span class="dt">axes =</span> T)</a></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-raster-multispectral-rgb-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We can also attribute an RGB color per voxel, discarding the voxels where <code>RGB = NA</code> by using <code>colorize()</code> with <code>voxel_metrics()</code> (see section <a href="vba.html#vba">12</a>).</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">rgb &lt;-<span class="st"> </span><span class="kw">voxel_metrics</span>(las, <span class="op">~</span><span class="kw">colorize</span>(Intensity, ScannerChannel), <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">rgb &lt;-<span class="st"> </span>rgb[<span class="op">!</span><span class="kw">is.na</span>(R)] <span class="co"># Remove NAs</span></a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">rgb &lt;-<span class="st"> </span><span class="kw">LAS</span>(rgb, las<span class="op">@</span>header) <span class="co"># Convert to LAS for display</span></a>
-<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="kw">plot</span>(rgb, <span class="dt">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="dt">nbits =</span> <span class="dv">8</span>, <span class="dt">size =</span> <span class="dv">5</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb214-1" data-line-number="1">rgb &lt;-<span class="st"> </span><span class="kw">voxel_metrics</span>(las, <span class="op">~</span><span class="kw">colorize</span>(Intensity, ScannerChannel), <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb214-2" data-line-number="2">rgb &lt;-<span class="st"> </span>rgb[<span class="op">!</span><span class="kw">is.na</span>(R)] <span class="co"># Remove NAs</span></a>
+<a class="sourceLine" id="cb214-3" data-line-number="3">rgb &lt;-<span class="st"> </span><span class="kw">LAS</span>(rgb, las<span class="op">@</span>header) <span class="co"># Convert to LAS for display</span></a>
+<a class="sourceLine" id="cb214-4" data-line-number="4"><span class="kw">plot</span>(rgb, <span class="dt">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="dt">nbits =</span> <span class="dv">8</span>, <span class="dt">size =</span> <span class="dv">5</span>)</a></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-voxel-multispectral-rgb-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>To finish we can <code>colorize()</code> with <code>point_metrics()</code> (see section <a href="pba.html#pba">13</a>). This has the advantage of maintaining much more points compared to the voxel-based version and to preserve coordinates.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">rgb &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">colorize</span>(Intensity, ScannerChannel), <span class="dt">r =</span> <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">add_lasrgb</span>(las, rgb<span class="op">$</span>R, rgb<span class="op">$</span>G, rgb<span class="op">$</span>B)</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">colored &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, <span class="op">!</span><span class="kw">is.na</span>(R)) <span class="co"># Remove NAs</span></a>
-<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="kw">plot</span>(colored, <span class="dt">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb215-1" data-line-number="1">rgb &lt;-<span class="st"> </span><span class="kw">point_metrics</span>(las, <span class="op">~</span><span class="kw">colorize</span>(Intensity, ScannerChannel), <span class="dt">r =</span> <span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb215-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">add_lasrgb</span>(las, rgb<span class="op">$</span>R, rgb<span class="op">$</span>G, rgb<span class="op">$</span>B)</a>
+<a class="sourceLine" id="cb215-3" data-line-number="3">colored &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, <span class="op">!</span><span class="kw">is.na</span>(R)) <span class="co"># Remove NAs</span></a>
+<a class="sourceLine" id="cb215-4" data-line-number="4"><span class="kw">plot</span>(colored, <span class="dt">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>)</a></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-multispectral-rgb-otb-1.png" width="672" style="display: block; margin: auto;" /></p>
 
 </div>
@@ -499,6 +499,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
