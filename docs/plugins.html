@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-07-27" />
+<meta name="date" content="2020-10-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,12 +50,13 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
@@ -64,14 +65,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,9 +83,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -323,80 +326,80 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>With <code>catalog_apply()</code> one can more or less replicate the original functions and apply a new method over a catalog. After all, <code>lidR</code> functions actually use <code>catalog_apply()</code> internally. However this implies a lot of code and is error prone especially for users who are not fully comfortable with the engine.</p>
 <p>There is another way to create new algorithms that are fully compatible with <code>lidR</code> functions. This is not documented in the package because the underlying mechanism is not yet fully consistent and is still subject to improvements.</p>
 <p>Let’s continue with the bicubic spline interpolation method for creating a digital terrain model. There is a package called <a href="https://CRAN.R-project.org/package=MBA"><code>MBA</code></a> that implements bicubic spline interpolation. We will create a function <code>mba()</code> that can be used like any other algorithm:</p>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb216-1" data-line-number="1">dtm &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dt">algorithm =</span> <span class="kw">mba</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">h =</span> <span class="dv">8</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="plugins.html#cb216-1"></a>dtm &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dt">algorithm =</span> <span class="kw">mba</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">h =</span> <span class="dv">8</span>))</span></code></pre></div>
 <div id="plugin-system" class="section level2">
 <h2><span class="header-section-number">18.1</span> Understanding lidR algorithms</h2>
 <p>In <code>lidR</code>, an algorithm such as <code>tin()</code>, <code>p2r()</code> or <code>lmf()</code> is a function factory. The output is functions with extra classes so regular users wont immediately recognize that they are functions.</p>
-<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb217-1" data-line-number="1">algo &lt;-<span class="st"> </span><span class="kw">knnidw</span>(<span class="dt">k =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb217-2" data-line-number="2">algo</a>
-<a class="sourceLine" id="cb217-3" data-line-number="3"><span class="co">#&gt; Object of class lidR algorithm</span></a>
-<a class="sourceLine" id="cb217-4" data-line-number="4"><span class="co">#&gt; Algorithm for: spatial interpolation </span></a>
-<a class="sourceLine" id="cb217-5" data-line-number="5"><span class="co">#&gt; Designed to be used with: normalize_height or grid_terrain or p2r or spatial_interpolation </span></a>
-<a class="sourceLine" id="cb217-6" data-line-number="6"><span class="co">#&gt; Native C++ parallelization: yes </span></a>
-<a class="sourceLine" id="cb217-7" data-line-number="7"><span class="co">#&gt; Parameters: </span></a>
-<a class="sourceLine" id="cb217-8" data-line-number="8"><span class="co">#&gt;  - k = 10 &lt;numeric&gt;</span></a>
-<a class="sourceLine" id="cb217-9" data-line-number="9"><span class="co">#&gt;  - p = 2 &lt;numeric&gt;</span></a>
-<a class="sourceLine" id="cb217-10" data-line-number="10"><span class="co">#&gt;  - rmax = 50 &lt;numeric&gt;</span></a>
-<a class="sourceLine" id="cb217-11" data-line-number="11"><span class="kw">class</span>(algo) <span class="co"># algo is a function</span></a>
-<a class="sourceLine" id="cb217-12" data-line-number="12"><span class="co">#&gt; [1] &quot;lidRAlgorithm&quot;        &quot;SpatialInterpolation&quot; &quot;function&quot;             &quot;OpenMP&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="plugins.html#cb217-1"></a>algo &lt;-<span class="st"> </span><span class="kw">knnidw</span>(<span class="dt">k =</span> <span class="dv">10</span>)</span>
+<span id="cb217-2"><a href="plugins.html#cb217-2"></a>algo</span>
+<span id="cb217-3"><a href="plugins.html#cb217-3"></a><span class="co">#&gt; Object of class lidR algorithm</span></span>
+<span id="cb217-4"><a href="plugins.html#cb217-4"></a><span class="co">#&gt; Algorithm for: spatial interpolation </span></span>
+<span id="cb217-5"><a href="plugins.html#cb217-5"></a><span class="co">#&gt; Designed to be used with: normalize_height or grid_terrain or p2r or spatial_interpolation </span></span>
+<span id="cb217-6"><a href="plugins.html#cb217-6"></a><span class="co">#&gt; Native C++ parallelization: yes </span></span>
+<span id="cb217-7"><a href="plugins.html#cb217-7"></a><span class="co">#&gt; Parameters: </span></span>
+<span id="cb217-8"><a href="plugins.html#cb217-8"></a><span class="co">#&gt;  - k = 10 &lt;numeric&gt;</span></span>
+<span id="cb217-9"><a href="plugins.html#cb217-9"></a><span class="co">#&gt;  - p = 2 &lt;numeric&gt;</span></span>
+<span id="cb217-10"><a href="plugins.html#cb217-10"></a><span class="co">#&gt;  - rmax = 50 &lt;numeric&gt;</span></span>
+<span id="cb217-11"><a href="plugins.html#cb217-11"></a><span class="kw">class</span>(algo) <span class="co"># algo is a function</span></span>
+<span id="cb217-12"><a href="plugins.html#cb217-12"></a><span class="co">#&gt; [1] &quot;lidRAlgorithm&quot;        &quot;SpatialInterpolation&quot; &quot;function&quot;             &quot;OpenMP&quot;</span></span></code></pre></div>
 <p>Removing the extra classes we can see its a function and we can see the source code.</p>
-<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb218-1" data-line-number="1"><span class="kw">class</span>(algo) &lt;-<span class="st"> &quot;function&quot;</span></a>
-<a class="sourceLine" id="cb218-2" data-line-number="2">algo</a>
-<a class="sourceLine" id="cb218-3" data-line-number="3"><span class="co">#&gt; function(what, where, scales = c(0,0), offsets = c(0,0))</span></a>
-<a class="sourceLine" id="cb218-4" data-line-number="4"><span class="co">#&gt;   {</span></a>
-<a class="sourceLine" id="cb218-5" data-line-number="5"><span class="co">#&gt;     assert_is_valid_context(LIDRCONTEXTSPI, &quot;knnidw&quot;)</span></a>
-<a class="sourceLine" id="cb218-6" data-line-number="6"><span class="co">#&gt;     return(interpolate_knnidw(what, where, k, p, rmax))</span></a>
-<a class="sourceLine" id="cb218-7" data-line-number="7"><span class="co">#&gt;   }</span></a>
-<a class="sourceLine" id="cb218-8" data-line-number="8"><span class="co">#&gt; &lt;bytecode: 0x556f0075d940&gt;</span></a>
-<a class="sourceLine" id="cb218-9" data-line-number="9"><span class="co">#&gt; &lt;environment: 0x556f18461020&gt;</span></a>
-<a class="sourceLine" id="cb218-10" data-line-number="10"><span class="co">#&gt; attr(,&quot;class&quot;)</span></a>
-<a class="sourceLine" id="cb218-11" data-line-number="11"><span class="co">#&gt; [1] &quot;function&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="plugins.html#cb218-1"></a><span class="kw">class</span>(algo) &lt;-<span class="st"> &quot;function&quot;</span></span>
+<span id="cb218-2"><a href="plugins.html#cb218-2"></a>algo</span>
+<span id="cb218-3"><a href="plugins.html#cb218-3"></a><span class="co">#&gt; function(what, where, scales = c(0,0), offsets = c(0,0))</span></span>
+<span id="cb218-4"><a href="plugins.html#cb218-4"></a><span class="co">#&gt;   {</span></span>
+<span id="cb218-5"><a href="plugins.html#cb218-5"></a><span class="co">#&gt;     assert_is_valid_context(LIDRCONTEXTSPI, &quot;knnidw&quot;)</span></span>
+<span id="cb218-6"><a href="plugins.html#cb218-6"></a><span class="co">#&gt;     return(interpolate_knnidw(what, where, k, p, rmax))</span></span>
+<span id="cb218-7"><a href="plugins.html#cb218-7"></a><span class="co">#&gt;   }</span></span>
+<span id="cb218-8"><a href="plugins.html#cb218-8"></a><span class="co">#&gt; &lt;bytecode: 0x55eae74051f8&gt;</span></span>
+<span id="cb218-9"><a href="plugins.html#cb218-9"></a><span class="co">#&gt; &lt;environment: 0x55eb29382c78&gt;</span></span>
+<span id="cb218-10"><a href="plugins.html#cb218-10"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
+<span id="cb218-11"><a href="plugins.html#cb218-11"></a><span class="co">#&gt; [1] &quot;function&quot;</span></span></code></pre></div>
 <p>We can see how a function designed to be used in <code>grid_terrain()</code> is designed. The signature is</p>
-<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb219-1" data-line-number="1"><span class="cf">function</span>(what, where, <span class="dt">scales =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">offsets =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="plugins.html#cb219-1"></a><span class="cf">function</span>(what, where, <span class="dt">scales =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">offsets =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>))</span></code></pre></div>
 <p>When creating a new algorithm for spatial interpolation, the function factory must return a function similar to what you see above. In the case of spatial interpolation <code>what</code> is a <code>data.frame</code> with X Y and Z coordinates of ground points. <code>where</code> is a <code>data.frame</code> with the X Y coordinates of the location where we want to interpolate Z. It also receives <code>scale</code> and <code>offset</code> but we can ignore them in this case. The function returns a vector of Z coordinates at these locations.</p>
 </div>
 <div id="plugin-creation" class="section level2">
 <h2><span class="header-section-number">18.2</span> Creation of the <code>mba</code> algorithm</h2>
 <p>Now let’s create our <code>mba</code> algorithm.</p>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb220-1" data-line-number="1"><span class="co"># mba is our function factory</span></a>
-<a class="sourceLine" id="cb220-2" data-line-number="2">mba &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">m =</span> <span class="dv">1</span>, <span class="dt">h =</span> <span class="dv">8</span>, <span class="dt">extend =</span> <span class="ot">TRUE</span>) {</a>
-<a class="sourceLine" id="cb220-3" data-line-number="3">  <span class="co"># f is created inside mba and receive the ground points (what)</span></a>
-<a class="sourceLine" id="cb220-4" data-line-number="4">  <span class="co"># and the location where to compute the interpolation (where) </span></a>
-<a class="sourceLine" id="cb220-5" data-line-number="5">  f &lt;-<span class="st"> </span><span class="cf">function</span>(what, where, <span class="dt">scales =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">offsets =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)) {</a>
-<a class="sourceLine" id="cb220-6" data-line-number="6">    <span class="co"># computation of the interpolation (see the documentation of MBA package)</span></a>
-<a class="sourceLine" id="cb220-7" data-line-number="7">    res &lt;-<span class="st"> </span>MBA<span class="op">::</span><span class="kw">mba.points</span>(what, where, n, m , h, extend)</a>
-<a class="sourceLine" id="cb220-8" data-line-number="8">    <span class="kw">return</span>(res<span class="op">$</span>xyz.est[,<span class="dv">3</span>])</a>
-<a class="sourceLine" id="cb220-9" data-line-number="9">  }</a>
-<a class="sourceLine" id="cb220-10" data-line-number="10">  </a>
-<a class="sourceLine" id="cb220-11" data-line-number="11">  <span class="co"># f is a function but we set compatible classes. Here it is an</span></a>
-<a class="sourceLine" id="cb220-12" data-line-number="12">  <span class="co"># algorithm for spatial interpolation (SPI) we use an internal global</span></a>
-<a class="sourceLine" id="cb220-13" data-line-number="13">  <span class="co"># variable to set the good classes</span></a>
-<a class="sourceLine" id="cb220-14" data-line-number="14">  <span class="kw">class</span>(f) &lt;-<span class="st"> </span>lidR<span class="op">:::</span>LIDRALGORITHMSPI</a>
-<a class="sourceLine" id="cb220-15" data-line-number="15">  <span class="kw">return</span>(f)</a>
-<a class="sourceLine" id="cb220-16" data-line-number="16">}</a></code></pre></div>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="plugins.html#cb220-1"></a><span class="co"># mba is our function factory</span></span>
+<span id="cb220-2"><a href="plugins.html#cb220-2"></a>mba &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">m =</span> <span class="dv">1</span>, <span class="dt">h =</span> <span class="dv">8</span>, <span class="dt">extend =</span> <span class="ot">TRUE</span>) {</span>
+<span id="cb220-3"><a href="plugins.html#cb220-3"></a>  <span class="co"># f is created inside mba and receive the ground points (what)</span></span>
+<span id="cb220-4"><a href="plugins.html#cb220-4"></a>  <span class="co"># and the location where to compute the interpolation (where) </span></span>
+<span id="cb220-5"><a href="plugins.html#cb220-5"></a>  f &lt;-<span class="st"> </span><span class="cf">function</span>(what, where, <span class="dt">scales =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">offsets =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)) {</span>
+<span id="cb220-6"><a href="plugins.html#cb220-6"></a>    <span class="co"># computation of the interpolation (see the documentation of MBA package)</span></span>
+<span id="cb220-7"><a href="plugins.html#cb220-7"></a>    res &lt;-<span class="st"> </span>MBA<span class="op">::</span><span class="kw">mba.points</span>(what, where, n, m , h, extend)</span>
+<span id="cb220-8"><a href="plugins.html#cb220-8"></a>    <span class="kw">return</span>(res<span class="op">$</span>xyz.est[,<span class="dv">3</span>])</span>
+<span id="cb220-9"><a href="plugins.html#cb220-9"></a>  }</span>
+<span id="cb220-10"><a href="plugins.html#cb220-10"></a>  </span>
+<span id="cb220-11"><a href="plugins.html#cb220-11"></a>  <span class="co"># f is a function but we set compatible classes. Here it is an</span></span>
+<span id="cb220-12"><a href="plugins.html#cb220-12"></a>  <span class="co"># algorithm for spatial interpolation (SPI) we use an internal global</span></span>
+<span id="cb220-13"><a href="plugins.html#cb220-13"></a>  <span class="co"># variable to set the good classes</span></span>
+<span id="cb220-14"><a href="plugins.html#cb220-14"></a>  <span class="kw">class</span>(f) &lt;-<span class="st"> </span>lidR<span class="op">:::</span>LIDRALGORITHMSPI</span>
+<span id="cb220-15"><a href="plugins.html#cb220-15"></a>  <span class="kw">return</span>(f)</span>
+<span id="cb220-16"><a href="plugins.html#cb220-16"></a>}</span></code></pre></div>
 <p>Now let see what happens if we instantiate the <code>mba</code> algorithm:</p>
-<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb221-1" data-line-number="1">algo &lt;-<span class="st"> </span><span class="kw">mba</span>(<span class="dt">h =</span> <span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb221-2" data-line-number="2">algo</a>
-<a class="sourceLine" id="cb221-3" data-line-number="3"><span class="co">#&gt; Object of class lidR algorithm</span></a>
-<a class="sourceLine" id="cb221-4" data-line-number="4"><span class="co">#&gt; Algorithm for: spatial interpolation </span></a>
-<a class="sourceLine" id="cb221-5" data-line-number="5"><span class="co">#&gt; Designed to be used with: normalize_height or grid_terrain or p2r or spatial_interpolation </span></a>
-<a class="sourceLine" id="cb221-6" data-line-number="6"><span class="co">#&gt; Native C++ parallelization: no </span></a>
-<a class="sourceLine" id="cb221-7" data-line-number="7"><span class="co">#&gt; Parameters: </span></a>
-<a class="sourceLine" id="cb221-8" data-line-number="8"><span class="co">#&gt;  - extend = TRUE &lt;logical&gt;</span></a>
-<a class="sourceLine" id="cb221-9" data-line-number="9"><span class="co">#&gt;  - h = 6 &lt;numeric&gt;</span></a>
-<a class="sourceLine" id="cb221-10" data-line-number="10"><span class="co">#&gt;  - m = 1 &lt;numeric&gt;</span></a>
-<a class="sourceLine" id="cb221-11" data-line-number="11"><span class="co">#&gt;  - n = 1 &lt;numeric&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="plugins.html#cb221-1"></a>algo &lt;-<span class="st"> </span><span class="kw">mba</span>(<span class="dt">h =</span> <span class="dv">6</span>)</span>
+<span id="cb221-2"><a href="plugins.html#cb221-2"></a>algo</span>
+<span id="cb221-3"><a href="plugins.html#cb221-3"></a><span class="co">#&gt; Object of class lidR algorithm</span></span>
+<span id="cb221-4"><a href="plugins.html#cb221-4"></a><span class="co">#&gt; Algorithm for: spatial interpolation </span></span>
+<span id="cb221-5"><a href="plugins.html#cb221-5"></a><span class="co">#&gt; Designed to be used with: normalize_height or grid_terrain or p2r or spatial_interpolation </span></span>
+<span id="cb221-6"><a href="plugins.html#cb221-6"></a><span class="co">#&gt; Native C++ parallelization: no </span></span>
+<span id="cb221-7"><a href="plugins.html#cb221-7"></a><span class="co">#&gt; Parameters: </span></span>
+<span id="cb221-8"><a href="plugins.html#cb221-8"></a><span class="co">#&gt;  - extend = TRUE &lt;logical&gt;</span></span>
+<span id="cb221-9"><a href="plugins.html#cb221-9"></a><span class="co">#&gt;  - h = 6 &lt;numeric&gt;</span></span>
+<span id="cb221-10"><a href="plugins.html#cb221-10"></a><span class="co">#&gt;  - m = 1 &lt;numeric&gt;</span></span>
+<span id="cb221-11"><a href="plugins.html#cb221-11"></a><span class="co">#&gt;  - n = 1 &lt;numeric&gt;</span></span></code></pre></div>
 <p>We can now use it like any other <code>lidR</code> algorithm:</p>
-<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb222-1" data-line-number="1">LASfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Topography.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;lidR&quot;</span>)</a>
-<a class="sourceLine" id="cb222-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(LASfile)</a>
-<a class="sourceLine" id="cb222-3" data-line-number="3">dtm &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dt">algorithm =</span> <span class="kw">mba</span>())</a>
-<a class="sourceLine" id="cb222-4" data-line-number="4"><span class="kw">plot</span>(dtm, <span class="dt">col =</span> <span class="kw">gray.colors</span>(<span class="dv">50</span>, <span class="dv">0</span>, <span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="plugins.html#cb222-1"></a>LASfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Topography.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb222-2"><a href="plugins.html#cb222-2"></a>las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(LASfile)</span>
+<span id="cb222-3"><a href="plugins.html#cb222-3"></a>dtm &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dt">algorithm =</span> <span class="kw">mba</span>())</span>
+<span id="cb222-4"><a href="plugins.html#cb222-4"></a><span class="kw">plot</span>(dtm, <span class="dt">col =</span> <span class="kw">gray.colors</span>(<span class="dv">50</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-raster-mab-1.png" width="739.2" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb223-1" data-line-number="1"><span class="kw">plot_dtm3d</span>(dtm, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="plugins.html#cb223-1"></a><span class="kw">plot_dtm3d</span>(dtm, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-raster-3d-mba-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>It will even fail nicely if used poorly!</p>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb224-1" data-line-number="1"><span class="kw">grid_canopy</span>(las, <span class="dv">1</span>, <span class="kw">mba</span>())</a>
-<a class="sourceLine" id="cb224-2" data-line-number="2"><span class="co">#&gt; Error: The algorithm used is not an algorithm for digital surface model.</span></a></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="plugins.html#cb224-1"></a><span class="kw">grid_canopy</span>(las, <span class="dv">1</span>, <span class="kw">mba</span>())</span>
+<span id="cb224-2"><a href="plugins.html#cb224-2"></a><span class="co">#&gt; Error: The algorithm used is not an algorithm for digital surface model.</span></span></code></pre></div>
 </div>
 <div id="plugin-extensions" class="section level2">
 <h2><span class="header-section-number">18.3</span> What about other algorithms?</h2>

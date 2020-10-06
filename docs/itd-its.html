@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-07-27" />
+<meta name="date" content="2020-10-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,12 +50,13 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
@@ -64,14 +65,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,9 +83,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -310,10 +313,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="itd-its" class="section level1">
 <h1><span class="header-section-number">7</span> Indivitual tree dectection and segmentation</h1>
 <p><strong>Individual tree detection (ITD)</strong> is the process of spatially locating trees and extracting height information. <strong>Individual tree segmentation (ITS)</strong> is the process of individually delineating detected trees. In <code>lidR</code>, detecting and segmenting functions are decoupled to maximize flexibility. Tree tops are first detected using the <code>find_trees()</code> function, followed crown delineation using <code>segment_trees()</code>. In the following section we will use the <code>MixedConifer.laz</code> data set, which is included internally within <code>lidR</code> to demonstrate both ITD and ITS with reproducible examples. We will also generate a CHM (section <a href="chm.html#chm">6</a>) to help visualize the results.</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">LASfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;MixedConifer.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;lidR&quot;</span>)</a>
-<a class="sourceLine" id="cb65-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(LASfile, <span class="dt">select =</span> <span class="st">&quot;xyzr&quot;</span>, <span class="dt">filter =</span> <span class="st">&quot;-drop_z_below 0&quot;</span>)</a>
-<a class="sourceLine" id="cb65-3" data-line-number="3">chm &lt;-<span class="st"> </span><span class="kw">grid_canopy</span>(las, <span class="fl">0.5</span>, <span class="kw">pitfree</span>(<span class="dt">subcircle =</span> <span class="fl">0.2</span>))</a>
-<a class="sourceLine" id="cb65-4" data-line-number="4"><span class="kw">plot</span>(las, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="itd-its.html#cb65-1"></a>LASfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;MixedConifer.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb65-2"><a href="itd-its.html#cb65-2"></a>las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(LASfile, <span class="dt">select =</span> <span class="st">&quot;xyzr&quot;</span>, <span class="dt">filter =</span> <span class="st">&quot;-drop_z_below 0&quot;</span>)</span>
+<span id="cb65-3"><a href="itd-its.html#cb65-3"></a>chm &lt;-<span class="st"> </span><span class="kw">grid_canopy</span>(las, <span class="fl">0.5</span>, <span class="kw">pitfree</span>(<span class="dt">subcircle =</span> <span class="fl">0.2</span>))</span>
+<span id="cb65-4"><a href="itd-its.html#cb65-4"></a><span class="kw">plot</span>(las, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-mixed-itd-1.png" width="480" style="display: block; margin: auto;" /></p>
 <div id="itd" class="section level2">
 <h2><span class="header-section-number">7.1</span> Individual Tree Detection (ITD)</h2>
@@ -321,24 +324,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="lmffw" class="section level3">
 <h3><span class="header-section-number">7.1.1</span> Local Maximum Filter with fixed windows size</h3>
 <p>The LMF can be applied with a constant size windows. Here with a windows size of <code>ws = 5</code> meters meaning that for a given point the algorithm looks to the neigbourhood points within a 2.5 radius circle to figure out if the point is the local highest. While the algorithm does not need any CHM to work we chose to display the results on top of a CHM for better visualization.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">ttops &lt;-<span class="st"> </span><span class="kw">find_trees</span>(las, <span class="kw">lmf</span>(<span class="dt">ws =</span> <span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb66-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb66-3" data-line-number="3"><span class="kw">plot</span>(chm, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</a>
-<a class="sourceLine" id="cb66-4" data-line-number="4"><span class="kw">plot</span>(ttops, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="itd-its.html#cb66-1"></a>ttops &lt;-<span class="st"> </span><span class="kw">find_trees</span>(las, <span class="kw">lmf</span>(<span class="dt">ws =</span> <span class="dv">5</span>))</span>
+<span id="cb66-2"><a href="itd-its.html#cb66-2"></a></span>
+<span id="cb66-3"><a href="itd-its.html#cb66-3"></a><span class="kw">plot</span>(chm, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</span>
+<span id="cb66-4"><a href="itd-its.html#cb66-4"></a><span class="kw">plot</span>(ttops, <span class="dt">add =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-tree-itd-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Tree detection results can also be visualized in 3D!</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">plot</span>(las, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">add_treetops3d</span>(x, ttops)</a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="itd-its.html#cb67-1"></a>x &lt;-<span class="st"> </span><span class="kw">plot</span>(las, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>)</span>
+<span id="cb67-2"><a href="itd-its.html#cb67-2"></a><span class="kw">add_treetops3d</span>(x, ttops)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-tree-itd-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>The number of detected trees is correlated to the <code>ws</code> argument. Small windows sizes usually gives more trees, while large windows size generally miss smaller trees that are <em>“hidden”</em> by big trees that contain the highest points in the neighborhood. This can be seen in the figure below where too many trees are found with a small window size and only the dominant trees are found with a large windows size.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">ttops_3m &lt;-<span class="st"> </span><span class="kw">find_trees</span>(las, <span class="kw">lmf</span>(<span class="dt">ws =</span> <span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb68-2" data-line-number="2">ttops_11m &lt;-<span class="st"> </span><span class="kw">find_trees</span>(las, <span class="kw">lmf</span>(<span class="dt">ws =</span> <span class="dv">11</span>))</a>
-<a class="sourceLine" id="cb68-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb68-4" data-line-number="4"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb68-5" data-line-number="5"><span class="kw">plot</span>(chm, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</a>
-<a class="sourceLine" id="cb68-6" data-line-number="6"><span class="kw">plot</span>(ttops_3m, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb68-7" data-line-number="7"><span class="kw">plot</span>(chm, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</a>
-<a class="sourceLine" id="cb68-8" data-line-number="8"><span class="kw">plot</span>(ttops_11m, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="itd-its.html#cb68-1"></a>ttops_3m &lt;-<span class="st"> </span><span class="kw">find_trees</span>(las, <span class="kw">lmf</span>(<span class="dt">ws =</span> <span class="dv">3</span>))</span>
+<span id="cb68-2"><a href="itd-its.html#cb68-2"></a>ttops_11m &lt;-<span class="st"> </span><span class="kw">find_trees</span>(las, <span class="kw">lmf</span>(<span class="dt">ws =</span> <span class="dv">11</span>))</span>
+<span id="cb68-3"><a href="itd-its.html#cb68-3"></a></span>
+<span id="cb68-4"><a href="itd-its.html#cb68-4"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb68-5"><a href="itd-its.html#cb68-5"></a><span class="kw">plot</span>(chm, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</span>
+<span id="cb68-6"><a href="itd-its.html#cb68-6"></a><span class="kw">plot</span>(ttops_3m, <span class="dt">add =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb68-7"><a href="itd-its.html#cb68-7"></a><span class="kw">plot</span>(chm, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</span>
+<span id="cb68-8"><a href="itd-its.html#cb68-8"></a><span class="kw">plot</span>(ttops_11m, <span class="dt">add =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-tree-ws-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
 <div id="lmfvw" class="section level3">
@@ -346,30 +349,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The examples above demonstrate the <code>lmf()</code> function with a constant window size. A large windows is suitable for large scattered trees while a small windows size if preferable for small and close trees. In reality trees of variable sizes may be present in a single scene leading to sub-optimal outputs. To overcome this issue, a windows size that adapts to the height of pixels or height of the points in our case becomes necessary.</p>
 <p>For example, a point at 30 m (a big tree) will be tested with a large window, while a point at 10 m (a smaller tree) will be tested with a smaller window. The window size can therefore be defined as a function of height. Tall trees have comparatively larger crowns, needing larger window sizes to accurately detect their treetops. Variable window sizes are especially suitable for stands of more complex structures, or when tree detection is performed on larger areas, covering heterogeneous stands.</p>
 <p>In <code>lidR</code> a user can design a function that computes a windows size as a function of point (or pixel) height. When designing a function to define the window size based on point heights we need to determine what the minimum and maximum window size should be related to the minimum and maximum tree heights. In general, the minimum window size should not be smaller than 3 meters. Below we show an example where the windows size is related to the point height with an affine relationship. When a point is at 0 the windows size is 3 meters. At 10 m it is 4 m and so on.</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">f &lt;-<span class="st"> </span><span class="cf">function</span>(x) {x <span class="op">*</span><span class="st"> </span><span class="fl">0.1</span> <span class="op">+</span><span class="st"> </span><span class="dv">3</span>}</a>
-<a class="sourceLine" id="cb69-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb69-3" data-line-number="3">heights &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">30</span>,<span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb69-4" data-line-number="4">ws &lt;-<span class="st"> </span><span class="kw">f</span>(heights)</a>
-<a class="sourceLine" id="cb69-5" data-line-number="5"><span class="kw">plot</span>(heights, ws, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">6</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="itd-its.html#cb69-1"></a>f &lt;-<span class="st"> </span><span class="cf">function</span>(x) {x <span class="op">*</span><span class="st"> </span><span class="fl">0.1</span> <span class="op">+</span><span class="st"> </span><span class="dv">3</span>}</span>
+<span id="cb69-2"><a href="itd-its.html#cb69-2"></a></span>
+<span id="cb69-3"><a href="itd-its.html#cb69-3"></a>heights &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">30</span>,<span class="dv">5</span>)</span>
+<span id="cb69-4"><a href="itd-its.html#cb69-4"></a>ws &lt;-<span class="st"> </span><span class="kw">f</span>(heights)</span>
+<span id="cb69-5"><a href="itd-its.html#cb69-5"></a><span class="kw">plot</span>(heights, ws, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">6</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-vws-1.png" width="326.4" style="display: block; margin: auto;" /></p>
 <p>When applied within <code>lmf()</code>, the function yields the following result:</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">ttops &lt;-<span class="st"> </span><span class="kw">find_trees</span>(las, <span class="kw">lmf</span>(f))</a>
-<a class="sourceLine" id="cb70-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb70-3" data-line-number="3"><span class="kw">plot</span>(chm, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</a>
-<a class="sourceLine" id="cb70-4" data-line-number="4"><span class="kw">plot</span>(ttops, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="itd-its.html#cb70-1"></a>ttops &lt;-<span class="st"> </span><span class="kw">find_trees</span>(las, <span class="kw">lmf</span>(f))</span>
+<span id="cb70-2"><a href="itd-its.html#cb70-2"></a></span>
+<span id="cb70-3"><a href="itd-its.html#cb70-3"></a><span class="kw">plot</span>(chm, <span class="dt">col =</span> <span class="kw">height.colors</span>(<span class="dv">50</span>))</span>
+<span id="cb70-4"><a href="itd-its.html#cb70-4"></a><span class="kw">plot</span>(ttops, <span class="dt">add =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-tree-vws-1.png" width="499.2" style="display: block; margin: auto;" /></p>
 <p>There is no intrinsic limitation to the user-defined function. One does however need to pay attention to special cases. For example, if a point is below 0 m the function above may compute a negative windows size and the detection will fail. Similarly, if an outlier is encountered a massive window may be computed and lead to suspicious results. We therfore recommend using a more robust function with some built in thresholds.</p>
 <p>In the next example any points below 2 m will equate to a window size of 3 m, while points above 20 meters equate to a window size of 5 m. Anything between 2 and 20 meter will have a non-linear relationship (for the need of the demo).</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1">f &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb71-2" data-line-number="2">  y &lt;-<span class="st"> </span><span class="fl">2.6</span> <span class="op">*</span><span class="st"> </span>(<span class="op">-</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.08</span><span class="op">*</span>(x<span class="dv">-2</span>)) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb71-3" data-line-number="3">  y[x <span class="op">&lt;</span><span class="st"> </span><span class="dv">2</span>] &lt;-<span class="st"> </span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb71-4" data-line-number="4">  y[x <span class="op">&gt;</span><span class="st"> </span><span class="dv">20</span>] &lt;-<span class="st"> </span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb71-5" data-line-number="5">  <span class="kw">return</span>(y)</a>
-<a class="sourceLine" id="cb71-6" data-line-number="6">}</a>
-<a class="sourceLine" id="cb71-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb71-8" data-line-number="8">heights &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>,<span class="dv">30</span>,<span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb71-9" data-line-number="9">ws &lt;-<span class="st"> </span><span class="kw">f</span>(heights)</a>
-<a class="sourceLine" id="cb71-10" data-line-number="10"><span class="kw">plot</span>(heights, ws, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>,  <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">5</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="itd-its.html#cb71-1"></a>f &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb71-2"><a href="itd-its.html#cb71-2"></a>  y &lt;-<span class="st"> </span><span class="fl">2.6</span> <span class="op">*</span><span class="st"> </span>(<span class="op">-</span>(<span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.08</span><span class="op">*</span>(x<span class="dv">-2</span>)) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="dv">3</span></span>
+<span id="cb71-3"><a href="itd-its.html#cb71-3"></a>  y[x <span class="op">&lt;</span><span class="st"> </span><span class="dv">2</span>] &lt;-<span class="st"> </span><span class="dv">3</span></span>
+<span id="cb71-4"><a href="itd-its.html#cb71-4"></a>  y[x <span class="op">&gt;</span><span class="st"> </span><span class="dv">20</span>] &lt;-<span class="st"> </span><span class="dv">5</span></span>
+<span id="cb71-5"><a href="itd-its.html#cb71-5"></a>  <span class="kw">return</span>(y)</span>
+<span id="cb71-6"><a href="itd-its.html#cb71-6"></a>}</span>
+<span id="cb71-7"><a href="itd-its.html#cb71-7"></a></span>
+<span id="cb71-8"><a href="itd-its.html#cb71-8"></a>heights &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>,<span class="dv">30</span>,<span class="fl">0.5</span>)</span>
+<span id="cb71-9"><a href="itd-its.html#cb71-9"></a>ws &lt;-<span class="st"> </span><span class="kw">f</span>(heights)</span>
+<span id="cb71-10"><a href="itd-its.html#cb71-10"></a><span class="kw">plot</span>(heights, ws, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>,  <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">5</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-vws-2-1.png" width="326.4" style="display: block; margin: auto;" /></p>
 </div>
 <div id="lmfchm" class="section level3">
@@ -377,34 +380,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>So far tree detection was performed on a point cloud. A CHM can however also be used to find trees instead of the point cloud. This is also a perfectly valid way to process ALS data. Performing the detection on a CHM is faster because there are less data to process, but it is also more complex because the output depends on how the CHM has been built. The spatial resolution (i.e. pixel size), the algorithm used (see section <a href="chm.html#chm">6</a>), and any additional post-processing steps will influence tree detection results.</p>
 <p>In the examples below we run tree detection on CHMs generated with different algorithms (<code>p2r</code>, <code>pitfree</code>), different resolutions (0.5 and 1 m), and different post-processing smoothing steps with a median filter applied.</p>
 <p>First the different CHMs are generated:</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="co"># Point-to-raster 2 resolutions</span></a>
-<a class="sourceLine" id="cb72-2" data-line-number="2">chm_p2r_<span class="dv">05</span> &lt;-<span class="st"> </span><span class="kw">grid_canopy</span>(las, <span class="fl">0.5</span>, <span class="kw">p2r</span>(<span class="dt">subcircle =</span> <span class="fl">0.2</span>))</a>
-<a class="sourceLine" id="cb72-3" data-line-number="3">chm_p2r_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">grid_canopy</span>(las, <span class="dv">1</span>, <span class="kw">p2r</span>(<span class="dt">subcircle =</span> <span class="fl">0.2</span>))</a>
-<a class="sourceLine" id="cb72-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb72-5" data-line-number="5"><span class="co"># Pitfree with and without subcircle tweak</span></a>
-<a class="sourceLine" id="cb72-6" data-line-number="6">chm_pitfree_<span class="dv">05</span>_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">grid_canopy</span>(las, <span class="fl">0.5</span>, <span class="kw">pitfree</span>())</a>
-<a class="sourceLine" id="cb72-7" data-line-number="7">chm_pitfree_<span class="dv">05</span>_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">grid_canopy</span>(las, <span class="fl">0.5</span>, <span class="kw">pitfree</span>(<span class="dt">subcircle =</span> <span class="fl">0.2</span>))</a>
-<a class="sourceLine" id="cb72-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb72-9" data-line-number="9"><span class="co"># Post-processing median filter</span></a>
-<a class="sourceLine" id="cb72-10" data-line-number="10">kernel &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb72-11" data-line-number="11">chm_p2r_<span class="dv">05</span>_smoothed &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">focal</span>(chm_p2r_<span class="dv">05</span>, <span class="dt">w =</span> kernel, <span class="dt">fun =</span> median, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb72-12" data-line-number="12">chm_p2r_<span class="dv">1</span>_smoothed &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">focal</span>(chm_p2r_<span class="dv">1</span>, <span class="dt">w =</span> kernel, <span class="dt">fun =</span> median, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="itd-its.html#cb72-1"></a><span class="co"># Point-to-raster 2 resolutions</span></span>
+<span id="cb72-2"><a href="itd-its.html#cb72-2"></a>chm_p2r_<span class="dv">05</span> &lt;-<span class="st"> </span><span class="kw">grid_canopy</span>(las, <span class="fl">0.5</span>, <span class="kw">p2r</span>(<span class="dt">subcircle =</span> <span class="fl">0.2</span>))</span>
+<span id="cb72-3"><a href="itd-its.html#cb72-3"></a>chm_p2r_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">grid_canopy</span>(las, <span class="dv">1</span>, <span class="kw">p2r</span>(<span class="dt">subcircle =</span> <span class="fl">0.2</span>))</span>
+<span id="cb72-4"><a href="itd-its.html#cb72-4"></a></span>
+<span id="cb72-5"><a href="itd-its.html#cb72-5"></a><span class="co"># Pitfree with and without subcircle tweak</span></span>
+<span id="cb72-6"><a href="itd-its.html#cb72-6"></a>chm_pitfree_<span class="dv">05</span>_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">grid_canopy</span>(las, <span class="fl">0.5</span>, <span class="kw">pitfree</span>())</span>
+<span id="cb72-7"><a href="itd-its.html#cb72-7"></a>chm_pitfree_<span class="dv">05</span>_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">grid_canopy</span>(las, <span class="fl">0.5</span>, <span class="kw">pitfree</span>(<span class="dt">subcircle =</span> <span class="fl">0.2</span>))</span>
+<span id="cb72-8"><a href="itd-its.html#cb72-8"></a></span>
+<span id="cb72-9"><a href="itd-its.html#cb72-9"></a><span class="co"># Post-processing median filter</span></span>
+<span id="cb72-10"><a href="itd-its.html#cb72-10"></a>kernel &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>)</span>
+<span id="cb72-11"><a href="itd-its.html#cb72-11"></a>chm_p2r_<span class="dv">05</span>_smoothed &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">focal</span>(chm_p2r_<span class="dv">05</span>, <span class="dt">w =</span> kernel, <span class="dt">fun =</span> median, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb72-12"><a href="itd-its.html#cb72-12"></a>chm_p2r_<span class="dv">1</span>_smoothed &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">focal</span>(chm_p2r_<span class="dv">1</span>, <span class="dt">w =</span> kernel, <span class="dt">fun =</span> median, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p>Then the same tree detection routine with a constant windows size of 5 m is applied to each CHM:</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">ttops_chm_p2r_<span class="dv">05</span> &lt;-<span class="st"> </span><span class="kw">find_trees</span>(chm_p2r_<span class="dv">05</span>, <span class="kw">lmf</span>(<span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb73-2" data-line-number="2">ttops_chm_p2r_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">find_trees</span>(chm_p2r_<span class="dv">1</span>, <span class="kw">lmf</span>(<span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb73-3" data-line-number="3">ttops_chm_pitfree_<span class="dv">05</span>_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">find_trees</span>(chm_pitfree_<span class="dv">05</span>_<span class="dv">1</span>, <span class="kw">lmf</span>(<span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb73-4" data-line-number="4">ttops_chm_pitfree_<span class="dv">05</span>_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">find_trees</span>(chm_pitfree_<span class="dv">05</span>_<span class="dv">2</span>, <span class="kw">lmf</span>(<span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb73-5" data-line-number="5">ttops_chm_p2r_<span class="dv">05</span>_smoothed &lt;-<span class="st"> </span><span class="kw">find_trees</span>(chm_p2r_<span class="dv">05</span>_smoothed, <span class="kw">lmf</span>(<span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb73-6" data-line-number="6">ttops_chm_p2r_<span class="dv">1</span>_smoothed &lt;-<span class="st"> </span><span class="kw">find_trees</span>(chm_p2r_<span class="dv">1</span>_smoothed, <span class="kw">lmf</span>(<span class="dv">5</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="itd-its.html#cb73-1"></a>ttops_chm_p2r_<span class="dv">05</span> &lt;-<span class="st"> </span><span class="kw">find_trees</span>(chm_p2r_<span class="dv">05</span>, <span class="kw">lmf</span>(<span class="dv">5</span>))</span>
+<span id="cb73-2"><a href="itd-its.html#cb73-2"></a>ttops_chm_p2r_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">find_trees</span>(chm_p2r_<span class="dv">1</span>, <span class="kw">lmf</span>(<span class="dv">5</span>))</span>
+<span id="cb73-3"><a href="itd-its.html#cb73-3"></a>ttops_chm_pitfree_<span class="dv">05</span>_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">find_trees</span>(chm_pitfree_<span class="dv">05</span>_<span class="dv">1</span>, <span class="kw">lmf</span>(<span class="dv">5</span>))</span>
+<span id="cb73-4"><a href="itd-its.html#cb73-4"></a>ttops_chm_pitfree_<span class="dv">05</span>_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">find_trees</span>(chm_pitfree_<span class="dv">05</span>_<span class="dv">2</span>, <span class="kw">lmf</span>(<span class="dv">5</span>))</span>
+<span id="cb73-5"><a href="itd-its.html#cb73-5"></a>ttops_chm_p2r_<span class="dv">05</span>_smoothed &lt;-<span class="st"> </span><span class="kw">find_trees</span>(chm_p2r_<span class="dv">05</span>_smoothed, <span class="kw">lmf</span>(<span class="dv">5</span>))</span>
+<span id="cb73-6"><a href="itd-its.html#cb73-6"></a>ttops_chm_p2r_<span class="dv">1</span>_smoothed &lt;-<span class="st"> </span><span class="kw">find_trees</span>(chm_p2r_<span class="dv">1</span>_smoothed, <span class="kw">lmf</span>(<span class="dv">5</span>))</span></code></pre></div>
 <p>Finally the detection results are visualized to see the various output found as a function of the CHM building choices:</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb74-2" data-line-number="2">col &lt;-<span class="st"> </span><span class="kw">height.colors</span>(<span class="dv">50</span>)</a>
-<a class="sourceLine" id="cb74-3" data-line-number="3"><span class="kw">plot</span>(chm_p2r_<span class="dv">05</span>, <span class="dt">main =</span> <span class="st">&quot;CHM P2R 0.5&quot;</span>, <span class="dt">col =</span> col); <span class="kw">plot</span>(ttops_chm_p2r_<span class="dv">05</span>, <span class="dt">add =</span> T)</a>
-<a class="sourceLine" id="cb74-4" data-line-number="4"><span class="kw">plot</span>(chm_p2r_<span class="dv">1</span>, <span class="dt">main =</span> <span class="st">&quot;CHM P2R 1&quot;</span>, <span class="dt">col =</span> col); <span class="kw">plot</span>(ttops_chm_p2r_<span class="dv">1</span>, <span class="dt">add =</span> T)</a>
-<a class="sourceLine" id="cb74-5" data-line-number="5"><span class="kw">plot</span>(chm_p2r_<span class="dv">05</span>_smoothed, <span class="dt">main =</span> <span class="st">&quot;CHM P2R 0.5 smoothed&quot;</span>, <span class="dt">col =</span> col); <span class="kw">plot</span>(ttops_chm_p2r_<span class="dv">05</span>_smoothed, <span class="dt">add =</span> T)</a>
-<a class="sourceLine" id="cb74-6" data-line-number="6"><span class="kw">plot</span>(chm_p2r_<span class="dv">1</span>_smoothed, <span class="dt">main =</span> <span class="st">&quot;CHM P2R 1 smoothed&quot;</span>, <span class="dt">col =</span> col); <span class="kw">plot</span>(ttops_chm_p2r_<span class="dv">1</span>_smoothed, <span class="dt">add =</span> T)</a>
-<a class="sourceLine" id="cb74-7" data-line-number="7"><span class="kw">plot</span>(chm_pitfree_<span class="dv">05</span>_<span class="dv">1</span>, <span class="dt">main =</span> <span class="st">&quot;CHM PITFREE 1&quot;</span>, <span class="dt">col =</span> col); <span class="kw">plot</span>(ttops_chm_pitfree_<span class="dv">05</span>_<span class="dv">1</span>, <span class="dt">add =</span> T)</a>
-<a class="sourceLine" id="cb74-8" data-line-number="8"><span class="kw">plot</span>(chm_pitfree_<span class="dv">05</span>_<span class="dv">2</span>, <span class="dt">main =</span> <span class="st">&quot;CHM PITFREE 2&quot;</span>, <span class="dt">col =</span> col); <span class="kw">plot</span>(ttops_chm_pitfree_<span class="dv">05</span>_<span class="dv">2</span>, <span class="dt">add =</span> T)</a></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="itd-its.html#cb74-1"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
+<span id="cb74-2"><a href="itd-its.html#cb74-2"></a>col &lt;-<span class="st"> </span><span class="kw">height.colors</span>(<span class="dv">50</span>)</span>
+<span id="cb74-3"><a href="itd-its.html#cb74-3"></a><span class="kw">plot</span>(chm_p2r_<span class="dv">05</span>, <span class="dt">main =</span> <span class="st">&quot;CHM P2R 0.5&quot;</span>, <span class="dt">col =</span> col); <span class="kw">plot</span>(ttops_chm_p2r_<span class="dv">05</span>, <span class="dt">add =</span> T)</span>
+<span id="cb74-4"><a href="itd-its.html#cb74-4"></a><span class="kw">plot</span>(chm_p2r_<span class="dv">1</span>, <span class="dt">main =</span> <span class="st">&quot;CHM P2R 1&quot;</span>, <span class="dt">col =</span> col); <span class="kw">plot</span>(ttops_chm_p2r_<span class="dv">1</span>, <span class="dt">add =</span> T)</span>
+<span id="cb74-5"><a href="itd-its.html#cb74-5"></a><span class="kw">plot</span>(chm_p2r_<span class="dv">05</span>_smoothed, <span class="dt">main =</span> <span class="st">&quot;CHM P2R 0.5 smoothed&quot;</span>, <span class="dt">col =</span> col); <span class="kw">plot</span>(ttops_chm_p2r_<span class="dv">05</span>_smoothed, <span class="dt">add =</span> T)</span>
+<span id="cb74-6"><a href="itd-its.html#cb74-6"></a><span class="kw">plot</span>(chm_p2r_<span class="dv">1</span>_smoothed, <span class="dt">main =</span> <span class="st">&quot;CHM P2R 1 smoothed&quot;</span>, <span class="dt">col =</span> col); <span class="kw">plot</span>(ttops_chm_p2r_<span class="dv">1</span>_smoothed, <span class="dt">add =</span> T)</span>
+<span id="cb74-7"><a href="itd-its.html#cb74-7"></a><span class="kw">plot</span>(chm_pitfree_<span class="dv">05</span>_<span class="dv">1</span>, <span class="dt">main =</span> <span class="st">&quot;CHM PITFREE 1&quot;</span>, <span class="dt">col =</span> col); <span class="kw">plot</span>(ttops_chm_pitfree_<span class="dv">05</span>_<span class="dv">1</span>, <span class="dt">add =</span> T)</span>
+<span id="cb74-8"><a href="itd-its.html#cb74-8"></a><span class="kw">plot</span>(chm_pitfree_<span class="dv">05</span>_<span class="dv">2</span>, <span class="dt">main =</span> <span class="st">&quot;CHM PITFREE 2&quot;</span>, <span class="dt">col =</span> col); <span class="kw">plot</span>(ttops_chm_pitfree_<span class="dv">05</span>_<span class="dv">2</span>, <span class="dt">add =</span> T)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-multichm-lmf-1.png" width="940.8" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -424,52 +427,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="its-cloud" class="section level3">
 <h3><span class="header-section-number">7.2.1</span> Segmentation of the point-cloud</h3>
 <p>Even when the algorithm is raster-based (which is the case of <code>dalponte2016()</code>), <code>lidR</code> segments the point cloud and assigns an ID to each point by inserting a new attribute named <code>treeID</code> in the <code>LAS</code> object. This means that every point is associated with a particular tree. This is because <code>lidR</code> is point cloud oriented and we want to provide an immediate way to be able to access a segmented point cloud not the segmented raster.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">algo &lt;-<span class="st"> </span><span class="kw">dalponte2016</span>(chm_p2r_<span class="dv">05</span>_smoothed, ttops_chm_p2r_<span class="dv">05</span>_smoothed)</a>
-<a class="sourceLine" id="cb75-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">segment_trees</span>(las, algo) <span class="co"># segment point cloud</span></a>
-<a class="sourceLine" id="cb75-3" data-line-number="3"><span class="kw">plot</span>(las, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">color =</span> <span class="st">&quot;treeID&quot;</span>) <span class="co"># visualize trees</span></a></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="itd-its.html#cb75-1"></a>algo &lt;-<span class="st"> </span><span class="kw">dalponte2016</span>(chm_p2r_<span class="dv">05</span>_smoothed, ttops_chm_p2r_<span class="dv">05</span>_smoothed)</span>
+<span id="cb75-2"><a href="itd-its.html#cb75-2"></a>las &lt;-<span class="st"> </span><span class="kw">segment_trees</span>(las, algo) <span class="co"># segment point cloud</span></span>
+<span id="cb75-3"><a href="itd-its.html#cb75-3"></a><span class="kw">plot</span>(las, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">color =</span> <span class="st">&quot;treeID&quot;</span>) <span class="co"># visualize trees</span></span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-its-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p>We assign an ID to each point because it enables interesting analyses at the point-cloud level. This could involve extracting every tree to derive measurements. In the following we extracted and displayed the tree number 110.</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1">tree110 &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, treeID <span class="op">==</span><span class="st"> </span><span class="dv">110</span>)</a>
-<a class="sourceLine" id="cb76-2" data-line-number="2"><span class="kw">plot</span>(tree110, <span class="dt">size =</span> <span class="dv">8</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="itd-its.html#cb76-1"></a>tree110 &lt;-<span class="st"> </span><span class="kw">filter_poi</span>(las, treeID <span class="op">==</span><span class="st"> </span><span class="dv">110</span>)</span>
+<span id="cb76-2"><a href="itd-its.html#cb76-2"></a><span class="kw">plot</span>(tree110, <span class="dt">size =</span> <span class="dv">8</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-tree110-1.png" width="288" style="display: block; margin: auto;" /></p>
 <p><code>lidR</code> provides functions that can be used following <code>segment_trees()</code>, like delineation of crown shapes using <code>delineate_crowns()</code>. This function computes the hulls (either convex or concave) of each tree and returns a <code>SpatialPolygonsDataFrame</code>:</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">crowns &lt;-<span class="st"> </span><span class="kw">delineate_crowns</span>(las)</a>
-<a class="sourceLine" id="cb77-2" data-line-number="2"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb77-3" data-line-number="3"><span class="kw">plot</span>(crowns)</a></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="itd-its.html#cb77-1"></a>crowns &lt;-<span class="st"> </span><span class="kw">delineate_crowns</span>(las)</span>
+<span id="cb77-2"><a href="itd-its.html#cb77-2"></a><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>))</span>
+<span id="cb77-3"><a href="itd-its.html#cb77-3"></a><span class="kw">plot</span>(crowns)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-tree-hulls-its-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>It’s also possible to compute metrics for each tree. We go further into this functionality in section <a href="tba.html#tba">11</a>, but here is a brief example where crowns are colored by their area.</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1">crowns &lt;-<span class="st"> </span><span class="kw">delineate_crowns</span>(las, <span class="dt">func =</span> .stdtreemetrics)</a>
-<a class="sourceLine" id="cb78-2" data-line-number="2"><span class="kw">spplot</span>(crowns, <span class="st">&quot;convhull_area&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="itd-its.html#cb78-1"></a>crowns &lt;-<span class="st"> </span><span class="kw">delineate_crowns</span>(las, <span class="dt">func =</span> .stdtreemetrics)</span>
+<span id="cb78-2"><a href="itd-its.html#cb78-2"></a><span class="kw">spplot</span>(crowns, <span class="st">&quot;convhull_area&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-tree-hulls-metrics-its-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div id="its-chm" class="section level3">
 <h3><span class="header-section-number">7.2.2</span> Segmentation of the CHM</h3>
 <p>While point cloud segmentation is standard in <code>lidR</code>, users may only have access to a CHM. There are many reasons for only using a CHM, and this is why raster-based methods can be run standalone outside <code>segment_trees()</code>. Whether using the point cloud or a raster, segmentation results will be exactly the same. The difference will be the data format of the segmentation result. In <code>lidR</code>, a <code>LAS</code> object will gain a <code>treeID</code> attribute, while for rasters, delineated crowns are returned in a <code>RasterLayer</code>. To work outside <code>segment_trees()</code> it suffices to call the function standalone like this:</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1">algo &lt;-<span class="st"> </span><span class="kw">dalponte2016</span>(chm_p2r_<span class="dv">05</span>_smoothed, ttops_chm_p2r_<span class="dv">05</span>_smoothed)</a>
-<a class="sourceLine" id="cb79-2" data-line-number="2">crowns &lt;-<span class="st"> </span><span class="kw">algo</span>()</a>
-<a class="sourceLine" id="cb79-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb79-4" data-line-number="4"><span class="kw">plot</span>(crowns, <span class="dt">col =</span> <span class="kw">pastel.colors</span>(<span class="dv">200</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="itd-its.html#cb79-1"></a>algo &lt;-<span class="st"> </span><span class="kw">dalponte2016</span>(chm_p2r_<span class="dv">05</span>_smoothed, ttops_chm_p2r_<span class="dv">05</span>_smoothed)</span>
+<span id="cb79-2"><a href="itd-its.html#cb79-2"></a>crowns &lt;-<span class="st"> </span><span class="kw">algo</span>()</span>
+<span id="cb79-3"><a href="itd-its.html#cb79-3"></a></span>
+<span id="cb79-4"><a href="itd-its.html#cb79-4"></a><span class="kw">plot</span>(crowns, <span class="dt">col =</span> <span class="kw">pastel.colors</span>(<span class="dv">200</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-raster-its-1.png" width="499.2" style="display: block; margin: auto;" /></p>
 <p>The output is a <code>RasterLayer</code>, for which <code>lidR</code> does not provide any processing tools. At this stage it is up to the user to find the required tools to perform more analysis. The <code>raster</code> package is a good place to start!</p>
 </div>
 <div id="its-comparaison" class="section level3">
 <h3><span class="header-section-number">7.2.3</span> Comparaison of tree segmentations</h3>
 <p>At the point cloud level it’s pretty easy to compare tree segmentations by choosing a different attribute name for each method. For example we can compare <code>dalponte2016</code> (which is a raster based methods in two steps) and <code>li2012</code> (which is an <em>“all-in-one”</em> point cloud based method) side by side.</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1">algo1 &lt;-<span class="st"> </span><span class="kw">dalponte2016</span>(chm_p2r_<span class="dv">05</span>_smoothed, ttops_chm_p2r_<span class="dv">05</span>_smoothed)</a>
-<a class="sourceLine" id="cb80-2" data-line-number="2">algo2 &lt;-<span class="st"> </span><span class="kw">li2012</span>()</a>
-<a class="sourceLine" id="cb80-3" data-line-number="3">las &lt;-<span class="st"> </span><span class="kw">segment_trees</span>(las, algo1, <span class="dt">attribute =</span> <span class="st">&quot;IDdalponte&quot;</span>)</a>
-<a class="sourceLine" id="cb80-4" data-line-number="4">las &lt;-<span class="st"> </span><span class="kw">segment_trees</span>(las, algo2, <span class="dt">attribute =</span> <span class="st">&quot;IDli&quot;</span>)</a>
-<a class="sourceLine" id="cb80-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb80-6" data-line-number="6">x &lt;-<span class="st"> </span><span class="kw">plot</span>(las, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">color =</span> <span class="st">&quot;IDdalponte&quot;</span>, <span class="dt">colorPalette =</span> <span class="kw">pastel.colors</span>(<span class="dv">200</span>))</a>
-<a class="sourceLine" id="cb80-7" data-line-number="7"><span class="kw">plot</span>(las, <span class="dt">add =</span> x <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">100</span>,<span class="dv">0</span>), <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">color =</span> <span class="st">&quot;IDli&quot;</span>, <span class="dt">colorPalette =</span> <span class="kw">pastel.colors</span>(<span class="dv">200</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="itd-its.html#cb80-1"></a>algo1 &lt;-<span class="st"> </span><span class="kw">dalponte2016</span>(chm_p2r_<span class="dv">05</span>_smoothed, ttops_chm_p2r_<span class="dv">05</span>_smoothed)</span>
+<span id="cb80-2"><a href="itd-its.html#cb80-2"></a>algo2 &lt;-<span class="st"> </span><span class="kw">li2012</span>()</span>
+<span id="cb80-3"><a href="itd-its.html#cb80-3"></a>las &lt;-<span class="st"> </span><span class="kw">segment_trees</span>(las, algo1, <span class="dt">attribute =</span> <span class="st">&quot;IDdalponte&quot;</span>)</span>
+<span id="cb80-4"><a href="itd-its.html#cb80-4"></a>las &lt;-<span class="st"> </span><span class="kw">segment_trees</span>(las, algo2, <span class="dt">attribute =</span> <span class="st">&quot;IDli&quot;</span>)</span>
+<span id="cb80-5"><a href="itd-its.html#cb80-5"></a></span>
+<span id="cb80-6"><a href="itd-its.html#cb80-6"></a>x &lt;-<span class="st"> </span><span class="kw">plot</span>(las, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">color =</span> <span class="st">&quot;IDdalponte&quot;</span>, <span class="dt">colorPalette =</span> <span class="kw">pastel.colors</span>(<span class="dv">200</span>))</span>
+<span id="cb80-7"><a href="itd-its.html#cb80-7"></a><span class="kw">plot</span>(las, <span class="dt">add =</span> x <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">100</span>,<span class="dv">0</span>), <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">color =</span> <span class="st">&quot;IDli&quot;</span>, <span class="dt">colorPalette =</span> <span class="kw">pastel.colors</span>(<span class="dv">200</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-compare-its-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>By comparing their crowns with <code>delineate_crowns()</code> we can more easily see that the <code>li2012</code> algorithm doesn’t perform well in this example with default parameters - maybe some parameter tuning can lead to better results!</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1">crowns_dalponte &lt;-<span class="st"> </span><span class="kw">delineate_crowns</span>(las, <span class="dt">attribute =</span> <span class="st">&quot;IDdalponte&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;concave&quot;</span>)</a>
-<a class="sourceLine" id="cb81-2" data-line-number="2">crowns_li &lt;-<span class="st"> </span><span class="kw">delineate_crowns</span>(las, <span class="dt">attribute =</span> <span class="st">&quot;IDli&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;concave&quot;</span>)</a>
-<a class="sourceLine" id="cb81-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb81-4" data-line-number="4"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar=</span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb81-5" data-line-number="5"><span class="kw">plot</span>(crowns_dalponte)</a>
-<a class="sourceLine" id="cb81-6" data-line-number="6"><span class="kw">plot</span>(crowns_li)</a></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="itd-its.html#cb81-1"></a>crowns_dalponte &lt;-<span class="st"> </span><span class="kw">delineate_crowns</span>(las, <span class="dt">attribute =</span> <span class="st">&quot;IDdalponte&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;concave&quot;</span>)</span>
+<span id="cb81-2"><a href="itd-its.html#cb81-2"></a>crowns_li &lt;-<span class="st"> </span><span class="kw">delineate_crowns</span>(las, <span class="dt">attribute =</span> <span class="st">&quot;IDli&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;concave&quot;</span>)</span>
+<span id="cb81-3"><a href="itd-its.html#cb81-3"></a></span>
+<span id="cb81-4"><a href="itd-its.html#cb81-4"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar=</span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>))</span>
+<span id="cb81-5"><a href="itd-its.html#cb81-5"></a><span class="kw">plot</span>(crowns_dalponte)</span>
+<span id="cb81-6"><a href="itd-its.html#cb81-6"></a><span class="kw">plot</span>(crowns_li)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-compare-hulls-1.png" width="556.8" style="display: block; margin: auto;" /></p>
 
 </div>

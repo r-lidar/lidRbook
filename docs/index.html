@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-07-27" />
+<meta name="date" content="2020-10-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,12 +50,13 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
@@ -64,14 +65,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,9 +83,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -310,11 +313,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">The <code>lidR</code> package</h1>
 <p class="author"><em>Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski</em></p>
-<p class="date"><em>2020-07-27</em></p>
+<p class="date"><em>2020-10-06</em></p>
 </div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
-<p><code>lidR</code> is an R package for manipulating and visualizating airborne laser scanning (ALS) data with an emphasis on forestry applications. The package is entirely open source and is integrated within the geospatial R ecosytem (i.e. <code>raster</code>, <code>sp</code>, <code>sf</code>, <code>rgdal</code> etc.). This guide has been written to help both the ALS novice, as well as seasoned point cloud processing veterans. Key functionality of <code>lidR</code> includes functions to:</p>
+<p><code>lidR</code> is an R package for manipulating and visualizating airborne laser scanning (ALS) data with an emphasis on forestry applications. The package is entirely open source and is integrated within the geospatial R ecosytem (i.e. <code>raster</code>, <code>sp</code>, <code>sf</code>, <code>rgdal</code> etc.). This guide has been written to help both the ALS novice, as well as seasoned point cloud processing veterans. Key functionality of <code>lidR</code> includes functions to:</p>
 <ul>
 <li>Read and write <code>.las</code> and <code>.laz</code> files and render customized point-cloud display (section <a href="io.html#io">2</a>)</li>
 <li>Process point clouds including point classification (section <a href="gnd.html#gnd">3</a>), digital terrain models (section <a href="dtm.html#dtm">4</a>), normalization (section <a href="norm.html#norm">5</a>) and digital surface models (section <a href="chm.html#chm">6</a>)</li>

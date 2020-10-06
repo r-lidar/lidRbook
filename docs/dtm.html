@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-07-27" />
+<meta name="date" content="2020-10-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,12 +50,13 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
@@ -64,14 +65,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,9 +83,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -311,9 +314,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">4</span> Digital terrain model</h1>
 <p>Generating a Digital Terrain Model (DTM) is usually the second step in processing that follows classification of ground points (section <a href="gnd.html#gnd">3</a>). Put simply, a DTM can be described as an “image” of the ground. Methods to generate DTMs have been intensively studied and several algorithms have been proposed for various terrain situations. DTMs are used for a variety of purposes in practice, such as determination of the catchment basins of water retention and stream flow, or the identification of drivable roads to access resources. It also enables users to normalize point clouds i.e. subtract the local terrain from the elevation of points to allow a manipulation of point clouds as if they were acquired on a flat surface (section <a href="norm.html#norm">5</a>).</p>
 <p>The construction of a DTM starts with known or sampled ground points and uses various spatial interpolation techniques to infer ground points at unsampled locations. Accuracy of the DTM is very important because errors will propagate to future processing stages like tree height estimation. A wide range of methods exist for spatial interpolation of points. In the following section we will use the classified <code>Topography.laz</code> data set, which is included internally within <code>lidR</code> to create reproducible examples.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">LASfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Topography.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;lidR&quot;</span>)</a>
-<a class="sourceLine" id="cb33-2" data-line-number="2">las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(LASfile, <span class="dt">select =</span> <span class="st">&quot;xyzc&quot;</span>)</a>
-<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="kw">plot</span>(las, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="dtm.html#cb33-1"></a>LASfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Topography.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb33-2"><a href="dtm.html#cb33-2"></a>las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(LASfile, <span class="dt">select =</span> <span class="st">&quot;xyzc&quot;</span>)</span>
+<span id="cb33-3"><a href="dtm.html#cb33-3"></a><span class="kw">plot</span>(las, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-topo-dtm-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div id="tin" class="section level2">
 <h2><span class="header-section-number">4.1</span> Triangular irregular network</h2>
@@ -321,8 +324,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="lidR-book_files/figure-html/triangulation-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Planar facets of each generated triangle are used to interpolate. Used with a Delaunay triangulation, this is the most simple solution because it involves no parameters. The Delaunay triangulation is unique and the linear interpolation is parameter-free. The drawbacks of the method are that it creates a non-smooth DTM and that it cannot extrapolate the terrain outside the convex hull delimited by the ground points since there are no triangle facets outside the convex hull. Moreover, the interpolation is weak at the edges because large irrelevant triangles are often created. It’s therefore important to compute the triangulation with a buffer to be able to crop the DTM and clear the edge artifacts.</p>
 <p>To generate a DTM model with the TIN algorithm we use <code>grid_terrain()</code> where <code>algorithm = tin()</code>.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">dtm_tin &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dt">res =</span> <span class="dv">1</span>, <span class="dt">algorithm =</span> <span class="kw">tin</span>())</a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw">plot_dtm3d</span>(dtm_tin, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="dtm.html#cb34-1"></a>dtm_tin &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dt">res =</span> <span class="dv">1</span>, <span class="dt">algorithm =</span> <span class="kw">tin</span>())</span>
+<span id="cb34-2"><a href="dtm.html#cb34-2"></a><span class="kw">plot_dtm3d</span>(dtm_tin, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>) </span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/tin-dtm-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Notice the ugly edge interpolations. This occurs because we didn’t process with a buffer.</p>
 </div>
@@ -331,8 +334,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Invert distance weighting (IDW) is one of the simplest and most readily available methods that can be applied to create DTMs. It is based on an assumption that the value at an unsampled point can be approximated as a weighted average of values at points within a certain cut-off distance <em>d</em>, or from a given number <em>k</em> of closest neighbours. Weights are usually inversely proportional to a power <em>p</em> of the distance between the location and the neighbour, which leads to the computing of an estimator.</p>
 <p>Compared to <code>tin()</code> this method is more robust to edge artifacts because it uses a more relevant neighbourhood but generates terrains that are “bumpy” and probably not as realistic as those generated using TINs. There are always trade-offs to different methods!</p>
 <p>To generate a DTM model with the IDW algorithm we use <code>grid_terrain()</code> where <code>algorithm = knnidw()</code>.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">dtm_idw &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dt">algorithm =</span> <span class="kw">knnidw</span>(<span class="dt">k =</span> 10L, <span class="dt">p =</span> <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb35-2" data-line-number="2"><span class="kw">plot_dtm3d</span>(dtm_idw, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="dtm.html#cb35-1"></a>dtm_idw &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dt">algorithm =</span> <span class="kw">knnidw</span>(<span class="dt">k =</span> 10L, <span class="dt">p =</span> <span class="dv">2</span>))</span>
+<span id="cb35-2"><a href="dtm.html#cb35-2"></a><span class="kw">plot_dtm3d</span>(dtm_idw, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>) </span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/idw-dtm-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Notice the bumpy nature of the DTM compared to the previous one generated with <code>tin()</code>. In 1D and IDW interpolation looks like:</p>
 <p><img src="lidR-book_files/figure-html/plot-1d-idw-1.png" width="576" style="display: block; margin: auto;" /></p>
@@ -341,8 +344,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">4.3</span> Kriging</h2>
 <p>Kriging is the most advanced approach and utilizes advanced geostatistical interpolation methods that take into account the relationships between the returns and their respective distances from each other. <code>lidR</code> uses the package <code>gstat</code> to perform the kriging. This method is very advanced, difficult to manipulate, and extremely slow to compute, but probably provides the best results with minimal edge artifacts.</p>
 <p>To generate a DTM model with the kriging algorithm we use <code>grid_terrain()</code> where <code>algorithm = kriging()</code>.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">dtm_kriging &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dt">algorithm =</span> <span class="kw">kriging</span>(<span class="dt">k =</span> <span class="dv">40</span>))</a>
-<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="kw">plot_dtm3d</span>(dtm_kriging, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="dtm.html#cb36-1"></a>dtm_kriging &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dt">algorithm =</span> <span class="kw">kriging</span>(<span class="dt">k =</span> <span class="dv">40</span>))</span>
+<span id="cb36-2"><a href="dtm.html#cb36-2"></a><span class="kw">plot_dtm3d</span>(dtm_kriging, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>) </span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/kri-dtm-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Notice that the algorithm has issues interpolating regions with missing point such as lakes.</p>
 </div>
@@ -358,32 +361,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="dtm-other" class="section level2">
 <h2><span class="header-section-number">4.5</span> Other methods</h2>
 <p>Spatial interpolation is not limited to the 3 methods described above. Many more have been presented and described in the literature. In section <a href="plugins.html#plugins">18</a> we will learn how to create a plugin algorithm compatible with <code>grid_terrain()</code> based on a multilevel B-spline approximation (MBA) using the <a href="https://cran.r-project.org/web/packages/MBA/index.html"><code>MBA</code></a> package.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">dtm_mba &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dt">algorithm =</span> <span class="kw">mba</span>())</a>
-<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="kw">plot_dtm3d</span>(dtm_mba, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="dtm.html#cb37-1"></a>dtm_mba &lt;-<span class="st"> </span><span class="kw">grid_terrain</span>(las, <span class="dt">algorithm =</span> <span class="kw">mba</span>())</span>
+<span id="cb37-2"><a href="dtm.html#cb37-2"></a><span class="kw">plot_dtm3d</span>(dtm_mba, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-dtm-3d-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="hillshade" class="section level2">
 <h2><span class="header-section-number">4.6</span> Render shaded DTM</h2>
 <p>Generating a hillshade layer in R is relatively straight forward and is done using functions from the <code>raster</code> package. The <code>terrain()</code> and <code>hillShade()</code> functions can be combined to take the DTM raster layers as input and return a hillshade raster:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">dtm_tin &lt;-<span class="st"> </span><span class="kw">crop</span>(dtm_tin, <span class="kw">extent</span>(dtm_tin) <span class="op">-</span><span class="st"> </span><span class="dv">3</span>) <span class="co"># Remove 3 m of buffer</span></a>
-<a class="sourceLine" id="cb38-2" data-line-number="2">dtm_prod &lt;-<span class="st"> </span><span class="kw">terrain</span>(dtm_tin, <span class="dt">opt =</span> <span class="kw">c</span>(<span class="st">&quot;slope&quot;</span>, <span class="st">&quot;aspect&quot;</span>))</a>
-<a class="sourceLine" id="cb38-3" data-line-number="3">dtm_tin_hillshade &lt;-<span class="st"> </span><span class="kw">hillShade</span>(<span class="dt">slope =</span> dtm_prod<span class="op">$</span>slope, <span class="dt">aspect =</span> dtm_prod<span class="op">$</span>aspect)</a>
-<a class="sourceLine" id="cb38-4" data-line-number="4"><span class="kw">plot</span>(dtm_tin_hillshade, <span class="dt">col =</span> <span class="kw">grey.colors</span>(<span class="dv">50</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">legend =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="dtm.html#cb38-1"></a>dtm_tin &lt;-<span class="st"> </span><span class="kw">crop</span>(dtm_tin, <span class="kw">extent</span>(dtm_tin) <span class="op">-</span><span class="st"> </span><span class="dv">3</span>) <span class="co"># Remove 3 m of buffer</span></span>
+<span id="cb38-2"><a href="dtm.html#cb38-2"></a>dtm_prod &lt;-<span class="st"> </span><span class="kw">terrain</span>(dtm_tin, <span class="dt">opt =</span> <span class="kw">c</span>(<span class="st">&quot;slope&quot;</span>, <span class="st">&quot;aspect&quot;</span>))</span>
+<span id="cb38-3"><a href="dtm.html#cb38-3"></a>dtm_tin_hillshade &lt;-<span class="st"> </span><span class="kw">hillShade</span>(<span class="dt">slope =</span> dtm_prod<span class="op">$</span>slope, <span class="dt">aspect =</span> dtm_prod<span class="op">$</span>aspect)</span>
+<span id="cb38-4"><a href="dtm.html#cb38-4"></a><span class="kw">plot</span>(dtm_tin_hillshade, <span class="dt">col =</span> <span class="kw">grey.colors</span>(<span class="dv">50</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">legend =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-dtm-shaded-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>The <a href="https://github.com/tylermorganwall/rayshader"><code>rayshader</code></a> package also provides interesting tools to generate shaded DTM.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">library</span>(rayshader)</a>
-<a class="sourceLine" id="cb39-2" data-line-number="2">elmat &lt;-<span class="st"> </span><span class="kw">raster_to_matrix</span>(dtm_tin)</a>
-<a class="sourceLine" id="cb39-3" data-line-number="3"><span class="co">#&gt; [1] &quot;Dimensions of matrix are: 284x284.&quot;</span></a>
-<a class="sourceLine" id="cb39-4" data-line-number="4">map &lt;-<span class="st"> </span>elmat <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb39-5" data-line-number="5"><span class="st">  </span><span class="kw">sphere_shade</span>(<span class="dt">texture =</span> <span class="st">&quot;imhof1&quot;</span>, <span class="dt">progbar =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb39-6" data-line-number="6"><span class="st">  </span><span class="kw">add_water</span>(<span class="kw">detect_water</span>(elmat), <span class="dt">color =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb39-7" data-line-number="7"><span class="st">  </span><span class="kw">add_shadow</span>(<span class="kw">ray_shade</span>(elmat, <span class="dt">progbar =</span> <span class="ot">FALSE</span>), <span class="fl">0.5</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb39-8" data-line-number="8"><span class="st">  </span><span class="kw">add_shadow</span>(<span class="kw">ambient_shade</span>(elmat, <span class="dt">progbar =</span> <span class="ot">FALSE</span>), <span class="dv">0</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="dtm.html#cb39-1"></a><span class="kw">library</span>(rayshader)</span>
+<span id="cb39-2"><a href="dtm.html#cb39-2"></a>elmat &lt;-<span class="st"> </span><span class="kw">raster_to_matrix</span>(dtm_tin)</span>
+<span id="cb39-3"><a href="dtm.html#cb39-3"></a><span class="co">#&gt; [1] &quot;Dimensions of matrix are: 284x284.&quot;</span></span>
+<span id="cb39-4"><a href="dtm.html#cb39-4"></a>map &lt;-<span class="st"> </span>elmat <span class="op">%&gt;%</span></span>
+<span id="cb39-5"><a href="dtm.html#cb39-5"></a><span class="st">  </span><span class="kw">sphere_shade</span>(<span class="dt">texture =</span> <span class="st">&quot;imhof1&quot;</span>, <span class="dt">progbar =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb39-6"><a href="dtm.html#cb39-6"></a><span class="st">  </span><span class="kw">add_water</span>(<span class="kw">detect_water</span>(elmat), <span class="dt">color =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb39-7"><a href="dtm.html#cb39-7"></a><span class="st">  </span><span class="kw">add_shadow</span>(<span class="kw">ray_shade</span>(elmat, <span class="dt">progbar =</span> <span class="ot">FALSE</span>), <span class="fl">0.5</span>) <span class="op">%&gt;%</span></span>
+<span id="cb39-8"><a href="dtm.html#cb39-8"></a><span class="st">  </span><span class="kw">add_shadow</span>(<span class="kw">ambient_shade</span>(elmat, <span class="dt">progbar =</span> <span class="ot">FALSE</span>), <span class="dv">0</span>)</span></code></pre></div>
 <p>2D plot</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">plot_map</span>(map)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="dtm.html#cb40-1"></a><span class="kw">plot_map</span>(map)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-2d-dtm-rayshaded-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>3D plot</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">plot_3d</span>(map, elmat, <span class="dt">zscale =</span> <span class="dv">1</span>, <span class="dt">windowsize =</span> <span class="kw">c</span>(<span class="dv">800</span>, <span class="dv">800</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="dtm.html#cb41-1"></a><span class="kw">plot_3d</span>(map, elmat, <span class="dt">zscale =</span> <span class="dv">1</span>, <span class="dt">windowsize =</span> <span class="kw">c</span>(<span class="dv">800</span>, <span class="dv">800</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-3d-dtm-rayshaded-1.png" width="672" style="display: block; margin: auto;" /></p>
 
 </div>
