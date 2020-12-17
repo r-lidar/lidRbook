@@ -94,7 +94,7 @@ plot(las, color = "planar")
 # here I'm cheating for the rendering the example above being too long to compute
 options(lidR.progress = FALSE)
 las <- readLAS("data/chap11/building_WilliamsAZ_Urban_normalized.laz")
-las <- lasdetectshape(las, shp_plane(k = 20), "planar", filter = ~Classification != LASGROUND)
+las <- segment_shapes(las, shp_plane(k = 20), "planar", filter = ~Classification != LASGROUND)
 plot(las, color = "planar", size = 3)
 ```
 
@@ -149,7 +149,7 @@ is.linear <- function(x, y, z, th = 10) {
 
 ```{r plot-las-wire, echo = FALSE, rgl = TRUE}
 las <- readLAS("data/chap11/wires.laz", filter = "-keep_random_fraction 0.3")
-las <- lasdetectshape(las, shp_line(th1 = 8, k = 15), "linear", filter = ~Classification != LASGROUND)
+las <- segment_shapes(las, shp_line(th1 = 8, k = 15), "linear", filter = ~Classification != LASGROUND)
 plot(las, size = 5)
 ```
 
