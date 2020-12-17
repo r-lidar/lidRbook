@@ -14,11 +14,11 @@ knitr::opts_chunk$set(
   fig.align = "center")
 ```
 
-# Spatial indexes {#spatial-index}
+# Spatial indexes {#spatial-indexing}
 
 Spatial index is one key features for performing spatial queries in a large point-cloud. Without indexing, any search for points of interest would require a “sequential scan” of every points. Indexing speeds up searching by organizing the data into a search structure which can be quickly traversed to find particular records. Some algorithms could simply not work in a reasonable time-frame without spatial indexing.
 
-## Introduction to spatial indexes
+## Introduction to spatial indexes {#spatial-indexing-intro}
 
 This section presents an overview, with simple words, of how spatial indexes works. If the reader is already knowledgeable about spatial indexing, they can skip this section which only skim over the concept of spatial index.
 
@@ -78,9 +78,9 @@ points(Xq, Yq, col = "red", cex = 0.5, pch = 19)
 ```
 Spatial indexing provides a way to dramatically speed-up many common operations that require to perform spatial queries either in disc, rectangle, polygons, 2D, 3D and so on. It exists different types of spatial indexes for different purposes but in all case the uses of a spatial index is not free and comes at the cost of a greater memory usage.
 
-## Spatial indexes for LAS objects
+## Spatial indexes for LAS objects {#spatial-indexing-las}
 
-### Overview
+### Overview {#spatial-indexing-oveview}
 
 `lidR` makes use of spatial indexes in many functions and can choose different types of spatial indexes on-the-fly. So far, the book only presented the function `readLAS()` (see chapter \@ref(io)) but the package has some variations of `readLAS()` named `readALSLAS()`, `readTLSLAS()`, `readUAVLAS()` and so on that enables to register a point-cloud type allowing `lidR` to adequately choose the most appropriated spatial index method to perform a given computation as fast as possible.
 
@@ -117,7 +117,7 @@ As a conclusion it is always a good idea to use the new functions `readALSLAS()`
 
 However reading the point-cloud with the correct `read*LAS()` function does not always guarantee to get the optimal performance. First, all the functions do not use spatial indexing or do not use the spatial index framework of `lidR`. This is the case of the `kriging()` function, for example, that is based on the `gstat` package. Second the choice of the spatial index relies on some assumptions that may not be met in some specific point-clouds. The internal dispatch is designed to work with 'typical' point-cloud under some assumptions. An ALS point-cloud is typically spatially large (1 km² or more) with little Z dispersion (0 to 40 meters) relatively to the XY dispersion (0 to 1000 meters). On the contrary an TLS point cloud is typically spatially narrow (3000 m²) with proportionally a lot a variations on Z relatively to XY. `read*LAS()` should be sufficient for most use cases but for some specific cases users can manually choose which spatial index suit best and this is the topic of the next section.
 
-### Spatial indexes and selection strategies
+### Spatial indexes and selection strategies {#spatial-indexing-strategies}
 
 `lidR` currently has 4 spatial indexes: a grid partition, a voxel partition, a quadtree and an octree. Each having pros and cons. grid partition and quadtree are 2D indexes while voxel partition and octree are 3D indexes. They are all able to perform any kind of spatial query similarly. This is why it does not matter if the point-cloud is read with `readALSLAS()` or `readTLSLAS()`. The result will be the same. However their efficiency dependent on the point-cloud type and the query type. This is why using the proper `read` function can matter. The following rules allow to select the best index.
 
@@ -160,7 +160,7 @@ system.time(segment_shapes(las, shp_plane(k = 20), "planar", filter = ~Classific
 
 Here both are almost equal and "octree" is slower. But one may find limit cases where it worth it to perform manual selection and thus `lidR` allows for overwriting the default rules. More details in `help("lidR-spatial-index")`.
 
-### C++ API
+### C++ API {#spatial-indexing-cpp-api}
 
 For more advanced users and developers the lidR's spatial index framework is provided as header-only C++ classes meaning that users can link to `lidR` to develop R/C++ applications using `lidR` spatial indexes. If the reader is not comfortable with the terms C++, Rcpp, header-only, external pointer and other C++ related concepts, all right, you can skip this section which is more dedicated to advanced users and package developers who want to develop complex and efficient tools but it does not bring much for regular users.
 
@@ -286,7 +286,7 @@ void knn(const PointXY& p, const unsigned int k, const double r, std::vector<Poi
 void knn(const PointXYZ& p, const unsigned int k, const double r, std::vector<PointXYZ>& res);
 ```
 
-### Benchmark
+### Benchmark {#spatial-indexing-benchmark}
 
 The lidR's spatial index framework performs fast especially when large point clouds are implied. In the following we are comparing how fast `lidR` searches for the 10-nearest neighbours of every points of an ALS point-cloud with 2.3 millions points relatively to the `RANN`, `FANN` and `nabor` packages. We can see that it is competitive with the very fast `libnabo` library but does more than `libnabo` since it also performs geometrical queries such as point in discs, rectangles, cylinders, triangles, polygons. We don't know any R library providing such capability to produce benchmark comparisons. Moreover lidR exposes the C++ classes to allow building efficient third party applications. This is for example heavily used in the [lidRplugins](https://github.com/Jean-Romain/lidRplugins) package.
 
@@ -318,7 +318,7 @@ ggplot(res) +
   xlab("Package") + ylab("Time (s)")
 ```
 
-## Spatial index for LAS files
+## Spatial index for LAS files {#spatial-indexing-files}
 
 Previous sections were dedicated at explaining spatial index for `LAS` object i.e. point-clouds read with `readLAS()` and loaded in memory. This section focuses on spatial indexing for LAS files i.e. point-clouds stored in las/laz files and not (yet) loaded in memory. The problem of spatial queries at read time is the same but the solution is different because it was developed in an independent context.
 
