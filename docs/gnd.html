@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3 Ground classification | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3 Ground classification | The lidR package" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-10-06" />
+<meta name="date" content="2021-01-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -288,10 +288,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="17.2" data-path="outbox.html"><a href="outbox.html#outbox-multispectral-coloring"><i class="fa fa-check"></i><b>17.2</b> Multi-spectral coloring</a></li>
 </ul></li>
-<li class="chapter" data-level="18" data-path="plugins.html"><a href="plugins.html"><i class="fa fa-check"></i><b>18</b> <code>lidR</code> plugin system</a><ul>
-<li class="chapter" data-level="18.1" data-path="plugins.html"><a href="plugins.html#plugin-system"><i class="fa fa-check"></i><b>18.1</b> Understanding lidR algorithms</a></li>
-<li class="chapter" data-level="18.2" data-path="plugins.html"><a href="plugins.html#plugin-creation"><i class="fa fa-check"></i><b>18.2</b> Creation of the <code>mba</code> algorithm</a></li>
-<li class="chapter" data-level="18.3" data-path="plugins.html"><a href="plugins.html#plugin-extensions"><i class="fa fa-check"></i><b>18.3</b> What about other algorithms?</a></li>
+<li class="chapter" data-level="18" data-path="spatial-indexing.html"><a href="spatial-indexing.html"><i class="fa fa-check"></i><b>18</b> Spatial indexes</a><ul>
+<li class="chapter" data-level="18.1" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-intro"><i class="fa fa-check"></i><b>18.1</b> Introduction to spatial indexes</a></li>
+<li class="chapter" data-level="18.2" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-las"><i class="fa fa-check"></i><b>18.2</b> Spatial indexes for LAS objects</a><ul>
+<li class="chapter" data-level="18.2.1" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-oveview"><i class="fa fa-check"></i><b>18.2.1</b> Overview</a></li>
+<li class="chapter" data-level="18.2.2" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-strategies"><i class="fa fa-check"></i><b>18.2.2</b> Spatial indexes and selection strategies</a></li>
+<li class="chapter" data-level="18.2.3" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-cpp-api"><i class="fa fa-check"></i><b>18.2.3</b> C++ API</a></li>
+<li class="chapter" data-level="18.2.4" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-benchmark"><i class="fa fa-check"></i><b>18.2.4</b> Benchmark</a></li>
+</ul></li>
+<li class="chapter" data-level="18.3" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-files"><i class="fa fa-check"></i><b>18.3</b> Spatial index for LAS files</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="plugins.html"><a href="plugins.html"><i class="fa fa-check"></i><b>19</b> <code>lidR</code> plugin system</a><ul>
+<li class="chapter" data-level="19.1" data-path="plugins.html"><a href="plugins.html#plugin-system"><i class="fa fa-check"></i><b>19.1</b> Understanding lidR algorithms</a></li>
+<li class="chapter" data-level="19.2" data-path="plugins.html"><a href="plugins.html#plugin-creation"><i class="fa fa-check"></i><b>19.2</b> Creation of the <code>mba</code> algorithm</a></li>
+<li class="chapter" data-level="19.3" data-path="plugins.html"><a href="plugins.html#plugin-extensions"><i class="fa fa-check"></i><b>19.3</b> What about other algorithms?</a></li>
 </ul></li>
 </ul>
 
@@ -317,47 +327,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">3.1</span> Progressive Morphological Filter</h2>
 <p>The implementation of PMF algorithm in <code>lidR</code> is based on the method described in <a href="https://ieeexplore.ieee.org/document/1202973">Zhang et al. (2003)</a> with some technical modifications. The original method is raster-based, while <code>lidR</code> performs point-based morphological operations because <code>lidR</code> is a point cloud oriented software. The main step of the methods are summarised in the figure below:</p>
 <center>
-<img src="images/GND/PMF.svg" />
+<img src="images/GND/PMF.png" />
 </center>
 <p>The <code>pmf()</code> function requires defining the following input parameters: <code>ws</code> (window size or sequence of window sizes), and <code>th</code> (threshold size or sequence of threshold heights). More experienced users may experiment with these parameters to achieve best classification accuracy, however <code>lidR</code> contains <code>util_makeZhangParam()</code> function that includes the default parameter values described in <a href="https://ieeexplore.ieee.org/document/1202973">Zhang et al. (2003)</a>.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="gnd.html#cb23-1"></a>LASfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Topography.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
-<span id="cb23-2"><a href="gnd.html#cb23-2"></a>las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(LASfile, <span class="dt">select =</span> <span class="st">&quot;xyzrn&quot;</span>)</span>
-<span id="cb23-3"><a href="gnd.html#cb23-3"></a>las &lt;-<span class="st"> </span><span class="kw">classify_ground</span>(las, <span class="dt">algorithm =</span> <span class="kw">pmf</span>(<span class="dt">ws =</span> <span class="dv">5</span>, <span class="dt">th =</span> <span class="dv">3</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="gnd.html#cb1-1"></a>LASfile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Topography.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb1-2"><a href="gnd.html#cb1-2"></a>las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(LASfile, <span class="dt">select =</span> <span class="st">&quot;xyzrn&quot;</span>)</span>
+<span id="cb1-3"><a href="gnd.html#cb1-3"></a>las &lt;-<span class="st"> </span><span class="kw">classify_ground</span>(las, <span class="dt">algorithm =</span> <span class="kw">pmf</span>(<span class="dt">ws =</span> <span class="dv">5</span>, <span class="dt">th =</span> <span class="dv">3</span>))</span></code></pre></div>
 <p>We can now visualize the result:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="gnd.html#cb24-1"></a><span class="kw">plot</span>(las, <span class="dt">color =</span> <span class="st">&quot;Classification&quot;</span>, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="gnd.html#cb2-1"></a><span class="kw">plot</span>(las, <span class="dt">color =</span> <span class="st">&quot;Classification&quot;</span>, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>) </span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-gnd-classification-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>To better illustrate the classification results we can generate and plot a cross section of the point cloud (see section <a href="io.html#plot-crossection">2.3.4</a>).</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="gnd.html#cb25-1"></a>p1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">273420</span>, <span class="dv">5274455</span>)</span>
-<span id="cb25-2"><a href="gnd.html#cb25-2"></a>p2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">273570</span>, <span class="dv">5274460</span>)</span>
-<span id="cb25-3"><a href="gnd.html#cb25-3"></a><span class="kw">plot_crossection</span>(las, p1 , p2, <span class="dt">colour_by =</span> <span class="kw">factor</span>(Classification))</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="gnd.html#cb3-1"></a>p1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">273420</span>, <span class="dv">5274455</span>)</span>
+<span id="cb3-2"><a href="gnd.html#cb3-2"></a>p2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">273570</span>, <span class="dv">5274460</span>)</span>
+<span id="cb3-3"><a href="gnd.html#cb3-3"></a><span class="kw">plot_crossection</span>(las, p1 , p2, <span class="dt">colour_by =</span> <span class="kw">factor</span>(Classification))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-gnd-crossection-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>We can see that although the classification worked, there are multiple points above terrain that are classified <code>2</code> (i.e. “ground” according to <a href="http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf">ASPRS specifications</a>). This clearly indicates that additional filtering steps are needed and that both <code>ws</code> and <code>th</code> parameters should be adjusted. Below we use multiple values for the two parameters instead of a single value in the example above.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="gnd.html#cb26-1"></a>ws &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">3</span>, <span class="dv">12</span>, <span class="dv">3</span>)</span>
-<span id="cb26-2"><a href="gnd.html#cb26-2"></a>th &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.1</span>, <span class="fl">1.5</span>, <span class="dt">length.out =</span> <span class="kw">length</span>(ws))</span>
-<span id="cb26-3"><a href="gnd.html#cb26-3"></a>las &lt;-<span class="st"> </span><span class="kw">classify_ground</span>(las, <span class="dt">algorithm =</span> <span class="kw">pmf</span>(<span class="dt">ws =</span> ws, <span class="dt">th =</span> th))</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="gnd.html#cb4-1"></a>ws &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">3</span>, <span class="dv">12</span>, <span class="dv">3</span>)</span>
+<span id="cb4-2"><a href="gnd.html#cb4-2"></a>th &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.1</span>, <span class="fl">1.5</span>, <span class="dt">length.out =</span> <span class="kw">length</span>(ws))</span>
+<span id="cb4-3"><a href="gnd.html#cb4-3"></a>las &lt;-<span class="st"> </span><span class="kw">classify_ground</span>(las, <span class="dt">algorithm =</span> <span class="kw">pmf</span>(<span class="dt">ws =</span> ws, <span class="dt">th =</span> th))</span></code></pre></div>
 <p>After this adjustment the classification result changed, and points in the canopy are no longer classified as “ground”.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="gnd.html#cb27-1"></a><span class="kw">plot_crossection</span>(las, <span class="dt">p1 =</span> p1, <span class="dt">p2 =</span> p2, <span class="dt">colour_by =</span> <span class="kw">factor</span>(Classification))</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="gnd.html#cb5-1"></a><span class="kw">plot_crossection</span>(las, <span class="dt">p1 =</span> p1, <span class="dt">p2 =</span> p2, <span class="dt">colour_by =</span> <span class="kw">factor</span>(Classification))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-gnd-crossection-2-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="csf" class="section level2">
 <h2><span class="header-section-number">3.2</span> Cloth Simulation Function</h2>
 <p>Cloth simulation filtering (CSF) is based on <a href="http://www.mdpi.com/2072-4292/8/6/501/htm">Zhang et al 2016</a> and consists of simulating a piece of cloth draped over a reversed point cloud. In this method the point cloud is turned upside down and then a cloth is dropped on the inverted surface. Ground points are determined by analyzing the interactions between the nodes of the cloth and the inverted surface. The cloth simulation itself is based on a grid that consists of particles with mass and interconnections that together determine the three-dimensional position and shape of the cloth.</p>
 <center>
-<img src="images/GND/CSF.svg" />
+<img src="images/GND/CSF.png" />
 </center>
 <p>The <code>csf()</code> functions use the default values proposed by <a href="http://www.mdpi.com/2072-4292/8/6/501/htm">Zhang et al 2016</a> and can be used without providing any arguments.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="gnd.html#cb28-1"></a>las &lt;-<span class="st"> </span><span class="kw">classify_ground</span>(las, <span class="dt">algorithm =</span> <span class="kw">csf</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="gnd.html#cb6-1"></a>las &lt;-<span class="st"> </span><span class="kw">classify_ground</span>(las, <span class="dt">algorithm =</span> <span class="kw">csf</span>())</span></code></pre></div>
 <p>Similar to the previous examples, classification results can be assessed using a cross section:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="gnd.html#cb29-1"></a><span class="kw">plot_crossection</span>(las, <span class="dt">p1 =</span> p1, <span class="dt">p2 =</span> p2, <span class="dt">colour_by =</span> <span class="kw">factor</span>(Classification))</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="gnd.html#cb7-1"></a><span class="kw">plot_crossection</span>(las, <span class="dt">p1 =</span> p1, <span class="dt">p2 =</span> p2, <span class="dt">colour_by =</span> <span class="kw">factor</span>(Classification))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-gnd-crossection-3-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>While the default parameters of <code>csf()</code> are designed to be universal and provide accurate classification results, according to the original paper, it’s apparent that the algorithm did not work properly in our example because a significant portion of points located in the ground were not classified. In such cases the algorithm parameters need to be tuned to improve the result. For this particular data set a set of parameters that resulted in an improved classification result were formulated as follows:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="gnd.html#cb30-1"></a>mycsf &lt;-<span class="st"> </span><span class="kw">csf</span>(<span class="dt">sloop_smooth =</span> <span class="ot">TRUE</span>, <span class="dt">class_threshold =</span> <span class="dv">1</span>, <span class="dt">cloth_resolution =</span> <span class="dv">1</span>, <span class="dt">time_step =</span> <span class="dv">1</span>)</span>
-<span id="cb30-2"><a href="gnd.html#cb30-2"></a>las &lt;-<span class="st"> </span><span class="kw">classify_ground</span>(las, mycsf)</span>
-<span id="cb30-3"><a href="gnd.html#cb30-3"></a><span class="kw">plot_crossection</span>(las, <span class="dt">p1 =</span> p1, <span class="dt">p2 =</span> p2, <span class="dt">colour_by =</span> <span class="kw">factor</span>(Classification))</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="gnd.html#cb8-1"></a>mycsf &lt;-<span class="st"> </span><span class="kw">csf</span>(<span class="dt">sloop_smooth =</span> <span class="ot">TRUE</span>, <span class="dt">class_threshold =</span> <span class="dv">1</span>, <span class="dt">cloth_resolution =</span> <span class="dv">1</span>, <span class="dt">time_step =</span> <span class="dv">1</span>)</span>
+<span id="cb8-2"><a href="gnd.html#cb8-2"></a>las &lt;-<span class="st"> </span><span class="kw">classify_ground</span>(las, mycsf)</span>
+<span id="cb8-3"><a href="gnd.html#cb8-3"></a><span class="kw">plot_crossection</span>(las, <span class="dt">p1 =</span> p1, <span class="dt">p2 =</span> p2, <span class="dt">colour_by =</span> <span class="kw">factor</span>(Classification))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-gnd-crossection-4-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>We can also subset only the ground points to display the results in 3D</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="gnd.html#cb31-1"></a>gnd &lt;-<span class="st"> </span><span class="kw">filter_ground</span>(las)</span>
-<span id="cb31-2"><a href="gnd.html#cb31-2"></a><span class="kw">plot</span>(gnd, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="gnd.html#cb9-1"></a>gnd &lt;-<span class="st"> </span><span class="kw">filter_ground</span>(las)</span>
+<span id="cb9-2"><a href="gnd.html#cb9-2"></a><span class="kw">plot</span>(gnd, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>) </span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-gnd-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="edge-artifact" class="section level2">
@@ -371,8 +381,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="other" class="section level2">
 <h2><span class="header-section-number">3.5</span> Other methods</h2>
-<p>Ground segmentation is not limited to the 2 methods described above. Many more have been presented and described in the literature. In section <a href="plugins.html#plugins">18</a> we will learn how to create a plugin algorithm and test it seamlessly in R with <code>lidR</code> using a syntax like:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="gnd.html#cb32-1"></a>las &lt;-<span class="st"> </span><span class="kw">classify_ground</span>(las, <span class="dt">algorithm =</span> <span class="kw">my_new_method</span>(<span class="dt">param1 =</span> <span class="fl">0.05</span>))</span></code></pre></div>
+<p>Ground segmentation is not limited to the 2 methods described above. Many more have been presented and described in the literature. In section <a href="plugins.html#plugins">19</a> we will learn how to create a plugin algorithm and test it seamlessly in R with <code>lidR</code> using a syntax like:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="gnd.html#cb10-1"></a>las &lt;-<span class="st"> </span><span class="kw">classify_ground</span>(las, <span class="dt">algorithm =</span> <span class="kw">my_new_method</span>(<span class="dt">param1 =</span> <span class="fl">0.05</span>))</span></code></pre></div>
 
 </div>
 </div>
@@ -432,20 +442,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>
