@@ -124,6 +124,14 @@ outbox-custom-metrics
 outbox-distance-returns
 outbox-rumple-index
 outbox-multispectral-coloring
+spatial-indexing
+spatial-indexing-intro
+spatial-indexing-las
+spatial-indexing-oveview
+spatial-indexing-strategies
+spatial-indexing-cpp-api
+spatial-indexing-benchmark
+spatial-indexing-files
 plugins
 plugin-system
 plugin-creation
