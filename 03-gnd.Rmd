@@ -33,7 +33,7 @@ The implementation of PMF algorithm in `lidR` is based on the method described i
 
 
 <center>
-![](images/GND/PMF.svg)
+![](images/GND/PMF.png)
 </center>
 
 The `pmf()` function requires defining the following input parameters: `ws` (window size or sequence of window sizes), and `th` (threshold size or sequence of threshold heights). More experienced users may experiment with these parameters to achieve best classification accuracy, however `lidR` contains `util_makeZhangParam()` function that includes the default parameter values described in [Zhang et al. (2003) ](https://ieeexplore.ieee.org/document/1202973).
@@ -77,7 +77,7 @@ plot_crossection(las, p1 = p1, p2 = p2, colour_by = factor(Classification))
 Cloth simulation filtering (CSF) is based on [Zhang et al 2016](http://www.mdpi.com/2072-4292/8/6/501/htm) and consists of simulating a piece of cloth draped over a reversed point cloud. In this method the point cloud is turned upside down and then a  cloth is dropped on the inverted surface. Ground points are determined by analyzing the interactions between the nodes of the cloth and the inverted surface. The cloth simulation itself is based on a grid that consists of particles with mass and interconnections that together determine the three-dimensional position and shape of the cloth.
 
 <center>
-![](images/GND/CSF.svg)
+![](images/GND/CSF.png)
 </center>
 
 The `csf()` functions use the default values proposed by [Zhang et al 2016](http://www.mdpi.com/2072-4292/8/6/501/htm) and can be used without providing any arguments.

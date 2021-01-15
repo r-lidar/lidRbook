@@ -11,10 +11,13 @@
    viewBox="0 0 551.91304 772.95319"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="khorsvavipour-steps.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="pitfree.svg"
    width="551.91302"
-   height="772.95319">
+   height="772.95319"
+   inkscape:export-filename="/home/jr/Documents/Ulaval/lidR/lidRbook/images/DSM/pitfree.png"
+   inkscape:export-xdpi="156.49072"
+   inkscape:export-ydpi="156.49072">
   <metadata
      id="metadata13123">
     <rdf:RDF>
@@ -23,7 +26,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -37,17 +40,17 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1027"
+     inkscape:window-height="1031"
      id="namedview13121"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:zoom="0.5696138"
-     inkscape:cx="-8.6123488"
-     inkscape:cy="676.98225"
-     inkscape:window-x="1920"
+     inkscape:zoom="1.1392276"
+     inkscape:cx="104.6262"
+     inkscape:cy="333.20147"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg2" />
@@ -629,80 +632,77 @@
   </defs>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:18.04072189px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     x="84.812508"
-     y="423.63696"
-     id="text23501"
-     sodipodi:linespacing="125%"><tspan
+     style="font-style:normal;font-weight:normal;font-size:9.78453445px;line-height:0%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.81537789px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="83.921089"
+     y="421.05234"
+     id="text23501"><tspan
        sodipodi:role="line"
        id="tspan23503"
-       x="84.812508"
-       y="423.63696"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia">Classic</tspan><tspan
+       x="83.921089"
+       y="421.05234"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.71000576px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;stroke-width:0.81537789px">Classic</tspan><tspan
        sodipodi:role="line"
-       x="84.812508"
-       y="446.18787"
+       x="83.921089"
+       y="439.43985"
        id="tspan23505"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia">Triangulation</tspan><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.71000576px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;stroke-width:0.81537789px">Triangulation</tspan><tspan
        sodipodi:role="line"
-       x="84.812508"
-       y="468.73877"
+       x="83.921089"
+       y="457.82736"
        id="tspan23507"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia">of first returns</tspan></text>
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.71000576px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;stroke-width:0.81537789px">of first returns</tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:18.04072189px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     x="269.51212"
-     y="424.43298"
-     id="text23501-3"
-     sodipodi:linespacing="125%"><tspan
+     style="font-style:normal;font-weight:normal;font-size:9.78453445px;line-height:0%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.81537789px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="268.52106"
+     y="421.70139"
+     id="text23501-3"><tspan
        sodipodi:role="line"
-       x="271.53818"
-       y="424.43298"
+       x="270.22006"
+       y="421.70139"
        id="tspan23507-5"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia">Partial </tspan><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.71000576px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;stroke-width:0.81537789px">Partial </tspan><tspan
        sodipodi:role="line"
-       x="269.51212"
-       y="446.98389"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia"
+       x="268.52106"
+       y="440.0889"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.71000576px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;stroke-width:0.81537789px"
        id="tspan23538">triangulation</tspan><tspan
        sodipodi:role="line"
-       x="269.51212"
-       y="469.53479"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia"
+       x="268.52106"
+       y="458.47641"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.71000576px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;stroke-width:0.81537789px"
        id="tspan23545">above 10 m</tspan><tspan
        sodipodi:role="line"
-       x="269.51212"
-       y="492.08569"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia"
-       id="tspan23540" /></text>
+       x="270.22006"
+       y="476.86392"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.71000576px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;stroke-width:0.81537789px"
+       id="tspan23540"> </tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:18.04072189px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     x="460.4632"
-     y="427.14169"
-     id="text23501-3-3"
-     sodipodi:linespacing="125%"><tspan
+     style="font-style:normal;font-weight:normal;font-size:9.78453445px;line-height:0%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.81537789px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="460.21835"
+     y="423.91"
+     id="text23501-3-3"><tspan
        sodipodi:role="line"
-       x="462.48926"
-       y="427.14169"
+       x="461.91736"
+       y="423.91"
        id="tspan23507-5-5"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia">Partial </tspan><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.71000576px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;stroke-width:0.81537789px">Partial </tspan><tspan
        sodipodi:role="line"
-       x="460.4632"
-       y="449.6926"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia"
+       x="460.21835"
+       y="442.29752"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.71000576px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;stroke-width:0.81537789px"
        id="tspan23538-6">triangulation</tspan><tspan
        sodipodi:role="line"
-       x="460.4632"
-       y="472.2435"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia"
+       x="460.21835"
+       y="460.68503"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.71000576px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;stroke-width:0.81537789px"
        id="tspan23545-2">above 20 m</tspan><tspan
        sodipodi:role="line"
-       x="460.4632"
-       y="494.7944"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia"
-       id="tspan23540-9" /></text>
+       x="461.91736"
+       y="479.07254"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.71000576px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;stroke-width:0.81537789px"
+       id="tspan23540-9"> </tspan></text>
   <g
      id="g23601"
      transform="translate(-157.55163,184.09858)">
@@ -50613,21 +50613,20 @@
   </g>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:18.04072189px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     x="273.90054"
-     y="762.69281"
-     id="text23501-3-1"
-     sodipodi:linespacing="125%"><tspan
+     style="font-style:normal;font-weight:normal;font-size:9.78453445px;line-height:0%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.81537789px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="264.0993"
+     y="759.51099"
+     id="text23501-3-1"><tspan
        sodipodi:role="line"
-       x="273.90054"
-       y="762.69281"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia"
+       x="264.0993"
+       y="759.51099"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.71000576px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;stroke-width:0.81537789px"
        id="tspan23545-0">Pit free canopy</tspan><tspan
        sodipodi:role="line"
-       x="273.90054"
-       y="785.24371"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia"
-       id="tspan23540-93" /></text>
+       x="265.79831"
+       y="777.8985"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.71000576px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;stroke-width:0.81537789px"
+       id="tspan23540-93"> </tspan></text>
   <path
      style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
      d="M 444.16059,483.28323 290.98664,536.38939"
@@ -50654,15 +50653,15 @@
      sodipodi:nodetypes="cc" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      x="61.445141"
      y="14.983481"
-     id="text24579"
-     sodipodi:linespacing="125%"><tspan
+     id="text24579"><tspan
        sodipodi:role="line"
        id="tspan24581"
        x="61.445141"
-       y="14.983481" /></text>
+       y="14.983481"
+       style="font-size:40px;line-height:1.25"> </tspan></text>
   <path
      style="fill:none;fill-rule:evenodd;stroke:#ff1616;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1"
      d="m 42.961028,111.10748 19.091883,0.21945"
@@ -50671,46 +50670,44 @@
      sodipodi:nodetypes="cc" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:10.41092587px;line-height:125%;font-family:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      x="68.681664"
      y="54.566944"
-     id="text23501-0"
-     sodipodi:linespacing="125%"><tspan
+     id="text23501-0"><tspan
        sodipodi:role="line"
        x="68.681664"
        y="54.566944"
        id="tspan23507-6"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:start;text-anchor:start">Small triangles</tspan><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.41092587px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start">Small triangles</tspan><tspan
        sodipodi:role="line"
        x="68.681664"
        y="67.580605"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:start;text-anchor:start"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.41092587px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start"
        id="tspan24629">used in the </tspan><tspan
        sodipodi:role="line"
        x="68.681664"
        y="80.594261"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:start;text-anchor:start"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.41092587px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start"
        id="tspan24633">rasterization</tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:10.41092587px;line-height:125%;font-family:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      x="68.707123"
      y="100.49798"
-     id="text23501-0-1"
-     sodipodi:linespacing="125%"><tspan
+     id="text23501-0-1"><tspan
        sodipodi:role="line"
        x="68.707123"
        y="100.49798"
        id="tspan23507-6-8"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:start;text-anchor:start">Wide triangles</tspan><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.41092587px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start">Wide triangles</tspan><tspan
        sodipodi:role="line"
        x="68.707123"
        y="113.51163"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:start;text-anchor:start"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.41092587px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start"
        id="tspan24629-7">removed in the </tspan><tspan
        sodipodi:role="line"
        x="68.707123"
-       y="126.5253"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:start;text-anchor:start"
+       y="126.52529"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.41092587px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start"
        id="tspan24633-9">rasterization</tspan></text>
 </svg>

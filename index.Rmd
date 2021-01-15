@@ -29,7 +29,7 @@ Development of the `lidR` package between 2018 and 2020 was made possible thanks
 
 The book is shared under [CC-BY-NC-SA 2.0](https://creativecommons.org/licenses/by-nc-sa/2.0/)
 
-[![](https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-sa.svg)](https://creativecommons.org/licenses/by-nc-sa/2.0/)
+[![](images/by-nc-sa.png)](https://creativecommons.org/licenses/by-nc-sa/2.0/)
 
 --------
 

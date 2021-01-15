@@ -132,7 +132,7 @@ plot(chm, col = col)
 More advanced algorithms have also been designed that avoid pits during the computation step instead of requiring post-processing. [Khosravipour et al. (2014)](https://www.ingentaconnect.com/content/asprs/pers/2014/00000080/00000009/art00003?crawler=true) proposed a ‘pit-free’ algorithm, which consists of a series of sequential height thresholds where Delaunay triangulations are applied to first returns. For each threshold, the triangulation is cleaned of triangles that are too wide, similar to the example given in the previous section. In a final step, the partial rasters are stacked and only the highest pixels of each raster are retained (figure below). The output is a DSM that is expected to be natively free of pits without using any post-processing or correction methods. 
 
 <center>
-![](images/DSM/pitfree.svg)
+![](images/DSM/pitfree.png)
 </center>
 
 To understand this method better, we can reproduce the figure above with `algorithm = dsmtin()`:

@@ -74,19 +74,21 @@ plot_dtm3d(dtm_idw, bg = "white")
 
 Notice the bumpy nature of the DTM compared to the previous one generated with `tin()`. In 1D and IDW interpolation looks like:
 
-```{r plot-1d-idw, echo = FALSE, fig.height=2, fig.width=6}
+```{r plot-1d-idw, echo = FALSE, fig.height=2, fig.width=6, message=FALSE}
 set.seed(43)
 x <- runif(20, 0, 20)
 z <- 2*sin(x)+2
 y <- rep(0, 20)
 
+llas = LAS(data.frame(X=x, Y = y, Z = z))
+
 X <- seq(0,20,0.1)
 Y <- rep(201, 0)
 
-Z <- lidR:::C_knnidw(x,y,z, X, Y, 7, 2, 100, 1)
+Z <- lidR:::C_knnidw(llas, X, Y, 7, 2.5, 100, 1)
 
 opar <- par(mar = c(0,0,0,0))
-plot(x,z, asp = 1, xlab = "", ylab = "", xaxt <- 'n', yaxt = "n", ann=FALSE)
+plot(x,z, asp = 1)
 lines(X,Z)
 par(opar)
 ```
@@ -121,8 +123,8 @@ Spatial interpolation is not limited to the 3 methods described above. Many more
 ```{r, echo = FALSE}
 mba <- function(n = 1, m = 1, h = 8, extend = TRUE)
 {
-  f <- function(what, where, scales = c(0,0), offsets = c(0,0)) {
-    res <- MBA::mba.points(what, where, n, m , h, extend)
+  f <- function(las, where, scales = c(0,0), offsets = c(0,0)) {
+    res <- MBA::mba.points(las@data, where, n, m , h, extend)
     return(res$xyz.est[,3])
   }
   class(f) <- lidR:::LIDRALGORITHMSPI

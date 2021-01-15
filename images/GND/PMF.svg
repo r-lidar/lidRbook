@@ -9,57 +9,63 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="252.76527mm"
-   height="72.776131mm"
-   viewBox="0 0 895.62499 257.86818"
+   width="279.47177mm"
+   height="72.919533mm"
+   viewBox="0 0 990.25431 258.3763"
    id="svg12414"
    version="1.1"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="PMFPCL.svg">
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="PMF.svg"
+   inkscape:export-filename="/home/jr/Documents/Ulaval/lidR/lidRbook/images/GND/PMF.png"
+   inkscape:export-xdpi="81.797165"
+   inkscape:export-ydpi="81.797165">
   <defs
      id="defs12416">
     <marker
        inkscape:isstock="true"
-       style="overflow:visible;"
+       style="overflow:visible"
        id="marker15065"
-       refX="0.0"
-       refY="0.0"
+       refX="0"
+       refY="0"
        orient="auto"
        inkscape:stockid="Arrow1Lend">
       <path
-         transform="scale(0.8) rotate(180) translate(12.5,0)"
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
-         id="path15067" />
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path15067"
+         inkscape:connector-curvature="0" />
     </marker>
     <marker
        inkscape:stockid="Arrow1Lend"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="marker14630"
-       style="overflow:visible;"
+       style="overflow:visible"
        inkscape:isstock="true">
       <path
          id="path14632"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
-         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
     </marker>
     <marker
        inkscape:stockid="Arrow1Lend"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="Arrow1Lend"
-       style="overflow:visible;"
+       style="overflow:visible"
        inkscape:isstock="true"
        inkscape:collect="always">
       <path
          id="path14357"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
-         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
     </marker>
     <marker
        inkscape:stockid="Arrow1Lend"
@@ -72,8 +78,8 @@
       <path
          inkscape:connector-curvature="0"
          id="path14357-4"
-         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
          transform="matrix(-0.8,0,0,-0.8,-10,0)" />
     </marker>
     <marker
@@ -87,8 +93,8 @@
       <path
          inkscape:connector-curvature="0"
          id="path14632-0"
-         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
          transform="matrix(-0.8,0,0,-0.8,-10,0)" />
     </marker>
     <marker
@@ -103,8 +109,8 @@
       <path
          inkscape:connector-curvature="0"
          id="path14357-3"
-         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
          transform="matrix(-0.8,0,0,-0.8,-10,0)" />
     </marker>
   </defs>
@@ -116,8 +122,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="736.58336"
-     inkscape:cy="-96.169288"
+     inkscape:cx="525.46144"
+     inkscape:cy="-98.176681"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -126,7 +132,7 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:window-width="1920"
-     inkscape:window-height="1027"
+     inkscape:window-height="1031"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
@@ -146,7 +152,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(1582.0982,105.14331)">
+     transform="translate(1582.0982,105.63931)">
     <g
        transform="translate(-1588.6305,-620.95811)"
        id="g9623">
@@ -4792,39 +4798,37 @@
          points="728.99,94.77 733.14,96.22 737.30,97.73 741.45,99.53 745.61,101.79 749.76,104.62 753.92,108.08 758.07,112.16 762.22,116.77 766.38,121.78 770.53,127.01 774.69,132.24 778.84,137.26 783.00,141.82 787.15,145.71 791.31,148.75 795.46,150.79 799.61,151.75 803.77,151.61 807.92,150.40 812.08,148.24 816.23,145.29 820.39,141.77 824.54,137.95 828.69,134.10 832.85,130.52 837.00,127.51 841.16,125.32 845.31,124.20 849.47,124.33 853.62,125.83 857.78,128.75 861.93,133.09 866.08,138.79 870.24,145.71 874.39,153.68 878.55,162.50 882.70,171.92 886.86,181.73 889.89,189.00 " />
     </g>
     <path
-       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.771;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend)"
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.77100003;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
        d="m -1494.6939,-61.141607 c 30.7264,-58.344323 142.12,-56.658273 173.6696,-0.95673"
        id="path5525-5-0-6"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:14.25233364px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="-1406.6335"
        y="-71.774696"
-       id="text5517-3-5-3-93-0"
-       sodipodi:linespacing="125%"><tspan
+       id="text5517-3-5-3-93-0"><tspan
          sodipodi:role="line"
          x="-1406.6335"
          y="-71.774696"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:center;text-anchor:middle"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle"
          id="tspan6061-0-6-6">Open the point cloud</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:14.25233364px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="-1226.2865"
        y="-81.230751"
-       id="text5517-3-5-6-0-26"
-       sodipodi:linespacing="125%"><tspan
+       id="text5517-3-5-6-0-26"><tspan
          sodipodi:role="line"
-         x="-1224.9991"
+         x="-1224.9626"
          y="-81.230751"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:center;text-anchor:middle"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle"
          id="tspan25055-1">Compare and remove </tspan><tspan
          sodipodi:role="line"
          x="-1226.2865"
          y="-66.902626"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:center;text-anchor:middle"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle"
          id="tspan25328-87">points based on a threshold</tspan></text>
     <path
        style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.77070296px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;marker-end:url(#marker14630)"
@@ -4834,37 +4838,35 @@
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:12.83609676px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="-1130.8616"
        y="136.94948"
-       id="text5517-0-6"
-       sodipodi:linespacing="125%"><tspan
+       id="text5517-0-6"><tspan
          sodipodi:role="line"
          x="-1130.8616"
          y="136.94948"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:center;text-anchor:middle"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle"
          id="tspan25348-2">Ground points  after</tspan><tspan
          sodipodi:role="line"
          x="-1130.8616"
          y="152.57448"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:center;text-anchor:middle"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle"
          id="tspan11573">the first iteration</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:12.83609676px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="-768.98279"
        y="135.90401"
-       id="text5517-0-6-9"
-       sodipodi:linespacing="125%"><tspan
+       id="text5517-0-6-9"><tspan
          sodipodi:role="line"
          x="-768.98279"
          y="135.90401"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:center;text-anchor:middle"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle"
          id="tspan25348-2-3">Ground points  after</tspan><tspan
          sodipodi:role="line"
          x="-768.98279"
          y="151.52901"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:center;text-anchor:middle"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle"
          id="tspan11573-1">the second iteration</tspan></text>
     <path
        style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.77100003;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Lend-9)"
@@ -4874,37 +4876,35 @@
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:14.25233364px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="-1039.6062"
        y="-80.6409"
-       id="text5517-3-5-3-93-0-8"
-       sodipodi:linespacing="125%"><tspan
+       id="text5517-3-5-3-93-0-8"><tspan
          sodipodi:role="line"
          x="-1039.6062"
          y="-80.6409"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:center;text-anchor:middle"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle"
          id="tspan6061-0-6-6-4">Open the point cloud</tspan><tspan
          sodipodi:role="line"
          x="-1039.6062"
          y="-66.312775"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:center;text-anchor:middle"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle"
          id="tspan14997">with a bigger windows</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:14.25233364px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="-861.23108"
        y="-80.982315"
-       id="text5517-3-5-6-0-26-3"
-       sodipodi:linespacing="125%"><tspan
+       id="text5517-3-5-6-0-26-3"><tspan
          sodipodi:role="line"
-         x="-859.94379"
+         x="-859.90717"
          y="-80.982315"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:center;text-anchor:middle"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle"
          id="tspan25055-1-6">Compare and remove </tspan><tspan
          sodipodi:role="line"
          x="-861.23108"
          y="-66.65419"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;font-family:Utopia;-inkscape-font-specification:Utopia;text-align:center;text-anchor:middle"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.46249962px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle"
          id="tspan25328-87-1">points based on a threshold</tspan></text>
     <path
        style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.77070296px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;marker-end:url(#marker15065)"
@@ -4913,7 +4913,7 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <path
-       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.77100003;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:0.77100003,3.08400011;stroke-opacity:1;marker-end:url(#Arrow1Lend-6);stroke-dashoffset:0"
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.77100003;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:0.77100003, 3.08400011;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Arrow1Lend-6)"
        d="m -766.2511,-60.59151 c 30.7264,-58.34432 142.12,-56.65827 173.6696,-0.95673"
        id="path5525-5-0-6-2"
        inkscape:connector-curvature="0"
