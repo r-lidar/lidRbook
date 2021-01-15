@@ -52,7 +52,7 @@ custom_tree_metrics <- function(z, i) { # user-defined function
 
 In section \@ref(itd) we described the `delineate_crowns()` function. This function also supports the computation of metrics in a similar way but returns polygons instead of points.
 
-```{r spplot-tba-custom-metrics}
+```{r spplot-tba-custom-metrics, warning=FALSE}
 crowns_metrics <- delineate_crowns(las, func = ~custom_tree_metrics(z = Z, i = Intensity)) # delineate crowns
 spplot(crowns_metrics, "z_max", col.regions = hcl.colors(30)) # some plotting
 ```

@@ -194,7 +194,7 @@ plot(crowns)
 
 It's also possible to compute metrics for each tree. We go further into this functionality in section \@ref(tba), but here is a brief example where crowns are colored by their area.
 
-```{r plot-tree-hulls-metrics-its, fig.height=4, fig.width=4}
+```{r plot-tree-hulls-metrics-its, fig.height=4, fig.width=4, warning=FALSE}
 crowns <- delineate_crowns(las, func = .stdtreemetrics)
 spplot(crowns, "convhull_area")
 ```
