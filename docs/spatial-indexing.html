@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>18 Spatial indexes | The lidR package</title>
+  <title>18 Spatial indexing | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="18 Spatial indexes | The lidR package" />
+  <meta property="og:title" content="18 Spatial indexing | The lidR package" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="18 Spatial indexes | The lidR package" />
+  <meta name="twitter:title" content="18 Spatial indexing | The lidR package" />
   
   <meta name="twitter:description" content="A guide to the lidR package" />
   
@@ -289,7 +289,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="17.2" data-path="outbox.html"><a href="outbox.html#outbox-multispectral-coloring"><i class="fa fa-check"></i><b>17.2</b> Multi-spectral coloring</a></li>
 </ul></li>
-<li class="chapter" data-level="18" data-path="spatial-indexing.html"><a href="spatial-indexing.html"><i class="fa fa-check"></i><b>18</b> Spatial indexes</a><ul>
+<li class="chapter" data-level="18" data-path="spatial-indexing.html"><a href="spatial-indexing.html"><i class="fa fa-check"></i><b>18</b> Spatial indexing</a><ul>
 <li class="chapter" data-level="18.1" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-intro"><i class="fa fa-check"></i><b>18.1</b> Introduction to spatial indexes</a></li>
 <li class="chapter" data-level="18.2" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-las"><i class="fa fa-check"></i><b>18.2</b> Spatial indexes for LAS objects</a><ul>
 <li class="chapter" data-level="18.2.1" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-oveview"><i class="fa fa-check"></i><b>18.2.1</b> Overview</a></li>
@@ -322,7 +322,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="spatial-indexing" class="section level1">
-<h1><span class="header-section-number">18</span> Spatial indexes</h1>
+<h1><span class="header-section-number">18</span> Spatial indexing</h1>
 <p>Spatial index is one key features for performing spatial queries in a large point-cloud. Without indexing, any search for points of interest would require a “sequential scan” of every points. Indexing speeds up searching by organizing the data into a search structure which can be quickly traversed to find particular records. Some algorithms could simply not work in a reasonable time-frame without spatial indexing.</p>
 <div id="spatial-indexing-intro" class="section level2">
 <h2><span class="header-section-number">18.1</span> Introduction to spatial indexes</h2>
@@ -338,8 +338,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="lidR-book_files/figure-html/plot-sequential-scan-1.png" width="422.4" style="display: block; margin: auto;" /></p>
 <p>This is typically what the function <code>filter_poi()</code> does because <code>filter_poi()</code> is not a specialized function and enables to query any kind of points of interest (POI) including non spatial queries such as <code>Intensity &gt; x</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="spatial-indexing.html#cb2-1"></a><span class="kw">filter_poi</span>(las, <span class="kw">sqrt</span>((X <span class="op">-</span><span class="st"> </span>p[<span class="dv">1</span>])<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>(Y <span class="op">-</span><span class="st"> </span>p[<span class="dv">2</span>])<span class="op">^</span><span class="dv">2</span>) <span class="op">&lt;</span><span class="st"> </span>R)</span></code></pre></div>
-<p>Now imagine we want to perform 1,000,000 queries like that for 1,000,000 different points <code>p</code>. It means that we need to perform 1,000,000 x 1,000,000 = 1 billion operations. We say that it has a quadratic complexity. This does not scale-up and quickly becomes not computable (or at least dramatically slow).</p>
-<p>With a spatial index the points are organized in such a way that the computer does not need to perform all the comparisons. In a quadtree, for example, the points are subdivided in 4 quadrants that are themselves subdivided in four quadrants and so on hierachically (see figure below). In that cases we can exclude 75% of the points (750,000 points) in 4 operations at the top level (in red). The bounding box of our query being [275,325]x[325,375] we know that the POIs do not belong in top-left quadrant ([0,500] x [500,1000]) nor in top-right quadrant ([500,1000] x [500,1000]) nor in bottom-right quadrant. At the second level (in blue) in 4 more operations we can exclude another 75% of the remaining points to search only in one quadrant. At this stage we can perform a sequential scan on only 1/16<sup>th</sup> of the points (i.e. 62,500 points) meaning that we discarded 937,500 points in 8 operations. Consequently our query is (roughly) 16 times faster. With more subdivision levels it is even faster. In <code>lidR</code> a typical quadtree has 8 levels i.e. the space is subdivided in (2<sup>8</sup>)<sup>2</sup> = 65536 quadrants.</p>
+<p>Now imagine we want to perform 1,000,000 queries like that for 1,000,000 different points <code>p</code>. It means that we need to perform 1,000,000 x 1,000,000 = 1 billion operations. This does not scale-up and quickly becomes not computable (or at least dramatically slow).</p>
+<p>With a spatial index the points are organized in such a way that the computer does not need to perform all the comparisons. In a quadtree, for example, the points are subdivided in 4 quadrants that are themselves subdivided in four quadrants and so ogn hierachically (see figure below). In that cases we can exclude 75% of the points (750,000 points) in 4 operations at the top level (in red). The bounding box of our query being [275,325]x[325,375] we know that the POIs do not belong in top-left quadrant ([0,500] x [500,1000]) nor in top-right quadrant ([500,1000] x [500,1000]) nor in bottom-right quadrant. At the second level (in blue) in 4 more operations we can exclude another 75% of the remaining points to search only in one quadrant. At this stage we can perform a sequential scan on only 1/16<sup>th</sup> of the points (i.e. 62,500 points) meaning that we discarded 937,500 points in 8 operations. Consequently our query is (roughly) 16 times faster. With more subdivision levels it is even faster. In <code>lidR</code> a typical quadtree has 8 levels i.e. the space is subdivided in (2<sup>8</sup>)<sup>2</sup> = 65536 quadrants.</p>
 <p><img src="lidR-book_files/figure-html/plot-quadtree-scan-1.png" width="422.4" style="display: block; margin: auto;" />
 Spatial indexing provides a way to dramatically speed-up many common operations that require to perform spatial queries either in disc, rectangle, polygons, 2D, 3D and so on. It exists different types of spatial indexes for different purposes but in all case the uses of a spatial index is not free and comes at the cost of a greater memory usage.</p>
 </div>
@@ -372,10 +372,10 @@ Spatial indexing provides a way to dramatically speed-up many common operations 
 <span id="cb5-3"><a href="spatial-indexing.html#cb5-3"></a></span>
 <span id="cb5-4"><a href="spatial-indexing.html#cb5-4"></a><span class="kw">system.time</span>(<span class="kw">classify_noise</span>(als, <span class="kw">sor</span>()))</span>
 <span id="cb5-5"><a href="spatial-indexing.html#cb5-5"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb5-6"><a href="spatial-indexing.html#cb5-6"></a><span class="co">#&gt;   4.285   0.000   2.222</span></span>
+<span id="cb5-6"><a href="spatial-indexing.html#cb5-6"></a><span class="co">#&gt;   4.424   0.005   2.365</span></span>
 <span id="cb5-7"><a href="spatial-indexing.html#cb5-7"></a><span class="kw">system.time</span>(<span class="kw">classify_noise</span>(tls, <span class="kw">sor</span>()))</span>
 <span id="cb5-8"><a href="spatial-indexing.html#cb5-8"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb5-9"><a href="spatial-indexing.html#cb5-9"></a><span class="co">#&gt;   7.898   0.036   4.060</span></span></code></pre></div>
+<span id="cb5-9"><a href="spatial-indexing.html#cb5-9"></a><span class="co">#&gt;   7.544   0.012   3.856</span></span></code></pre></div>
 <p>As a conclusion it is always a good idea to use the new functions <code>readALSLAS()</code>, <code>readTLSLAS()</code>, <code>readDAPLAS()</code>, and so on introduced in <code>lidR v3.1.0</code>.</p>
 <p>However reading the point-cloud with the correct <code>read*LAS()</code> function does not always guarantee to get the optimal performance. First, all the functions do not use spatial indexing or do not use the spatial index framework of <code>lidR</code>. This is the case of the <code>kriging()</code> function, for example, that is based on the <code>gstat</code> package. Second the choice of the spatial index relies on some assumptions that may not be met in some specific point-clouds. The internal dispatch is designed to work with ‘typical’ point-cloud under some assumptions. An ALS point-cloud is typically spatially large (1 km² or more) with little Z dispersion (0 to 40 meters) relatively to the XY dispersion (0 to 1000 meters). On the contrary an TLS point cloud is typically spatially narrow (3000 m²) with proportionally a lot a variations on Z relatively to XY. <code>read*LAS()</code> should be sufficient for most use cases but for some specific cases users can manually choose which spatial index suit best and this is the topic of the next section.</p>
 </div>
@@ -389,12 +389,12 @@ Spatial indexing provides a way to dramatically speed-up many common operations 
 <span id="cb6-3"><a href="spatial-indexing.html#cb6-3"></a><span class="kw">index</span>(las) &lt;-<span class="st"> &quot;quadtree&quot;</span></span>
 <span id="cb6-4"><a href="spatial-indexing.html#cb6-4"></a><span class="kw">system.time</span>(<span class="kw">classify_noise</span>(las, <span class="kw">sor</span>()))</span>
 <span id="cb6-5"><a href="spatial-indexing.html#cb6-5"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb6-6"><a href="spatial-indexing.html#cb6-6"></a><span class="co">#&gt;   4.003   0.000   2.087</span></span>
+<span id="cb6-6"><a href="spatial-indexing.html#cb6-6"></a><span class="co">#&gt;   4.179   0.032   2.219</span></span>
 <span id="cb6-7"><a href="spatial-indexing.html#cb6-7"></a></span>
 <span id="cb6-8"><a href="spatial-indexing.html#cb6-8"></a><span class="kw">index</span>(las) &lt;-<span class="st"> &quot;octree&quot;</span></span>
 <span id="cb6-9"><a href="spatial-indexing.html#cb6-9"></a><span class="kw">system.time</span>(<span class="kw">classify_noise</span>(las, <span class="kw">sor</span>()))</span>
 <span id="cb6-10"><a href="spatial-indexing.html#cb6-10"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb6-11"><a href="spatial-indexing.html#cb6-11"></a><span class="co">#&gt;  10.468   0.052   5.436</span></span></code></pre></div>
+<span id="cb6-11"><a href="spatial-indexing.html#cb6-11"></a><span class="co">#&gt;   7.622   0.024   3.888</span></span></code></pre></div>
 <p>For TLS we use a 3D index because in this case the point are <strong>almost evenly distributed in XYZ</strong> and thus a 2D query does not allow for discarding a large fraction of the points and the sequential scan part remains important. An octree is used because points are expected to be <strong>not uniformly</strong> distributed on XYZ.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="spatial-indexing.html#cb7-1"></a>file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;pine_plot.laz&quot;</span>, <span class="dt">package=</span><span class="st">&quot;TreeLS&quot;</span>)</span>
 <span id="cb7-2"><a href="spatial-indexing.html#cb7-2"></a>las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(file, <span class="dt">select=</span><span class="st">&#39;xyz&#39;</span>)</span>
@@ -402,24 +402,24 @@ Spatial indexing provides a way to dramatically speed-up many common operations 
 <span id="cb7-4"><a href="spatial-indexing.html#cb7-4"></a><span class="kw">index</span>(las) &lt;-<span class="st"> &quot;quadtree&quot;</span></span>
 <span id="cb7-5"><a href="spatial-indexing.html#cb7-5"></a><span class="kw">system.time</span>(<span class="kw">classify_noise</span>(las, <span class="kw">sor</span>()))</span>
 <span id="cb7-6"><a href="spatial-indexing.html#cb7-6"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb7-7"><a href="spatial-indexing.html#cb7-7"></a><span class="co">#&gt;   1.599   0.004   0.866</span></span>
+<span id="cb7-7"><a href="spatial-indexing.html#cb7-7"></a><span class="co">#&gt;   1.023   0.012   0.548</span></span>
 <span id="cb7-8"><a href="spatial-indexing.html#cb7-8"></a></span>
 <span id="cb7-9"><a href="spatial-indexing.html#cb7-9"></a><span class="kw">index</span>(las) &lt;-<span class="st"> &quot;octree&quot;</span></span>
 <span id="cb7-10"><a href="spatial-indexing.html#cb7-10"></a><span class="kw">system.time</span>(<span class="kw">classify_noise</span>(las, <span class="kw">sor</span>()))</span>
 <span id="cb7-11"><a href="spatial-indexing.html#cb7-11"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb7-12"><a href="spatial-indexing.html#cb7-12"></a><span class="co">#&gt;   0.549   0.000   0.312</span></span></code></pre></div>
+<span id="cb7-12"><a href="spatial-indexing.html#cb7-12"></a><span class="co">#&gt;   0.439   0.000   0.234</span></span></code></pre></div>
 <p>For DAP and UAV we apply the same rules. When encountering a dataset that do not follow these rules it may be clever to manually select a spatial index. This is the case of the dataset seen in chapter <a href="pba.html#pba-applications-roof">13.2.1</a> which is an ALS dataset but in practice it is a small subset in which we can no longer say that more than 99% of the point dispersion is on XY only. In that sense it is more a TLS-ish point-cloud. But in the meantime the points are uniformly spread on XY because it is actually an ALS dataset. Thus making 3D queries in a 3D index is maybe more clever. Let’s try out:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="spatial-indexing.html#cb8-1"></a>las &lt;-<span class="st"> </span><span class="kw">readLAS</span>(<span class="st">&quot;data/chap11/building_WilliamsAZ_Urban_normalized.laz&quot;</span>)</span>
 <span id="cb8-2"><a href="spatial-indexing.html#cb8-2"></a></span>
 <span id="cb8-3"><a href="spatial-indexing.html#cb8-3"></a><span class="kw">index</span>(las) &lt;-<span class="st"> &quot;gridpartition&quot;</span></span>
 <span id="cb8-4"><a href="spatial-indexing.html#cb8-4"></a><span class="kw">system.time</span>(<span class="kw">segment_shapes</span>(las, <span class="kw">shp_plane</span>(<span class="dt">k =</span> <span class="dv">20</span>), <span class="st">&quot;planar&quot;</span>, <span class="dt">filter =</span> <span class="op">~</span>Classification <span class="op">!=</span><span class="st"> </span>LASGROUND))</span>
 <span id="cb8-5"><a href="spatial-indexing.html#cb8-5"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb8-6"><a href="spatial-indexing.html#cb8-6"></a><span class="co">#&gt;   2.979   0.004   1.538</span></span>
+<span id="cb8-6"><a href="spatial-indexing.html#cb8-6"></a><span class="co">#&gt;   2.420   0.000   1.231</span></span>
 <span id="cb8-7"><a href="spatial-indexing.html#cb8-7"></a></span>
 <span id="cb8-8"><a href="spatial-indexing.html#cb8-8"></a><span class="kw">index</span>(las) &lt;-<span class="st"> &quot;voxelpartition&quot;</span></span>
 <span id="cb8-9"><a href="spatial-indexing.html#cb8-9"></a><span class="kw">system.time</span>(<span class="kw">segment_shapes</span>(las, <span class="kw">shp_plane</span>(<span class="dt">k =</span> <span class="dv">20</span>), <span class="st">&quot;planar&quot;</span>, <span class="dt">filter =</span> <span class="op">~</span>Classification <span class="op">!=</span><span class="st"> </span>LASGROUND))</span>
 <span id="cb8-10"><a href="spatial-indexing.html#cb8-10"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb8-11"><a href="spatial-indexing.html#cb8-11"></a><span class="co">#&gt;   3.136   0.000   1.627</span></span></code></pre></div>
+<span id="cb8-11"><a href="spatial-indexing.html#cb8-11"></a><span class="co">#&gt;   2.729   0.007   1.396</span></span></code></pre></div>
 <p>Here both are almost equal and “octree” is slower. But one may find limit cases where it worth it to perform manual selection and thus <code>lidR</code> allows for overwriting the default rules. More details in <code>help("lidR-spatial-index")</code>.</p>
 </div>
 <div id="spatial-indexing-cpp-api" class="section level3">
@@ -442,7 +442,7 @@ Spatial indexing provides a way to dramatically speed-up many common operations 
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="spatial-indexing.html#cb10-1"></a>las =<span class="st"> </span><span class="kw">readLAS</span>(<span class="st">&quot;data/ENGINE/catalog/tiles_338000_5238500_1.laz&quot;</span>)</span>
 <span id="cb10-2"><a href="spatial-indexing.html#cb10-2"></a>index =<span class="st"> </span><span class="kw">spatial_index</span>(las)</span>
 <span id="cb10-3"><a href="spatial-indexing.html#cb10-3"></a>index</span>
-<span id="cb10-4"><a href="spatial-indexing.html#cb10-4"></a><span class="co">#&gt; &lt;pointer: 0x562e8af88360&gt;</span></span></code></pre></div>
+<span id="cb10-4"><a href="spatial-indexing.html#cb10-4"></a><span class="co">#&gt; &lt;pointer: 0x56310c552970&gt;</span></span></code></pre></div>
 <p>What has been created here is either a grid partition, a voxel partition, a quadtree or an octree depending on which <code>readLAS()</code> function was used to read the files or depending on the spatial index that was manually registered.</p>
 <p>Then we can write the C++ side of the query.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="spatial-indexing.html#cb11-1"></a><span class="co">// [[Rcpp::export]]</span></span>
@@ -487,10 +487,10 @@ Spatial indexing provides a way to dramatically speed-up many common operations 
 <span id="cb14-4"><a href="spatial-indexing.html#cb14-4"></a></span>
 <span id="cb14-5"><a href="spatial-indexing.html#cb14-5"></a><span class="kw">system.time</span>(<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) <span class="dt">u =</span> <span class="kw">clip_circle</span>(las, x[i], y[i], <span class="dv">10</span>))</span>
 <span id="cb14-6"><a href="spatial-indexing.html#cb14-6"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb14-7"><a href="spatial-indexing.html#cb14-7"></a><span class="co">#&gt;   2.847   0.160   2.940</span></span>
+<span id="cb14-7"><a href="spatial-indexing.html#cb14-7"></a><span class="co">#&gt;   1.939   0.133   1.991</span></span>
 <span id="cb14-8"><a href="spatial-indexing.html#cb14-8"></a><span class="kw">system.time</span>(<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) <span class="dt">u =</span> <span class="kw">clip_disc</span>(las, index, x[i], y[i], <span class="dv">10</span>))</span>
 <span id="cb14-9"><a href="spatial-indexing.html#cb14-9"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb14-10"><a href="spatial-indexing.html#cb14-10"></a><span class="co">#&gt;   0.295   0.024   0.209</span></span></code></pre></div>
+<span id="cb14-10"><a href="spatial-indexing.html#cb14-10"></a><span class="co">#&gt;   0.156   0.000   0.086</span></span></code></pre></div>
 <p>For more functionalities one can look at the source code of <a href="https://github.com/Jean-Romain/lidR/blob/devel/inst/include/SpatialIndex.h">SpatialIndex</a> where we can see there are actually 2 constructors and 5 members including 2D and 3D knn, 2D and 3D knn with maximum radius and <code>lookup</code> that is templated to allow queries within any kind of user-defined shapes. The source code of many <code>lidR</code> functions such as <a href="https://github.com/Jean-Romain/lidR/blob/20893dd0d737394c876bd8238b3a88ad6141ea62/src/LAS.cpp#L360">lmf()</a> or <a href="https://github.com/Jean-Romain/lidR/blob/20893dd0d737394c876bd8238b3a88ad6141ea62/src/LAS.cpp#L649">detect_shape()</a> might be useful resources as well.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb15-1"><a href="spatial-indexing.html#cb15-1"></a>SpatialIndex(<span class="at">const</span> Rcpp::S4 las);</span>
 <span id="cb15-2"><a href="spatial-indexing.html#cb15-2"></a>SpatialIndex(<span class="at">const</span> Rcpp::S4 las, <span class="at">const</span> <span class="bu">std::</span>vector&lt;<span class="dt">bool</span>&gt;&amp; filter);</span>
@@ -502,13 +502,13 @@ Spatial indexing provides a way to dramatically speed-up many common operations 
 </div>
 <div id="spatial-indexing-benchmark" class="section level3">
 <h3><span class="header-section-number">18.2.4</span> Benchmark</h3>
-<p>The lidR’s spatial index framework performs fast especially when large point clouds are implied. In the following we are comparing how fast <code>lidR</code> searches for the 10-nearest neighbours of every points of an ALS point-cloud with 2.3 millions points relatively to the <code>RANN</code>, <code>FANN</code> and <code>nabor</code> packages. We can see that it is competitive with the very fast <code>libnabo</code> library but does more than <code>libnabo</code> since it also performs geometrical queries such as point in discs, rectangles, cylinders, triangles, polygons. We don’t know any R library providing such capability to produce benchmark comparisons. Moreover lidR exposes the C++ classes to allow building efficient third party applications. This is for example heavily used in the <a href="https://github.com/Jean-Romain/lidRplugins">lidRplugins</a> package.</p>
+<p>The lidR’s spatial index framework performs fast especially when large point clouds are implied. In the following we are comparing how fast <code>lidR</code> searches for the 10-nearest neighbours of every points of an ALS point-cloud with 2.3 millions points relatively to the <code>RANN</code>, <code>FANN</code> and <code>nabor</code> packages. We can see that it is competitive with the very fast <code>libnabo</code> library but does more than <code>libnabo</code> since it also performs range queries such as point in discs, rectangles, cylinders, triangles, polygons. We don’t know any R library providing such capability to produce benchmark comparisons. Moreover lidR exposes the C++ classes to allow building efficient third party applications. This is for example heavily used in the <a href="https://github.com/Jean-Romain/lidRplugins">lidRplugins</a> package.</p>
 <p><img src="lidR-book_files/figure-html/bench-knn-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="spatial-indexing-files" class="section level2">
 <h2><span class="header-section-number">18.3</span> Spatial index for LAS files</h2>
-<p>Previous sections were dedicated at explaining spatial index for <code>LAS</code> object i.e. point-clouds read with <code>readLAS()</code> and loaded in memory. This section focuses on spatial indexing for LAS files i.e. point-clouds stored in las/laz files and not (yet) loaded in memory. The problem of spatial queries at read time is the same but the solution is different because it was developed in an independent context.</p>
+<p>Previous sections were dedicated at explaining spatial index for <code>LAS</code> objects i.e. point-clouds read with <code>readLAS()</code> and loaded in memory. This section focuses on spatial indexing for LAS files i.e. point-clouds stored in las/laz files and not (yet) loaded in memory. The problem of spatial queries at read time is the same but the solution is different because it was developed in an independent context.</p>
 <p>Fast spatial queries are made possible by indexing the las or laz files with lax files. A lax file is a tiny file associated with a las or laz file that spatially indexes the points. This file type was created by Martin Isenburg in <a href="https://rapidlasso.com/">LAStools</a>. For a better understanding of how it works one can refer to a talk given by Martin Isenburg about <a href="https://rapidlasso.com/2012/12/03/lasindex-spatial-indexing-of-lidar-data/">lasindex</a>. In short it uses quadtree.</p>
 <p>By adding lax files along with your las/laz files it is possible to make fast 2D queries <strong>without reading the whole file</strong>. The best way to create a lax file is to use <a href="https://www.cs.unc.edu/~isenburg/lastools/download/lasindex_README.txt">laxindex</a> from <a href="https://rapidlasso.com/lastools/">LAStools</a>. It is a free and open-source part of LAStools. If you cannot or do not want to use LAStools the <code>rlas</code> package has a function to creates lax files but <code>lasindex</code> should be preferred.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="spatial-indexing.html#cb16-1"></a>rlas<span class="op">::</span><span class="kw">writelax</span>(<span class="st">&quot;file.las&quot;</span>)</span></code></pre></div>
@@ -520,7 +520,7 @@ Spatial indexing provides a way to dramatically speed-up many common operations 
 <span id="cb17-5"><a href="spatial-indexing.html#cb17-5"></a><span class="co">#&gt; 45 sec</span></span>
 <span id="cb17-6"><a href="spatial-indexing.html#cb17-6"></a><span class="kw">clip_circle</span>(noindex, xc, yc, <span class="dt">radius =</span> <span class="dv">12</span>)</span>
 <span id="cb17-7"><a href="spatial-indexing.html#cb17-7"></a><span class="co">#&gt; 4 sec</span></span></code></pre></div>
-<p>If the reader did not skip the section “C++ API” of this chapter they might have noticed that <code>clip_circle()</code> can use a spatial index with a <code>LAScatalog</code> but not with a <code>LAS</code>. This is because they behave internally very differently and rely on two independent mechanisms. With a <code>LAScatalog</code> it inherits of the capabilities of the library used to read the file while with a <code>LAS</code> nothing has been implemented (yet) for taking advantage of spatial indexing at the R level (but the section above provide the solution).</p>
+<p>If the reader did not skip the section “C++ API” of this chapter they might have noticed that <code>clip_circle()</code> can use a spatial index with a <code>LAScatalog</code> but not with a <code>LAS</code>. This is because they behave internally very differently and rely on two independent mechanisms. With a <code>LAScatalog</code> it inherits of the capabilities of the library used to read the files while with a <code>LAS</code> object nothing has been implemented (yet) for taking advantage of spatial indexing at the R level (but the section above provide the solution).</p>
 <p>It is easy to guess that every <code>clip_something()</code> functions can take advantage of spatial indexing with lax files but the LAScatalog processing engine also makes an heavy usage of such feature. Users can significantly reduce the processing time by loading a buffer faster. Indeed loading a buffer implies spatial queries. This topic is covered by the vignette: <a href="https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html">Speed-up the computations on a LAScatalog</a>.</p>
 
 </div>
@@ -573,7 +573,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["lidR-book.pdf"],
+"download": null,
 "toc": {
 "collapse": "subsection"
 }

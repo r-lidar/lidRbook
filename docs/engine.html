@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>14 LAScatalog processing engine (1/2) | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
   <meta property="og:title" content="14 LAScatalog processing engine (1/2) | The lidR package" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-10-06" />
+<meta name="date" content="2021-01-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -118,6 +118,7 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
 <body>
@@ -276,9 +277,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16.2" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-model"><i class="fa fa-check"></i><b>16.2</b> ABA Processing</a><ul>
 <li class="chapter" data-level="16.2.1" data-path="modeling-aba.html"><a href="modeling-aba.html#step-1---clip-als-ground-inventory"><i class="fa fa-check"></i><b>16.2.1</b> Step 1 - Clip ALS ground inventory</a></li>
 <li class="chapter" data-level="16.2.2" data-path="modeling-aba.html"><a href="modeling-aba.html#step-2---calculate-plot-metrics"><i class="fa fa-check"></i><b>16.2.2</b> Step 2 - Calculate plot metrics</a></li>
-<li class="chapter" data-level="16.2.3" data-path="modeling-aba.html"><a href="modeling-aba.html#step-3---modeling"><i class="fa fa-check"></i><b>16.2.3</b> Step 3 - Modeling</a></li>
-<li class="chapter" data-level="16.2.4" data-path="modeling-aba.html"><a href="modeling-aba.html#step-4---wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.2.4</b> Step 4 - Wall to wall modelling</a></li>
-<li class="chapter" data-level="16.2.5" data-path="modeling-aba.html"><a href="modeling-aba.html#step-5---calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.2.5</b> Step 5 - Calculate wall-to-wall predictions</a></li>
+<li class="chapter" data-level="16.2.3" data-path="modeling-aba.html"><a href="modeling-aba.html#step-4---wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.2.3</b> Step 4 - Wall to wall modelling</a></li>
+<li class="chapter" data-level="16.2.4" data-path="modeling-aba.html"><a href="modeling-aba.html#step-5---calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.2.4</b> Step 5 - Calculate wall-to-wall predictions</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="17" data-path="outbox.html"><a href="outbox.html"><i class="fa fa-check"></i><b>17</b> Thinking outside the box</a><ul>
@@ -288,10 +288,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="17.2" data-path="outbox.html"><a href="outbox.html#outbox-multispectral-coloring"><i class="fa fa-check"></i><b>17.2</b> Multi-spectral coloring</a></li>
 </ul></li>
-<li class="chapter" data-level="18" data-path="plugins.html"><a href="plugins.html"><i class="fa fa-check"></i><b>18</b> <code>lidR</code> plugin system</a><ul>
-<li class="chapter" data-level="18.1" data-path="plugins.html"><a href="plugins.html#plugin-system"><i class="fa fa-check"></i><b>18.1</b> Understanding lidR algorithms</a></li>
-<li class="chapter" data-level="18.2" data-path="plugins.html"><a href="plugins.html#plugin-creation"><i class="fa fa-check"></i><b>18.2</b> Creation of the <code>mba</code> algorithm</a></li>
-<li class="chapter" data-level="18.3" data-path="plugins.html"><a href="plugins.html#plugin-extensions"><i class="fa fa-check"></i><b>18.3</b> What about other algorithms?</a></li>
+<li class="chapter" data-level="18" data-path="spatial-indexing.html"><a href="spatial-indexing.html"><i class="fa fa-check"></i><b>18</b> Spatial indexes</a><ul>
+<li class="chapter" data-level="18.1" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-intro"><i class="fa fa-check"></i><b>18.1</b> Introduction to spatial indexes</a></li>
+<li class="chapter" data-level="18.2" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-las"><i class="fa fa-check"></i><b>18.2</b> Spatial indexes for LAS objects</a><ul>
+<li class="chapter" data-level="18.2.1" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-oveview"><i class="fa fa-check"></i><b>18.2.1</b> Overview</a></li>
+<li class="chapter" data-level="18.2.2" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-strategies"><i class="fa fa-check"></i><b>18.2.2</b> Spatial indexes and selection strategies</a></li>
+<li class="chapter" data-level="18.2.3" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-cpp-api"><i class="fa fa-check"></i><b>18.2.3</b> C++ API</a></li>
+<li class="chapter" data-level="18.2.4" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-benchmark"><i class="fa fa-check"></i><b>18.2.4</b> Benchmark</a></li>
+</ul></li>
+<li class="chapter" data-level="18.3" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-files"><i class="fa fa-check"></i><b>18.3</b> Spatial index for LAS files</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="plugins.html"><a href="plugins.html"><i class="fa fa-check"></i><b>19</b> <code>lidR</code> plugin system</a><ul>
+<li class="chapter" data-level="19.1" data-path="plugins.html"><a href="plugins.html#plugin-system"><i class="fa fa-check"></i><b>19.1</b> Understanding lidR algorithms</a></li>
+<li class="chapter" data-level="19.2" data-path="plugins.html"><a href="plugins.html#plugin-creation"><i class="fa fa-check"></i><b>19.2</b> Creation of the <code>mba</code> algorithm</a></li>
+<li class="chapter" data-level="19.3" data-path="plugins.html"><a href="plugins.html#plugin-extensions"><i class="fa fa-check"></i><b>19.3</b> What about other algorithms?</a></li>
 </ul></li>
 </ul>
 
@@ -342,9 +352,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="engine.html#cb131-1"></a>ctg</span>
 <span id="cb131-2"><a href="engine.html#cb131-2"></a><span class="co">#&gt; class       : LAScatalog (v1.1 format 1)</span></span>
 <span id="cb131-3"><a href="engine.html#cb131-3"></a><span class="co">#&gt; extent      : 678815.8, 709272.6, 5004393, 5028388 (xmin, xmax, ymin, ymax)</span></span>
-<span id="cb131-4"><a href="engine.html#cb131-4"></a><span class="co">#&gt; coord. ref. : +proj=utm +zone=17 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs </span></span>
+<span id="cb131-4"><a href="engine.html#cb131-4"></a><span class="co">#&gt; coord. ref. : +proj=utm +zone=17 +datum=NAD83 +units=m +no_defs </span></span>
 <span id="cb131-5"><a href="engine.html#cb131-5"></a><span class="co">#&gt; area        : 295.35 km²</span></span>
-<span id="cb131-6"><a href="engine.html#cb131-6"></a><span class="co">#&gt; points      : 910.11 million points</span></span>
+<span id="cb131-6"><a href="engine.html#cb131-6"></a><span class="co">#&gt; points      : 910.11million points</span></span>
 <span id="cb131-7"><a href="engine.html#cb131-7"></a><span class="co">#&gt; density     : 3.1 points/m²</span></span>
 <span id="cb131-8"><a href="engine.html#cb131-8"></a><span class="co">#&gt; num. files  : 361</span></span>
 <span id="cb131-9"><a href="engine.html#cb131-9"></a><span class="kw">plot</span>(ctg)</span></code></pre></div>
@@ -367,7 +377,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb132-4"><a href="engine.html#cb132-4"></a><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500 (xmin, xmax, ymin, ymax)</span></span>
 <span id="cb132-5"><a href="engine.html#cb132-5"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 19N </span></span>
 <span id="cb132-6"><a href="engine.html#cb132-6"></a><span class="co">#&gt; area        : 2.25 km²</span></span>
-<span id="cb132-7"><a href="engine.html#cb132-7"></a><span class="co">#&gt; points      : 9.45 million points</span></span>
+<span id="cb132-7"><a href="engine.html#cb132-7"></a><span class="co">#&gt; points      : 9.45million points</span></span>
 <span id="cb132-8"><a href="engine.html#cb132-8"></a><span class="co">#&gt; density     : 4.2 points/m²</span></span>
 <span id="cb132-9"><a href="engine.html#cb132-9"></a><span class="co">#&gt; num. files  : 9</span></span>
 <span id="cb132-10"><a href="engine.html#cb132-10"></a><span class="kw">plot</span>(ctg)</span></code></pre></div>
@@ -455,15 +465,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb138-5"><a href="engine.html#cb138-5"></a><span class="co">#&gt; extent      : 338070, 339424.9, 5238129, 5239358 (xmin, xmax, ymin, ymax)</span></span>
 <span id="cb138-6"><a href="engine.html#cb138-6"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 19N </span></span>
 <span id="cb138-7"><a href="engine.html#cb138-7"></a><span class="co">#&gt; area        : 38290.55 m²</span></span>
-<span id="cb138-8"><a href="engine.html#cb138-8"></a><span class="co">#&gt; points      : 123.8 thousand points</span></span>
+<span id="cb138-8"><a href="engine.html#cb138-8"></a><span class="co">#&gt; points      : 123.8thousand points</span></span>
 <span id="cb138-9"><a href="engine.html#cb138-9"></a><span class="co">#&gt; density     : 3.2 points/m²</span></span>
 <span id="cb138-10"><a href="engine.html#cb138-10"></a><span class="co">#&gt; num. files  : 6</span></span>
 <span id="cb138-11"><a href="engine.html#cb138-11"></a><span class="kw">plot</span>(rois)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-extracted-plots-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>We can check the files that were written on disk and see that the names match the template.</p>
 <div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="engine.html#cb139-1"></a>rois<span class="op">$</span>filename</span>
-<span id="cb139-2"><a href="engine.html#cb139-2"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpOkWfVR/339348.8_5239254_1.las&quot; &quot;/tmp/RtmpOkWfVR/339141.9_5238717_2.las&quot; &quot;/tmp/RtmpOkWfVR/338579.6_5238169_3.las&quot;</span></span>
-<span id="cb139-3"><a href="engine.html#cb139-3"></a><span class="co">#&gt; [4] &quot;/tmp/RtmpOkWfVR/338520.8_5239318_4.las&quot; &quot;/tmp/RtmpOkWfVR/338110_5239247_5.las&quot;   &quot;/tmp/RtmpOkWfVR/339385_5239290_6.las&quot;</span></span></code></pre></div>
+<span id="cb139-2"><a href="engine.html#cb139-2"></a><span class="co">#&gt; [1] &quot;/tmp/RtmppYTFXb/339348.8_5239254_1.las&quot; &quot;/tmp/RtmppYTFXb/339141.9_5238717_2.las&quot; &quot;/tmp/RtmppYTFXb/338579.6_5238169_3.las&quot; &quot;/tmp/RtmppYTFXb/338520.8_5239318_4.las&quot;</span></span>
+<span id="cb139-3"><a href="engine.html#cb139-3"></a><span class="co">#&gt; [5] &quot;/tmp/RtmppYTFXb/338110_5239247_5.las&quot;   &quot;/tmp/RtmppYTFXb/339385_5239290_6.las&quot;</span></span></code></pre></div>
 </div>
 <div id="engine-options-index" class="section level3">
 <h3><span class="header-section-number">14.6.2</span> Multiple extraction with point cloud indexation</h3>
@@ -566,8 +576,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb147-6"><a href="engine.html#cb147-6"></a><span class="co">#&gt; resolution : 1, 1  (x, y)</span></span>
 <span id="cb147-7"><a href="engine.html#cb147-7"></a><span class="co">#&gt; extent     : 338000, 339500, 5238000, 5239500  (xmin, xmax, ymin, ymax)</span></span>
 <span id="cb147-8"><a href="engine.html#cb147-8"></a><span class="co">#&gt; crs        : +proj=utm +zone=19 +datum=WGS84 +units=m +no_defs </span></span>
-<span id="cb147-9"><a href="engine.html#cb147-9"></a><span class="co">#&gt; source     : /tmp/RtmpOkWfVR/grid_terrain.vrt </span></span>
-<span id="cb147-10"><a href="engine.html#cb147-10"></a><span class="co">#&gt; names      : layer </span></span>
+<span id="cb147-9"><a href="engine.html#cb147-9"></a><span class="co">#&gt; source     : /tmp/RtmppYTFXb/grid_terrain.vrt </span></span>
+<span id="cb147-10"><a href="engine.html#cb147-10"></a><span class="co">#&gt; names      : tiles_338000_5238000_1_dtm </span></span>
 <span id="cb147-11"><a href="engine.html#cb147-11"></a><span class="co">#&gt; values     : 534.024, 803.364  (min, max)</span></span>
 <span id="cb147-12"><a href="engine.html#cb147-12"></a><span class="kw">inMemory</span>(dtm)</span>
 <span id="cb147-13"><a href="engine.html#cb147-13"></a><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
@@ -621,7 +631,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="engine.html#cb152-1"></a>ttops &lt;-<span class="st"> </span><span class="kw">find_trees</span>(ctg_norm, <span class="kw">lmf</span>(<span class="dv">4</span>))</span>
 <span id="cb152-2"><a href="engine.html#cb152-2"></a>ttops</span>
 <span id="cb152-3"><a href="engine.html#cb152-3"></a><span class="co">#&gt; class       : SpatialPointsDataFrame </span></span>
-<span id="cb152-4"><a href="engine.html#cb152-4"></a><span class="co">#&gt; features    : 102493 </span></span>
+<span id="cb152-4"><a href="engine.html#cb152-4"></a><span class="co">#&gt; features    : 102492 </span></span>
 <span id="cb152-5"><a href="engine.html#cb152-5"></a><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500  (xmin, xmax, ymin, ymax)</span></span>
 <span id="cb152-6"><a href="engine.html#cb152-6"></a><span class="co">#&gt; crs         : +proj=utm +zone=19 +datum=WGS84 +units=m +no_defs </span></span>
 <span id="cb152-7"><a href="engine.html#cb152-7"></a><span class="co">#&gt; variables   : 2</span></span>
@@ -639,7 +649,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="engine.html#cb155-1"></a>ttops &lt;-<span class="st"> </span><span class="kw">find_trees</span>(ctg_norm, <span class="kw">lmf</span>(<span class="dv">4</span>), <span class="dt">uniqueness =</span> <span class="st">&quot;bitmerge&quot;</span>)</span>
 <span id="cb155-2"><a href="engine.html#cb155-2"></a>ttops</span>
 <span id="cb155-3"><a href="engine.html#cb155-3"></a><span class="co">#&gt; class       : SpatialPointsDataFrame </span></span>
-<span id="cb155-4"><a href="engine.html#cb155-4"></a><span class="co">#&gt; features    : 102493 </span></span>
+<span id="cb155-4"><a href="engine.html#cb155-4"></a><span class="co">#&gt; features    : 102492 </span></span>
 <span id="cb155-5"><a href="engine.html#cb155-5"></a><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500  (xmin, xmax, ymin, ymax)</span></span>
 <span id="cb155-6"><a href="engine.html#cb155-6"></a><span class="co">#&gt; crs         : +proj=utm +zone=19 +datum=WGS84 +units=m +no_defs </span></span>
 <span id="cb155-7"><a href="engine.html#cb155-7"></a><span class="co">#&gt; variables   : 2</span></span>
@@ -650,9 +660,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In all the previous examples we have seen that the engine takes care of merging intermediate results into a single usable object. When intermediate results are stored on disk, the final results in R is a single lightweight object such as a <code>LAScatalog</code> or a Virtual Data set. This is not true for <code>find_trees()</code> and other functions that return <code>Spatial*</code> objects. The default behavior is to write shapefiles (<code>.shp</code>) and there is no way to build a light weight object. What is returned is thus a vector of written files.</p>
 <div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="engine.html#cb156-1"></a><span class="kw">opt_output_files</span>(ctg_norm) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;/{*}&quot;</span>)</span>
 <span id="cb156-2"><a href="engine.html#cb156-2"></a><span class="kw">find_trees</span>(ctg_norm, <span class="kw">lmf</span>(<span class="dv">4</span>), <span class="dt">uniqueness =</span> <span class="st">&quot;bitmerge&quot;</span>)</span>
-<span id="cb156-3"><a href="engine.html#cb156-3"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpOkWfVR/tiles_338000_5238000_1_norm.shp&quot; &quot;/tmp/RtmpOkWfVR/tiles_338000_5238500_1_norm.shp&quot; &quot;/tmp/RtmpOkWfVR/tiles_338000_5239000_1_norm.shp&quot;</span></span>
-<span id="cb156-4"><a href="engine.html#cb156-4"></a><span class="co">#&gt; [4] &quot;/tmp/RtmpOkWfVR/tiles_338500_5238000_1_norm.shp&quot; &quot;/tmp/RtmpOkWfVR/tiles_338500_5238500_1_norm.shp&quot; &quot;/tmp/RtmpOkWfVR/tiles_338500_5239000_1_norm.shp&quot;</span></span>
-<span id="cb156-5"><a href="engine.html#cb156-5"></a><span class="co">#&gt; [7] &quot;/tmp/RtmpOkWfVR/tiles_339000_5238000_1_norm.shp&quot; &quot;/tmp/RtmpOkWfVR/tiles_339000_5238500_1_norm.shp&quot; &quot;/tmp/RtmpOkWfVR/tiles_339000_5239000_1_norm.shp&quot;</span></span></code></pre></div>
+<span id="cb156-3"><a href="engine.html#cb156-3"></a><span class="co">#&gt; [1] &quot;/tmp/RtmppYTFXb/tiles_338000_5238000_1_norm.shp&quot; &quot;/tmp/RtmppYTFXb/tiles_338000_5238500_1_norm.shp&quot; &quot;/tmp/RtmppYTFXb/tiles_338000_5239000_1_norm.shp&quot;</span></span>
+<span id="cb156-4"><a href="engine.html#cb156-4"></a><span class="co">#&gt; [4] &quot;/tmp/RtmppYTFXb/tiles_338500_5238000_1_norm.shp&quot; &quot;/tmp/RtmppYTFXb/tiles_338500_5238500_1_norm.shp&quot; &quot;/tmp/RtmppYTFXb/tiles_338500_5239000_1_norm.shp&quot;</span></span>
+<span id="cb156-5"><a href="engine.html#cb156-5"></a><span class="co">#&gt; [7] &quot;/tmp/RtmppYTFXb/tiles_339000_5238000_1_norm.shp&quot; &quot;/tmp/RtmppYTFXb/tiles_339000_5238500_1_norm.shp&quot; &quot;/tmp/RtmppYTFXb/tiles_339000_5239000_1_norm.shp&quot;</span></span></code></pre></div>
 <div id="summary-4" class="section level3">
 <h3><span class="header-section-number">14.11.1</span> Summary</h3>
 <p>We have learned several things about the engine in this section</p>
@@ -774,7 +784,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb167-3"><a href="engine.html#cb167-3"></a><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500 (xmin, xmax, ymin, ymax)</span></span>
 <span id="cb167-4"><a href="engine.html#cb167-4"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 19N </span></span>
 <span id="cb167-5"><a href="engine.html#cb167-5"></a><span class="co">#&gt; area        : 2.25 km²</span></span>
-<span id="cb167-6"><a href="engine.html#cb167-6"></a><span class="co">#&gt; points      : 9.45 million points</span></span>
+<span id="cb167-6"><a href="engine.html#cb167-6"></a><span class="co">#&gt; points      : 9.45million points</span></span>
 <span id="cb167-7"><a href="engine.html#cb167-7"></a><span class="co">#&gt; density     : 4.2 points/m²</span></span>
 <span id="cb167-8"><a href="engine.html#cb167-8"></a><span class="co">#&gt; num. files  : 9 </span></span>
 <span id="cb167-9"><a href="engine.html#cb167-9"></a><span class="co">#&gt; proc. opt.  : buffer: 10 | chunk: 250</span></span>

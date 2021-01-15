@@ -19,6 +19,7 @@ description: "A guide to the `lidR` package"
 * Manage processing for sets of point-cloud files - referred to as a `LAScatalog` (sections \@ref(engine) and \@ref(engine2))
 * Guidelines for implementing area-based approaches to forest modelling using ALS data (section \@ref(modeling-aba))
 * Facilitate user-defined processing streams for research and development (section \@ref(outbox))
+* Understand spatial indexing (section \@ref(spatial-indexing))
 * Discover the plugin system (section \@ref(plugins))
 
 The current release version of `lidR` can be found on [CRAN](https://cran.r-project.org/web/packages/lidR/) and the source code is hosted on [GitHub](https://github.com/Jean-Romain/lidR).

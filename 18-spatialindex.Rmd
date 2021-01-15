@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
   fig.align = "center")
 ```
 
-# Spatial indexes {#spatial-indexing}
+# Spatial indexing {#spatial-indexing}
 
 Spatial index is one key features for performing spatial queries in a large point-cloud. Without indexing, any search for points of interest would require a “sequential scan” of every points. Indexing speeds up searching by organizing the data into a search structure which can be quickly traversed to find particular records. Some algorithms could simply not work in a reasonable time-frame without spatial indexing.
 
@@ -47,9 +47,9 @@ This is typically what the function `filter_poi()` does because `filter_poi()` i
 filter_poi(las, sqrt((X - p[1])^2 + (Y - p[2])^2) < R)
 ```
 
-Now imagine we want to perform 1,000,000 queries like that for 1,000,000 different points `p`. It means that we need to perform 1,000,000 x 1,000,000 = 1 billion operations. We say that it has a quadratic complexity. This does not scale-up and quickly becomes not computable (or at least dramatically slow).
+Now imagine we want to perform 1,000,000 queries like that for 1,000,000 different points `p`. It means that we need to perform 1,000,000 x 1,000,000 = 1 billion operations. This does not scale-up and quickly becomes not computable (or at least dramatically slow).
 
-With a spatial index the points are organized in such a way that the computer does not need to perform all the comparisons. In a quadtree, for example, the points are subdivided in 4 quadrants that are themselves subdivided in four quadrants and so on hierachically (see figure below). In that cases we can exclude 75% of the points (750,000 points) in 4 operations at the top level (in red). The bounding box of our query being [275,325]x[325,375] we know that the POIs do not belong in top-left quadrant ([0,500] x [500,1000]) nor in top-right quadrant ([500,1000] x [500,1000]) nor in bottom-right quadrant. At the second level (in blue) in 4 more operations we can exclude another 75% of the remaining points to search only in one quadrant. At this stage we can perform a sequential scan on only 1/16^th^ of the points (i.e. 62,500 points) meaning that we discarded 937,500 points in 8 operations. Consequently our query is (roughly) 16 times faster. With more subdivision levels it is even faster. In `lidR` a typical quadtree has 8 levels i.e. the space is subdivided in (2^8^)^2^ = 65536 quadrants.
+With a spatial index the points are organized in such a way that the computer does not need to perform all the comparisons. In a quadtree, for example, the points are subdivided in 4 quadrants that are themselves subdivided in four quadrants and so ogn hierachically (see figure below). In that cases we can exclude 75% of the points (750,000 points) in 4 operations at the top level (in red). The bounding box of our query being [275,325]x[325,375] we know that the POIs do not belong in top-left quadrant ([0,500] x [500,1000]) nor in top-right quadrant ([500,1000] x [500,1000]) nor in bottom-right quadrant. At the second level (in blue) in 4 more operations we can exclude another 75% of the remaining points to search only in one quadrant. At this stage we can perform a sequential scan on only 1/16^th^ of the points (i.e. 62,500 points) meaning that we discarded 937,500 points in 8 operations. Consequently our query is (roughly) 16 times faster. With more subdivision levels it is even faster. In `lidR` a typical quadtree has 8 levels i.e. the space is subdivided in (2^8^)^2^ = 65536 quadrants.
 
 ```{r plot-quadtree-scan, echo=FALSE, fig.width=4.4}
 plot(X,Y, pch = 19, cex = 0.1, asp = 1)
@@ -125,7 +125,7 @@ For ALS we use a 2D index even for 3D queries. Indeed an ALS point-cloud is 'mos
 
 The following example demonstrates how to manually register a spatial index and compare the computation times for a quadtree and an octree.
 
-```{r, bench-classify-noise-2}
+```{r bench-classify-noise-2}
 las = readLAS("data/ENGINE/catalog/tiles_338000_5238500_1.laz", select = "xyz")
 
 index(las) <- "quadtree"
@@ -288,7 +288,7 @@ void knn(const PointXYZ& p, const unsigned int k, const double r, std::vector<Po
 
 ### Benchmark {#spatial-indexing-benchmark}
 
-The lidR's spatial index framework performs fast especially when large point clouds are implied. In the following we are comparing how fast `lidR` searches for the 10-nearest neighbours of every points of an ALS point-cloud with 2.3 millions points relatively to the `RANN`, `FANN` and `nabor` packages. We can see that it is competitive with the very fast `libnabo` library but does more than `libnabo` since it also performs geometrical queries such as point in discs, rectangles, cylinders, triangles, polygons. We don't know any R library providing such capability to produce benchmark comparisons. Moreover lidR exposes the C++ classes to allow building efficient third party applications. This is for example heavily used in the [lidRplugins](https://github.com/Jean-Romain/lidRplugins) package.
+The lidR's spatial index framework performs fast especially when large point clouds are implied. In the following we are comparing how fast `lidR` searches for the 10-nearest neighbours of every points of an ALS point-cloud with 2.3 millions points relatively to the `RANN`, `FANN` and `nabor` packages. We can see that it is competitive with the very fast `libnabo` library but does more than `libnabo` since it also performs range queries such as point in discs, rectangles, cylinders, triangles, polygons. We don't know any R library providing such capability to produce benchmark comparisons. Moreover lidR exposes the C++ classes to allow building efficient third party applications. This is for example heavily used in the [lidRplugins](https://github.com/Jean-Romain/lidRplugins) package.
 
 ```{r bench-knn, echo = FALSE, cache = TRUE, fig.height=3, fig.width=5, fig.align="center"}
 library(ggplot2)
@@ -320,7 +320,7 @@ ggplot(res) +
 
 ## Spatial index for LAS files {#spatial-indexing-files}
 
-Previous sections were dedicated at explaining spatial index for `LAS` object i.e. point-clouds read with `readLAS()` and loaded in memory. This section focuses on spatial indexing for LAS files i.e. point-clouds stored in las/laz files and not (yet) loaded in memory. The problem of spatial queries at read time is the same but the solution is different because it was developed in an independent context.
+Previous sections were dedicated at explaining spatial index for `LAS` objects i.e. point-clouds read with `readLAS()` and loaded in memory. This section focuses on spatial indexing for LAS files i.e. point-clouds stored in las/laz files and not (yet) loaded in memory. The problem of spatial queries at read time is the same but the solution is different because it was developed in an independent context.
 
 Fast spatial queries are made possible by indexing the las or laz files with lax files. A lax file is a tiny file associated with a las or laz file that spatially indexes the points. This file type was created by Martin Isenburg in [LAStools](https://rapidlasso.com/). For a better understanding of how it works one can refer to a talk given by Martin Isenburg about [lasindex](https://rapidlasso.com/2012/12/03/lasindex-spatial-indexing-of-lidar-data/). In short it uses quadtree.
 
@@ -342,7 +342,7 @@ clip_circle(noindex, xc, yc, radius = 12)
 #> 4 sec
 ```
 
-If the reader did not skip the section "C++ API" of this chapter they might have noticed that `clip_circle()` can use a spatial index with a `LAScatalog` but not with a `LAS`. This is because they behave internally very differently and rely on two independent mechanisms. With a `LAScatalog` it inherits of the capabilities of the library used to read the file while with a `LAS` nothing has been implemented (yet) for taking advantage of spatial indexing at the R level (but the section above provide the solution).
+If the reader did not skip the section "C++ API" of this chapter they might have noticed that `clip_circle()` can use a spatial index with a `LAScatalog` but not with a `LAS`. This is because they behave internally very differently and rely on two independent mechanisms. With a `LAScatalog` it inherits of the capabilities of the library used to read the files while with a `LAS` object nothing has been implemented (yet) for taking advantage of spatial indexing at the R level (but the section above provide the solution).
 
 It is easy to guess that every `clip_something()` functions can take advantage of spatial indexing with lax files but the LAScatalog processing engine also makes an heavy usage of such feature. Users can significantly reduce the processing time by loading a buffer faster. Indeed loading a buffer implies spatial queries. This topic is covered by the vignette: [Speed-up the computations on a LAScatalog](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html).
 

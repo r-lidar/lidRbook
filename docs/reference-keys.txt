@@ -116,7 +116,6 @@ modeling-read-data
 modeling-build-model
 step-1---clip-als-ground-inventory
 step-2---calculate-plot-metrics
-step-3---modeling
 step-4---wall-to-wall-modelling
 step-5---calculate-wall-to-wall-predictions
 outbox

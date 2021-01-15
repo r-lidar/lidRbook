@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>7 Indivitual tree dectection and segmentation | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
   <meta property="og:title" content="7 Indivitual tree dectection and segmentation | The lidR package" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2020-10-06" />
+<meta name="date" content="2021-01-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -118,6 +118,7 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
 <body>
@@ -276,9 +277,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16.2" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-model"><i class="fa fa-check"></i><b>16.2</b> ABA Processing</a><ul>
 <li class="chapter" data-level="16.2.1" data-path="modeling-aba.html"><a href="modeling-aba.html#step-1---clip-als-ground-inventory"><i class="fa fa-check"></i><b>16.2.1</b> Step 1 - Clip ALS ground inventory</a></li>
 <li class="chapter" data-level="16.2.2" data-path="modeling-aba.html"><a href="modeling-aba.html#step-2---calculate-plot-metrics"><i class="fa fa-check"></i><b>16.2.2</b> Step 2 - Calculate plot metrics</a></li>
-<li class="chapter" data-level="16.2.3" data-path="modeling-aba.html"><a href="modeling-aba.html#step-3---modeling"><i class="fa fa-check"></i><b>16.2.3</b> Step 3 - Modeling</a></li>
-<li class="chapter" data-level="16.2.4" data-path="modeling-aba.html"><a href="modeling-aba.html#step-4---wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.2.4</b> Step 4 - Wall to wall modelling</a></li>
-<li class="chapter" data-level="16.2.5" data-path="modeling-aba.html"><a href="modeling-aba.html#step-5---calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.2.5</b> Step 5 - Calculate wall-to-wall predictions</a></li>
+<li class="chapter" data-level="16.2.3" data-path="modeling-aba.html"><a href="modeling-aba.html#step-4---wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.2.3</b> Step 4 - Wall to wall modelling</a></li>
+<li class="chapter" data-level="16.2.4" data-path="modeling-aba.html"><a href="modeling-aba.html#step-5---calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.2.4</b> Step 5 - Calculate wall-to-wall predictions</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="17" data-path="outbox.html"><a href="outbox.html"><i class="fa fa-check"></i><b>17</b> Thinking outside the box</a><ul>
@@ -288,10 +288,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="17.2" data-path="outbox.html"><a href="outbox.html#outbox-multispectral-coloring"><i class="fa fa-check"></i><b>17.2</b> Multi-spectral coloring</a></li>
 </ul></li>
-<li class="chapter" data-level="18" data-path="plugins.html"><a href="plugins.html"><i class="fa fa-check"></i><b>18</b> <code>lidR</code> plugin system</a><ul>
-<li class="chapter" data-level="18.1" data-path="plugins.html"><a href="plugins.html#plugin-system"><i class="fa fa-check"></i><b>18.1</b> Understanding lidR algorithms</a></li>
-<li class="chapter" data-level="18.2" data-path="plugins.html"><a href="plugins.html#plugin-creation"><i class="fa fa-check"></i><b>18.2</b> Creation of the <code>mba</code> algorithm</a></li>
-<li class="chapter" data-level="18.3" data-path="plugins.html"><a href="plugins.html#plugin-extensions"><i class="fa fa-check"></i><b>18.3</b> What about other algorithms?</a></li>
+<li class="chapter" data-level="18" data-path="spatial-indexing.html"><a href="spatial-indexing.html"><i class="fa fa-check"></i><b>18</b> Spatial indexes</a><ul>
+<li class="chapter" data-level="18.1" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-intro"><i class="fa fa-check"></i><b>18.1</b> Introduction to spatial indexes</a></li>
+<li class="chapter" data-level="18.2" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-las"><i class="fa fa-check"></i><b>18.2</b> Spatial indexes for LAS objects</a><ul>
+<li class="chapter" data-level="18.2.1" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-oveview"><i class="fa fa-check"></i><b>18.2.1</b> Overview</a></li>
+<li class="chapter" data-level="18.2.2" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-strategies"><i class="fa fa-check"></i><b>18.2.2</b> Spatial indexes and selection strategies</a></li>
+<li class="chapter" data-level="18.2.3" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-cpp-api"><i class="fa fa-check"></i><b>18.2.3</b> C++ API</a></li>
+<li class="chapter" data-level="18.2.4" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-benchmark"><i class="fa fa-check"></i><b>18.2.4</b> Benchmark</a></li>
+</ul></li>
+<li class="chapter" data-level="18.3" data-path="spatial-indexing.html"><a href="spatial-indexing.html#spatial-indexing-files"><i class="fa fa-check"></i><b>18.3</b> Spatial index for LAS files</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="plugins.html"><a href="plugins.html"><i class="fa fa-check"></i><b>19</b> <code>lidR</code> plugin system</a><ul>
+<li class="chapter" data-level="19.1" data-path="plugins.html"><a href="plugins.html#plugin-system"><i class="fa fa-check"></i><b>19.1</b> Understanding lidR algorithms</a></li>
+<li class="chapter" data-level="19.2" data-path="plugins.html"><a href="plugins.html#plugin-creation"><i class="fa fa-check"></i><b>19.2</b> Creation of the <code>mba</code> algorithm</a></li>
+<li class="chapter" data-level="19.3" data-path="plugins.html"><a href="plugins.html#plugin-extensions"><i class="fa fa-check"></i><b>19.3</b> What about other algorithms?</a></li>
 </ul></li>
 </ul>
 
