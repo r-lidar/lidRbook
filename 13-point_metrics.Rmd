@@ -164,7 +164,7 @@ r3dDefaults$zoom <- 0.7
 Again, `lidR` has a dedicated function for this specific task because we believe that it is of high interest to provide a specialized and faster version of this tool.
 
 ```r
-las <- segment_shape(las, shp_line(th = 8, k = 15), "linear")
+las <- segment_shapes(las, shp_line(th = 8, k = 15), "linear")
 ```
 
 ### Multi-spectral coloring {#pba-applications-coloring}
