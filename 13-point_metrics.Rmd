@@ -126,10 +126,10 @@ is.planar <- function(x, y, z, th1 = 25, th2 = 6) {
 }
 ```
 
-We can do this... but we know that not everyone is well versed in C++. `lidR` therefore has a dedicated and even faster function (`segment_shape()`) for this specific task because we believe that it's of high interest to provide a specialized and faster version of this tool.
+We can do this... but we know that not everyone is well versed in C++. `lidR` therefore has a dedicated and even faster function (`segment_shapes()`) for this specific task because we believe that it's of high interest to provide a specialized and faster version of this tool.
 
 ```r
-las <- segment_shape(las, shp_plane(k = 25), "planar")
+las <- segment_shapes(las, shp_plane(k = 25), "planar")
 ```
 
 ### Lake and wire segmentation {#pba-applications-wire}
