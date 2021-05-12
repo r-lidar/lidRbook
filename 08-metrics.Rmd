@@ -10,6 +10,8 @@ knitr::opts_chunk$set(
   fig.align = "center")
 
 library(lidR)
+library(lmom)
+library(Rdimtools)
 ```
 
 
@@ -82,3 +84,66 @@ grid_metrics(las, func = .stdmetrics)
 tree_metrics(las, func = .stdmetrics)
 voxel_metrics(las, func = .stdmetrics)
 ```
+
+## Metrics using 3rd party packages {#metrics-3rd-party}
+
+In some cases, users may want to calculate metrics from lidar data that are complex or less intuitive to code. In these examples it makes sense to use functions that are already available from other packages. We present 2 pertinent examples below that were brought to our attention by `lidR` users.
+
+### L-moments {#metrics-lmom}
+
+L-moments are linear combinations of ordered data values. In the context of lidar data this relates to elevation and intensity. The ratios of L-moments are comparable to variance, skewness and kurtosis, and have been shown valuable for a number of lidar-derived attribute modeling studies (eg. [Valbuena et al. 2017](https://www.sciencedirect.com/science/article/abs/pii/S0034425716303960?via%3Dihub), [Adnan et al. 2021](https://www.sciencedirect.com/science/article/pii/S0034425721001826?dgcid=coauthor)) as well as being standard metrics produced in [FUSION](http://forsys.cfr.washington.edu/fusion/fusion_overview.html) lidar processing software.
+
+In order to calculate these metrics we can leverage the `lmom` package which provides functions to calculate L-moments and associated ratios. In the example we use the `samlmu()` function.
+
+```{r,warning=FALSE}
+#Define lidar file for test
+LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+
+#Read in lidar file
+las <- readLAS(LASfile)
+
+#Compute metrics for lidar file
+#can add ratios=TRUE to calculate ratios
+metrics = grid_metrics(las, func = ~as.list(lmom::samlmu(Z)), 10) 
+
+# plot outputs
+plot(metrics, col = height.colors(50))
+
+```
+
+We see that we can supply the `func` argument in `grid_metrics()` with a function from an external package. This allows us to be fairly flexible with the metrics we are able to calculate without needing to introduce dependencies within the `lidR` package.
+
+### Fractal dimensions {#metrics-fractal-dims}
+
+Fractal dimensions are another statistical description that is showing promise within lidar and forestry related research (eg. [Saarinen et al., 2021](https://doi.org/10.1002/ece3.7216)). The use of fractal dimensions seeks to help understand the relationship between structural complexity and stem/crown size and shape.
+
+The calculation of fractal dimensions — similarly to L-moments — can be tricky to implement efficiently, and would add an additional dependency to `lidR`'s growing list. To avoid `lidR` needing to depend on external packages, we can leverage them (in this case `Rdimtools`) to calculate fractal dimensions within a `grid_metrics()` example.
+
+First, we can create a user-defined function that leverages the `est.boxcount()` function within `Rdimtools`. This allows us to define the variables we want the function to utilize within `grid_metrics()`
+
+```{r,warning=FALSE}
+#create user-defined function
+fd = function(X,Y,Z)
+{
+  M = cbind(X,Y,Z)
+  est.boxcount(M)$estdim
+}
+```
+
+Now the we have defined the `fd` function, which calculates our fractal dimensions using `XYZ` values, we can apply it on our lidar data and create output rasters.
+
+```{r,warning=FALSE}
+#Define lidar file for test
+LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+
+#Read in lidar file
+las <- readLAS(LASfile)
+
+#Compute metrics for lidar file
+metrics <-  grid_metrics(las, func = ~fd(X,Y,Z), 10)
+
+#plot outputs
+plot(metrics, col = height.colors(50))
+```
+
+There are obviously many potential calculations to apply and statistics to derive from lidar data. The ability to include third party functions like the examples listed above within metric calculations makes `lidR` valuable and flexible from a research standpoint.7
