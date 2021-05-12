@@ -10,8 +10,6 @@ knitr::opts_chunk$set(
   fig.align = "center")
 
 library(lidR)
-library(lmom)
-library(Rdimtools)
 ```
 
 
@@ -42,6 +40,7 @@ While there are some differences between functions dedicated to metric computati
 ```r
 cloud_metrics(las, func = ~mean(Z))
 grid_metrics(las, func = ~mean(Z))
+hexbin_metrics(las, func = ~mean(Z))
 tree_metrics(las, func = ~mean(Z))
 voxel_metrics(las, func = ~mean(Z))
 ```
@@ -95,20 +94,9 @@ L-moments are linear combinations of ordered data values. In the context of lida
 
 In order to calculate these metrics we can leverage the `lmom` package which provides functions to calculate L-moments and associated ratios. In the example we use the `samlmu()` function.
 
-```{r,warning=FALSE}
-#Define lidar file for test
-LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
-
-#Read in lidar file
-las <- readLAS(LASfile)
-
-#Compute metrics for lidar file
-#can add ratios=TRUE to calculate ratios
-metrics = grid_metrics(las, func = ~as.list(lmom::samlmu(Z)), 10) 
-
-# plot outputs
-plot(metrics, col = height.colors(50))
-
+```r
+cloud_metrics(las, func = ~as.list(lmom::samlmu(Z)))
+grid_metrics(las, func = ~as.list(lmom::samlmu(Z)), 10) 
 ```
 
 We see that we can supply the `func` argument in `grid_metrics()` with a function from an external package. This allows us to be fairly flexible with the metrics we are able to calculate without needing to introduce dependencies within the `lidR` package.
@@ -121,10 +109,9 @@ The calculation of fractal dimensions — similarly to L-moments — can be tric
 
 First, we can create a user-defined function that leverages the `est.boxcount()` function within `Rdimtools`. This allows us to define the variables we want the function to utilize within `grid_metrics()`
 
-```{r,warning=FALSE}
+```r
 #create user-defined function
-fd = function(X,Y,Z)
-{
+fd = function(X,Y,Z) {
   M = cbind(X,Y,Z)
   est.boxcount(M)$estdim
 }
@@ -132,18 +119,10 @@ fd = function(X,Y,Z)
 
 Now the we have defined the `fd` function, which calculates our fractal dimensions using `XYZ` values, we can apply it on our lidar data and create output rasters.
 
-```{r,warning=FALSE}
-#Define lidar file for test
-LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
-
-#Read in lidar file
-las <- readLAS(LASfile)
-
-#Compute metrics for lidar file
-metrics <-  grid_metrics(las, func = ~fd(X,Y,Z), 10)
-
-#plot outputs
-plot(metrics, col = height.colors(50))
+```r
+cloud_metrics(las, func = ~fd(X,Y,Z), 10)
+hexbin_metrics(las, func = ~fd(X,Y,Z), 10)
+grid_metrics(las, func = ~fd(X,Y,Z), 10)
 ```
 
 There are obviously many potential calculations to apply and statistics to derive from lidar data. The ability to include third party functions like the examples listed above within metric calculations makes `lidR` valuable and flexible from a research standpoint.7

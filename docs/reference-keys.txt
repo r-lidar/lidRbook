@@ -136,3 +136,8 @@ plugin-system
 plugin-creation
 plugin-extensions
 step-3---modeling
+metrics-3rd-party
+metrics-lmom
+metrics-fractal-dims
+spi-ALS-strategy
+spi-TLS-strategy
