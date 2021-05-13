@@ -121,8 +121,7 @@ Now the we have defined the `fd` function, which calculates our fractal dimensio
 
 ```r
 cloud_metrics(las, func = ~fd(X,Y,Z), 10)
-hexbin_metrics(las, func = ~fd(X,Y,Z), 10)
 grid_metrics(las, func = ~fd(X,Y,Z), 10)
 ```
 
-There are obviously many potential calculations to apply and statistics to derive from lidar data. The ability to include third party functions like the examples listed above within metric calculations makes `lidR` valuable and flexible from a research standpoint.7
+There are obviously many potential calculations to apply and statistics to derive from lidar data. The ability to include third party functions like the examples listed above within metric calculations makes `lidR` valuable and flexible from a research standpoint.

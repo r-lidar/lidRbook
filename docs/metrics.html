@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-05-12" />
+<meta name="date" content="2021-05-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -434,9 +434,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-5"><a href="metrics.html#cb6-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Now the we have defined the <code>fd</code> function, which calculates our fractal dimensions using <code>XYZ</code> values, we can apply it on our lidar data and create output rasters.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="metrics.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">fd</span>(X,Y,Z), <span class="dv">10</span>)</span>
-<span id="cb7-2"><a href="metrics.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hexbin_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">fd</span>(X,Y,Z), <span class="dv">10</span>)</span>
-<span id="cb7-3"><a href="metrics.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">fd</span>(X,Y,Z), <span class="dv">10</span>)</span></code></pre></div>
-<p>There are obviously many potential calculations to apply and statistics to derive from lidar data. The ability to include third party functions like the examples listed above within metric calculations makes <code>lidR</code> valuable and flexible from a research standpoint.7</p>
+<span id="cb7-2"><a href="metrics.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">fd</span>(X,Y,Z), <span class="dv">10</span>)</span></code></pre></div>
+<p>There are obviously many potential calculations to apply and statistics to derive from lidar data. The ability to include third party functions like the examples listed above within metric calculations makes <code>lidR</code> valuable and flexible from a research standpoint.</p>
 
 </div>
 </div>
