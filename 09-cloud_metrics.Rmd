@@ -92,10 +92,10 @@ model <- lm(G~zmax+zmean+pzabove2+zq50+zq90, data = metrics)
 summary(model)
 ```
 
-We can see that the metrics `zmax` and `pzabove2` are the significant ones meaning that a predictive model of `G` can be written $0.7018 \times pzabove2 + 0.9268 \times zmax$.
+We can see that the metrics `zmax` and `pzabove2` are the significant ones meaning that a predictive model of `G` can be written $0.70 \times pzabove2 + 0.93 \times zmax$.
 
-```{r, fig.height=4, fig.width=3.5}
-plot(inventory$G, 0.7018 *metrics$pzabove2 + 0.9268 * metrics$zmax, xlab = "Measured", ylab = "Predicted", xlim = c(0, 100), ylim = c(0,100), asp = 1)
+```{r scatterplot-prediction, fig.height=4, fig.width=3.5}
+plot(inventory$G, 0.70 *metrics$pzabove2 + 0.93 * metrics$zmax, xlab = "Measured", ylab = "Predicted", xlim = c(0, 100), ylim = c(0,100), asp = 1)
 abline(0,1)
 ```
 
