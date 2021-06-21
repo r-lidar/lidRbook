@@ -98,7 +98,7 @@ plots_ALS_clipped
 As seen in section \@ref(engine) ground inventories are special cases of independent files. We first set some adequate processing options. We also use `opt_output_files() <- ""` to have plot metrics stored in memory instead of on disc.
 
 ```r
-opt_independant_files(plots_ALS_clipped) <- TRUE
+opt_independent_files(plots_ALS_clipped) <- TRUE
 opt_output_files(plots_ALS_clipped) <- ""
 ```
 
