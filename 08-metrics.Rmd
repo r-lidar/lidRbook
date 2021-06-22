@@ -22,7 +22,7 @@ The standard deviation of point heights within a single tree crown is an example
 The notion of metrics is at the core of the `lidR` package, which enables the computation of standard or custom user-defined metrics at varying levels of regularization:
 
 - point cloud level with `cloud_metrics()`
-- cell level with `grid_metrics()` or `hexbin_metrics()`
+- cell level with `grid_metrics()`
 - tree level with `tree_metrics()`
 - voxel level with `voxel_metrics()`
 - point level with `point_metrics()`
@@ -40,7 +40,6 @@ While there are some differences between functions dedicated to metric computati
 ```r
 cloud_metrics(las, func = ~mean(Z))
 grid_metrics(las, func = ~mean(Z))
-hexbin_metrics(las, func = ~mean(Z))
 tree_metrics(las, func = ~mean(Z))
 voxel_metrics(las, func = ~mean(Z))
 ```

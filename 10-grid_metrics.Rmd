@@ -36,14 +36,6 @@ The returned `hmean` object is a `RasterLayer`:
 hmean
 ```
 
-To calculate metrics for hexagonal cells instead, we can use the `hexbin_metrics()` function instead. In this case the resolution is defined as the square root of the hexagon area to be consitant with `grid_metrics()`.
-
-```{r, plot-hexbin-hmean}
-metrics_hex <- hexbin_metrics(las, ~mean(Z), 10)
-col <- grDevices::colorRampPalette(height.colors(25))
-plot(metrics_hex, colramp = col)
-```
-
 As described in sections \@ref(metrics) and \@ref(cba), to calculate more than one metric at a time a custom function needs to be created first. The function can contain any number of metrics but needs to return a labeled `list`. For example, to calculate the mean and standard deviation of point heights, the following function can be created. In this case the return object is a `RasterBrick` with two layers.
 
 ```{r plot-raster-custom, fig.height=4.6, fig.width=10}

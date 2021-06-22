@@ -16,7 +16,7 @@ library(lidR)
 
 ## Overview {#pba-overview}
 
-The "point" level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The `point_metrics()` function allows calculation of point-based metrics and works like `cloud_metrics()`, `grid_metrics()`, `hexbin_metrics()`, `tree_metrics()` or `voxel_metrics()` seen in section \@ref(metrics), \@ref(cba), \@ref(aba), \@ref(tba) and \@ref(vba). Refer to these sections for a more comprehensive overview.
+The "point" level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The `point_metrics()` function allows calculation of point-based metrics and works like `cloud_metrics()`, `grid_metrics()`, `tree_metrics()` or `voxel_metrics()` seen in section \@ref(metrics), \@ref(cba), \@ref(aba), \@ref(tba) and \@ref(vba). Refer to these sections for a more comprehensive overview.
 
 For each point, the neighbourhood can be either:
 

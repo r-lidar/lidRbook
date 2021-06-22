@@ -20,7 +20,7 @@ library(lidR)
 
 ## Overview {#vba-overview}
 
-The "voxel" level of regularization corresponds to the computation of derived metrics for regularly spaced location in 3D. The `voxel_metrics()` function allows calculation of voxel-based metrics on provided point clouds and works like `cloud_metrics()`, `grid_metrics()`, `hexbin_metrics()` and `tree_metrics()` seen in section \@ref(metrics), \@ref(cba), \@ref(aba) and \@ref(tba). In the examples below we use the `Megaplot.laz` data set, but the potential to use `voxel_metrics()` is particularly interesting for dense point clouds such as those produced by terrestrial lidar, or digital photogrammetry.
+The "voxel" level of regularization corresponds to the computation of derived metrics for regularly spaced location in 3D. The `voxel_metrics()` function allows calculation of voxel-based metrics on provided point clouds and works like `cloud_metrics()`, `grid_metrics()`, and `tree_metrics()` seen in section \@ref(metrics), \@ref(cba), \@ref(aba) and \@ref(tba). In the examples below we use the `Megaplot.laz` data set, but the potential to use `voxel_metrics()` is particularly interesting for dense point clouds such as those produced by terrestrial lidar, or digital photogrammetry.
 
 ## Applications {#vba-applications}
 

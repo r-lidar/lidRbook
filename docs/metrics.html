@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>8 Derived metrics | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
   <meta property="og:title" content="8 Derived metrics | The lidR package" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-05-13" />
+<meta name="date" content="2021-06-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,7 @@
   
 <link rel="prev" href="itd-its.html"/>
 <link rel="next" href="cba.html"/>
-<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,6 +51,8 @@
 
 
 
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -117,6 +119,7 @@ code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -368,7 +371,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The notion of metrics is at the core of the <code>lidR</code> package, which enables the computation of standard or custom user-defined metrics at varying levels of regularization:</p>
 <ul>
 <li>point cloud level with <code>cloud_metrics()</code></li>
-<li>cell level with <code>grid_metrics()</code> or <code>hexbin_metrics()</code></li>
+<li>cell level with <code>grid_metrics()</code></li>
 <li>tree level with <code>tree_metrics()</code></li>
 <li>voxel level with <code>voxel_metrics()</code></li>
 <li>point level with <code>point_metrics()</code></li>
@@ -381,9 +384,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>While there are some differences between functions dedicated to metric computations the basic idea is the same for all of them. In addition to the input point cloud, the user needs to provide a formula to calculate the metric(s) of interest. For example, the average height of points for the point cloud, for each pixel, for each tree crown, or for each voxel can be be calculated using <code>mean(Z)</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="metrics.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
 <span id="cb1-2"><a href="metrics.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
-<span id="cb1-3"><a href="metrics.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hexbin_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
-<span id="cb1-4"><a href="metrics.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
-<span id="cb1-5"><a href="metrics.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span></code></pre></div>
+<span id="cb1-3"><a href="metrics.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
+<span id="cb1-4"><a href="metrics.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span></code></pre></div>
 <p>All the functions work the same way but the output format depends on the regularization level. In each case, outputs will be a different class (i.e. a <code>list</code>, a <code>RasterBrick</code>, a <code>SpatialPointsDataFrame</code> or a <code>data.frame</code>) to take advantage of the best storage method, but the same two metrics will be calculated for every unit of analysis.</p>
 </div>
 <div id="metrics-user-defined" class="section level2" number="8.2">
@@ -469,6 +471,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {

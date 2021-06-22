@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>13 Derived metrics at point level | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
   <meta property="og:title" content="13 Derived metrics at point level | The lidR package" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-04-16" />
+<meta name="date" content="2021-06-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,7 @@
   
 <link rel="prev" href="vba.html"/>
 <link rel="next" href="engine.html"/>
-<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,6 +51,8 @@
 
 
 
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -117,6 +119,7 @@ code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -199,6 +202,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.1" data-path="metrics.html"><a href="metrics.html#metrics-basics"><i class="fa fa-check"></i><b>8.1</b> The basics</a></li>
 <li class="chapter" data-level="8.2" data-path="metrics.html"><a href="metrics.html#metrics-user-defined"><i class="fa fa-check"></i><b>8.2</b> User-defined metrics</a></li>
 <li class="chapter" data-level="8.3" data-path="metrics.html"><a href="metrics.html#metrics-pre-defined"><i class="fa fa-check"></i><b>8.3</b> Pre-defined metrics</a></li>
+<li class="chapter" data-level="8.4" data-path="metrics.html"><a href="metrics.html#metrics-3rd-party"><i class="fa fa-check"></i><b>8.4</b> Metrics using 3rd party packages</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="metrics.html"><a href="metrics.html#metrics-lmom"><i class="fa fa-check"></i><b>8.4.1</b> L-moments</a></li>
+<li class="chapter" data-level="8.4.2" data-path="metrics.html"><a href="metrics.html#metrics-fractal-dims"><i class="fa fa-check"></i><b>8.4.2</b> Fractal dimensions</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="cba.html"><a href="cba.html"><i class="fa fa-check"></i><b>9</b> Derived metrics at the cloud level</a>
 <ul>
@@ -360,7 +368,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">13</span> Derived metrics at point level</h1>
 <div id="pba-overview" class="section level2" number="13.1">
 <h2><span class="header-section-number">13.1</span> Overview</h2>
-<p>The “point” level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The <code>point_metrics()</code> function allows calculation of point-based metrics and works like <code>cloud_metrics()</code>, <code>grid_metrics()</code>, <code>hexbin_metrics()</code>, <code>tree_metrics()</code> or <code>voxel_metrics()</code> seen in section <a href="metrics.html#metrics">8</a>, <a href="cba.html#cba">9</a>, <a href="aba.html#aba">10</a>, <a href="tba.html#tba">11</a> and <a href="vba.html#vba">12</a>. Refer to these sections for a more comprehensive overview.</p>
+<p>The “point” level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The <code>point_metrics()</code> function allows calculation of point-based metrics and works like <code>cloud_metrics()</code>, <code>grid_metrics()</code>, <code>tree_metrics()</code> or <code>voxel_metrics()</code> seen in section <a href="metrics.html#metrics">8</a>, <a href="cba.html#cba">9</a>, <a href="aba.html#aba">10</a>, <a href="tba.html#tba">11</a> and <a href="vba.html#vba">12</a>. Refer to these sections for a more comprehensive overview.</p>
 <p>For each point, the neighbourhood can be either:</p>
 <ol style="list-style-type: decimal">
 <li>The k nearest neighbors</li>
@@ -461,50 +469,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-4"><a href="pba.html#cb12-4" aria-hidden="true" tabindex="-1"></a>  is_linear <span class="ot">&lt;-</span>  th<span class="sc">*</span>eigen_m[<span class="dv">3</span>] <span class="sc">&lt;</span> eigen_m[<span class="dv">1</span>] <span class="sc">&amp;&amp;</span> th<span class="sc">*</span>eigen_m[<span class="dv">2</span>] <span class="sc">&lt;</span> eigen_m[<span class="dv">1</span>]</span>
 <span id="cb12-5"><a href="pba.html#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">linear =</span> is_linear))</span>
 <span id="cb12-6"><a href="pba.html#cb12-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<pre><code>#&gt; Warning in showSRID(SRS_string, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;, prefer_proj
-#&gt; = prefer_proj): Discarded datum NAD83 Canadian Spatial Reference System in Proj4
-#&gt; definition</code></pre>
 <p><img src="lidR-book_files/figure-html/plot-las-wire-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p><img src="lidR-book_files/figure-html/plot-las-wire-segmented-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Again, <code>lidR</code> has a dedicated function for this specific task because we believe that it is of high interest to provide a specialized and faster version of this tool.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="pba.html#cb14-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">segment_shapes</span>(las, <span class="fu">shp_line</span>(<span class="at">th =</span> <span class="dv">8</span>, <span class="at">k =</span> <span class="dv">15</span>), <span class="st">&quot;linear&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="pba.html#cb13-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">segment_shapes</span>(las, <span class="fu">shp_line</span>(<span class="at">th =</span> <span class="dv">8</span>, <span class="at">k =</span> <span class="dv">15</span>), <span class="st">&quot;linear&quot;</span>)</span></code></pre></div>
 </div>
 <div id="pba-applications-coloring" class="section level3" number="13.2.3">
 <h3><span class="header-section-number">13.2.3</span> Multi-spectral coloring</h3>
 <p><code>point_metrics()</code> is not limited to eigen value related metrics. It is only limited by a users imagination. In the following example we will demonstrate how it an be used to attribute false colors to a multi-spectral point cloud. Multi-spectral ALS data are sampled with 3 scanners each emitting a different wavelength. The point cloud is usually provided in the form of 3 <code>.las</code> files where each file corresponds to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red and the third as green, and thus consider that each point has a pure color.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="pba.html#cb15-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c1_ar_c.laz&quot;</span></span>
-<span id="cb15-2"><a href="pba.html#cb15-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c2_ar_c.laz&quot;</span></span>
-<span id="cb15-3"><a href="pba.html#cb15-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c3_ar_c.laz&quot;</span></span>
-<span id="cb15-4"><a href="pba.html#cb15-4" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readMSLAS</span>(f1, f2, f3,  <span class="at">filter =</span> <span class="st">&quot;-keep_z_below 300&quot;</span>)</span>
-<span id="cb15-5"><a href="pba.html#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">&quot;ScannerChannel&quot;</span>, <span class="at">size =</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="pba.html#cb14-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c1_ar_c.laz&quot;</span></span>
+<span id="cb14-2"><a href="pba.html#cb14-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c2_ar_c.laz&quot;</span></span>
+<span id="cb14-3"><a href="pba.html#cb14-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c3_ar_c.laz&quot;</span></span>
+<span id="cb14-4"><a href="pba.html#cb14-4" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readMSLAS</span>(f1, f2, f3,  <span class="at">filter =</span> <span class="st">&quot;-keep_z_below 300&quot;</span>)</span>
+<span id="cb14-5"><a href="pba.html#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">&quot;ScannerChannel&quot;</span>, <span class="at">size =</span> <span class="dv">5</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-multispectral-pba-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We now want to attribute an RGB value to each point. A single point being sampled with a single ‘color’ we need to use its neighborhood to define 3 bands. For each point we look in its neighbourhood, where some points are red, some are blue, and some are green. We average the intensities of each color and we consider these 3 values as the RGB color of the central point. Because some points are likely to have 0 red/blue/green neighbours we can set R, G, and B equal to <code>NA</code> for those points and later discard those points.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="pba.html#cb16-1" aria-hidden="true" tabindex="-1"></a>set.color <span class="ot">&lt;-</span> <span class="cf">function</span>(intensity, channel)</span>
-<span id="cb16-2"><a href="pba.html#cb16-2" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb16-3"><a href="pba.html#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Split the intensities of each channel</span></span>
-<span id="cb16-4"><a href="pba.html#cb16-4" aria-hidden="true" tabindex="-1"></a>  i1 <span class="ot">&lt;-</span> intensity[channel <span class="sc">==</span> <span class="dv">1</span>]</span>
-<span id="cb16-5"><a href="pba.html#cb16-5" aria-hidden="true" tabindex="-1"></a>  i2 <span class="ot">&lt;-</span> intensity[channel <span class="sc">==</span> <span class="dv">2</span>]</span>
-<span id="cb16-6"><a href="pba.html#cb16-6" aria-hidden="true" tabindex="-1"></a>  i3 <span class="ot">&lt;-</span> intensity[channel <span class="sc">==</span> <span class="dv">3</span>]</span>
-<span id="cb16-7"><a href="pba.html#cb16-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb16-8"><a href="pba.html#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># If one channel is missing return RGB = NA</span></span>
-<span id="cb16-9"><a href="pba.html#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(i1) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">length</span>(i2) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">length</span>(i3) <span class="sc">==</span> <span class="dv">0</span>)</span>
-<span id="cb16-10"><a href="pba.html#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">R =</span> <span class="cn">NA_integer_</span>, <span class="at">G =</span> <span class="cn">NA_integer_</span>, <span class="at">B =</span> <span class="cn">NA_integer_</span>))</span>
-<span id="cb16-11"><a href="pba.html#cb16-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb16-12"><a href="pba.html#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Average and normalise the intensities</span></span>
-<span id="cb16-13"><a href="pba.html#cb16-13" aria-hidden="true" tabindex="-1"></a>  i1 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">mean</span>(i1))</span>
-<span id="cb16-14"><a href="pba.html#cb16-14" aria-hidden="true" tabindex="-1"></a>  i2 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">mean</span>(i2))</span>
-<span id="cb16-15"><a href="pba.html#cb16-15" aria-hidden="true" tabindex="-1"></a>  i3 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">mean</span>(i3))</span>
-<span id="cb16-16"><a href="pba.html#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i1 <span class="sc">&gt;</span> 255L) i1 <span class="ot">&lt;-</span> 255L</span>
-<span id="cb16-17"><a href="pba.html#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i2 <span class="sc">&gt;</span> 255L) i2 <span class="ot">&lt;-</span> 255L</span>
-<span id="cb16-18"><a href="pba.html#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i3 <span class="sc">&gt;</span> 255L) i3 <span class="ot">&lt;-</span> 255L</span>
-<span id="cb16-19"><a href="pba.html#cb16-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb16-20"><a href="pba.html#cb16-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">R =</span> i1, <span class="at">G =</span> i2, <span class="at">B =</span> i3))</span>
-<span id="cb16-21"><a href="pba.html#cb16-21" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="pba.html#cb15-1" aria-hidden="true" tabindex="-1"></a>set.color <span class="ot">&lt;-</span> <span class="cf">function</span>(intensity, channel)</span>
+<span id="cb15-2"><a href="pba.html#cb15-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb15-3"><a href="pba.html#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Split the intensities of each channel</span></span>
+<span id="cb15-4"><a href="pba.html#cb15-4" aria-hidden="true" tabindex="-1"></a>  i1 <span class="ot">&lt;-</span> intensity[channel <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb15-5"><a href="pba.html#cb15-5" aria-hidden="true" tabindex="-1"></a>  i2 <span class="ot">&lt;-</span> intensity[channel <span class="sc">==</span> <span class="dv">2</span>]</span>
+<span id="cb15-6"><a href="pba.html#cb15-6" aria-hidden="true" tabindex="-1"></a>  i3 <span class="ot">&lt;-</span> intensity[channel <span class="sc">==</span> <span class="dv">3</span>]</span>
+<span id="cb15-7"><a href="pba.html#cb15-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-8"><a href="pba.html#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># If one channel is missing return RGB = NA</span></span>
+<span id="cb15-9"><a href="pba.html#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(i1) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">length</span>(i2) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">length</span>(i3) <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb15-10"><a href="pba.html#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">R =</span> <span class="cn">NA_integer_</span>, <span class="at">G =</span> <span class="cn">NA_integer_</span>, <span class="at">B =</span> <span class="cn">NA_integer_</span>))</span>
+<span id="cb15-11"><a href="pba.html#cb15-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-12"><a href="pba.html#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Average and normalise the intensities</span></span>
+<span id="cb15-13"><a href="pba.html#cb15-13" aria-hidden="true" tabindex="-1"></a>  i1 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">mean</span>(i1))</span>
+<span id="cb15-14"><a href="pba.html#cb15-14" aria-hidden="true" tabindex="-1"></a>  i2 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">mean</span>(i2))</span>
+<span id="cb15-15"><a href="pba.html#cb15-15" aria-hidden="true" tabindex="-1"></a>  i3 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">mean</span>(i3))</span>
+<span id="cb15-16"><a href="pba.html#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i1 <span class="sc">&gt;</span> 255L) i1 <span class="ot">&lt;-</span> 255L</span>
+<span id="cb15-17"><a href="pba.html#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i2 <span class="sc">&gt;</span> 255L) i2 <span class="ot">&lt;-</span> 255L</span>
+<span id="cb15-18"><a href="pba.html#cb15-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i3 <span class="sc">&gt;</span> 255L) i3 <span class="ot">&lt;-</span> 255L</span>
+<span id="cb15-19"><a href="pba.html#cb15-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-20"><a href="pba.html#cb15-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">R =</span> i1, <span class="at">G =</span> i2, <span class="at">B =</span> i3))</span>
+<span id="cb15-21"><a href="pba.html#cb15-21" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>We can then apply this function with <code>point_metrics()</code> using a spherical neighborhood. The next steps being to assign the output of <code>point_metrics()</code> back into the <code>LAS</code> object for a nice display.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="pba.html#cb17-1" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">point_metrics</span>(las, <span class="sc">~</span><span class="fu">set.color</span>(Intensity, ScannerChannel), <span class="at">r =</span> <span class="fl">0.5</span>)</span>
-<span id="cb17-2"><a href="pba.html#cb17-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">add_lasrgb</span>(las, M<span class="sc">$</span>R, M<span class="sc">$</span>G, M<span class="sc">$</span>B)</span>
-<span id="cb17-3"><a href="pba.html#cb17-3" aria-hidden="true" tabindex="-1"></a>colored <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, <span class="sc">!</span><span class="fu">is.na</span>(R)) <span class="co"># remove RGB = NA</span></span>
-<span id="cb17-4"><a href="pba.html#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(colored, <span class="at">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="at">size =</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="pba.html#cb16-1" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">point_metrics</span>(las, <span class="sc">~</span><span class="fu">set.color</span>(Intensity, ScannerChannel), <span class="at">r =</span> <span class="fl">0.5</span>)</span>
+<span id="cb16-2"><a href="pba.html#cb16-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">add_lasrgb</span>(las, M<span class="sc">$</span>R, M<span class="sc">$</span>G, M<span class="sc">$</span>B)</span>
+<span id="cb16-3"><a href="pba.html#cb16-3" aria-hidden="true" tabindex="-1"></a>colored <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, <span class="sc">!</span><span class="fu">is.na</span>(R)) <span class="co"># remove RGB = NA</span></span>
+<span id="cb16-4"><a href="pba.html#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(colored, <span class="at">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="at">size =</span> <span class="dv">3</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-multispectral-rgb-pba-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>This method is a bit naive ‘as is’. First, the intensities returned by each channel are not comparable and required to be normalized. We could also argue about the choice of discarding RGB = <code>NA</code>. Instead we could have chosen to set a pure color. To finish, enforcing a maximum value to 255 works in this specific example because very few intensity values are actually above 255 but is meaningless in a general case. Either way, this is only a demo to show how to think out of the box with <code>point_metrics()</code>.</p>
 </div>
@@ -545,6 +550,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
