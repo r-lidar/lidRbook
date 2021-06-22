@@ -141,3 +141,4 @@ metrics-lmom
 metrics-fractal-dims
 spi-ALS-strategy
 spi-TLS-strategy
+voxel-rendering

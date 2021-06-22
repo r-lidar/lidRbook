@@ -214,12 +214,38 @@ r3dDefaults$userMatrix = m
 r3dDefaults$zoom = 0.75
 ```
 
-```{r plot-las-truncks, rgl = TRUE, fig.width = 4, fig.height = 3}
+```r
 LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
 las <- readLAS(LASfile, select = "xyzc")
 
 # get the location of the trees
 ttops <- find_trees(las, lmf(ws = 5)) 
+
+# extract the coordinates of the trees and
+# apply the shift to display the lines
+# in the rendering coordinate system
+x <- coordinates(ttops)[,1] - offsets[1] 
+y <- coordinates(ttops)[,2] - offsets[2] 
+z <- ttops$Z
+
+# Build a GL_LINES matrix for fast rendering
+x <- rep(x, each = 2)
+y <- rep(y, each = 2)
+tmp <- numeric(2*length(z)) 
+tmp[2*1:length(z)] <- z
+z <- tmp
+M <- cbind(x,y,z)
+
+# plot the point cloud
+offsets <- plot(las, bg = "white", size = 3)
+add_treetops3d(offsets, ttops)
+rgl::segments3d(M, col = "black", lwd = 2)
+```
+
+```{r plot-las-truncks, echo = FALSE, rgl = TRUE, fig.width = 4, fig.height = 3}
+LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
+las <- readLAS(LASfile, select = "xyzc")
+ttops <- find_trees(las, lmf(ws = 5)) # get the location of the trees
 
 # extract the coordinates of the trees
 x <- coordinates(ttops)[,1]
@@ -241,12 +267,21 @@ for (i in 1:length(ttops)) {
 }
 ```
 
-### Cross sections 2D rendering {#plot-crossection}
+### Voxel rendering
 
 ```{r, echo=F}
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
 las <- readLAS(LASfile)
 ```
+
+From v3.2.0 it is possible to render voxels. This is useful to render the output of the function `voxelise_points()` or `voxel_metrics()` for examples.
+
+```{r plot-voxels, rgl = TRUE, fig.width = 4, fig.height = 3}
+vox <- voxelize_points(las, 6)
+plot(vox, voxel = T, bg = "white")
+```
+
+### Cross sections 2D rendering {#plot-crossection}
 
 To better visualize the vertical structure of a point cloud, investigate classification results, or compare results of different interpolation routines, a cross section can be plotted. To do that we first need to decide where the cross section is located (i.e. define the beginning and the end) and specify it's width. The point cloud can then be clipped and the `X` and `Z` coordinates used to create the plot.
 
