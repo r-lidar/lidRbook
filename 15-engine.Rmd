@@ -35,7 +35,7 @@ ctg_norm <- normalize_height(ctg, dtm) # normalize
 for (file in ctg$filename)
 {
   newname <-  tools::file_path_sans_ext(basename(file))
-  newname <- paste0("folder/, newname, "_colored.laz")
+  newname <- paste0("folder/", newname, "_colored.laz")
   las <- readLAS(file)
   las <- merge_spatial(las, rgb)
   writeLAS(las, newname)
