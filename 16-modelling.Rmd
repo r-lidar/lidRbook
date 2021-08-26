@@ -113,6 +113,7 @@ We have now calculated a variety of ALS metrics for each plot. In order to compl
 
 ```r
 D <- cbind(as.data.frame(plots), plots_metrics)
+```
 
 ### Step 3 - Modeling
 
