@@ -142,3 +142,6 @@ metrics-fractal-dims
 spi-ALS-strategy
 spi-TLS-strategy
 voxel-rendering
+modeling-build-data
+wall-to-wall-modelling
+calculate-wall-to-wall-predictions

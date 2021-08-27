@@ -71,56 +71,31 @@ plot(plots, add = TRUE, col = "red")
 
 We have now prepared both our ALS and plot inventory data and can begin ABA processing.
 
-## ABA Processing {#modeling-build-model}
+## ABA database building {#modeling-build-data}
 
-### Step 1 - Clip ALS ground inventory
+To build a database ready for modeling the steps are the following:
 
-The functions `clip_*` allow to extract regions of interest as seen in section \@ref(engine). `clip_roi()` is capable of extraction from a shapefile. First we set `opt_output_files()` option to write the results on disc. This is an important option to set. The clipped plots will be saved on disk and not kept in memory. We also use the `opt_filter()` function to ignore noise below 0 m so that they do not influence future processing. We clip discs with a `radius` of  14.1 meters because our plot radius is 14.1 m. The `plots_ALS_clipped` object is now a `LAScatalog` object containing all clipped plots.
+1. Clip the regions of interest (stands) using a shapefile of stand locations.
+2. Calculate derived metrics for each stand.
+3. Associate stand attributes (ID,HL,BA,GTV) to the metrics.
+
+This can be done with a single function `plot_metrics()`. We also use the `opt_filter()` function on the `LAScatalog` to ignore noise below 0 m at read time so that they do not influence future processing. We clip discs with a `radius` of  14.1 meters because our plot radius is 14.1 m.
 
 ```r
-opt_output_files(ctg) <- paste0(tempdir(), "/{PlotID}") # Write files to disc
 opt_filter(ctg) <- "-drop_z_below 0" # Ignore points with elevations below 0
 
-# Clip catalog object using plots with a circular buffer of 14.1 m
-plots_ALS_clipped <- clip_roi(ctg, plots, radius=14.1)
-plots_ALS_clipped
-#> class       : LAScatalog
-#> extent      : 299037.3 , 314863.4 , 5089938 , 5098440 (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=utm +zone=18 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
-#> area        : 160376.5 m²
-#> points      : 1.67 million points
-#> density     : 10.4 points/m²
-#> num. files  : 203 
+D <- plot_metrics(ctg, .stdmetrics_z, plots, radius = 14.1)
 ```
 
-### Step 2 - Calculate plot metrics
+We have now calculated a variety of ALS metrics for each plot.
 
-As seen in section \@ref(engine) ground inventories are special cases of independent files. We first set some adequate processing options. We also use `opt_output_files() <- ""` to have plot metrics stored in memory instead of on disc.
 
-```r
-opt_independent_files(plots_ALS_clipped) <- TRUE
-opt_output_files(plots_ALS_clipped) <- ""
-```
-
-To calculate metrics for each plot we use the `catalog_apply()` functionality. We specify that we want to process our `plots_ALS_clipped` catalog object using `cloud_metrics` to calculate all metrics contained in the `.stdmetrics_z` function. The `func` argument also supports user defined functions. The output of `catalog_apply()` is a list of vectors (`plots_metrics`), which we convert into a `data.table`.
-
-```r
-plots_metrics <- catalog_apply(plots_ALS_clipped, cloud_metrics, func = .stdmetrics_z)
-plots_metrics <- data.table::rbindlist(plots_metrics)
-```
-
-We have now calculated a variety of ALS metrics for each plot. In order to complete our inventory and begin modelling we now must merge ALS metrics with field measured values (`D`). 
-
-```r
-D <- cbind(as.data.frame(plots), plots_metrics)
-```
-
-### Step 3 - Modeling
+## Statistical modeling {#modeling-build-model}
 
 Here we provide a simple example of how to create an OLS model (`lm`) for Lorey's Mean Height (HL). Using the `summary` and `plot` functions we found that the 85^th^ percentile of height (`zq85`) for ALS metrics explain a large amount of variation in `HL` values. We are more than happy with this simple model.
 
 ```r
-m <- lm(HL ~zq85, data=D)
+m <- lm(HL ~ zq85, data = D)
 summary(m)
 #> Call:
 #> lm(formula = HL ~ zq85, data = D)
@@ -153,33 +128,30 @@ abline(0,1)
 </center>
 
 
-### Step 4 - Wall to wall modelling
+## Wall to wall modelling
 
-Now that we have created a model using plot data, we now need to apply that model across our entire study area. 
+Now that we have created a model using plot data, we need to apply that model across our entire study area. 
 
-To do so we first need to generate the same suite of ALS metrics (`.stdmetrics_z`) for our ALS data using the `grid_metrics()` function on our original collection of files. We have chosen to write these metrics into memory. Note that the `res` parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius = 625m^2^).
+To do so we first need to generate the same suite of ALS metrics (`.stdmetrics_z`) for our ALS data using the `grid_metrics()` function on our original collection of files. Note that the `res` parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius = 625m^2^).
 
 ```r
-opt_output_files(ctg) <- ""
 metrics_w2w <- grid_metrics(ctg, .stdmetrics_z, res = 25)
 ```
 
 To visualize any of the metrics you can use the `plot` function.
 
-```
+```r
 plot(metrics_w2w$zq85)
 plot(metrics_w2w$zmean)
 plot(metrics_w2w$pzabovezmean)
 ```
 
-### Step 5 - Calculate wall-to-wall predictions
+## Calculate wall-to-wall predictions
 
-We can use two methods for applying our model (`m`) to all of our ALS data. We can do this manually using the model coefficients, or use the `predict` function. Both of these methods produce the same output (`HL_pred`) which is a wall-to-wall raster of predicted Lorey's mean height.
+We can use the `predict()` function to produce `HL_pred` which is a wall-to-wall raster of predicted Lorey's mean height.
 
 ```r
-HL_pred <- coef(m)[1] + metrics_w2w$zq85 * coef(m)[2]
-# or
-HL_pred <- predict(metrics_w2w$zq85, m)
+HL_pred <- predict(metrics_w2w, m)
 ```
 
 To visualize wall-to-wall predictions use

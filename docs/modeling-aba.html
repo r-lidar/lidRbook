@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-08-26" />
+<meta name="date" content="2021-08-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -312,14 +312,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16" data-path="modeling-aba.html"><a href="modeling-aba.html"><i class="fa fa-check"></i><b>16</b> The Area-Based Approach (ABA) to forest modelling</a>
 <ul>
 <li class="chapter" data-level="16.1" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-read-data"><i class="fa fa-check"></i><b>16.1</b> Read in data</a></li>
-<li class="chapter" data-level="16.2" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-model"><i class="fa fa-check"></i><b>16.2</b> ABA Processing</a>
-<ul>
-<li class="chapter" data-level="16.2.1" data-path="modeling-aba.html"><a href="modeling-aba.html#step-1---clip-als-ground-inventory"><i class="fa fa-check"></i><b>16.2.1</b> Step 1 - Clip ALS ground inventory</a></li>
-<li class="chapter" data-level="16.2.2" data-path="modeling-aba.html"><a href="modeling-aba.html#step-2---calculate-plot-metrics"><i class="fa fa-check"></i><b>16.2.2</b> Step 2 - Calculate plot metrics</a></li>
-<li class="chapter" data-level="16.2.3" data-path="modeling-aba.html"><a href="modeling-aba.html#step-3---modeling"><i class="fa fa-check"></i><b>16.2.3</b> Step 3 - Modeling</a></li>
-<li class="chapter" data-level="16.2.4" data-path="modeling-aba.html"><a href="modeling-aba.html#step-4---wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.2.4</b> Step 4 - Wall to wall modelling</a></li>
-<li class="chapter" data-level="16.2.5" data-path="modeling-aba.html"><a href="modeling-aba.html#step-5---calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.2.5</b> Step 5 - Calculate wall-to-wall predictions</a></li>
-</ul></li>
+<li class="chapter" data-level="16.2" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-data"><i class="fa fa-check"></i><b>16.2</b> ABA database building</a></li>
+<li class="chapter" data-level="16.3" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-model"><i class="fa fa-check"></i><b>16.3</b> Statistical modeling</a></li>
+<li class="chapter" data-level="16.4" data-path="modeling-aba.html"><a href="modeling-aba.html#wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.4</b> Wall to wall modelling</a></li>
+<li class="chapter" data-level="16.5" data-path="modeling-aba.html"><a href="modeling-aba.html#calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.5</b> Calculate wall-to-wall predictions</a></li>
 </ul></li>
 <li class="chapter" data-level="17" data-path="outbox.html"><a href="outbox.html"><i class="fa fa-check"></i><b>17</b> Thinking outside the box</a>
 <ul>
@@ -410,89 +406,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </center>
 <p>We have now prepared both our ALS and plot inventory data and can begin ABA processing.</p>
 </div>
-<div id="modeling-build-model" class="section level2" number="16.2">
-<h2><span class="header-section-number">16.2</span> ABA Processing</h2>
-<div id="step-1---clip-als-ground-inventory" class="section level3" number="16.2.1">
-<h3><span class="header-section-number">16.2.1</span> Step 1 - Clip ALS ground inventory</h3>
-<p>The functions <code>clip_*</code> allow to extract regions of interest as seen in section <a href="engine.html#engine">14</a>. <code>clip_roi()</code> is capable of extraction from a shapefile. First we set <code>opt_output_files()</code> option to write the results on disc. This is an important option to set. The clipped plots will be saved on disk and not kept in memory. We also use the <code>opt_filter()</code> function to ignore noise below 0 m so that they do not influence future processing. We clip discs with a <code>radius</code> of 14.1 meters because our plot radius is 14.1 m. The <code>plots_ALS_clipped</code> object is now a <code>LAScatalog</code> object containing all clipped plots.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="modeling-aba.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{PlotID}&quot;</span>) <span class="co"># Write files to disc</span></span>
-<span id="cb6-2"><a href="modeling-aba.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;-drop_z_below 0&quot;</span> <span class="co"># Ignore points with elevations below 0</span></span>
-<span id="cb6-3"><a href="modeling-aba.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="modeling-aba.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Clip catalog object using plots with a circular buffer of 14.1 m</span></span>
-<span id="cb6-5"><a href="modeling-aba.html#cb6-5" aria-hidden="true" tabindex="-1"></a>plots_ALS_clipped <span class="ot">&lt;-</span> <span class="fu">clip_roi</span>(ctg, plots, <span class="at">radius=</span><span class="fl">14.1</span>)</span>
-<span id="cb6-6"><a href="modeling-aba.html#cb6-6" aria-hidden="true" tabindex="-1"></a>plots_ALS_clipped</span>
-<span id="cb6-7"><a href="modeling-aba.html#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class       : LAScatalog</span></span>
-<span id="cb6-8"><a href="modeling-aba.html#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent      : 299037.3 , 314863.4 , 5089938 , 5098440 (xmin, xmax, ymin, ymax)</span></span>
-<span id="cb6-9"><a href="modeling-aba.html#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref. : +proj=utm +zone=18 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs </span></span>
-<span id="cb6-10"><a href="modeling-aba.html#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area        : 160376.5 m²</span></span>
-<span id="cb6-11"><a href="modeling-aba.html#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points      : 1.67 million points</span></span>
-<span id="cb6-12"><a href="modeling-aba.html#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 10.4 points/m²</span></span>
-<span id="cb6-13"><a href="modeling-aba.html#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 203 </span></span></code></pre></div>
+<div id="modeling-build-data" class="section level2" number="16.2">
+<h2><span class="header-section-number">16.2</span> ABA database building</h2>
+<p>To build a database ready for modeling the steps are the following:</p>
+<ol style="list-style-type: decimal">
+<li>Clip the regions of interest (stands) using a shapefile of stand locations.</li>
+<li>Calculate derived metrics for each stand.</li>
+<li>Associate stand attributes (ID,HL,BA,GTV) to the metrics.</li>
+</ol>
+<p>This can be done with a single function <code>plot_metrics()</code>. We also use the <code>opt_filter()</code> function on the <code>LAScatalog</code> to ignore noise below 0 m at read time so that they do not influence future processing. We clip discs with a <code>radius</code> of 14.1 meters because our plot radius is 14.1 m.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="modeling-aba.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;-drop_z_below 0&quot;</span> <span class="co"># Ignore points with elevations below 0</span></span>
+<span id="cb6-2"><a href="modeling-aba.html#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="modeling-aba.html#cb6-3" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="fu">plot_metrics</span>(ctg, .stdmetrics_z, plots, <span class="at">radius =</span> <span class="fl">14.1</span>)</span></code></pre></div>
+<p>We have now calculated a variety of ALS metrics for each plot.</p>
 </div>
-<div id="step-2---calculate-plot-metrics" class="section level3" number="16.2.2">
-<h3><span class="header-section-number">16.2.2</span> Step 2 - Calculate plot metrics</h3>
-<p>As seen in section <a href="engine.html#engine">14</a> ground inventories are special cases of independent files. We first set some adequate processing options. We also use <code>opt_output_files() &lt;- ""</code> to have plot metrics stored in memory instead of on disc.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="modeling-aba.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_independent_files</span>(plots_ALS_clipped) <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb7-2"><a href="modeling-aba.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(plots_ALS_clipped) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span></code></pre></div>
-<p>To calculate metrics for each plot we use the <code>catalog_apply()</code> functionality. We specify that we want to process our <code>plots_ALS_clipped</code> catalog object using <code>cloud_metrics</code> to calculate all metrics contained in the <code>.stdmetrics_z</code> function. The <code>func</code> argument also supports user defined functions. The output of <code>catalog_apply()</code> is a list of vectors (<code>plots_metrics</code>), which we convert into a <code>data.table</code>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="modeling-aba.html#cb8-1" aria-hidden="true" tabindex="-1"></a>plots_metrics <span class="ot">&lt;-</span> <span class="fu">catalog_apply</span>(plots_ALS_clipped, cloud_metrics, <span class="at">func =</span> .stdmetrics_z)</span>
-<span id="cb8-2"><a href="modeling-aba.html#cb8-2" aria-hidden="true" tabindex="-1"></a>plots_metrics <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(plots_metrics)</span></code></pre></div>
-<p>We have now calculated a variety of ALS metrics for each plot. In order to complete our inventory and begin modelling we now must merge ALS metrics with field measured values (<code>D</code>).</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="modeling-aba.html#cb9-1" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">as.data.frame</span>(plots), plots_metrics)</span></code></pre></div>
-</div>
-<div id="step-3---modeling" class="section level3" number="16.2.3">
-<h3><span class="header-section-number">16.2.3</span> Step 3 - Modeling</h3>
+<div id="modeling-build-model" class="section level2" number="16.3">
+<h2><span class="header-section-number">16.3</span> Statistical modeling</h2>
 <p>Here we provide a simple example of how to create an OLS model (<code>lm</code>) for Lorey’s Mean Height (HL). Using the <code>summary</code> and <code>plot</code> functions we found that the 85<sup>th</sup> percentile of height (<code>zq85</code>) for ALS metrics explain a large amount of variation in <code>HL</code> values. We are more than happy with this simple model.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="modeling-aba.html#cb10-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">lm</span>(HL <span class="sc">~</span>zq85, <span class="at">data=</span>D)</span>
-<span id="cb10-2"><a href="modeling-aba.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m)</span>
-<span id="cb10-3"><a href="modeling-aba.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb10-4"><a href="modeling-aba.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lm(formula = HL ~ zq85, data = D)</span></span>
-<span id="cb10-5"><a href="modeling-aba.html#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-6"><a href="modeling-aba.html#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
-<span id="cb10-7"><a href="modeling-aba.html#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min     1Q Median     3Q    Max </span></span>
-<span id="cb10-8"><a href="modeling-aba.html#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -4.640 -1.053 -0.031  1.030  4.258 </span></span>
-<span id="cb10-9"><a href="modeling-aba.html#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-10"><a href="modeling-aba.html#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb10-11"><a href="modeling-aba.html#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span id="cb10-12"><a href="modeling-aba.html#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)  2.29496    0.31116   7.376  4.2e-12 ***</span></span>
-<span id="cb10-13"><a href="modeling-aba.html#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zq85         0.93389    0.01525  61.237  &lt; 2e-16 ***</span></span>
-<span id="cb10-14"><a href="modeling-aba.html#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb10-15"><a href="modeling-aba.html#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span></span>
-<span id="cb10-16"><a href="modeling-aba.html#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-17"><a href="modeling-aba.html#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 1.5 on 201 degrees of freedom</span></span>
-<span id="cb10-18"><a href="modeling-aba.html#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.9491, Adjusted R-squared:  0.9489 </span></span>
-<span id="cb10-19"><a href="modeling-aba.html#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic:  3750 on 1 and 201 DF,  p-value: &lt; 2.2e-16</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="modeling-aba.html#cb7-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">lm</span>(HL <span class="sc">~</span> zq85, <span class="at">data =</span> D)</span>
+<span id="cb7-2"><a href="modeling-aba.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m)</span>
+<span id="cb7-3"><a href="modeling-aba.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb7-4"><a href="modeling-aba.html#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lm(formula = HL ~ zq85, data = D)</span></span>
+<span id="cb7-5"><a href="modeling-aba.html#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-6"><a href="modeling-aba.html#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
+<span id="cb7-7"><a href="modeling-aba.html#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min     1Q Median     3Q    Max </span></span>
+<span id="cb7-8"><a href="modeling-aba.html#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -4.640 -1.053 -0.031  1.030  4.258 </span></span>
+<span id="cb7-9"><a href="modeling-aba.html#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-10"><a href="modeling-aba.html#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb7-11"><a href="modeling-aba.html#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb7-12"><a href="modeling-aba.html#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)  2.29496    0.31116   7.376  4.2e-12 ***</span></span>
+<span id="cb7-13"><a href="modeling-aba.html#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zq85         0.93389    0.01525  61.237  &lt; 2e-16 ***</span></span>
+<span id="cb7-14"><a href="modeling-aba.html#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb7-15"><a href="modeling-aba.html#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span></span>
+<span id="cb7-16"><a href="modeling-aba.html#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-17"><a href="modeling-aba.html#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 1.5 on 201 degrees of freedom</span></span>
+<span id="cb7-18"><a href="modeling-aba.html#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.9491, Adjusted R-squared:  0.9489 </span></span>
+<span id="cb7-19"><a href="modeling-aba.html#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic:  3750 on 1 and 201 DF,  p-value: &lt; 2.2e-16</span></span></code></pre></div>
 <p>Here we visualize the relationship between the observed (measured) and predicted (ALS-based) HL values.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="modeling-aba.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(D<span class="sc">$</span>HL, <span class="fu">predict</span>(m))</span>
-<span id="cb11-2"><a href="modeling-aba.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="modeling-aba.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(D<span class="sc">$</span>HL, <span class="fu">predict</span>(m))</span>
+<span id="cb8-2"><a href="modeling-aba.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code></pre></div>
 <center>
 <img src="images/ABA/05_scatterplot_HL.png" />
 </center>
 </div>
-<div id="step-4---wall-to-wall-modelling" class="section level3" number="16.2.4">
-<h3><span class="header-section-number">16.2.4</span> Step 4 - Wall to wall modelling</h3>
-<p>Now that we have created a model using plot data, we now need to apply that model across our entire study area.</p>
-<p>To do so we first need to generate the same suite of ALS metrics (<code>.stdmetrics_z</code>) for our ALS data using the <code>grid_metrics()</code> function on our original collection of files. We have chosen to write these metrics into memory. Note that the <code>res</code> parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius = 625m<sup>2</sup>).</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="modeling-aba.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb12-2"><a href="modeling-aba.html#cb12-2" aria-hidden="true" tabindex="-1"></a>metrics_w2w <span class="ot">&lt;-</span> <span class="fu">grid_metrics</span>(ctg, .stdmetrics_z, <span class="at">res =</span> <span class="dv">25</span>)</span></code></pre></div>
+<div id="wall-to-wall-modelling" class="section level2" number="16.4">
+<h2><span class="header-section-number">16.4</span> Wall to wall modelling</h2>
+<p>Now that we have created a model using plot data, we need to apply that model across our entire study area.</p>
+<p>To do so we first need to generate the same suite of ALS metrics (<code>.stdmetrics_z</code>) for our ALS data using the <code>grid_metrics()</code> function on our original collection of files. Note that the <code>res</code> parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius = 625m<sup>2</sup>).</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="modeling-aba.html#cb9-1" aria-hidden="true" tabindex="-1"></a>metrics_w2w <span class="ot">&lt;-</span> <span class="fu">grid_metrics</span>(ctg, .stdmetrics_z, <span class="at">res =</span> <span class="dv">25</span>)</span></code></pre></div>
 <p>To visualize any of the metrics you can use the <code>plot</code> function.</p>
-<pre><code>plot(metrics_w2w$zq85)
-plot(metrics_w2w$zmean)
-plot(metrics_w2w$pzabovezmean)</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="modeling-aba.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics_w2w<span class="sc">$</span>zq85)</span>
+<span id="cb10-2"><a href="modeling-aba.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics_w2w<span class="sc">$</span>zmean)</span>
+<span id="cb10-3"><a href="modeling-aba.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics_w2w<span class="sc">$</span>pzabovezmean)</span></code></pre></div>
 </div>
-<div id="step-5---calculate-wall-to-wall-predictions" class="section level3" number="16.2.5">
-<h3><span class="header-section-number">16.2.5</span> Step 5 - Calculate wall-to-wall predictions</h3>
-<p>We can use two methods for applying our model (<code>m</code>) to all of our ALS data. We can do this manually using the model coefficients, or use the <code>predict</code> function. Both of these methods produce the same output (<code>HL_pred</code>) which is a wall-to-wall raster of predicted Lorey’s mean height.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="modeling-aba.html#cb14-1" aria-hidden="true" tabindex="-1"></a>HL_pred <span class="ot">&lt;-</span> <span class="fu">coef</span>(m)[<span class="dv">1</span>] <span class="sc">+</span> metrics_w2w<span class="sc">$</span>zq85 <span class="sc">*</span> <span class="fu">coef</span>(m)[<span class="dv">2</span>]</span>
-<span id="cb14-2"><a href="modeling-aba.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or</span></span>
-<span id="cb14-3"><a href="modeling-aba.html#cb14-3" aria-hidden="true" tabindex="-1"></a>HL_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(metrics_w2w<span class="sc">$</span>zq85, m)</span></code></pre></div>
+<div id="calculate-wall-to-wall-predictions" class="section level2" number="16.5">
+<h2><span class="header-section-number">16.5</span> Calculate wall-to-wall predictions</h2>
+<p>We can use the <code>predict()</code> function to produce <code>HL_pred</code> which is a wall-to-wall raster of predicted Lorey’s mean height.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="modeling-aba.html#cb11-1" aria-hidden="true" tabindex="-1"></a>HL_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(metrics_w2w, m)</span></code></pre></div>
 <p>To visualize wall-to-wall predictions use</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="modeling-aba.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(HL_pred)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="modeling-aba.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(HL_pred)</span></code></pre></div>
 <center>
 <img src="images/ABA/06_HL_pred.png" />
 </center>
 
-</div>
 </div>
 </div>
             </section>
