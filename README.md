@@ -1,6 +1,6 @@
 This online book provides tangible examples and insight for using the `lidR` package. Readers will find code examples, illustrations, and tutorials about ALS data processing in R with the `lidR` package. This book is a guide written to help both the ALS novice, as well as seasoned point-cloud processing veterans. This *is not* the official package documentation.
 
-**[Read the book :book:](https://jean-romain.github.io/lidRbook/)**
+**[Read the book :book:](https://r-lidar.github.io/lidRbook/)**
 
 The book is shared under [CC-BY-NC-SA 2.0](https://creativecommons.org/licenses/by-nc-sa/2.0/)
 
