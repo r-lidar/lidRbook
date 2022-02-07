@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>9 Derived metrics at the cloud level | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="9 Derived metrics at the cloud level | The lidR package" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-06-08" />
+<meta name="date" content="2022-02-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,8 +33,9 @@
   
 <link rel="prev" href="metrics.html"/>
 <link rel="next" href="aba.html"/>
-<script src="libs/header-attrs-2.8/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -42,7 +43,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
 
 
 
@@ -148,7 +148,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3.1" data-path="io.html"><a href="io.html#plot-3d"><i class="fa fa-check"></i><b>2.3.1</b> Basic 3D rendering</a></li>
 <li class="chapter" data-level="2.3.2" data-path="io.html"><a href="io.html#plot-overlay"><i class="fa fa-check"></i><b>2.3.2</b> Overlays</a></li>
 <li class="chapter" data-level="2.3.3" data-path="io.html"><a href="io.html#plot-advanced"><i class="fa fa-check"></i><b>2.3.3</b> Advanced 3D rendering</a></li>
-<li class="chapter" data-level="2.3.4" data-path="io.html"><a href="io.html#plot-crossection"><i class="fa fa-check"></i><b>2.3.4</b> Cross sections 2D rendering</a></li>
+<li class="chapter" data-level="2.3.4" data-path="io.html"><a href="io.html#voxel-rendering"><i class="fa fa-check"></i><b>2.3.4</b> Voxel rendering</a></li>
+<li class="chapter" data-level="2.3.5" data-path="io.html"><a href="io.html#plot-crossection"><i class="fa fa-check"></i><b>2.3.5</b> Cross sections 2D rendering</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="gnd.html"><a href="gnd.html"><i class="fa fa-check"></i><b>3</b> Ground classification</a>
@@ -172,8 +173,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="norm.html"><a href="norm.html#norm-dtm"><i class="fa fa-check"></i><b>5.1</b> DTM normalization</a></li>
 <li class="chapter" data-level="5.2" data-path="norm.html"><a href="norm.html#norm-point-cloud"><i class="fa fa-check"></i><b>5.2</b> Point cloud normalization</a></li>
-<li class="chapter" data-level="5.3" data-path="norm.html"><a href="norm.html#norm-pros-cons"><i class="fa fa-check"></i><b>5.3</b> Pros and cons</a></li>
-<li class="chapter" data-level="5.4" data-path="norm.html"><a href="norm.html#norm-reverse"><i class="fa fa-check"></i><b>5.4</b> Reversing normalization</a></li>
+<li class="chapter" data-level="5.3" data-path="norm.html"><a href="norm.html#hybrid-method"><i class="fa fa-check"></i><b>5.3</b> Hybrid method</a></li>
+<li class="chapter" data-level="5.4" data-path="norm.html"><a href="norm.html#norm-pros-cons"><i class="fa fa-check"></i><b>5.4</b> Pros and cons</a></li>
+<li class="chapter" data-level="5.5" data-path="norm.html"><a href="norm.html#norm-reverse"><i class="fa fa-check"></i><b>5.5</b> Reversing normalization</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="chm.html"><a href="chm.html"><i class="fa fa-check"></i><b>6</b> Digital Surface Model and Canopy Height model</a>
 <ul>
@@ -213,7 +215,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.1" data-path="cba.html"><a href="cba.html#cba-overview"><i class="fa fa-check"></i><b>9.1</b> Overview</a></li>
 <li class="chapter" data-level="9.2" data-path="cba.html"><a href="cba.html#cba-applications"><i class="fa fa-check"></i><b>9.2</b> Applications</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="aba.html"><a href="aba.html"><i class="fa fa-check"></i><b>10</b> Derived metrics at the grid level</a>
+<li class="chapter" data-level="10" data-path="aba.html"><a href="aba.html"><i class="fa fa-check"></i><b>10</b> Derived metrics at the pixel level</a>
 <ul>
 <li class="chapter" data-level="10.1" data-path="aba.html"><a href="aba.html#aba-overview"><i class="fa fa-check"></i><b>10.1</b> Overview</a></li>
 <li class="chapter" data-level="10.2" data-path="aba.html"><a href="aba.html#aba-applications"><i class="fa fa-check"></i><b>10.2</b> Applications</a>
@@ -311,14 +313,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16" data-path="modeling-aba.html"><a href="modeling-aba.html"><i class="fa fa-check"></i><b>16</b> The Area-Based Approach (ABA) to forest modelling</a>
 <ul>
 <li class="chapter" data-level="16.1" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-read-data"><i class="fa fa-check"></i><b>16.1</b> Read in data</a></li>
-<li class="chapter" data-level="16.2" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-model"><i class="fa fa-check"></i><b>16.2</b> ABA Processing</a>
-<ul>
-<li class="chapter" data-level="16.2.1" data-path="modeling-aba.html"><a href="modeling-aba.html#step-1---clip-als-ground-inventory"><i class="fa fa-check"></i><b>16.2.1</b> Step 1 - Clip ALS ground inventory</a></li>
-<li class="chapter" data-level="16.2.2" data-path="modeling-aba.html"><a href="modeling-aba.html#step-2---calculate-plot-metrics"><i class="fa fa-check"></i><b>16.2.2</b> Step 2 - Calculate plot metrics</a></li>
-<li class="chapter" data-level="16.2.3" data-path="modeling-aba.html"><a href="modeling-aba.html#step-3---modeling"><i class="fa fa-check"></i><b>16.2.3</b> Step 3 - Modeling</a></li>
-<li class="chapter" data-level="16.2.4" data-path="modeling-aba.html"><a href="modeling-aba.html#step-4---wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.2.4</b> Step 4 - Wall to wall modelling</a></li>
-<li class="chapter" data-level="16.2.5" data-path="modeling-aba.html"><a href="modeling-aba.html#step-5---calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.2.5</b> Step 5 - Calculate wall-to-wall predictions</a></li>
-</ul></li>
+<li class="chapter" data-level="16.2" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-data"><i class="fa fa-check"></i><b>16.2</b> ABA database building</a></li>
+<li class="chapter" data-level="16.3" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-model"><i class="fa fa-check"></i><b>16.3</b> Statistical modeling</a></li>
+<li class="chapter" data-level="16.4" data-path="modeling-aba.html"><a href="modeling-aba.html#wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.4</b> Wall to wall modelling</a></li>
+<li class="chapter" data-level="16.5" data-path="modeling-aba.html"><a href="modeling-aba.html#calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.5</b> Calculate wall-to-wall predictions</a></li>
 </ul></li>
 <li class="chapter" data-level="17" data-path="outbox.html"><a href="outbox.html"><i class="fa fa-check"></i><b>17</b> Thinking outside the box</a>
 <ul>
@@ -375,85 +373,75 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-4"><a href="cba.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 13.27202</span></span></code></pre></div>
 <p>To calculate more than one metric a custom function needs to be used, or one of the pre-defined functions within <code>lidR</code>. To calculate the whole suite of 36 metrics defined in <code>stdmetrics_z()</code> we can use <code>func = .stdmetrics_z</code>. When several metrics are computed they are returned as a <code>list</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="cba.html#cb2-1" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> .stdmetrics_z)</span>
-<span id="cb2-2"><a href="cba.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(metrics) <span class="co"># output is a list</span></span>
-<span id="cb2-3"><a href="cba.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $zmax</span></span>
-<span id="cb2-4"><a href="cba.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 29.97</span></span>
-<span id="cb2-5"><a href="cba.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-6"><a href="cba.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $zmean</span></span>
-<span id="cb2-7"><a href="cba.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 13.27202</span></span>
-<span id="cb2-8"><a href="cba.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-9"><a href="cba.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $zsd</span></span>
-<span id="cb2-10"><a href="cba.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 7.454766</span></span>
-<span id="cb2-11"><a href="cba.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-12"><a href="cba.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $zskew</span></span>
-<span id="cb2-13"><a href="cba.html#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] -0.4756913</span></span>
-<span id="cb2-14"><a href="cba.html#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-15"><a href="cba.html#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $zkurt</span></span>
-<span id="cb2-16"><a href="cba.html#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2.084898</span></span>
-<span id="cb2-17"><a href="cba.html#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-18"><a href="cba.html#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $zentropy</span></span>
-<span id="cb2-19"><a href="cba.html#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9032599</span></span></code></pre></div>
+<span id="cb2-2"><a href="cba.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(<span class="fu">head</span>(metrics)) <span class="co"># output is a list</span></span>
+<span id="cb2-3"><a href="cba.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; List of 6</span></span>
+<span id="cb2-4"><a href="cba.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zmax    : num 30</span></span>
+<span id="cb2-5"><a href="cba.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zmean   : num 13.3</span></span>
+<span id="cb2-6"><a href="cba.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zsd     : num 7.45</span></span>
+<span id="cb2-7"><a href="cba.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zskew   : num -0.476</span></span>
+<span id="cb2-8"><a href="cba.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zkurt   : num 2.08</span></span>
+<span id="cb2-9"><a href="cba.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zentropy: num 0.903</span></span></code></pre></div>
 </div>
 <div id="cba-applications" class="section level2" number="9.2">
 <h2><span class="header-section-number">9.2</span> Applications</h2>
-<p>Point cloud metrics become interesting when computed for a set of plot inventories. In this case it can serve to compute a set of metrics for each plot, where known attributes have been measured in the field to construct a predictive model.</p>
-<p>In the following example we load a collection of <code>.las</code> files storing clipped plot inventories and we apply <code>cloud_metrics()</code> on each file. We also load a file that contains the ground truth for the value of interest <code>G</code> measured in the field.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="cba.html#cb3-1" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&quot;path/to/plot/inventory/&quot;</span>)</span>
-<span id="cb3-2"><a href="cba.html#cb3-2" aria-hidden="true" tabindex="-1"></a>inventory <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;ground_inventory.txt&quot;</span>)</span>
-<span id="cb3-3"><a href="cba.html#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="cba.html#cb3-4" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">lapply</span>(plots, <span class="cf">function</span>(file) {</span>
-<span id="cb3-5"><a href="cba.html#cb3-5" aria-hidden="true" tabindex="-1"></a>   las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(file)</span>
-<span id="cb3-6"><a href="cba.html#cb3-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">cloud_metrics</span>(las, .stdmetrics_z)</span>
-<span id="cb3-7"><a href="cba.html#cb3-7" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb3-8"><a href="cba.html#cb3-8" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(metrics)</span>
-<span id="cb3-9"><a href="cba.html#cb3-9" aria-hidden="true" tabindex="-1"></a>metrics<span class="sc">$</span>G <span class="ot">&lt;-</span> inventory<span class="sc">$</span>G</span></code></pre></div>
-<p>Look at the content of <code>inventory</code> and <code>metrics</code>. <code>inventory</code> contains the plot IDs, their coordinates, and <code>G</code> a value of interest. <code>metrics</code> contains 36 derived metrics for each plot.</p>
+<p>Point cloud metrics become interesting when computed for a set of plot inventories. In this case it can serves to compute a set of metrics for each plot, where known attributes have been measured in the field to construct a predictive model. Users could easily clip and loop through plot inventory files but we defined an all-in-one convenient function <code>plot_metrics()</code>. In the following example we load a <code>.las</code> and compute the metrics for each plot inventory using a shapefile of plot centers</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="cba.html#cb3-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Megaplot.laz&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb3-2"><a href="cba.html#cb3-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile, <span class="at">filter =</span> <span class="st">&quot;-keep_random_fraction 0.5&quot;</span>)</span>
+<span id="cb3-3"><a href="cba.html#cb3-3" aria-hidden="true" tabindex="-1"></a>shpfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;efi_plot.shp&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb3-4"><a href="cba.html#cb3-4" aria-hidden="true" tabindex="-1"></a>inventory <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(shpfile, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-5"><a href="cba.html#cb3-5" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">plot_metrics</span>(las, .stdmetrics_z, inventory, <span class="at">radius =</span> <span class="fl">11.28</span>)</span></code></pre></div>
+<p>Look at the content of <code>inventory</code> and <code>metrics</code>. <code>inventory</code> contains the plot IDs, their coordinates, and <code>VOI</code> a Value Of Interest. <code>metrics</code> contains 36 derived metrics for each plot combined with the <code>inventory</code> data</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="cba.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(inventory)</span>
-<span id="cb4-2"><a href="cba.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ID       X       Y        G</span></span>
-<span id="cb4-3"><a href="cba.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  1 5239065 5239065 82.22184</span></span>
-<span id="cb4-4"><a href="cba.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  2 5238369 5238369 70.02693</span></span>
-<span id="cb4-5"><a href="cba.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  3 5238584 5238584 75.11133</span></span>
-<span id="cb4-6"><a href="cba.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  4 5238137 5238137 71.57185</span></span>
-<span id="cb4-7"><a href="cba.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  5 5239443 5239443 83.13536</span></span>
-<span id="cb4-8"><a href="cba.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6  6 5238016 5238016 74.37912</span></span>
-<span id="cb4-9"><a href="cba.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(metrics[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>])</span>
-<span id="cb4-10"><a href="cba.html#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      zmax    zmean      zsd       zskew    zkurt pzabovezmean pzabove2    zq5</span></span>
-<span id="cb4-11"><a href="cba.html#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1: 23.201 9.684232 6.403662 -0.30359793 1.813354     59.38975 75.65272 0.0000</span></span>
-<span id="cb4-12"><a href="cba.html#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2: 23.380 5.682300 5.454454  0.77093159 2.471645     39.87792 63.13327 0.0000</span></span>
-<span id="cb4-13"><a href="cba.html#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3: 21.615 4.349950 3.704904  1.11213256 4.432349     44.01489 71.36655 0.0000</span></span>
-<span id="cb4-14"><a href="cba.html#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4: 19.346 5.210034 4.230432  0.82895943 3.081483     42.35439 72.25767 0.0000</span></span>
-<span id="cb4-15"><a href="cba.html#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5: 24.483 9.873574 6.573746 -0.52477869 1.780004     65.59885 71.74603 0.0000</span></span>
-<span id="cb4-16"><a href="cba.html#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6: 17.771 6.608375 4.016224  0.03936153 2.253798     50.29791 83.24044 0.0483</span></span></code></pre></div>
-<p>We have computed many metrics for each plot and we known the value of interest <code>G</code>. We can use that to build a linear model with some metrics.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="cba.html#cb5-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(G<span class="sc">~</span>zmax<span class="sc">+</span>zmean<span class="sc">+</span>pzabove2<span class="sc">+</span>zq50<span class="sc">+</span>zq90, <span class="at">data =</span> metrics)</span>
+<span id="cb4-2"><a href="cba.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 5 features and 2 fields</span></span>
+<span id="cb4-3"><a href="cba.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb4-4"><a href="cba.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb4-5"><a href="cba.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 684838.9 ymin: 5017796 xmax: 684976.6 ymax: 5017958</span></span>
+<span id="cb4-6"><a href="cba.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Projected CRS: NAD83 / UTM zone 17N</span></span>
+<span id="cb4-7"><a href="cba.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   IDPEP       VOI                 geometry</span></span>
+<span id="cb4-8"><a href="cba.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 PEPQ1 14.157140 POINT (684976.6 5017821)</span></span>
+<span id="cb4-9"><a href="cba.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 PEPQ2 12.720584 POINT (684923.9 5017958)</span></span>
+<span id="cb4-10"><a href="cba.html#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 PEPQ3 11.396656 POINT (684838.9 5017942)</span></span>
+<span id="cb4-11"><a href="cba.html#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 PEPQ4 11.597471   POINT (684855 5017891)</span></span>
+<span id="cb4-12"><a href="cba.html#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 PEPQ5  8.263425   POINT (684944 5017796)</span></span>
+<span id="cb4-13"><a href="cba.html#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(metrics[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>])</span>
+<span id="cb4-14"><a href="cba.html#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 5 features and 8 fields</span></span>
+<span id="cb4-15"><a href="cba.html#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb4-16"><a href="cba.html#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb4-17"><a href="cba.html#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 684838.9 ymin: 5017796 xmax: 684976.6 ymax: 5017958</span></span>
+<span id="cb4-18"><a href="cba.html#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Projected CRS: NAD83 / UTM zone 17N</span></span>
+<span id="cb4-19"><a href="cba.html#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   IDPEP       VOI  zmax     zmean      zsd      zskew    zkurt  zentropy</span></span>
+<span id="cb4-20"><a href="cba.html#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 PEPQ1 14.157140 26.59 15.672381 7.086503 -1.0758591 3.170923 0.8755713</span></span>
+<span id="cb4-21"><a href="cba.html#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 PEPQ2 12.720584 25.21 16.750148 6.039667 -1.2864679 4.091311 0.8522454</span></span>
+<span id="cb4-22"><a href="cba.html#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 PEPQ3 11.396656 26.18 16.290853 6.632796 -0.7771446 2.677224 0.9188769</span></span>
+<span id="cb4-23"><a href="cba.html#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 PEPQ4 11.597471 25.08 12.428410 6.543655 -0.2428443 2.419909 0.9158456</span></span>
+<span id="cb4-24"><a href="cba.html#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 PEPQ5  8.263425 22.45  8.412273 5.971624  0.2421884 2.155230 0.9194129</span></span>
+<span id="cb4-25"><a href="cba.html#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   geometry</span></span>
+<span id="cb4-26"><a href="cba.html#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 POINT (684976.6 5017821)</span></span>
+<span id="cb4-27"><a href="cba.html#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 POINT (684923.9 5017958)</span></span>
+<span id="cb4-28"><a href="cba.html#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 POINT (684838.9 5017942)</span></span>
+<span id="cb4-29"><a href="cba.html#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4   POINT (684855 5017891)</span></span>
+<span id="cb4-30"><a href="cba.html#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5   POINT (684944 5017796)</span></span></code></pre></div>
+<p>We have computed many metrics for each plot and we know the value of interest <code>VOI</code>. We can use that to build a linear model with some metrics. Here we have only 5 plots so it is not going to be big science</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="cba.html#cb5-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(VOI<span class="sc">~</span>zsd<span class="sc">+</span>zmax, <span class="at">data =</span> metrics)</span>
 <span id="cb5-2"><a href="cba.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span>
 <span id="cb5-3"><a href="cba.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-4"><a href="cba.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb5-5"><a href="cba.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lm(formula = G ~ zmax + zmean + pzabove2 + zq50 + zq90, data = metrics)</span></span>
+<span id="cb5-5"><a href="cba.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lm(formula = VOI ~ zsd + zmax, data = metrics)</span></span>
 <span id="cb5-6"><a href="cba.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-7"><a href="cba.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
-<span id="cb5-8"><a href="cba.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
-<span id="cb5-9"><a href="cba.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -5.2054 -2.0841 -0.2869  0.6100 11.5321 </span></span>
+<span id="cb5-8"><a href="cba.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        1        2        3        4        5 </span></span>
+<span id="cb5-9"><a href="cba.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.85711  0.78422 -1.55638  0.03515 -0.12009 </span></span>
 <span id="cb5-10"><a href="cba.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-11"><a href="cba.html#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb5-12"><a href="cba.html#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span id="cb5-13"><a href="cba.html#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -0.58773    3.82705  -0.154  0.87957    </span></span>
-<span id="cb5-14"><a href="cba.html#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zmax         0.92547    0.31427   2.945  0.00832 ** </span></span>
-<span id="cb5-15"><a href="cba.html#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zmean       -1.75289    3.30439  -0.530  0.60193    </span></span>
-<span id="cb5-16"><a href="cba.html#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; pzabove2     0.70355    0.07606   9.249 1.82e-08 ***</span></span>
-<span id="cb5-17"><a href="cba.html#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zq50         1.66536    1.45340   1.146  0.26609    </span></span>
-<span id="cb5-18"><a href="cba.html#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zq90         0.40959    0.95082   0.431  0.67148    </span></span>
-<span id="cb5-19"><a href="cba.html#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb5-20"><a href="cba.html#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb5-21"><a href="cba.html#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-22"><a href="cba.html#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 3.97 on 19 degrees of freedom</span></span>
-<span id="cb5-23"><a href="cba.html#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.9664, Adjusted R-squared:  0.9576 </span></span>
-<span id="cb5-24"><a href="cba.html#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic: 109.4 on 5 and 19 DF,  p-value: 2.507e-13</span></span></code></pre></div>
-<p>We can see that the metrics <code>zmax</code> and <code>pzabove2</code> are the significant ones meaning that a predictive model of <code>G</code> can be written <span class="math inline">\(0.70 \times pzabove2 + 0.93 \times zmax\)</span>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="cba.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(inventory<span class="sc">$</span>G, <span class="fl">0.70</span> <span class="sc">*</span>metrics<span class="sc">$</span>pzabove2 <span class="sc">+</span> <span class="fl">0.93</span> <span class="sc">*</span> metrics<span class="sc">$</span>zmax, <span class="at">xlab =</span> <span class="st">&quot;Measured&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Predicted&quot;</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>), <span class="at">asp =</span> <span class="dv">1</span>)</span>
-<span id="cb6-2"><a href="cba.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code></pre></div>
-<p><img src="lidR-book_files/figure-html/scatterplot-prediction-1.png" width="336" style="display: block; margin: auto;" /></p>
-<p>This example can be improved. In section <a href="engine.html#engine">14</a> we will study how to extract a ground inventory and in section <a href="modeling-aba.html#modeling-aba">16</a> we will study more in depth modeling presenting a complete workflow from the plot extraction to the mapping of the predictive model.</p>
+<span id="cb5-12"><a href="cba.html#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
+<span id="cb5-13"><a href="cba.html#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -18.3075    10.8811  -1.683    0.234</span></span>
+<span id="cb5-14"><a href="cba.html#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zsd          -0.4075     2.4834  -0.164    0.885</span></span>
+<span id="cb5-15"><a href="cba.html#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zmax          1.2973     0.7069   1.835    0.208</span></span>
+<span id="cb5-16"><a href="cba.html#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-17"><a href="cba.html#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 1.376 on 2 degrees of freedom</span></span>
+<span id="cb5-18"><a href="cba.html#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.8003, Adjusted R-squared:  0.6006 </span></span>
+<span id="cb5-19"><a href="cba.html#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic: 4.007 on 2 and 2 DF,  p-value: 0.1997</span></span></code></pre></div>
+<p>This example can be improved. In section <a href="engine.html#engine">14</a> we will study how to extract a ground inventory and in section <a href="modeling-aba.html#modeling-aba">16</a> we will study more in depth modelling presenting a complete workflow from the plot extraction to the mapping of the predictive model.</p>
 
 </div>
 </div>
@@ -467,7 +455,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -507,6 +494,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }
@@ -514,20 +505,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

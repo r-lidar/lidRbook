@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>16 The Area-Based Approach (ABA) to forest modelling | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="16 The Area-Based Approach (ABA) to forest modelling | The lidR package" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-08-27" />
+<meta name="date" content="2021-12-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,8 +33,9 @@
   
 <link rel="prev" href="engine2.html"/>
 <link rel="next" href="outbox.html"/>
-<script src="libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -42,7 +43,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
 
 
 
@@ -173,8 +173,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="norm.html"><a href="norm.html#norm-dtm"><i class="fa fa-check"></i><b>5.1</b> DTM normalization</a></li>
 <li class="chapter" data-level="5.2" data-path="norm.html"><a href="norm.html#norm-point-cloud"><i class="fa fa-check"></i><b>5.2</b> Point cloud normalization</a></li>
-<li class="chapter" data-level="5.3" data-path="norm.html"><a href="norm.html#norm-pros-cons"><i class="fa fa-check"></i><b>5.3</b> Pros and cons</a></li>
-<li class="chapter" data-level="5.4" data-path="norm.html"><a href="norm.html#norm-reverse"><i class="fa fa-check"></i><b>5.4</b> Reversing normalization</a></li>
+<li class="chapter" data-level="5.3" data-path="norm.html"><a href="norm.html#hybrid-method"><i class="fa fa-check"></i><b>5.3</b> Hybrid method</a></li>
+<li class="chapter" data-level="5.4" data-path="norm.html"><a href="norm.html#norm-pros-cons"><i class="fa fa-check"></i><b>5.4</b> Pros and cons</a></li>
+<li class="chapter" data-level="5.5" data-path="norm.html"><a href="norm.html#norm-reverse"><i class="fa fa-check"></i><b>5.5</b> Reversing normalization</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="chm.html"><a href="chm.html"><i class="fa fa-check"></i><b>6</b> Digital Surface Model and Canopy Height model</a>
 <ul>
@@ -214,7 +215,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.1" data-path="cba.html"><a href="cba.html#cba-overview"><i class="fa fa-check"></i><b>9.1</b> Overview</a></li>
 <li class="chapter" data-level="9.2" data-path="cba.html"><a href="cba.html#cba-applications"><i class="fa fa-check"></i><b>9.2</b> Applications</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="aba.html"><a href="aba.html"><i class="fa fa-check"></i><b>10</b> Derived metrics at the grid level</a>
+<li class="chapter" data-level="10" data-path="aba.html"><a href="aba.html"><i class="fa fa-check"></i><b>10</b> Derived metrics at the pixel level</a>
 <ul>
 <li class="chapter" data-level="10.1" data-path="aba.html"><a href="aba.html#aba-overview"><i class="fa fa-check"></i><b>10.1</b> Overview</a></li>
 <li class="chapter" data-level="10.2" data-path="aba.html"><a href="aba.html#aba-applications"><i class="fa fa-check"></i><b>10.2</b> Applications</a>
@@ -453,7 +454,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">16.4</span> Wall to wall modelling</h2>
 <p>Now that we have created a model using plot data, we need to apply that model across our entire study area.</p>
 <p>To do so we first need to generate the same suite of ALS metrics (<code>.stdmetrics_z</code>) for our ALS data using the <code>grid_metrics()</code> function on our original collection of files. Note that the <code>res</code> parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius = 625m<sup>2</sup>).</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="modeling-aba.html#cb9-1" aria-hidden="true" tabindex="-1"></a>metrics_w2w <span class="ot">&lt;-</span> <span class="fu">grid_metrics</span>(ctg, .stdmetrics_z, <span class="at">res =</span> <span class="dv">25</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="modeling-aba.html#cb9-1" aria-hidden="true" tabindex="-1"></a>metrics_w2w <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(ctg, .stdmetrics_z, <span class="at">res =</span> <span class="dv">25</span>, <span class="at">pkg =</span> <span class="st">&quot;terra&quot;</span>)</span></code></pre></div>
 <p>To visualize any of the metrics you can use the <code>plot</code> function.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="modeling-aba.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics_w2w<span class="sc">$</span>zq85)</span>
 <span id="cb10-2"><a href="modeling-aba.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics_w2w<span class="sc">$</span>zmean)</span>
@@ -481,7 +482,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -521,6 +521,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }

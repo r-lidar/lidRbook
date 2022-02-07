@@ -1,6 +1,5 @@
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 r3dDefaults = rgl::r3dDefaults
-rgl::setupKnitr()
 r3dDefaults$FOV = 50
 r3dDefaults$zoom = 0.5
 
@@ -10,6 +9,7 @@ knitr::opts_chunk$set(
   fig.align = "center")
 
 library(lidR)
+rgl::setupKnitr(autoprint = TRUE)
 ```
 
 # Derived metrics at point level {#pba}
@@ -20,9 +20,9 @@ The "point" level of regularization corresponds to the computation of derived me
 
 For each point, the neighbourhood can be either:
 
-1. The k nearest neighbors
-2. The points within a sphere centered on the processed point, or
-3. The k nearest neighbors but with a limited radius search. 
+1. The k nearest neighbours
+2. The points within a sphere centred on the processed point, or
+3. The k nearest neighbours but with a limited radius search. 
 
 The syntax for these 3 options is given below:
 
@@ -37,7 +37,7 @@ metrics <- point_metrics(las, ~list(imean = mean(Intensity)), k = 7, r = 3) # 3
 The output is a `data.table` with the ID of the reference points and the metric(s) for each.
 
 ```{r}
-metrics
+head(metrics)
 ```
 
 Instead of the ID, one may prefer to get the coordinates with `xyz = TRUE`:
@@ -50,7 +50,7 @@ It is also possible to process a selection of points (excluding some points) wit
 
 ```{r}
 metrics <- point_metrics(las, ~list(imean = mean(Intensity)), k = 7, filter = ~Intensity < 100 ) # calculate mean intensity and exclude outliers
-metrics
+head(metrics)
 ```
 
 ## Applications {#pba-applications}

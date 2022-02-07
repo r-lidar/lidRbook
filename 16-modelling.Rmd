@@ -135,7 +135,7 @@ Now that we have created a model using plot data, we need to apply that model ac
 To do so we first need to generate the same suite of ALS metrics (`.stdmetrics_z`) for our ALS data using the `grid_metrics()` function on our original collection of files. Note that the `res` parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius = 625m^2^).
 
 ```r
-metrics_w2w <- grid_metrics(ctg, .stdmetrics_z, res = 25)
+metrics_w2w <- pixel_metrics(ctg, .stdmetrics_z, res = 25, pkg = "terra")
 ```
 
 To visualize any of the metrics you can use the `plot` function.

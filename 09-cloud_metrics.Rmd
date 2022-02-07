@@ -1,6 +1,5 @@
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 r3dDefaults = rgl::r3dDefaults
-rgl::setupKnitr()
 r3dDefaults$FOV = 50
 r3dDefaults$zoom = 0.5
 
@@ -10,6 +9,7 @@ knitr::opts_chunk$set(
   fig.align = "center")
 
 library(lidR)
+rgl::setupKnitr(autoprint = TRUE)
 ```
 
 
@@ -30,73 +30,33 @@ To calculate more than one metric a custom function needs to be used, or one of 
 
 ```{r}
 metrics <- cloud_metrics(las, func = .stdmetrics_z)
-head(metrics) # output is a list
+str(head(metrics)) # output is a list
 ```
 
 ## Applications {#cba-applications}
 
-Point cloud metrics become interesting when computed for a set of plot inventories. In this case it can serve to compute a set of metrics for each plot, where known attributes have been measured in the field to construct a predictive model.
+Point cloud metrics become interesting when computed for a set of plot inventories. In this case it can serves to compute a set of metrics for each plot, where known attributes have been measured in the field to construct a predictive model. Users could easily clip and loop through plot inventory files but we defined an all-in-one convenient function `plot_metrics()`. In the following example we load a `.las` and compute the metrics for each plot inventory using a shapefile of plot centers
 
-```{r, echo = FALSE, cache = TRUE}
-ctg <- readLAScatalog("data/ENGINE/catalog/") # our lascatalog
-opt_progress(ctg) <- FALSE
-set.seed(4)
-x <-  runif(25, 338000, 339500)
-set.seed(13)
-y <-  runif(25, 5238000, 5239500)
-opt_output_files(ctg) <- "{tempdir()}/{ID}" # output location
-plots <- clip_circle(ctg, x, y, 20) # clip plots
-opt_independent_files(plots) <- TRUE
-plots <- normalize_height(plots, tin()) #normalize heights
-opt_output_files(plots) <- ""
-
-metrics <- lapply(plots$filename, function(file) # calculate metrics
-{
-   las <- readLAS(file)
-   cloud_metrics(las, .stdmetrics_z)
-})
-
-metrics <- data.table::rbindlist(metrics) # combine metrics
-
-G <-  metrics$zmax + 0.5*metrics$zmean + 0.7*metrics$pzabove2 + rnorm(25, 0, 4) # modelling
-inventory <-  data.frame(ID = 1:25, X = y, Y = y, G = G )
-metrics$G <- G
-metrics$zentropy <- NULL
+```{r}
+LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+las <- readLAS(LASfile, filter = "-keep_random_fraction 0.5")
+shpfile <- system.file("extdata", "efi_plot.shp", package="lidR")
+inventory <- sf::st_read(shpfile, quiet = TRUE)
+metrics <- plot_metrics(las, .stdmetrics_z, inventory, radius = 11.28)
 ```
 
-In the following example we load a collection of `.las` files storing clipped plot inventories and we apply `cloud_metrics()` on each file. We also load a file that contains the ground truth for the value of interest `G` measured in the field.
-
-```r
-plots <- list.files("path/to/plot/inventory/")
-inventory <- read.table("ground_inventory.txt")
-
-metrics <- lapply(plots, function(file) {
-   las <- readLAS(file)
-   cloud_metrics(las, .stdmetrics_z)
-})
-metrics <- data.table::rbindlist(metrics)
-metrics$G <- inventory$G
-```
-
-Look at the content of `inventory` and `metrics`. `inventory` contains the plot IDs, their coordinates, and `G` a value of interest. `metrics` contains 36 derived metrics for each plot.
+Look at the content of `inventory` and `metrics`. `inventory` contains the plot IDs, their coordinates, and `VOI` a Value Of Interest. `metrics` contains 36 derived metrics for each plot combined with the `inventory` data
 
 ```{r}
 head(inventory)
 head(metrics[,1:8])
 ```
 
-We have computed many metrics for each plot and we known the value of interest `G`. We can use that to build a linear model with some metrics.
+We have computed many metrics for each plot and we know the value of interest `VOI`. We can use that to build a linear model with some metrics. Here we have only 5 plots so it is not going to be big science
 
 ```{r}
-model <- lm(G~zmax+zmean+pzabove2+zq50+zq90, data = metrics)
+model <- lm(VOI~zsd+zmax, data = metrics)
 summary(model)
 ```
 
-We can see that the metrics `zmax` and `pzabove2` are the significant ones meaning that a predictive model of `G` can be written $0.70 \times pzabove2 + 0.93 \times zmax$.
-
-```{r scatterplot-prediction, fig.height=4, fig.width=3.5}
-plot(inventory$G, 0.70 *metrics$pzabove2 + 0.93 * metrics$zmax, xlab = "Measured", ylab = "Predicted", xlim = c(0, 100), ylim = c(0,100), asp = 1)
-abline(0,1)
-```
-
-This example can be improved. In section \@ref(engine) we will study how to extract a ground inventory and in section \@ref(modeling-aba) we will study more in depth modeling presenting a complete workflow from the plot extraction to the mapping of the predictive model.
+This example can be improved. In section \@ref(engine) we will study how to extract a ground inventory and in section \@ref(modeling-aba) we will study more in depth modelling presenting a complete workflow from the plot extraction to the mapping of the predictive model.

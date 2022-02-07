@@ -2,18 +2,19 @@
 r3dDefaults = rgl::r3dDefaults
 m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
 -0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
-rgl::setupKnitr()
+
 r3dDefaults$FOV = 50
 r3dDefaults$userMatrix = m
 r3dDefaults$zoom = 0.75
 library(lidR)
+library(stars)
 
 knitr::opts_chunk$set(
   comment =  "#>", 
   collapse = TRUE,
   fig.align = "center")
 
-rgdal::set_thin_PROJ6_warnings(TRUE)
+rgl::setupKnitr(autoprint = TRUE)
 ```
 
 # Height normalization {#norm}
@@ -22,7 +23,7 @@ The purpose of the DTM, apart from using it as a stand alone product for water d
 
 When reading a non-normalized file we can see the terrain variation are visible.
 
-```{r plot-topo-norm, rgl=TRUE, warning=FALSE}
+```{r plot-topo-norm, rgl = TRUE, warning=FALSE}
 LASfile <- system.file("extdata", "Topography.laz", package="lidR")
 las <- readLAS(LASfile)
 plot(las, size = 3, bg = "white")
@@ -42,11 +43,11 @@ The goal of normalization is to get a flat terrain. Two normalization approaches
 
 ## DTM normalization {#norm-dtm}
 
-To normalize points using a DTM we first need to create the DTM itself. For this we use the `grid_terrain()` function (see section \@ref(dtm)). For this example we chose to use a grid resolution of 1 m and to use the `knnidw()` algorithm with default parameters.
+To normalize points using a DTM we first need to create the DTM itself. For this we use the `rasterize_terrain()` function (see section \@ref(dtm)). For this example we chose to use a grid resolution of 1 m and to use the `knnidw()` algorithm with default parameters.
 
-```{r plot-dtm-norm, rgl=TRUE, fig.height=5.85, fig.width=6}
-dtm <- grid_terrain(las, 1, knnidw())
-plot(dtm, col = gray.colors(50, 0, 1))
+```{r plot-dtm-norm, fig.height=5, fig.width=6}
+dtm <- rasterize_terrain(las, 1, knnidw())
+plot(dtm, col = gray(1:50/50))
 ```
 
 Now that we have our surface and are satisfied with it we can use it to normalize our point cloud through subtraction.
@@ -59,39 +60,46 @@ plot(nlas, size = 4, bg = "white")
 We can see that the point cloud has been normalized, making the point cloud flat. All the elevations are now relative to the ground surface. The ground surface being the reference 0 all the ground points are expected to be at Z = 0 by definition. But are they? Lets look at the distribution of ground points.
 
 ```{r plot-hist-gnd, fig.height=4, fig.width=4}
-hist(filter_ground(nlas)$Z, breaks = seq(-0.45, 0.45, 0.01), main = "", xlab = "Elevation")
+hist(filter_ground(nlas)$Z, breaks = seq(-0.6, 0.6, 0.01), main = "", xlab = "Elevation")
 ```
 
 We can see that the ground points are **not** all at Z=0 and the histogram shows some points at +/- 25 cm. This occurs because the DTM is a discretized raster. The location of the pixels do not match the locations of the ground points. Lets assume we have two ground points with elevations of 257.5 and 258 meters respectively in a given pixel at 257.9 m. After normalization, their respective elevation will be -0.4 m and 0.1 m because each pixel has a single value meaning that all the points within a given pixel get normalized with the exact same elevation value. In a raster, the elevations are a succession of flat areas with discontinuities at each pixel. Thus a simple subtraction of the raster gives good results visually, but in practice can lead to many inaccuracies because of the discretized nature of the storage format.
 
-One option to get something smoother is to interpolate the value of the digital terrain model. In this case the simplified statement `las - dtm` is not sufficient. We can instead use the `normalize_height()` function, passes some options to the `raster` package such as `method = "bilinenar"` to interpolate each point from the values of the four nearest raster cells.
-
-```{r plot-hist-gnd-2, fig.height=4, fig.width=4}
-nlas <- normalize_height(las, dtm, method = "bilinear")
-hist(filter_ground(nlas)$Z, breaks = seq(-0.45, 0.45, 0.01), main = "", xlab = "Elevation")
-```
-
-In this case it doesn't seem to have helped, perhaps even making it worse. This is the limit of the raster-based method. It does not come from how the DTM has been built but how the DTM has been stored. A raster is a discretized storage mode, a DTM is a continuous structure. Storing the last in the first implies information loss.
-
 ## Point cloud normalization  {#norm-point-cloud}
 
-Point cloud normalization without a DTM interpolates the elevation of every single point locations using ground points. It no longer uses elevations at discrete predefined locations. Thus the methods is exact, **computationally speaking**. It means that it is equivalent to using a continuous DTM but it is important to recall that all interpolation methods are interpolation and by definition make guesses with different strategies. Thus by "exact" we mean "continuous". To compute the continuous normalization, we can feed `normalize_height()` with an algorithm for spatial interpolation instead of a `RasterLayer`.
+Point cloud normalization without a DTM interpolates the elevation of every single point locations using ground points. It no longer uses elevations at discrete predefined locations. Thus the methods is exact, **computationally speaking**. It means that it is equivalent to using a continuous DTM but it is important to recall that all interpolation methods are interpolation and by definition make guesses with different strategies. Thus by "exact" we mean "continuous". To compute the continuous normalization, we can feed `normalize_height()` with an algorithm for spatial interpolation instead of a raster.
 
-```{r, rgl = TRUE}
+```{r}
 nlas <- normalize_height(las, knnidw())
 ```
 
 All the ground points should be exactly 0. Let check it:
 
 ```{r plot-hist-gnd-3, fig.height=4, fig.width=4}
-hist(filter_ground(nlas)$Z, breaks = seq(-0.45, 0.45, 0.01), main = "", xlab = "Elevation")
+hist(filter_ground(nlas)$Z, breaks = seq(-0.6, 0.6, 0.01), main = "", xlab = "Elevation")
 ```
 
 One can reproduce this with other algorithm such as `tin()`. It's also important to recall buffer and edge artifacts also apply here
 
+## Hybrid method
+
+`nlas <- las - dtm` makes very simple subtractions without any interpolation. `normalize_height(las, knnidw())` computes on-the-fly the interpolation of the ground points and estimates the exact elevation of every points. An hybrid method consists in the interpolation of the pixel of an already computed DTM.
+
+```{r}
+nlas <- normalize_height(las, tin(), dtm = dtm)
+```
+
+In this case, the ground points in `las` are not considered for interpolation. The DTM is used as regularly spaced ground points that are triangulated.
+
+
+```{r plot-hist-gnd-4, fig.height=4, fig.width=4}
+hist(filter_ground(nlas)$Z, breaks = seq(-0.6, 0.6, 0.01), main = "", xlab = "Elevation")
+```
+
+
 ## Pros and cons {#norm-pros-cons}
 
-Point cloud based normalization is superior in terms of compuational accuracy by normalizing with a continuous terrain instead of a discretized terrain. It is however computationally intensive compared to a raster-based method. In addition raster DTMs are storable on disk and can be loaded quicky to be used to normalize different data sets, while point cloud based methods need to be recomputed for each point cloud. It's up to the user to choose which method best suits their needs. `lidR` provides the options.
+Point cloud based normalization is superior in terms of computational accuracy by normalizing with a continuous terrain instead of a discretized terrain. It is however computationally intensive compared to a raster-based method. In addition raster DTMs are storable on disk and can be loaded quicky to be used to normalize different data sets, while point cloud based methods need to be recomputed for each point cloud. It's up to the user to choose which method best suits their needs. `lidR` provides the options. The hybrid method is also computationally demanding because it interpolates even more data (a DTM is usually 1 point per square meter while ground points are usually less than that.)
 
 ## Reversing normalization {#norm-reverse}
 

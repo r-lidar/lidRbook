@@ -8,6 +8,7 @@ plot
 plot-3d
 plot-overlay
 plot-advanced
+voxel-rendering
 plot-crossection
 gnd
 pmf
@@ -25,6 +26,7 @@ hillshade
 norm
 norm-dtm
 norm-point-cloud
+hybrid-method
 norm-pros-cons
 norm-reverse
 chm
@@ -45,6 +47,9 @@ metrics
 metrics-basics
 metrics-user-defined
 metrics-pre-defined
+metrics-3rd-party
+metrics-lmom
+metrics-fractal-dims
 cba
 cba-overview
 cba-applications
@@ -113,11 +118,10 @@ engine-user-function-lascatalog
 engine-user-function-safe
 modeling-aba
 modeling-read-data
+modeling-build-data
 modeling-build-model
-step-1---clip-als-ground-inventory
-step-2---calculate-plot-metrics
-step-4---wall-to-wall-modelling
-step-5---calculate-wall-to-wall-predictions
+wall-to-wall-modelling
+calculate-wall-to-wall-predictions
 outbox
 outbox-custom-metrics
 outbox-distance-returns
@@ -128,6 +132,8 @@ spatial-indexing-intro
 spatial-indexing-las
 spatial-indexing-oveview
 spatial-indexing-strategies
+spi-ALS-strategy
+spi-TLS-strategy
 spatial-indexing-cpp-api
 spatial-indexing-benchmark
 spatial-indexing-files
@@ -135,13 +141,3 @@ plugins
 plugin-system
 plugin-creation
 plugin-extensions
-step-3---modeling
-metrics-3rd-party
-metrics-lmom
-metrics-fractal-dims
-spi-ALS-strategy
-spi-TLS-strategy
-voxel-rendering
-modeling-build-data
-wall-to-wall-modelling
-calculate-wall-to-wall-predictions

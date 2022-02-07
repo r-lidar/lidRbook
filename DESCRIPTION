@@ -4,3 +4,6 @@ Title: Does not matter.
 Version: 0.0.1
 Imports: bookdown
 Remotes: rstudio/bookdown
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

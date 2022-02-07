@@ -1,14 +1,12 @@
-```{r,echo=FALSE,message=FALSE,warning=FALSE}
+```{r setup,echo=FALSE,message=FALSE,warning=FALSE}
 library(lidR)
 library(ggplot2)
-library(rgl)
 
 source("function_plot_crossection.R")
 
 r3dDefaults = rgl::r3dDefaults
 m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
 -0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
-rgl::setupKnitr()
 r3dDefaults$FOV = 50
 r3dDefaults$userMatrix = m
 r3dDefaults$zoom = 0.75
@@ -17,15 +15,14 @@ knitr::opts_chunk$set(
   comment =  "#>", 
   collapse = TRUE,
   fig.align = "center")
-```
 
-```{r setup, include=FALSE}
+rgl::setupKnitr(autoprint = TRUE)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Ground classification {#gnd}
 
-Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows creation of a continuous model of terrain elevation (see section \@ref(dtm)). Many algorithms have been reported in the literature and `lidR` currently (v3.0.2) provides two of them: Progressive Morphological Filter (PMF) and Cloth Simulation Function (CSF) usable with the function `classify_ground()`.
+Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows creation of a continuous model of terrain elevation (see section \@ref(dtm)). Many algorithms have been reported in the literature and `lidR` currently provides two of them: Progressive Morphological Filter (PMF) and Cloth Simulation Function (CSF) usable with the function `classify_ground()`. The [`lidRplugins`](https://github.com/Jean-Romain/lidRplugins) package provides Multiscale Curvature Classification (MCC).
 
 ## Progressive Morphological Filter {#pmf}
 
@@ -123,4 +120,10 @@ Ground segmentation is not limited to the 2 methods described above. Many more h
 
 ```r
 las <- classify_ground(las, algorithm = my_new_method(param1 = 0.05))
+```
+
+As mentioned in introduction the [`lidRplugins`](https://github.com/Jean-Romain/lidRplugins) package provides Multiscale Curvature Classification (MCC)
+
+```r
+las <- classify_ground(las, algorithm = lidRplugins:mcc())
 ```

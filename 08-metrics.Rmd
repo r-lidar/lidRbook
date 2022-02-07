@@ -1,6 +1,5 @@
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 r3dDefaults = rgl::r3dDefaults
-rgl::setupKnitr()
 r3dDefaults$FOV = 50
 r3dDefaults$zoom = 0.5
 
@@ -10,45 +9,71 @@ knitr::opts_chunk$set(
   fig.align = "center")
 
 library(lidR)
+library(sf)
+library(stars)
+
+rgl::setupKnitr(autoprint = TRUE)
 ```
 
 
 # Derived metrics {#metrics}
 
-The goal of this section is to describe the notion of _"metrics"_ in `lidR`. Analyses of point cloud data are often based on metrics calculations. Metrics are scalar summaries of point distributions that can be computed using varying neighborhood definitions and varying reference locations. For example, when reference locations are regularly distributed on a grid and the neigbourhood is a square centered on those locations, we typically use an area-based-approach (ABA) that consists of computing metrics for pixels. Maximum height of points inside a 20 x 20 m grid cell (in this case of pixel) is an example of an ABA metric. This however is not the only option, and other definitions can enable other analyses and applications.
+The goal of this section is to describe the notion of _metrics_ in `lidR`. Analyses of point cloud data are often based on metrics calculations. Metrics are scalar summaries of point distributions that can be computed using varying neighborhood definitions and varying reference locations. For example, when reference locations are regularly distributed on a grid and the neigbourhood is a square centered on those locations, we typically use an area-based-approach (ABA) that consists of computing metrics for pixels. Maximum height of points inside a 20 x 20 m grid cell (in this case of pixel) is an example of an ABA metric. This however is not the only option, and other definitions can enable other analyses and applications.
 
 The standard deviation of point heights within a single tree crown is an example of a metric calculated at the tree level. The average distance between a point and its k-nearest neighbours is a metrics calculated at the point level. More complex metrics can even be imagined like the average distance between first and last returns within a pixel or within a tree. In the end, regardless of the scale at which metrics are calculated, they serve as proxies of forest inventory attributes or can be used as independent variables in predictive models.
 
 The notion of metrics is at the core of the `lidR` package, which enables the computation of standard or custom user-defined metrics at varying levels of regularization:
 
 - point cloud level with `cloud_metrics()`
-- cell level with `grid_metrics()`
-- tree level with `tree_metrics()`
+- pixel level with `pixel_metrics()`
+- tree crown level with `crown_metrics()`
+- inventory plot level with `plot_metrics()`
 - voxel level with `voxel_metrics()`
+- polygon level with `polygon_metrics()`
+- hexagonal cells level with `hexagon_metrics()`
 - point level with `point_metrics()`
 
 Sections \@ref(cba), \@ref(aba), \@ref(tba), \@ref(vba) and \@ref(pba) are respectively dedicated to go deeper into regularization levels.
  
 In the majority of cases, derived metrics are calculated based on point heights (`Z` coordinate) at the cell level since they are the most useful predictors for developing forest inventory attribute models. From a strictly technical point of view however, **any** point cloud attribute can be used to calculate metrics (e.g. mean `Intensity`, maximum `ScanAngleRank`), or several attributes can be used simultaneously (e.g. proportion of first returns above mean `Z`, standard deviation of `Intensity` of second returns only).
 
-A metric is simply a number derived from the attribute of a subset of points. Thus the potential number of metrics that can be calculated is very large and only limited by user's imagination. There are however published studies that discuss the usefulness of different metrics for modeling and standard sets of metrics exist.
+A metric is simply a number derived from the attributes of a subset of points. Thus the potential number of metrics that can be calculated is very large and only limited by user's imagination. There are however published studies that discuss the usefulness of different metrics for modelling and standard sets of metrics exist.
 
 ## The basics {#metrics-basics}
 
-While there are some differences between functions dedicated to metric computations the basic idea is the same for all of them. In addition to the input point cloud, the user needs to provide a formula to calculate the metric(s) of interest. For example, the average height of points for the point cloud, for each pixel, for each tree crown, or for each voxel can be be calculated using `mean(Z)`.
+While there are some differences between functions dedicated to metric computations the basic idea is the same for all of them. In addition to the input point cloud, the user needs to provide a formula to calculate the metric(s) of interest. For example, the average height of points for the point cloud, for each pixel, for each tree crown, for each voxel or for each hexagonal cell can be be calculated using `mean(Z)`.
 
 ```r
 cloud_metrics(las, func = ~mean(Z))
-grid_metrics(las, func = ~mean(Z))
+pixel_metrics(las, func = ~mean(Z))
 tree_metrics(las, func = ~mean(Z))
+hexagon_metrics(las, func = ~mean(Z))
 voxel_metrics(las, func = ~mean(Z))
 ```
 
-All the functions work the same way but the output format depends on the regularization level. In each case, outputs will be a different class (i.e. a `list`, a `RasterBrick`, a `SpatialPointsDataFrame` or a `data.frame`) to take advantage of the best storage method, but the same two metrics will be calculated for every unit of analysis. 
+All the functions work the same way but the output format depends on the regularization level. In each case, outputs will be a different class (i.e. a `list`, a spatial raster, a spatial vector or a `data.frame`) to take advantage of the best storage method, but the same two metrics will be calculated for every unit of analysis.  In the following example we are computing average intensity at different levels of regularization
+
+```{r demo-metrics, fig.show="hold", fig.width=8, fig.height=8}
+LASfile <- system.file("extdata", "MixedConifer.laz", package ="lidR")
+las <- readLAS(LASfile)
+
+m <- ~list(avgI = mean(Intensity))
+
+a <- pixel_metrics(las, m, res = 5)
+b <- crown_metrics(las, m, geom = "point")
+c <- crown_metrics(las, m, geom = "convex")
+d <- hexagon_metrics(las, m, area = 25)
+
+par(mfrow=c(2,2))
+plot(a, col = heat.colors(15), legend = FALSE)
+plot(b["avgI"], pal = heat.colors, pch = 19, cex = 1, axes = TRUE, key.pos = NULL, reset = FALSE)
+plot(c["avgI"], pal = heat.colors, axes = TRUE, key.pos = NULL, reset = FALSE)
+plot(d["avgI"], pal = heat.colors, axes = TRUE, key.pos = NULL, reset = FALSE)
+```
 
 ## User-defined metrics {#metrics-user-defined}
 
-In the example above only a single metric is calculated - the mean elevation of the points. Calculations can however be easily extended to any number of user-defined metrics. To do this, users can design custom functions. The function can contain any number of metrics, but needs to return a labeled `list`. For example, to calculate the mean of elevation, and the standard deviation and mean of intensity, the following function can be used:
+In the example above only a single metric is calculated - the mean intensity of the points. Calculations can however be easily extended to any number of user-defined metrics. To do this, users can design custom functions. The function can contain any number of metrics, but needs to return a labeled `list`. For example, to calculate the mean of elevation, and the standard deviation and mean of intensity, the following function can be used:
 
 ```{r}
 f <- function(z, i) {
@@ -65,10 +90,11 @@ The user-defined function `f` can then be used.
 cloud_metrics(las, func = ~f(Z, Intensity))
 grid_metrics(las, func = ~f(Z, Intensity))
 tree_metrics(las, func = ~f(Z, Intensity))
+haxagon_metrics(las, func = ~f(Z, Intensity))
 voxel_metrics(las, func = ~f(Z, Intensity))
 ```
 
-While any metric can be computed at any level of regularization, it's important to recognize that they may not all be meaningful. For example, the average elevation of points has a meaning at the pixel level or at the tree level but not at the voxel level. Indeed at the voxel level it corresponds to the average elevation of the points within the voxel i.e. more or less the Z coordinate of the voxel. This in the end needs to be conisered by the user. Perhaps asking _"does this metric make sense?"_ is a good place to start!
+While any metric can be computed at any level of regularization, it's important to recognize that they may not all be meaningful. For example, the average elevation of points has a meaning at the pixel level or at the tree level but not at the voxel level. Indeed at the voxel level it corresponds to the average elevation of the points within the voxel i.e. more or less the Z coordinate of the voxel. This in the end needs to be considered by the user. Perhaps asking _"does this metric make sense?"_ is a good place to start!
 
 ## Pre-defined metrics {#metrics-pre-defined}
 
@@ -95,16 +121,16 @@ In order to calculate these metrics we can leverage the `lmom` package which pro
 
 ```r
 cloud_metrics(las, func = ~as.list(lmom::samlmu(Z)))
-grid_metrics(las, func = ~as.list(lmom::samlmu(Z)), 10) 
+pixel_metrics(las, func = ~as.list(lmom::samlmu(Z)), 10) 
 ```
 
-We see that we can supply the `func` argument in `grid_metrics()` with a function from an external package. This allows us to be fairly flexible with the metrics we are able to calculate without needing to introduce dependencies within the `lidR` package.
+We see that we can supply the `func` argument in `pixel_metrics()` with a function from an external package. This allows us to be fairly flexible with the metrics we are able to calculate without needing to introduce dependencies within the `lidR` package.
 
 ### Fractal dimensions {#metrics-fractal-dims}
 
 Fractal dimensions are another statistical description that is showing promise within lidar and forestry related research (eg. [Saarinen et al., 2021](https://doi.org/10.1002/ece3.7216)). The use of fractal dimensions seeks to help understand the relationship between structural complexity and stem/crown size and shape.
 
-The calculation of fractal dimensions — similarly to L-moments — can be tricky to implement efficiently, and would add an additional dependency to `lidR`'s growing list. To avoid `lidR` needing to depend on external packages, we can leverage them (in this case `Rdimtools`) to calculate fractal dimensions within a `grid_metrics()` example.
+The calculation of fractal dimensions — similarly to L-moments — can be tricky to implement efficiently, and would add an additional dependency to `lidR`'s growing list. To avoid `lidR` needing to depend on external packages, we can leverage them (in this case `Rdimtools`) to calculate fractal dimensions within a `pixel_metrics()` example.
 
 First, we can create a user-defined function that leverages the `est.boxcount()` function within `Rdimtools`. This allows us to define the variables we want the function to utilize within `grid_metrics()`
 
@@ -120,7 +146,7 @@ Now the we have defined the `fd` function, which calculates our fractal dimensio
 
 ```r
 cloud_metrics(las, func = ~fd(X,Y,Z), 10)
-grid_metrics(las, func = ~fd(X,Y,Z), 10)
+pixel_metrics(las, func = ~fd(X,Y,Z), 10)
 ```
 
 There are obviously many potential calculations to apply and statistics to derive from lidar data. The ability to include third party functions like the examples listed above within metric calculations makes `lidR` valuable and flexible from a research standpoint.

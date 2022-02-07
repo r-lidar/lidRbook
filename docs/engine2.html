@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>15 LAScatalog processing engine (2/2) | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="15 LAScatalog processing engine (2/2) | The lidR package" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-08-10" />
+<meta name="date" content="2021-12-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,8 +33,9 @@
   
 <link rel="prev" href="engine.html"/>
 <link rel="next" href="modeling-aba.html"/>
-<script src="libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -42,7 +43,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
 
 
 
@@ -173,8 +173,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="norm.html"><a href="norm.html#norm-dtm"><i class="fa fa-check"></i><b>5.1</b> DTM normalization</a></li>
 <li class="chapter" data-level="5.2" data-path="norm.html"><a href="norm.html#norm-point-cloud"><i class="fa fa-check"></i><b>5.2</b> Point cloud normalization</a></li>
-<li class="chapter" data-level="5.3" data-path="norm.html"><a href="norm.html#norm-pros-cons"><i class="fa fa-check"></i><b>5.3</b> Pros and cons</a></li>
-<li class="chapter" data-level="5.4" data-path="norm.html"><a href="norm.html#norm-reverse"><i class="fa fa-check"></i><b>5.4</b> Reversing normalization</a></li>
+<li class="chapter" data-level="5.3" data-path="norm.html"><a href="norm.html#hybrid-method"><i class="fa fa-check"></i><b>5.3</b> Hybrid method</a></li>
+<li class="chapter" data-level="5.4" data-path="norm.html"><a href="norm.html#norm-pros-cons"><i class="fa fa-check"></i><b>5.4</b> Pros and cons</a></li>
+<li class="chapter" data-level="5.5" data-path="norm.html"><a href="norm.html#norm-reverse"><i class="fa fa-check"></i><b>5.5</b> Reversing normalization</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="chm.html"><a href="chm.html"><i class="fa fa-check"></i><b>6</b> Digital Surface Model and Canopy Height model</a>
 <ul>
@@ -214,7 +215,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.1" data-path="cba.html"><a href="cba.html#cba-overview"><i class="fa fa-check"></i><b>9.1</b> Overview</a></li>
 <li class="chapter" data-level="9.2" data-path="cba.html"><a href="cba.html#cba-applications"><i class="fa fa-check"></i><b>9.2</b> Applications</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="aba.html"><a href="aba.html"><i class="fa fa-check"></i><b>10</b> Derived metrics at the grid level</a>
+<li class="chapter" data-level="10" data-path="aba.html"><a href="aba.html"><i class="fa fa-check"></i><b>10</b> Derived metrics at the pixel level</a>
 <ul>
 <li class="chapter" data-level="10.1" data-path="aba.html"><a href="aba.html#aba-overview"><i class="fa fa-check"></i><b>10.1</b> Overview</a></li>
 <li class="chapter" data-level="10.2" data-path="aba.html"><a href="aba.html#aba-applications"><i class="fa fa-check"></i><b>10.2</b> Applications</a>
@@ -312,14 +313,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16" data-path="modeling-aba.html"><a href="modeling-aba.html"><i class="fa fa-check"></i><b>16</b> The Area-Based Approach (ABA) to forest modelling</a>
 <ul>
 <li class="chapter" data-level="16.1" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-read-data"><i class="fa fa-check"></i><b>16.1</b> Read in data</a></li>
-<li class="chapter" data-level="16.2" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-model"><i class="fa fa-check"></i><b>16.2</b> ABA Processing</a>
-<ul>
-<li class="chapter" data-level="16.2.1" data-path="modeling-aba.html"><a href="modeling-aba.html#step-1---clip-als-ground-inventory"><i class="fa fa-check"></i><b>16.2.1</b> Step 1 - Clip ALS ground inventory</a></li>
-<li class="chapter" data-level="16.2.2" data-path="modeling-aba.html"><a href="modeling-aba.html#step-2---calculate-plot-metrics"><i class="fa fa-check"></i><b>16.2.2</b> Step 2 - Calculate plot metrics</a></li>
-<li class="chapter" data-level="16.2.3" data-path="modeling-aba.html"><a href="modeling-aba.html#step-3---modeling"><i class="fa fa-check"></i><b>16.2.3</b> Step 3 - Modeling</a></li>
-<li class="chapter" data-level="16.2.4" data-path="modeling-aba.html"><a href="modeling-aba.html#step-4---wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.2.4</b> Step 4 - Wall to wall modelling</a></li>
-<li class="chapter" data-level="16.2.5" data-path="modeling-aba.html"><a href="modeling-aba.html#step-5---calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.2.5</b> Step 5 - Calculate wall-to-wall predictions</a></li>
-</ul></li>
+<li class="chapter" data-level="16.2" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-data"><i class="fa fa-check"></i><b>16.2</b> ABA database building</a></li>
+<li class="chapter" data-level="16.3" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-model"><i class="fa fa-check"></i><b>16.3</b> Statistical modeling</a></li>
+<li class="chapter" data-level="16.4" data-path="modeling-aba.html"><a href="modeling-aba.html#wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.4</b> Wall to wall modelling</a></li>
+<li class="chapter" data-level="16.5" data-path="modeling-aba.html"><a href="modeling-aba.html#calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.5</b> Calculate wall-to-wall predictions</a></li>
 </ul></li>
 <li class="chapter" data-level="17" data-path="outbox.html"><a href="outbox.html"><i class="fa fa-check"></i><b>17</b> Thinking outside the box</a>
 <ul>
@@ -368,25 +365,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="engine2" class="section level1" number="15">
 <h1><span class="header-section-number">15</span> LAScatalog processing engine (2/2)</h1>
 <p>Section <a href="engine.html#engine">14</a> showed how to use the <code>LAScatalog</code> processing engine to apply <code>lidR</code> functions on a collection of files. This included how to process acquisitions in user defined chunk sizes, loading buffers on-the-fly, saving the output to disk, and parallelizing tasks. These examples all used existing functions provided with the <code>lidR</code> package. The power of the engine goes beyond limited used cases, allowing developers to design their own applications.</p>
-<p>Let’s imagine we want to normalize a data set <strong>and</strong> colorize it using RGB satellite data. According to the previous sections we could do something like this:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="engine2.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_dtm&quot;</span>) <span class="co"># specify output DTM disk save location</span></span>
-<span id="cb1-2"><a href="engine2.html#cb1-2" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">grid_terrain</span>(ctg, <span class="dv">1</span>, <span class="fu">tin</span>()) <span class="co"># create DTMs</span></span>
+<p>Let’s imagine we want to normalize a data set <strong>and</strong> colorize it using RGB aerial data. According to the previous sections we could do something like this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="engine2.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_normalized&quot;</span>) <span class="co"># specify output normalized las disk save location</span></span>
+<span id="cb1-2"><a href="engine2.html#cb1-2" aria-hidden="true" tabindex="-1"></a>ctg_norm <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(ctg, <span class="fu">tin</span>()) <span class="co"># normalize</span></span>
 <span id="cb1-3"><a href="engine2.html#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="engine2.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_normalized&quot;</span>) <span class="co"># specify output normalized las disk save location</span></span>
-<span id="cb1-5"><a href="engine2.html#cb1-5" aria-hidden="true" tabindex="-1"></a>ctg_norm <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(ctg, dtm) <span class="co"># normalize</span></span>
-<span id="cb1-6"><a href="engine2.html#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="engine2.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># loop through catalog files and apply rgb colour</span></span>
-<span id="cb1-8"><a href="engine2.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (file <span class="cf">in</span> ctg<span class="sc">$</span>filename)</span>
-<span id="cb1-9"><a href="engine2.html#cb1-9" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb1-10"><a href="engine2.html#cb1-10" aria-hidden="true" tabindex="-1"></a>  newname <span class="ot">&lt;-</span>  tools<span class="sc">::</span><span class="fu">file_path_sans_ext</span>(<span class="fu">basename</span>(file))</span>
-<span id="cb1-11"><a href="engine2.html#cb1-11" aria-hidden="true" tabindex="-1"></a>  newname <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;folder/&quot;</span>, newname, <span class="st">&quot;_colored.laz&quot;</span>)</span>
-<span id="cb1-12"><a href="engine2.html#cb1-12" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(file)</span>
-<span id="cb1-13"><a href="engine2.html#cb1-13" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">merge_spatial</span>(las, rgb)</span>
-<span id="cb1-14"><a href="engine2.html#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLAS</span>(las, newname)</span>
-<span id="cb1-15"><a href="engine2.html#cb1-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>This method is however far from optimal. First, <strong>the whole</strong> point cloud is read 3 times:</p>
+<span id="cb1-4"><a href="engine2.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># loop through catalog files and apply rgb colour</span></span>
+<span id="cb1-5"><a href="engine2.html#cb1-5" aria-hidden="true" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="st">&quot;rgb.tif&quot;</span>)</span>
+<span id="cb1-6"><a href="engine2.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (file <span class="cf">in</span> ctg<span class="sc">$</span>filename)</span>
+<span id="cb1-7"><a href="engine2.html#cb1-7" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb1-8"><a href="engine2.html#cb1-8" aria-hidden="true" tabindex="-1"></a>  newname <span class="ot">&lt;-</span>  tools<span class="sc">::</span><span class="fu">file_path_sans_ext</span>(<span class="fu">basename</span>(file))</span>
+<span id="cb1-9"><a href="engine2.html#cb1-9" aria-hidden="true" tabindex="-1"></a>  newname <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;folder/&quot;</span>, newname, <span class="st">&quot;_colored.laz&quot;</span>)</span>
+<span id="cb1-10"><a href="engine2.html#cb1-10" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(file)</span>
+<span id="cb1-11"><a href="engine2.html#cb1-11" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">merge_spatial</span>(las, rgb)</span>
+<span id="cb1-12"><a href="engine2.html#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLAS</span>(las, newname)</span>
+<span id="cb1-13"><a href="engine2.html#cb1-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>This method is however far from optimal. First, <strong>the whole</strong> point cloud is read two times:</p>
 <ol style="list-style-type: decimal">
-<li>To create the DTM</li>
 <li>To normalize</li>
 <li>To colorize</li>
 </ol>
@@ -394,165 +388,181 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>What if we were able to do that in a single run?</strong></p>
 <div id="engine-catalog-apply" class="section level2" number="15.1">
 <h2><span class="header-section-number">15.1</span> <code>catalog_apply()</code></h2>
-<p>In this section we outline the <code>catalog_apply()</code> function, which is used subliminally in every function seen in the section <a href="engine.html#engine">14</a>. Here we show how to leverage its versatility to design tools that do not yet exist like the DTM + normalization + colorization example from above but also more inovative processes.</p>
+<p>In this section we outline the <code>catalog_apply()</code> function, which is used subliminally in every function seen in the section <a href="engine.html#engine">14</a>. Here we show how to leverage its versatility to design tools that do not yet exist like the normalization + colorization example from above but also more inovative processes.</p>
 <p>Again, the <code>LAScatalog</code> class and the <code>LAScatalog</code> engine are deeply documented in a two dedicated vignettes available <a href="https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-class.html">here</a> and <a href="https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-engine.html">here</a>. The purpose of these examples is to provide alternative, hands-on documentation with more applied examples and real use cases.</p>
 <p>In this section we will use the same 9 files used in section <a href="engine.html#engine">14</a> and an RGB raster that encompasses the collection of file.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="engine2.html#cb2-1" aria-hidden="true" tabindex="-1"></a>ctg <span class="ot">&lt;-</span> <span class="fu">readLAScatalog</span>(<span class="st">&quot;data/ENGINE/catalog/&quot;</span>)</span>
 <span id="cb2-2"><a href="engine2.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-ctg-engine2-1.png" width="384" style="display: block; margin: auto;" /></p>
-<p>Satellite images are available for download <a href="data/ENGINE/catalog/rgb.tif">here</a>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="engine2.html#cb3-1" aria-hidden="true" tabindex="-1"></a>rgbmap <span class="ot">&lt;-</span> <span class="fu">stack</span>(<span class="st">&quot;data/ENGINE/catalog/rgb.tif&quot;</span>)</span>
-<span id="cb3-2"><a href="engine2.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotRGB</span>(rgbmap)</span></code></pre></div>
+<p>RGB image is available for download <a href="data/ENGINE/catalog/rgb.tif">here</a>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="engine2.html#cb3-1" aria-hidden="true" tabindex="-1"></a>rgbmap <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="st">&quot;data/ENGINE/catalog/rgb.tif&quot;</span>)</span>
+<span id="cb3-2"><a href="engine2.html#cb3-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plotRGB</span>(rgbmap)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-rgbmap-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="engine-user-function-generic" class="section level2" number="15.2">
 <h2><span class="header-section-number">15.2</span> Create user-defined function</h2>
-<p>First we need to create a function that combined the DTM + normalization + colorization steps. Let’s call it <code>dtm_norm_color()</code>. Its simple and uses only 3 functions.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="engine2.html#cb4-1" aria-hidden="true" tabindex="-1"></a>dtm_norm_color <span class="ot">&lt;-</span> <span class="cf">function</span>(las, rgbmap) <span class="co"># create user-defined function</span></span>
+<p>First we need to create a function that combined the normalization + colorization steps. Let’s call it <code>norm_color()</code>. Its simple and uses only 2 functions.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="engine2.html#cb4-1" aria-hidden="true" tabindex="-1"></a>norm_color <span class="ot">&lt;-</span> <span class="cf">function</span>(las, rgbmap) <span class="co"># create user-defined function</span></span>
 <span id="cb4-2"><a href="engine2.html#cb4-2" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb4-3"><a href="engine2.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  dtm <span class="ot">&lt;-</span> <span class="fu">grid_terrain</span>(las, <span class="dv">1</span>, <span class="fu">tin</span>()) <span class="co"># create dtm</span></span>
-<span id="cb4-4"><a href="engine2.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  nlas <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(las, dtm) <span class="co"># normalize</span></span>
-<span id="cb4-5"><a href="engine2.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  colorized <span class="ot">&lt;-</span> <span class="fu">merge_spatial</span>(nlas, rgbmap) <span class="co"># colorize</span></span>
-<span id="cb4-6"><a href="engine2.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(colorized) <span class="co"># output</span></span>
-<span id="cb4-7"><a href="engine2.html#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb4-3"><a href="engine2.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  nlas <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(las, <span class="fu">tin</span>()) <span class="co"># normalize</span></span>
+<span id="cb4-4"><a href="engine2.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  colorized <span class="ot">&lt;-</span> <span class="fu">merge_spatial</span>(nlas, rgbmap) <span class="co"># colorize</span></span>
+<span id="cb4-5"><a href="engine2.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(colorized) <span class="co"># output</span></span>
+<span id="cb4-6"><a href="engine2.html#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Let’s try it on a sample plot.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="engine2.html#cb5-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">clip_circle</span>(ctg, <span class="dv">338800</span>, <span class="dv">5238500</span>, <span class="dv">40</span>)</span>
-<span id="cb5-2"><a href="engine2.html#cb5-2" aria-hidden="true" tabindex="-1"></a>nlasrgb <span class="ot">&lt;-</span> <span class="fu">dtm_norm_color</span>(las, rgbmap) <span class="co"># apply user defined function</span></span>
+<span id="cb5-2"><a href="engine2.html#cb5-2" aria-hidden="true" tabindex="-1"></a>nlasrgb <span class="ot">&lt;-</span> <span class="fu">norm_color</span>(las, rgbmap) <span class="co"># apply user defined function</span></span>
 <span id="cb5-3"><a href="engine2.html#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="engine2.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nlasrgb, <span class="at">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">6</span>) <span class="co"># some plotting</span></span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-rgb-colored-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>It works! We have a workable function that performs on a point cloud. Remember that <code>dtm_norm_color()</code> is just an example. You could instead choose to make an algorithm for individual tree detection or a method to sample point of interest, <em>let your imagination run wild!</em></p>
+<p>It works! We have a workable function that performs on a point cloud. Remember that <code>norm_color()</code> is just an example. You could instead choose to make an algorithm for individual tree detection or a method to sample point of interest, <em>let your imagination run wild!</em></p>
 <p>So far it works only when using a <code>LAS</code> object. Now let’s make it working with a <code>LAScatalog</code>.</p>
 </div>
 <div id="engine-user-function-extended" class="section level2" number="15.3">
 <h2><span class="header-section-number">15.3</span> Create an intermediate function for <code>catalog_apply()</code></h2>
-<p>The core engine is the function <code>catalog_apply()</code> but this function does not work with any user-defined function. User-defined functions must respect a specific template (take a look at the documentation in R) and is expected to perform some specific tasks. First, the primary variable must be a chunk from the catalog within the function (see <code>chunk</code> below), the function must read the chunk, check it is not empty, then perform the computation.</p>
+<p>The simple way is:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="engine2.html#cb6-1" aria-hidden="true" tabindex="-1"></a>new_ctg <span class="ot">&lt;-</span> <span class="fu">catalog_map</span>(norm_color, <span class="at">rgbmap =</span> rgbmap)</span></code></pre></div>
+<p>However here we will learn the hard way to understand better how it works internally and understand the full potential of <code>catalog_apply()</code> for which <code>catalog_map()</code> is only a simplified version.</p>
+<p>The core engine is the function <code>catalog_apply()</code> but this function does not work with any user-defined function. User-defined functions must respect a specific template (take a look at the documentation in R) and is expected to perform some specific tasks. First, the primary variable must be a chunk from the catalog (see <code>chunk</code> below), the function must read the chunk, check it is not empty, then perform the computation.</p>
 <p>A valid function is the following:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="engine2.html#cb6-1" aria-hidden="true" tabindex="-1"></a>dtm_norm_color_chunk <span class="ot">&lt;-</span> <span class="cf">function</span>(chunk, rgbmap) <span class="co"># user defined function</span></span>
-<span id="cb6-2"><a href="engine2.html#cb6-2" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb6-3"><a href="engine2.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(chunk)                  <span class="co"># read the chunk</span></span>
-<span id="cb6-4"><a href="engine2.html#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.empty</span>(las)) <span class="fu">return</span>(<span class="cn">NULL</span>)        <span class="co"># check if it actually contain points</span></span>
-<span id="cb6-5"><a href="engine2.html#cb6-5" aria-hidden="true" tabindex="-1"></a>  nlasrgb <span class="ot">&lt;-</span> <span class="fu">dtm_norm_color</span>(las, rgbmap) <span class="co"># apply computation of interest</span></span>
-<span id="cb6-6"><a href="engine2.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(nlasrgb) <span class="co"># output</span></span>
-<span id="cb6-7"><a href="engine2.html#cb6-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>This introduces an additional level of complexity that is crucial. First, catalog chunks will be sequentially fed into the function. Each chunk is read inside the user-defined function with all processing options being automatically respected (<code>filter</code>, <code>select</code>, <code>chunk_size</code>, <code>chunk_buffer</code> etc.). The <code>las</code> variable in the code snippet above is a point cloud extracted from the catalog that contains the chunks + a buffer. It’s important to check that the loaded portion of the collection is not empty or subsequent code will likely fail. This may happen depending on the size of the chunk and the <code>filter</code> options chosen.</p>
-<p>This function is <code>catalog_apply()</code> compatible and can be applied over the entire ALS acquisition. The output will be a point cloud, so we need to pay attention mitigate memory issues and save to disk. At this stage, we haven’t mitigated that problem yet so we add it below.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="engine2.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>) <span class="co"># write to disk</span></span>
-<span id="cb7-2"><a href="engine2.html#cb7-2" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="at">rgbmap =</span> rgbmap) <span class="co"># implement user-defined function using catalog_apply</span></span>
-<span id="cb7-3"><a href="engine2.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(output,<span class="dv">4</span>)</span>
-<span id="cb7-4"><a href="engine2.html#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
-<span id="cb7-5"><a href="engine2.html#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpY8KGOu/tiles_338000_5238000_1_norm_rgb.las&quot;</span></span>
-<span id="cb7-6"><a href="engine2.html#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-7"><a href="engine2.html#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
-<span id="cb7-8"><a href="engine2.html#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpY8KGOu/tiles_338000_5238500_1_norm_rgb.las&quot;</span></span>
-<span id="cb7-9"><a href="engine2.html#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-10"><a href="engine2.html#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
-<span id="cb7-11"><a href="engine2.html#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpY8KGOu/tiles_338000_5239000_1_norm_rgb.las&quot;</span></span>
-<span id="cb7-12"><a href="engine2.html#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-13"><a href="engine2.html#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[4]]</span></span>
-<span id="cb7-14"><a href="engine2.html#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpY8KGOu/tiles_338500_5238000_1_norm_rgb.las&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="engine2.html#cb7-1" aria-hidden="true" tabindex="-1"></a>norm_color_chunk <span class="ot">&lt;-</span> <span class="cf">function</span>(chunk, rgbmap) <span class="co"># user defined function</span></span>
+<span id="cb7-2"><a href="engine2.html#cb7-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb7-3"><a href="engine2.html#cb7-3" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(chunk)                  <span class="co"># read the chunk</span></span>
+<span id="cb7-4"><a href="engine2.html#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.empty</span>(las)) <span class="fu">return</span>(<span class="cn">NULL</span>)        <span class="co"># check if it actually contain points</span></span>
+<span id="cb7-5"><a href="engine2.html#cb7-5" aria-hidden="true" tabindex="-1"></a>  nlasrgb <span class="ot">&lt;-</span> <span class="fu">norm_color</span>(las, rgbmap) <span class="co"># apply computation of interest</span></span>
+<span id="cb7-6"><a href="engine2.html#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(nlasrgb) <span class="co"># output</span></span>
+<span id="cb7-7"><a href="engine2.html#cb7-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>This introduces an additional level of complexity that is crucial. First, catalog chunks will be sequentially fed into the user’s function. Each chunk is read inside the user-defined function with all processing options being automatically respected (<code>filter</code>, <code>select</code>, <code>chunk_size</code>, <code>chunk_buffer</code> etc.). The <code>las</code> variable in the code snippet above is a point cloud extracted from the catalog that contains the chunks + a buffer. It’s important to check that the loaded portion of the collection is not empty or subsequent code will likely fail. This may happen depending on the size of the chunk and the <code>filter</code> options chosen.</p>
+<p>This function is now <code>catalog_apply()</code> compatible and can be applied over the entire ALS acquisition. The output will be a point cloud, so we need to pay attention mitigate memory issues and save to disk. At this stage, we haven’t mitigated that problem yet so we add it below.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="engine2.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>) <span class="co"># write to disk</span></span>
+<span id="cb8-2"><a href="engine2.html#cb8-2" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">catalog_apply</span>(ctg, norm_color_chunk, <span class="at">rgbmap =</span> rgbmap) <span class="co"># implement user-defined function using catalog_apply</span></span>
+<span id="cb8-3"><a href="engine2.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(output)</span>
+<span id="cb8-4"><a href="engine2.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; List of 9</span></span>
+<span id="cb8-5"><a href="engine2.html#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpE8y2yl/tiles_338000_5238000_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-6"><a href="engine2.html#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpE8y2yl/tiles_338000_5238500_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-7"><a href="engine2.html#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpE8y2yl/tiles_338000_5239000_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-8"><a href="engine2.html#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpE8y2yl/tiles_338500_5238000_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-9"><a href="engine2.html#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpE8y2yl/tiles_338500_5238500_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-10"><a href="engine2.html#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpE8y2yl/tiles_338500_5239000_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-11"><a href="engine2.html#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpE8y2yl/tiles_339000_5238000_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-12"><a href="engine2.html#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpE8y2yl/tiles_339000_5238500_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-13"><a href="engine2.html#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpE8y2yl/tiles_339000_5239000_1_norm_rgb.las&quot;</span></span></code></pre></div>
 <p>We see that the output is a <code>list</code> with the name of each file written to disk. This is the default behavior of the engine. It returns a <code>list</code> with one element per chunk. This isn’t really convenient. We have seen in section <a href="engine.html#engine">14</a> that in the case of <code>LAS</code> files we can return a <code>LAScatalog</code>, which is far more convenient.</p>
 <p>We can use the option <code>automerge = TRUE</code> so <code>catalog_apply()</code> will automatically merge the list into something more user-friendly.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="engine2.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</span>
-<span id="cb8-2"><a href="engine2.html#cb8-2" aria-hidden="true" tabindex="-1"></a>options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">automerge =</span> <span class="cn">TRUE</span>) <span class="co"># merge all the outputs</span></span>
-<span id="cb8-3"><a href="engine2.html#cb8-3" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="at">rgbmap =</span> rgbmap, <span class="at">.options =</span> options)</span>
-<span id="cb8-4"><a href="engine2.html#cb8-4" aria-hidden="true" tabindex="-1"></a>output</span>
-<span id="cb8-5"><a href="engine2.html#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class       : LAScatalog (v1.0 format 3)</span></span>
-<span id="cb8-6"><a href="engine2.html#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500 (xmin, xmax, ymin, ymax)</span></span>
-<span id="cb8-7"><a href="engine2.html#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 19N </span></span>
-<span id="cb8-8"><a href="engine2.html#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area        : 2.62 km²</span></span>
-<span id="cb8-9"><a href="engine2.html#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points      : 1.07million points</span></span>
-<span id="cb8-10"><a href="engine2.html#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 0.4 points/m²</span></span>
-<span id="cb8-11"><a href="engine2.html#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 9</span></span>
-<span id="cb8-12"><a href="engine2.html#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(output)</span></code></pre></div>
-<p><img src="lidR-book_files/figure-html/plot-ctg-colored-overlaps-1.png" width="384" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="engine2.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</span>
+<span id="cb9-2"><a href="engine2.html#cb9-2" aria-hidden="true" tabindex="-1"></a>options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">automerge =</span> <span class="cn">TRUE</span>) <span class="co"># merge all the outputs</span></span>
+<span id="cb9-3"><a href="engine2.html#cb9-3" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">catalog_apply</span>(ctg, norm_color_chunk, <span class="at">rgbmap =</span> rgbmap, <span class="at">.options =</span> options)</span>
+<span id="cb9-4"><a href="engine2.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;las&quot;</span></span>
+<span id="cb9-5"><a href="engine2.html#cb9-5" aria-hidden="true" tabindex="-1"></a>output</span>
+<span id="cb9-6"><a href="engine2.html#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class       : LAScatalog (v1.0 format 3)</span></span>
+<span id="cb9-7"><a href="engine2.html#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500 (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb9-8"><a href="engine2.html#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 19N </span></span>
+<span id="cb9-9"><a href="engine2.html#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area        : 2.62 km²</span></span>
+<span id="cb9-10"><a href="engine2.html#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points      : 1.07 million points</span></span>
+<span id="cb9-11"><a href="engine2.html#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 0.4 points/m²</span></span>
+<span id="cb9-12"><a href="engine2.html#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 9</span></span></code></pre></div>
+<p>We now have a <code>LAscatalog</code>. It is much better but:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="engine2.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(output)</span></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We still have a problem here. The files are overlapping because we read each file with a buffer and then the outputs have been written <strong>with their buffer</strong>. This is bad practice. Its important to always remove the buffer after the computation. In this specific case the output is a <code>LAS</code> file. When <code>readLAS()</code> reads a chunk from the catalog the points in the buffer are flagged so they can be easily manipulated. Since they are flagged, we can remove these points easily by adding this to our user-defined function. It is always the role of the user to remove the buffer of the output.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="engine2.html#cb9-1" aria-hidden="true" tabindex="-1"></a>dtm_norm_color_chunk <span class="ot">&lt;-</span> <span class="cf">function</span>(chunk, rgbmap)</span>
-<span id="cb9-2"><a href="engine2.html#cb9-2" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb9-3"><a href="engine2.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(chunk)</span>
-<span id="cb9-4"><a href="engine2.html#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.empty</span>(las)) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
-<span id="cb9-5"><a href="engine2.html#cb9-5" aria-hidden="true" tabindex="-1"></a>  nlasrgb <span class="ot">&lt;-</span> <span class="fu">dtm_norm_color</span>(las, rgbmap)</span>
-<span id="cb9-6"><a href="engine2.html#cb9-6" aria-hidden="true" tabindex="-1"></a>  nlasrgb <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(nlasrgb, buffer <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># remove buffer</span></span>
-<span id="cb9-7"><a href="engine2.html#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(nlasrgb)</span>
-<span id="cb9-8"><a href="engine2.html#cb9-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-9"><a href="engine2.html#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="engine2.html#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</span>
-<span id="cb9-11"><a href="engine2.html#cb9-11" aria-hidden="true" tabindex="-1"></a>options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">automerge =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-12"><a href="engine2.html#cb9-12" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="at">rgbmap =</span> rgbmap, <span class="at">.options =</span> options)</span>
-<span id="cb9-13"><a href="engine2.html#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(output)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="engine2.html#cb11-1" aria-hidden="true" tabindex="-1"></a>norm_color_chunk <span class="ot">&lt;-</span> <span class="cf">function</span>(chunk, rgbmap)</span>
+<span id="cb11-2"><a href="engine2.html#cb11-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb11-3"><a href="engine2.html#cb11-3" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(chunk)</span>
+<span id="cb11-4"><a href="engine2.html#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.empty</span>(las)) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb11-5"><a href="engine2.html#cb11-5" aria-hidden="true" tabindex="-1"></a>  nlasrgb <span class="ot">&lt;-</span> <span class="fu">norm_color</span>(las, rgbmap)</span>
+<span id="cb11-6"><a href="engine2.html#cb11-6" aria-hidden="true" tabindex="-1"></a>  nlasrgb <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(nlasrgb, buffer <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># remove buffer</span></span>
+<span id="cb11-7"><a href="engine2.html#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(nlasrgb)</span>
+<span id="cb11-8"><a href="engine2.html#cb11-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-9"><a href="engine2.html#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="engine2.html#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</span>
+<span id="cb11-11"><a href="engine2.html#cb11-11" aria-hidden="true" tabindex="-1"></a>options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">automerge =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-12"><a href="engine2.html#cb11-12" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">catalog_apply</span>(ctg, norm_color_chunk, <span class="at">rgbmap =</span> rgbmap, <span class="at">.options =</span> options)</span>
+<span id="cb11-13"><a href="engine2.html#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;las&quot;</span></span>
+<span id="cb11-14"><a href="engine2.html#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(output)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-ctg-colored-1.png" width="384" style="display: block; margin: auto;" /></p>
-<p>When the outputs are <code>Spatial*</code> or <code>Raster*</code> they can be cropped using the bounding box of the chunk accessible via <code>raster::extent(chunk)</code> or <code>sp::bbox(chunk)</code>.</p>
-<p>Nice! We created a custom function – <code>dtm_norm_color()</code> – and we upscale its definition to capably and efficiently process an entire ALS acquisition made up of hundreds of files. Using options described in section <a href="engine.html#engine">14</a>, we can also introduce paralellization, chunk size control, and buffer size control.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="engine2.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
-<span id="cb10-2"><a href="engine2.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
-<span id="cb10-3"><a href="engine2.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;-keep_class 2&quot;</span></span>
-<span id="cb10-4"><a href="engine2.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">300</span></span>
-<span id="cb10-5"><a href="engine2.html#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">40</span></span>
-<span id="cb10-6"><a href="engine2.html#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</span>
-<span id="cb10-7"><a href="engine2.html#cb10-7" aria-hidden="true" tabindex="-1"></a>options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">automerge =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb10-8"><a href="engine2.html#cb10-8" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="at">rgbmap =</span> rgbmap, <span class="at">.options =</span> options)</span></code></pre></div>
-<p>We can check that it worked by loading a sample from somewhere in our new catalog. According to the options put above we are expecting to get a normalized (we normalized), colored (we merged satellite image), ground points (we used <code>-keep_class 2</code>).</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="engine2.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(output) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb11-2"><a href="engine2.html#cb11-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">clip_circle</span>(output, <span class="dv">338800</span>, <span class="dv">5238500</span>, <span class="dv">40</span>)</span>
-<span id="cb11-3"><a href="engine2.html#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="at">size =</span> <span class="dv">6</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
+<p>When the outputs are spatial vectors or spatial rasters they can be cropped using the bounding box of the chunk accessible via <code>extent(chunk)</code> or <code>bbox(chunk)</code> or <code>st_bbox(chunk)</code> or <code>ext(chunk)</code> that match respectively with <code>raster</code>, <code>sp</code>, <code>sf/stars</code> and <code>terra</code>.</p>
+<p>Nice! We created a custom function – <code>norm_color()</code> – and we upscale its definition to capably and efficiently process an entire ALS acquisition made up of hundreds of files. Using options described in section <a href="engine.html#engine">14</a>, we can also introduce paralellization, chunk size control, and buffer size control.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="engine2.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb12-2"><a href="engine2.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb12-3"><a href="engine2.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;-keep_class 2&quot;</span></span>
+<span id="cb12-4"><a href="engine2.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">300</span></span>
+<span id="cb12-5"><a href="engine2.html#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">40</span></span>
+<span id="cb12-6"><a href="engine2.html#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</span>
+<span id="cb12-7"><a href="engine2.html#cb12-7" aria-hidden="true" tabindex="-1"></a>options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">automerge =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-8"><a href="engine2.html#cb12-8" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">catalog_apply</span>(ctg, norm_color_chunk, <span class="at">rgbmap =</span> rgbmap, <span class="at">.options =</span> options)</span></code></pre></div>
+<p>We can check that it worked by loading a sample from somewhere in our new catalog. According to the options put above we are expecting to get a normalized (we normalized), colored (we merged RGB image), ground points (we used <code>-keep_class 2</code>).</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="engine2.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(output) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb13-2"><a href="engine2.html#cb13-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">clip_circle</span>(output, <span class="dv">338800</span>, <span class="dv">5238500</span>, <span class="dv">60</span>)</span>
+<span id="cb13-3"><a href="engine2.html#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="at">size =</span> <span class="dv">6</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-cliped-gnd-colored-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="engine-user-function-lascatalog" class="section level2" number="15.4">
 <h2><span class="header-section-number">15.4</span> Make a user-friendly function for third party users</h2>
-<p>When designing tools that will be used by third parties, we would like to hide <code>catalog_apply()</code> and intermediate functions inside a more user-friendly function similarly to how <code>lidR</code> functions that work the same both with a <code>LAS</code> or a <code>LAScatalog</code>. Moreover we would like to make the function foolproof for users. To do this we can create 3 functions <code>dtm_norm_color()</code> with a <a href="http://adv-r.had.co.nz/S3.html">S3 dispatch</a> as a function of the input.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="engine2.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a generic function</span></span>
-<span id="cb12-2"><a href="engine2.html#cb12-2" aria-hidden="true" tabindex="-1"></a>dtm_norm_color <span class="ot">&lt;-</span> <span class="cf">function</span>(las, rgbmap)</span>
-<span id="cb12-3"><a href="engine2.html#cb12-3" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb12-4"><a href="engine2.html#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">UseMethod</span>(<span class="st">&quot;dtm_norm_color&quot;</span>, las)</span>
-<span id="cb12-5"><a href="engine2.html#cb12-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-6"><a href="engine2.html#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="engine2.html#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a method for LAS objects</span></span>
-<span id="cb12-8"><a href="engine2.html#cb12-8" aria-hidden="true" tabindex="-1"></a>dtm_norm_color.LAS <span class="ot">&lt;-</span> <span class="cf">function</span>(las, rgbmap)</span>
-<span id="cb12-9"><a href="engine2.html#cb12-9" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb12-10"><a href="engine2.html#cb12-10" aria-hidden="true" tabindex="-1"></a>  dtm <span class="ot">&lt;-</span> <span class="fu">grid_terrain</span>(las, <span class="dv">1</span>, <span class="fu">tin</span>())</span>
-<span id="cb12-11"><a href="engine2.html#cb12-11" aria-hidden="true" tabindex="-1"></a>  nlas <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(las, dtm)</span>
-<span id="cb12-12"><a href="engine2.html#cb12-12" aria-hidden="true" tabindex="-1"></a>  colorized <span class="ot">&lt;-</span> <span class="fu">merge_spatial</span>(nlas, rgbmap)</span>
-<span id="cb12-13"><a href="engine2.html#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(colorized)</span>
-<span id="cb12-14"><a href="engine2.html#cb12-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-15"><a href="engine2.html#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-16"><a href="engine2.html#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a method for LAScluster objects (chunk)</span></span>
-<span id="cb12-17"><a href="engine2.html#cb12-17" aria-hidden="true" tabindex="-1"></a>dtm_norm_color.LAScluster <span class="ot">&lt;-</span> <span class="cf">function</span>(las, rgbmap)</span>
-<span id="cb12-18"><a href="engine2.html#cb12-18" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb12-19"><a href="engine2.html#cb12-19" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(las)</span>
-<span id="cb12-20"><a href="engine2.html#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.empty</span>(x)) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
-<span id="cb12-21"><a href="engine2.html#cb12-21" aria-hidden="true" tabindex="-1"></a>  nlasrgb <span class="ot">&lt;-</span> <span class="fu">dtm_norm_color</span>(x, rgbmap)</span>
-<span id="cb12-22"><a href="engine2.html#cb12-22" aria-hidden="true" tabindex="-1"></a>  nlasrgb <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(nlasrgb, buffer <span class="sc">==</span> <span class="dv">0</span>)</span>
-<span id="cb12-23"><a href="engine2.html#cb12-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(nlasrgb)</span>
-<span id="cb12-24"><a href="engine2.html#cb12-24" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-25"><a href="engine2.html#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-26"><a href="engine2.html#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a method for LAScatalog objects</span></span>
-<span id="cb12-27"><a href="engine2.html#cb12-27" aria-hidden="true" tabindex="-1"></a>dtm_norm_color.LAScatalog <span class="ot">&lt;-</span> <span class="cf">function</span>(las, rgbmap)</span>
-<span id="cb12-28"><a href="engine2.html#cb12-28" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb12-29"><a href="engine2.html#cb12-29" aria-hidden="true" tabindex="-1"></a>  options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">automerge =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-30"><a href="engine2.html#cb12-30" aria-hidden="true" tabindex="-1"></a>  output <span class="ot">&lt;-</span> <span class="fu">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="at">rgbmap =</span> rgbmap, <span class="at">.options =</span> options)</span>
-<span id="cb12-31"><a href="engine2.html#cb12-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(output)</span>
-<span id="cb12-32"><a href="engine2.html#cb12-32" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>When designing tools that will be used by third parties, we would like to hide <code>catalog_apply()</code> and intermediate functions inside a more high level and user-friendly function similarly to <code>lidR</code> functions that work the same both with a <code>LAS</code> or a <code>LAScatalog</code>. Moreover we would like to make the function foolproof for users. To do this we can create wrap our codes if <code>if-else</code> statements to apply to correct code to the correct object.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="engine2.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a generic function</span></span>
+<span id="cb14-2"><a href="engine2.html#cb14-2" aria-hidden="true" tabindex="-1"></a>norm_color <span class="ot">&lt;-</span> <span class="cf">function</span>(las, rgbmap)</span>
+<span id="cb14-3"><a href="engine2.html#cb14-3" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb14-4"><a href="engine2.html#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is</span>(las, <span class="st">&quot;LAScatalog&quot;</span>)) {</span>
+<span id="cb14-5"><a href="engine2.html#cb14-5" aria-hidden="true" tabindex="-1"></a>    options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">automerge =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-6"><a href="engine2.html#cb14-6" aria-hidden="true" tabindex="-1"></a>    output <span class="ot">&lt;-</span> <span class="fu">catalog_apply</span>(ctg, norm_color, <span class="at">rgbmap =</span> rgbmap, <span class="at">.options =</span> options)</span>
+<span id="cb14-7"><a href="engine2.html#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(output)</span>
+<span id="cb14-8"><a href="engine2.html#cb14-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">is</span>(las, <span class="st">&quot;LAScluster&quot;</span>)) {</span>
+<span id="cb14-9"><a href="engine2.html#cb14-9" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(las)</span>
+<span id="cb14-10"><a href="engine2.html#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.empty</span>(x)) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb14-11"><a href="engine2.html#cb14-11" aria-hidden="true" tabindex="-1"></a>    nlasrgb <span class="ot">&lt;-</span> <span class="fu">norm_color</span>(x, rgbmap)</span>
+<span id="cb14-12"><a href="engine2.html#cb14-12" aria-hidden="true" tabindex="-1"></a>    nlasrgb <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(nlasrgb, buffer <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb14-13"><a href="engine2.html#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(nlasrgb)</span>
+<span id="cb14-14"><a href="engine2.html#cb14-14" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">is</span>(las, <span class="st">&quot;LAS&quot;</span>)) {</span>
+<span id="cb14-15"><a href="engine2.html#cb14-15" aria-hidden="true" tabindex="-1"></a>    nlas <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(las, <span class="fu">tin</span>())</span>
+<span id="cb14-16"><a href="engine2.html#cb14-16" aria-hidden="true" tabindex="-1"></a>    colorized <span class="ot">&lt;-</span> <span class="fu">merge_spatial</span>(nlas, rgbmap)</span>
+<span id="cb14-17"><a href="engine2.html#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(colorized)</span>
+<span id="cb14-18"><a href="engine2.html#cb14-18" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb14-19"><a href="engine2.html#cb14-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Not supported input&quot;</span>)</span>
+<span id="cb14-20"><a href="engine2.html#cb14-20" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb14-21"><a href="engine2.html#cb14-21" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>We now have a single function that can be used seamlessly on a <code>LAS</code> or a <code>LAScatalog</code> object.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="engine2.html#cb13-1" aria-hidden="true" tabindex="-1"></a>las_norm_colored <span class="ot">&lt;-</span>  <span class="fu">dtm_norm_color</span>(las, rgbmap)</span>
-<span id="cb13-2"><a href="engine2.html#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="engine2.html#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</span>
-<span id="cb13-4"><a href="engine2.html#cb13-4" aria-hidden="true" tabindex="-1"></a>ctg_norm_colored <span class="ot">&lt;-</span>  <span class="fu">dtm_norm_color</span>(ctg, rgbmap)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="engine2.html#cb15-1" aria-hidden="true" tabindex="-1"></a>las_norm_colored <span class="ot">&lt;-</span>  <span class="fu">norm_color</span>(las, rgbmap)</span>
+<span id="cb15-2"><a href="engine2.html#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="engine2.html#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</span>
+<span id="cb15-4"><a href="engine2.html#cb15-4" aria-hidden="true" tabindex="-1"></a>ctg_norm_colored <span class="ot">&lt;-</span>  <span class="fu">norm_color</span>(ctg, rgbmap)</span></code></pre></div>
+<p>The different steps to apply an a <code>LAScluster</code> i.e. <code>readLAS</code> + remove buffer of the output are, in this case very common it is possible to use <code>catalog_map()</code> instead that is capable of doing this tasks for you. But in some cases the output may be not supported, on the cropping step is more complex. In those cases <code>catalog_apply()</code> must be used because it allows for a more accurate control.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="engine2.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a generic function</span></span>
+<span id="cb16-2"><a href="engine2.html#cb16-2" aria-hidden="true" tabindex="-1"></a>norm_color <span class="ot">&lt;-</span> <span class="cf">function</span>(las, rgbmap)</span>
+<span id="cb16-3"><a href="engine2.html#cb16-3" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb16-4"><a href="engine2.html#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is</span>(las, <span class="st">&quot;LAScatalog&quot;</span>)) {</span>
+<span id="cb16-5"><a href="engine2.html#cb16-5" aria-hidden="true" tabindex="-1"></a>    output <span class="ot">&lt;-</span> <span class="fu">catalog_map</span>(ctg, norm_color, <span class="at">rgbmap =</span> rgbmap, <span class="at">.options =</span> options)</span>
+<span id="cb16-6"><a href="engine2.html#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(output)</span>
+<span id="cb16-7"><a href="engine2.html#cb16-7" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">is</span>(las, <span class="st">&quot;LAS&quot;</span>)) {</span>
+<span id="cb16-8"><a href="engine2.html#cb16-8" aria-hidden="true" tabindex="-1"></a>    nlas <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(las, <span class="fu">tin</span>())</span>
+<span id="cb16-9"><a href="engine2.html#cb16-9" aria-hidden="true" tabindex="-1"></a>    colorized <span class="ot">&lt;-</span> <span class="fu">merge_spatial</span>(nlas, rgbmap)</span>
+<span id="cb16-10"><a href="engine2.html#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(colorized)</span>
+<span id="cb16-11"><a href="engine2.html#cb16-11" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb16-12"><a href="engine2.html#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Not supported input&quot;</span>)</span>
+<span id="cb16-13"><a href="engine2.html#cb16-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb16-14"><a href="engine2.html#cb16-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div id="engine-user-function-safe" class="section level2" number="15.5">
 <h2><span class="header-section-number">15.5</span> Make a safe function for third party users</h2>
 <p>At this stage our function is almost finished. However it is not foolproof. What if the user of this new function does not provide any output path template? The point cloud in each chunk will be loaded in memory and will be retained in memory until it eventually becomes full and R crashes. We must prevent the use of the function if no path to the disk is given.</p>
 <p>Also, the computation of a DTM requires a buffer. If the user sets a 0 m buffer the output of this function will be incorrect. We must prevent the use of the function if a buffer of 0 is given. These two cases are covered by the engine with the options <code>need_output_file = TRUE</code> and <code>need_buffer = TRUE</code>. To finish we would like to disable the ability to tune the <code>select</code> option to ensure no attribute is lost.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="engine2.html#cb14-1" aria-hidden="true" tabindex="-1"></a>dtm_norm_color.LAScatalog <span class="ot">&lt;-</span> <span class="cf">function</span>(las, rgbmap)</span>
-<span id="cb14-2"><a href="engine2.html#cb14-2" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb14-3"><a href="engine2.html#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_select</span>(las) <span class="ot">&lt;-</span> <span class="st">&quot;*&quot;</span> <span class="co">#disable select tuning</span></span>
-<span id="cb14-4"><a href="engine2.html#cb14-4" aria-hidden="true" tabindex="-1"></a>  options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">automerge =</span> <span class="cn">TRUE</span>, <span class="at">need_output_file =</span> <span class="cn">TRUE</span>, <span class="at">need_buffer =</span> <span class="cn">TRUE</span>) <span class="co">#require output path &amp; buffer size</span></span>
-<span id="cb14-5"><a href="engine2.html#cb14-5" aria-hidden="true" tabindex="-1"></a>  output <span class="ot">&lt;-</span> <span class="fu">catalog_apply</span>(ctg, dtm_norm_color_chunk, <span class="at">rgbmap =</span> rgbmap, <span class="at">.options =</span> options)</span>
-<span id="cb14-6"><a href="engine2.html#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(output)</span>
-<span id="cb14-7"><a href="engine2.html#cb14-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="engine2.html#cb17-1" aria-hidden="true" tabindex="-1"></a>norm_color <span class="ot">&lt;-</span> <span class="cf">function</span>(las, rgbmap)</span>
+<span id="cb17-2"><a href="engine2.html#cb17-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb17-3"><a href="engine2.html#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is</span>(las, <span class="st">&quot;LAScatalog&quot;</span>)) {</span>
+<span id="cb17-4"><a href="engine2.html#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">opt_select</span>(las) <span class="ot">&lt;-</span> <span class="st">&quot;*&quot;</span> <span class="co"># disable select tuning</span></span>
+<span id="cb17-5"><a href="engine2.html#cb17-5" aria-hidden="true" tabindex="-1"></a>    options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">automerge =</span> <span class="cn">TRUE</span>, <span class="at">need_output_file =</span> <span class="cn">TRUE</span>, <span class="at">need_buffer =</span> <span class="cn">TRUE</span>) <span class="co"># require output path &amp; buffer size</span></span>
+<span id="cb17-6"><a href="engine2.html#cb17-6" aria-hidden="true" tabindex="-1"></a>    output <span class="ot">&lt;-</span> <span class="fu">catalog_map</span>(ctg, norm_color, <span class="at">rgbmap =</span> rgbmap, <span class="at">.options =</span> options)</span>
+<span id="cb17-7"><a href="engine2.html#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(output)</span>
+<span id="cb17-8"><a href="engine2.html#cb17-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">is</span>(las, <span class="st">&quot;LAS&quot;</span>)) {</span>
+<span id="cb17-9"><a href="engine2.html#cb17-9" aria-hidden="true" tabindex="-1"></a>    nlas <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(las, <span class="fu">tin</span>())</span>
+<span id="cb17-10"><a href="engine2.html#cb17-10" aria-hidden="true" tabindex="-1"></a>    colorized <span class="ot">&lt;-</span> <span class="fu">merge_spatial</span>(nlas, rgbmap)</span>
+<span id="cb17-11"><a href="engine2.html#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(colorized)</span>
+<span id="cb17-12"><a href="engine2.html#cb17-12" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb17-13"><a href="engine2.html#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Not supported input&quot;</span>)</span>
+<span id="cb17-14"><a href="engine2.html#cb17-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb17-15"><a href="engine2.html#cb17-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>We can test what happens if we use this function naively.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="engine2.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb15-2"><a href="engine2.html#cb15-2" aria-hidden="true" tabindex="-1"></a>ctg_norm_colored <span class="ot">&lt;-</span> <span class="fu">dtm_norm_color</span>(ctg, rgbmap)</span>
-<span id="cb15-3"><a href="engine2.html#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error: This function requires that the LAScatalog provides an output file template.</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="engine2.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb18-2"><a href="engine2.html#cb18-2" aria-hidden="true" tabindex="-1"></a>ctg_norm_colored <span class="ot">&lt;-</span> <span class="fu">norm_color</span>(ctg, rgbmap)</span>
+<span id="cb18-3"><a href="engine2.html#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error: This function requires that the LAScatalog provides an output file template.</span></span></code></pre></div>
 <p>It failed with an informative message!</p>
 <p>We are done. This is exactly how the <code>lidR</code> package works and we have presented all the tools needed to extent it with new applications.</p>
 <p>More examples can be found further along in this book. For example section <a href="outbox.html#outbox-distance-returns">17.1.1</a> presents how to compute a raster of the average distance between first and last returns, and section <a href="outbox.html#outbox-rumple-index">17.1.2</a> presents how to compute a rumple index of the canopy from the point cloud and of course the documentation of the package itself is more comprehensive than this book.</p>
@@ -569,7 +579,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -609,6 +618,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }

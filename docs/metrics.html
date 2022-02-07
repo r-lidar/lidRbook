@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>8 Derived metrics | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="8 Derived metrics | The lidR package" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-06-22" />
+<meta name="date" content="2022-02-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,8 +33,9 @@
   
 <link rel="prev" href="itd-its.html"/>
 <link rel="next" href="cba.html"/>
-<script src="libs/header-attrs-2.8/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -42,7 +43,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
 
 
 
@@ -148,7 +148,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3.1" data-path="io.html"><a href="io.html#plot-3d"><i class="fa fa-check"></i><b>2.3.1</b> Basic 3D rendering</a></li>
 <li class="chapter" data-level="2.3.2" data-path="io.html"><a href="io.html#plot-overlay"><i class="fa fa-check"></i><b>2.3.2</b> Overlays</a></li>
 <li class="chapter" data-level="2.3.3" data-path="io.html"><a href="io.html#plot-advanced"><i class="fa fa-check"></i><b>2.3.3</b> Advanced 3D rendering</a></li>
-<li class="chapter" data-level="2.3.4" data-path="io.html"><a href="io.html#plot-crossection"><i class="fa fa-check"></i><b>2.3.4</b> Cross sections 2D rendering</a></li>
+<li class="chapter" data-level="2.3.4" data-path="io.html"><a href="io.html#voxel-rendering"><i class="fa fa-check"></i><b>2.3.4</b> Voxel rendering</a></li>
+<li class="chapter" data-level="2.3.5" data-path="io.html"><a href="io.html#plot-crossection"><i class="fa fa-check"></i><b>2.3.5</b> Cross sections 2D rendering</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="gnd.html"><a href="gnd.html"><i class="fa fa-check"></i><b>3</b> Ground classification</a>
@@ -172,8 +173,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="norm.html"><a href="norm.html#norm-dtm"><i class="fa fa-check"></i><b>5.1</b> DTM normalization</a></li>
 <li class="chapter" data-level="5.2" data-path="norm.html"><a href="norm.html#norm-point-cloud"><i class="fa fa-check"></i><b>5.2</b> Point cloud normalization</a></li>
-<li class="chapter" data-level="5.3" data-path="norm.html"><a href="norm.html#norm-pros-cons"><i class="fa fa-check"></i><b>5.3</b> Pros and cons</a></li>
-<li class="chapter" data-level="5.4" data-path="norm.html"><a href="norm.html#norm-reverse"><i class="fa fa-check"></i><b>5.4</b> Reversing normalization</a></li>
+<li class="chapter" data-level="5.3" data-path="norm.html"><a href="norm.html#hybrid-method"><i class="fa fa-check"></i><b>5.3</b> Hybrid method</a></li>
+<li class="chapter" data-level="5.4" data-path="norm.html"><a href="norm.html#norm-pros-cons"><i class="fa fa-check"></i><b>5.4</b> Pros and cons</a></li>
+<li class="chapter" data-level="5.5" data-path="norm.html"><a href="norm.html#norm-reverse"><i class="fa fa-check"></i><b>5.5</b> Reversing normalization</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="chm.html"><a href="chm.html"><i class="fa fa-check"></i><b>6</b> Digital Surface Model and Canopy Height model</a>
 <ul>
@@ -213,7 +215,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.1" data-path="cba.html"><a href="cba.html#cba-overview"><i class="fa fa-check"></i><b>9.1</b> Overview</a></li>
 <li class="chapter" data-level="9.2" data-path="cba.html"><a href="cba.html#cba-applications"><i class="fa fa-check"></i><b>9.2</b> Applications</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="aba.html"><a href="aba.html"><i class="fa fa-check"></i><b>10</b> Derived metrics at the grid level</a>
+<li class="chapter" data-level="10" data-path="aba.html"><a href="aba.html"><i class="fa fa-check"></i><b>10</b> Derived metrics at the pixel level</a>
 <ul>
 <li class="chapter" data-level="10.1" data-path="aba.html"><a href="aba.html#aba-overview"><i class="fa fa-check"></i><b>10.1</b> Overview</a></li>
 <li class="chapter" data-level="10.2" data-path="aba.html"><a href="aba.html#aba-applications"><i class="fa fa-check"></i><b>10.2</b> Applications</a>
@@ -311,14 +313,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16" data-path="modeling-aba.html"><a href="modeling-aba.html"><i class="fa fa-check"></i><b>16</b> The Area-Based Approach (ABA) to forest modelling</a>
 <ul>
 <li class="chapter" data-level="16.1" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-read-data"><i class="fa fa-check"></i><b>16.1</b> Read in data</a></li>
-<li class="chapter" data-level="16.2" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-model"><i class="fa fa-check"></i><b>16.2</b> ABA Processing</a>
-<ul>
-<li class="chapter" data-level="16.2.1" data-path="modeling-aba.html"><a href="modeling-aba.html#step-1---clip-als-ground-inventory"><i class="fa fa-check"></i><b>16.2.1</b> Step 1 - Clip ALS ground inventory</a></li>
-<li class="chapter" data-level="16.2.2" data-path="modeling-aba.html"><a href="modeling-aba.html#step-2---calculate-plot-metrics"><i class="fa fa-check"></i><b>16.2.2</b> Step 2 - Calculate plot metrics</a></li>
-<li class="chapter" data-level="16.2.3" data-path="modeling-aba.html"><a href="modeling-aba.html#step-3---modeling"><i class="fa fa-check"></i><b>16.2.3</b> Step 3 - Modeling</a></li>
-<li class="chapter" data-level="16.2.4" data-path="modeling-aba.html"><a href="modeling-aba.html#step-4---wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.2.4</b> Step 4 - Wall to wall modelling</a></li>
-<li class="chapter" data-level="16.2.5" data-path="modeling-aba.html"><a href="modeling-aba.html#step-5---calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.2.5</b> Step 5 - Calculate wall-to-wall predictions</a></li>
-</ul></li>
+<li class="chapter" data-level="16.2" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-data"><i class="fa fa-check"></i><b>16.2</b> ABA database building</a></li>
+<li class="chapter" data-level="16.3" data-path="modeling-aba.html"><a href="modeling-aba.html#modeling-build-model"><i class="fa fa-check"></i><b>16.3</b> Statistical modeling</a></li>
+<li class="chapter" data-level="16.4" data-path="modeling-aba.html"><a href="modeling-aba.html#wall-to-wall-modelling"><i class="fa fa-check"></i><b>16.4</b> Wall to wall modelling</a></li>
+<li class="chapter" data-level="16.5" data-path="modeling-aba.html"><a href="modeling-aba.html#calculate-wall-to-wall-predictions"><i class="fa fa-check"></i><b>16.5</b> Calculate wall-to-wall predictions</a></li>
 </ul></li>
 <li class="chapter" data-level="17" data-path="outbox.html"><a href="outbox.html"><i class="fa fa-check"></i><b>17</b> Thinking outside the box</a>
 <ul>
@@ -366,52 +364,73 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="metrics" class="section level1" number="8">
 <h1><span class="header-section-number">8</span> Derived metrics</h1>
-<p>The goal of this section is to describe the notion of <em>“metrics”</em> in <code>lidR</code>. Analyses of point cloud data are often based on metrics calculations. Metrics are scalar summaries of point distributions that can be computed using varying neighborhood definitions and varying reference locations. For example, when reference locations are regularly distributed on a grid and the neigbourhood is a square centered on those locations, we typically use an area-based-approach (ABA) that consists of computing metrics for pixels. Maximum height of points inside a 20 x 20 m grid cell (in this case of pixel) is an example of an ABA metric. This however is not the only option, and other definitions can enable other analyses and applications.</p>
+<p>The goal of this section is to describe the notion of <em>metrics</em> in <code>lidR</code>. Analyses of point cloud data are often based on metrics calculations. Metrics are scalar summaries of point distributions that can be computed using varying neighborhood definitions and varying reference locations. For example, when reference locations are regularly distributed on a grid and the neigbourhood is a square centered on those locations, we typically use an area-based-approach (ABA) that consists of computing metrics for pixels. Maximum height of points inside a 20 x 20 m grid cell (in this case of pixel) is an example of an ABA metric. This however is not the only option, and other definitions can enable other analyses and applications.</p>
 <p>The standard deviation of point heights within a single tree crown is an example of a metric calculated at the tree level. The average distance between a point and its k-nearest neighbours is a metrics calculated at the point level. More complex metrics can even be imagined like the average distance between first and last returns within a pixel or within a tree. In the end, regardless of the scale at which metrics are calculated, they serve as proxies of forest inventory attributes or can be used as independent variables in predictive models.</p>
 <p>The notion of metrics is at the core of the <code>lidR</code> package, which enables the computation of standard or custom user-defined metrics at varying levels of regularization:</p>
 <ul>
 <li>point cloud level with <code>cloud_metrics()</code></li>
-<li>cell level with <code>grid_metrics()</code></li>
-<li>tree level with <code>tree_metrics()</code></li>
+<li>pixel level with <code>pixel_metrics()</code></li>
+<li>tree crown level with <code>crown_metrics()</code></li>
+<li>inventory plot level with <code>plot_metrics()</code></li>
 <li>voxel level with <code>voxel_metrics()</code></li>
+<li>polygon level with <code>polygon_metrics()</code></li>
+<li>hexagonal cells level with <code>hexagon_metrics()</code></li>
 <li>point level with <code>point_metrics()</code></li>
 </ul>
 <p>Sections <a href="cba.html#cba">9</a>, <a href="aba.html#aba">10</a>, <a href="tba.html#tba">11</a>, <a href="vba.html#vba">12</a> and <a href="pba.html#pba">13</a> are respectively dedicated to go deeper into regularization levels.</p>
 <p>In the majority of cases, derived metrics are calculated based on point heights (<code>Z</code> coordinate) at the cell level since they are the most useful predictors for developing forest inventory attribute models. From a strictly technical point of view however, <strong>any</strong> point cloud attribute can be used to calculate metrics (e.g. mean <code>Intensity</code>, maximum <code>ScanAngleRank</code>), or several attributes can be used simultaneously (e.g. proportion of first returns above mean <code>Z</code>, standard deviation of <code>Intensity</code> of second returns only).</p>
-<p>A metric is simply a number derived from the attribute of a subset of points. Thus the potential number of metrics that can be calculated is very large and only limited by user’s imagination. There are however published studies that discuss the usefulness of different metrics for modeling and standard sets of metrics exist.</p>
+<p>A metric is simply a number derived from the attributes of a subset of points. Thus the potential number of metrics that can be calculated is very large and only limited by user’s imagination. There are however published studies that discuss the usefulness of different metrics for modelling and standard sets of metrics exist.</p>
 <div id="metrics-basics" class="section level2" number="8.1">
 <h2><span class="header-section-number">8.1</span> The basics</h2>
-<p>While there are some differences between functions dedicated to metric computations the basic idea is the same for all of them. In addition to the input point cloud, the user needs to provide a formula to calculate the metric(s) of interest. For example, the average height of points for the point cloud, for each pixel, for each tree crown, or for each voxel can be be calculated using <code>mean(Z)</code>.</p>
+<p>While there are some differences between functions dedicated to metric computations the basic idea is the same for all of them. In addition to the input point cloud, the user needs to provide a formula to calculate the metric(s) of interest. For example, the average height of points for the point cloud, for each pixel, for each tree crown, for each voxel or for each hexagonal cell can be be calculated using <code>mean(Z)</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="metrics.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
-<span id="cb1-2"><a href="metrics.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
+<span id="cb1-2"><a href="metrics.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
 <span id="cb1-3"><a href="metrics.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
-<span id="cb1-4"><a href="metrics.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span></code></pre></div>
-<p>All the functions work the same way but the output format depends on the regularization level. In each case, outputs will be a different class (i.e. a <code>list</code>, a <code>RasterBrick</code>, a <code>SpatialPointsDataFrame</code> or a <code>data.frame</code>) to take advantage of the best storage method, but the same two metrics will be calculated for every unit of analysis.</p>
+<span id="cb1-4"><a href="metrics.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hexagon_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
+<span id="cb1-5"><a href="metrics.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span></code></pre></div>
+<p>All the functions work the same way but the output format depends on the regularization level. In each case, outputs will be a different class (i.e. a <code>list</code>, a spatial raster, a spatial vector or a <code>data.frame</code>) to take advantage of the best storage method, but the same two metrics will be calculated for every unit of analysis. In the following example we are computing average intensity at different levels of regularization</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="metrics.html#cb2-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;MixedConifer.laz&quot;</span>, <span class="at">package =</span><span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb2-2"><a href="metrics.html#cb2-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile)</span>
+<span id="cb2-3"><a href="metrics.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="metrics.html#cb2-4" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="er">~</span><span class="fu">list</span>(<span class="at">avgI =</span> <span class="fu">mean</span>(Intensity))</span>
+<span id="cb2-5"><a href="metrics.html#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="metrics.html#cb2-6" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(las, m, <span class="at">res =</span> <span class="dv">5</span>)</span>
+<span id="cb2-7"><a href="metrics.html#cb2-7" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">crown_metrics</span>(las, m, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>)</span>
+<span id="cb2-8"><a href="metrics.html#cb2-8" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">crown_metrics</span>(las, m, <span class="at">geom =</span> <span class="st">&quot;convex&quot;</span>)</span>
+<span id="cb2-9"><a href="metrics.html#cb2-9" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">hexagon_metrics</span>(las, m, <span class="at">area =</span> <span class="dv">25</span>)</span>
+<span id="cb2-10"><a href="metrics.html#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="metrics.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb2-12"><a href="metrics.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a, <span class="at">col =</span> <span class="fu">heat.colors</span>(<span class="dv">15</span>), <span class="at">legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-13"><a href="metrics.html#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(b[<span class="st">&quot;avgI&quot;</span>], <span class="at">pal =</span> heat.colors, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">axes =</span> <span class="cn">TRUE</span>, <span class="at">key.pos =</span> <span class="cn">NULL</span>, <span class="at">reset =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-14"><a href="metrics.html#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(c[<span class="st">&quot;avgI&quot;</span>], <span class="at">pal =</span> heat.colors, <span class="at">axes =</span> <span class="cn">TRUE</span>, <span class="at">key.pos =</span> <span class="cn">NULL</span>, <span class="at">reset =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-15"><a href="metrics.html#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(d[<span class="st">&quot;avgI&quot;</span>], <span class="at">pal =</span> heat.colors, <span class="at">axes =</span> <span class="cn">TRUE</span>, <span class="at">key.pos =</span> <span class="cn">NULL</span>, <span class="at">reset =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="lidR-book_files/figure-html/demo-metrics-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="metrics-user-defined" class="section level2" number="8.2">
 <h2><span class="header-section-number">8.2</span> User-defined metrics</h2>
-<p>In the example above only a single metric is calculated - the mean elevation of the points. Calculations can however be easily extended to any number of user-defined metrics. To do this, users can design custom functions. The function can contain any number of metrics, but needs to return a labeled <code>list</code>. For example, to calculate the mean of elevation, and the standard deviation and mean of intensity, the following function can be used:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="metrics.html#cb2-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(z, i) {</span>
-<span id="cb2-2"><a href="metrics.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
-<span id="cb2-3"><a href="metrics.html#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(z), </span>
-<span id="cb2-4"><a href="metrics.html#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(i),</span>
-<span id="cb2-5"><a href="metrics.html#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">imean =</span> <span class="fu">mean</span>(i))</span>
-<span id="cb2-6"><a href="metrics.html#cb2-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>In the example above only a single metric is calculated - the mean intensity of the points. Calculations can however be easily extended to any number of user-defined metrics. To do this, users can design custom functions. The function can contain any number of metrics, but needs to return a labeled <code>list</code>. For example, to calculate the mean of elevation, and the standard deviation and mean of intensity, the following function can be used:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="metrics.html#cb3-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(z, i) {</span>
+<span id="cb3-2"><a href="metrics.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb3-3"><a href="metrics.html#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(z), </span>
+<span id="cb3-4"><a href="metrics.html#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(i),</span>
+<span id="cb3-5"><a href="metrics.html#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">imean =</span> <span class="fu">mean</span>(i))</span>
+<span id="cb3-6"><a href="metrics.html#cb3-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>The user-defined function <code>f</code> can then be used.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="metrics.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
-<span id="cb3-2"><a href="metrics.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
-<span id="cb3-3"><a href="metrics.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
-<span id="cb3-4"><a href="metrics.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span></code></pre></div>
-<p>While any metric can be computed at any level of regularization, it’s important to recognize that they may not all be meaningful. For example, the average elevation of points has a meaning at the pixel level or at the tree level but not at the voxel level. Indeed at the voxel level it corresponds to the average elevation of the points within the voxel i.e. more or less the Z coordinate of the voxel. This in the end needs to be conisered by the user. Perhaps asking <em>“does this metric make sense?”</em> is a good place to start!</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="metrics.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
+<span id="cb4-2"><a href="metrics.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
+<span id="cb4-3"><a href="metrics.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
+<span id="cb4-4"><a href="metrics.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">haxagon_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
+<span id="cb4-5"><a href="metrics.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span></code></pre></div>
+<p>While any metric can be computed at any level of regularization, it’s important to recognize that they may not all be meaningful. For example, the average elevation of points has a meaning at the pixel level or at the tree level but not at the voxel level. Indeed at the voxel level it corresponds to the average elevation of the points within the voxel i.e. more or less the Z coordinate of the voxel. This in the end needs to be considered by the user. Perhaps asking <em>“does this metric make sense?”</em> is a good place to start!</p>
 </div>
 <div id="metrics-pre-defined" class="section level2" number="8.3">
 <h2><span class="header-section-number">8.3</span> Pre-defined metrics</h2>
 <p>The most commonly used metrics are already predefined in <code>lidR</code> - the <code>stdmetrics*()</code> group of functions contain metrics that summarize the vertical distribution of points, their intensities, and return structure.</p>
 <p>The complete list of all metrics can be found in the <a href="https://github.com/Jean-Romain/lidR/wiki/stdmetrics">lidR wiki page</a> and can be use that way:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="metrics.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
-<span id="cb4-2"><a href="metrics.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
-<span id="cb4-3"><a href="metrics.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
-<span id="cb4-4"><a href="metrics.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="metrics.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
+<span id="cb5-2"><a href="metrics.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
+<span id="cb5-3"><a href="metrics.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
+<span id="cb5-4"><a href="metrics.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span></code></pre></div>
 </div>
 <div id="metrics-3rd-party" class="section level2" number="8.4">
 <h2><span class="header-section-number">8.4</span> Metrics using 3rd party packages</h2>
@@ -420,23 +439,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">8.4.1</span> L-moments</h3>
 <p>L-moments are linear combinations of ordered data values. In the context of lidar data this relates to elevation and intensity. The ratios of L-moments are comparable to variance, skewness and kurtosis, and have been shown valuable for a number of lidar-derived attribute modeling studies (eg. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0034425716303960?via%3Dihub">Valbuena et al. 2017</a>, <a href="https://www.sciencedirect.com/science/article/pii/S0034425721001826?dgcid=coauthor">Adnan et al. 2021</a>) as well as being standard metrics produced in <a href="http://forsys.cfr.washington.edu/fusion/fusion_overview.html">FUSION</a> lidar processing software.</p>
 <p>In order to calculate these metrics we can leverage the <code>lmom</code> package which provides functions to calculate L-moments and associated ratios. In the example we use the <code>samlmu()</code> function.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="metrics.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">as.list</span>(lmom<span class="sc">::</span><span class="fu">samlmu</span>(Z)))</span>
-<span id="cb5-2"><a href="metrics.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">as.list</span>(lmom<span class="sc">::</span><span class="fu">samlmu</span>(Z)), <span class="dv">10</span>) </span></code></pre></div>
-<p>We see that we can supply the <code>func</code> argument in <code>grid_metrics()</code> with a function from an external package. This allows us to be fairly flexible with the metrics we are able to calculate without needing to introduce dependencies within the <code>lidR</code> package.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="metrics.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">as.list</span>(lmom<span class="sc">::</span><span class="fu">samlmu</span>(Z)))</span>
+<span id="cb6-2"><a href="metrics.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">as.list</span>(lmom<span class="sc">::</span><span class="fu">samlmu</span>(Z)), <span class="dv">10</span>) </span></code></pre></div>
+<p>We see that we can supply the <code>func</code> argument in <code>pixel_metrics()</code> with a function from an external package. This allows us to be fairly flexible with the metrics we are able to calculate without needing to introduce dependencies within the <code>lidR</code> package.</p>
 </div>
 <div id="metrics-fractal-dims" class="section level3" number="8.4.2">
 <h3><span class="header-section-number">8.4.2</span> Fractal dimensions</h3>
 <p>Fractal dimensions are another statistical description that is showing promise within lidar and forestry related research (eg. <a href="https://doi.org/10.1002/ece3.7216">Saarinen et al., 2021</a>). The use of fractal dimensions seeks to help understand the relationship between structural complexity and stem/crown size and shape.</p>
-<p>The calculation of fractal dimensions — similarly to L-moments — can be tricky to implement efficiently, and would add an additional dependency to <code>lidR</code>’s growing list. To avoid <code>lidR</code> needing to depend on external packages, we can leverage them (in this case <code>Rdimtools</code>) to calculate fractal dimensions within a <code>grid_metrics()</code> example.</p>
+<p>The calculation of fractal dimensions — similarly to L-moments — can be tricky to implement efficiently, and would add an additional dependency to <code>lidR</code>’s growing list. To avoid <code>lidR</code> needing to depend on external packages, we can leverage them (in this case <code>Rdimtools</code>) to calculate fractal dimensions within a <code>pixel_metrics()</code> example.</p>
 <p>First, we can create a user-defined function that leverages the <code>est.boxcount()</code> function within <code>Rdimtools</code>. This allows us to define the variables we want the function to utilize within <code>grid_metrics()</code></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="metrics.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create user-defined function</span></span>
-<span id="cb6-2"><a href="metrics.html#cb6-2" aria-hidden="true" tabindex="-1"></a>fd <span class="ot">=</span> <span class="cf">function</span>(X,Y,Z) {</span>
-<span id="cb6-3"><a href="metrics.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  M <span class="ot">=</span> <span class="fu">cbind</span>(X,Y,Z)</span>
-<span id="cb6-4"><a href="metrics.html#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">est.boxcount</span>(M)<span class="sc">$</span>estdim</span>
-<span id="cb6-5"><a href="metrics.html#cb6-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="metrics.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create user-defined function</span></span>
+<span id="cb7-2"><a href="metrics.html#cb7-2" aria-hidden="true" tabindex="-1"></a>fd <span class="ot">=</span> <span class="cf">function</span>(X,Y,Z) {</span>
+<span id="cb7-3"><a href="metrics.html#cb7-3" aria-hidden="true" tabindex="-1"></a>  M <span class="ot">=</span> <span class="fu">cbind</span>(X,Y,Z)</span>
+<span id="cb7-4"><a href="metrics.html#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">est.boxcount</span>(M)<span class="sc">$</span>estdim</span>
+<span id="cb7-5"><a href="metrics.html#cb7-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Now the we have defined the <code>fd</code> function, which calculates our fractal dimensions using <code>XYZ</code> values, we can apply it on our lidar data and create output rasters.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="metrics.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">fd</span>(X,Y,Z), <span class="dv">10</span>)</span>
-<span id="cb7-2"><a href="metrics.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">fd</span>(X,Y,Z), <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="metrics.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">fd</span>(X,Y,Z), <span class="dv">10</span>)</span>
+<span id="cb8-2"><a href="metrics.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">fd</span>(X,Y,Z), <span class="dv">10</span>)</span></code></pre></div>
 <p>There are obviously many potential calculations to apply and statistics to derive from lidar data. The ability to include third party functions like the examples listed above within metric calculations makes <code>lidR</code> valuable and flexible from a research standpoint.</p>
 
 </div>
@@ -452,7 +471,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -492,6 +510,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }

@@ -2,7 +2,6 @@
 r3dDefaults = rgl::r3dDefaults
 m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
                 -0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
-rgl::setupKnitr()
 r3dDefaults$FOV = 50
 r3dDefaults$userMatrix = m
 r3dDefaults$zoom = 0.75
@@ -13,12 +12,15 @@ knitr::opts_chunk$set(
   fig.align = "center")
 
 library(lidR)
+library(sf)
+library(stars)
 library(ggplot2)
+
 LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
 las <- readLAS(LASfile)
 
-rgdal::set_thin_PROJ6_warnings(TRUE)
 options(crayon.enabled = TRUE)
+rgl::setupKnitr(autoprint = TRUE)
 old_hooks <- fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message", "error"))
 ```
 
@@ -42,7 +44,7 @@ The function `readLAS()` reads and creates an object that contains both the head
 ```r
 las <- readLAS("files.las")
 ```
-When printed it displays a summary of its content in a similar way to the `sp` package.
+When printed it displays a summary of its content.
 
 ```{r print-las}
 print(las)
@@ -64,7 +66,7 @@ Examples of other attribute abbreviations are: `t` - gpstime, `a` - scan angle, 
 
 ### Parameter `filter` {#filter}
 
-While `select` enables the user to select "columns" (or attributes) while reading files, `filter` allows selection of "rows" (or points) while reading. Removing superfluous data at reading time saves memory and increases computation speed. For example, it's common pratice in forestry to process using first returns.
+While `select` enables the user to select "columns" (or attributes) while reading files, `filter` allows selection of "rows" (or points) while reading. Removing superfluous data at reading time saves memory and increases computation speed. For example, it's common practice in forestry to process using first returns.
 
 ```r
 las <- readLAS("file.las", filter = "-keep_first") # Read only first returns
@@ -80,7 +82,7 @@ las2 <- readLAS("file.las")
 las2 <- filter_poi(las2, ReturnNumber == 1L)
 ```
 
-In the above example we are (1) reading only the first returns or (2) Reading all the points then filtering the first returns in R. Both outputs are strictly identical but the first one is faster and more memory efficient because it doesn't load the whole file in R and does not use extra processing memory. It should always be prefered when possible. Mutiple filter commands can be used at once to e.g. read only first return between 5 and 50 m.
+In the above example we are (1) reading only the first returns or (2) Reading all the points then filtering the first returns in R. Both outputs are strictly identical but the first one is faster and more memory efficient because it doesn't load the whole file in R and does not use extra processing memory. It should always be preferred when possible. Multiple filter commands can be used at once to e.g. read only first return between 5 and 50 m.
 
 ```r
 las <-  readLAS("file.las", filter = "-keep_first -drop_z_below 5 -drop_z_above 50")
@@ -119,7 +121,7 @@ LASfile <- system.file("extdata", "Topography.laz", package="lidR")
 las <- readLAS(LASfile)
 ```
 
-The `lidR` package takes advantage of the [`rgl`](https://cran.r-project.org/package=rgl) package to provide a versatile and interactive 3D viewer with points colored by Z coordinates on a black background as default.
+The `lidR` package takes advantage of the [`rgl`](https://cran.r-project.org/package=rgl) package to provide a versatile and interactive 3D viewer with points coloured by Z coordinates on a black background as default.
 
 ### Basic 3D rendering {#plot-3d}
 
@@ -136,7 +138,9 @@ plot(las, size = 3)
 Users can change the attributes used for coloring by providing the name of the attribute used to colorize the points. The background color of the viewer can also be changed by assigning a color using the `bg` argument. Axes can also be added and point sizes can be changed.
 
 ```{r plot-las-custom, rgl = TRUE, fig.width = 4, fig.height = 3}
-# Plot las object by scan angle, make the background white, display XYZ axis and Z scale colors
+# Plot las object by scan angle, 
+# make the background white, 
+# display XYZ axis and  scale colors
 plot(las, color = "ScanAngleRank", bg = "white", axis = TRUE, legend = TRUE)
 ```
 
@@ -146,7 +150,7 @@ Note that if your file contains RGB data the string `"RGB"` is supported:
 plot(las, color ="RGB")
 ```
 
-The `trim` parameter enables trimming of values when outliers break the color palette range. For example, intensity often contains large outliers. The palette range would be too large and most of the values will be considered as "very low", so everything will appear in the same color. Using `trim` as an outlier threshold enable to print every value higher than `trim` using the same color.
+The `trim` parameter enables trimming of values when outliers break the colour palette range. For example, intensity often contains large outliers. The palette range would be too large and most of the values will be considered as "very low", so everything will appear in the same colour. Using `trim` as an outlier threshold enable to print every value higher than `trim` using the same colour.
 
 ```{r plot-las-fail, rgl = TRUE, fig.width = 4, fig.height = 3}
 plot(las, color = "Intensity", trim = 1800, bg = "white")
@@ -157,7 +161,7 @@ plot(las, color = "Intensity", trim = 1800, bg = "white")
 The package also provides some easy to use functions for common overlay. For example `add_dtm3d()` to add a digital terrain model (section \@ref(dtm)) and `add_treetops3d()` to visualize the output of an individual tree detection (section \@ref(itd))
 
 ```{r, echo = FALSE, warning=FALSE}
-dtm <- grid_terrain(las, 2, tin())
+dtm <- rasterize_terrain(las, 2, tin())
 las <- clip_circle(las, 273516, 5274496, 100)
 ```
 
@@ -170,7 +174,7 @@ add_dtm3d(x, dtm)
 LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
 las <- readLAS(LASfile, select = "xyzc")
 
-ttops <- find_trees(las, lmf(ws = 5))
+ttops <- locate_trees(las, lmf(ws = 5))
 ```
 
 ```{r plot-las-trees, rgl = TRUE, fig.width = 4, fig.height = 3}
@@ -178,7 +182,7 @@ x <- plot(las, bg = "white", size = 3)
 add_treetops3d(x, ttops)
 ```
 
-It is also possible to combine two point clouds with different color palettes. In the following example we are using a previously classified point cloud. We first separate the vegetation and non vegetation points using `filter_poi()` and then plot both on top of each other with different color schemes using `add` options in `plot()`
+It is also possible to combine two point clouds with different colour palettes. In the following example we are using a previously classified point cloud. We first separate the vegetation and non vegetation points using `filter_poi()` and then plot both on top of each other with different colour schemes using `add` options in `plot()`
 
 ```{r, echo = FALSE}
 r3dDefaults$zoom = 0.3
@@ -208,24 +212,27 @@ The coordinates of the objects must be corrected to align with the point cloud. 
 r3dDefaults = rgl::r3dDefaults
 m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
                 -0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
-rgl::setupKnitr()
 r3dDefaults$FOV = 50
 r3dDefaults$userMatrix = m
 r3dDefaults$zoom = 0.75
 ```
 
-```r
+```{r plot-las-truncks, rgl = TRUE, webgl = FALSE, fig.width = 4, fig.height = 3, snapshot = TRUE}
 LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
 las <- readLAS(LASfile, select = "xyzc")
 
 # get the location of the trees
-ttops <- find_trees(las, lmf(ws = 5)) 
+ttops <- locate_trees(las, lmf(ws = 5)) 
+
+# plot the point cloud
+offsets <- plot(las, bg = "white", size = 3)
+add_treetops3d(offsets, ttops)
 
 # extract the coordinates of the trees and
 # apply the shift to display the lines
 # in the rendering coordinate system
-x <- coordinates(ttops)[,1] - offsets[1] 
-y <- coordinates(ttops)[,2] - offsets[2] 
+x <- sf::st_coordinates(ttops)[,1] - offsets[1] 
+y <- sf::st_coordinates(ttops)[,2] - offsets[2] 
 z <- ttops$Z
 
 # Build a GL_LINES matrix for fast rendering
@@ -236,35 +243,8 @@ tmp[2*1:length(z)] <- z
 z <- tmp
 M <- cbind(x,y,z)
 
-# plot the point cloud
-offsets <- plot(las, bg = "white", size = 3)
-add_treetops3d(offsets, ttops)
+# Display lines
 rgl::segments3d(M, col = "black", lwd = 2)
-```
-
-```{r plot-las-truncks, echo = FALSE, rgl = TRUE, fig.width = 4, fig.height = 3}
-LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
-las <- readLAS(LASfile, select = "xyzc")
-ttops <- find_trees(las, lmf(ws = 5)) # get the location of the trees
-
-# extract the coordinates of the trees
-x <- coordinates(ttops)[,1]
-y <- coordinates(ttops)[,2]
-z <- ttops$Z
-
-# plot the point cloud
-offsets <- plot(las, bg = "white", size = 3)
-add_treetops3d(offsets, ttops)
-
-# add the trunks
-for (i in 1:length(ttops)) {
-  # apply the shift to display the lines
-  # in the rendering coordinate system
-  X <- c(x[i], x[i]) - offsets[1] 
-  Y <- c(y[i], y[i]) - offsets[2]
-  Z <- c(0, z[i])
-  rgl::segments3d(X, Y, Z, col = "black", lwd = 2)
-}
 ```
 
 ### Voxel rendering
@@ -274,11 +254,11 @@ LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
 las <- readLAS(LASfile)
 ```
 
-From v3.2.0 it is possible to render voxels. This is useful to render the output of the function `voxelise_points()` or `voxel_metrics()` for examples.
+It is possible to render voxels. This is useful to render the output of the function `voxelise_points()` or `voxel_metrics()` for examples.
 
 ```{r plot-voxels, rgl = TRUE, fig.width = 4, fig.height = 3}
 vox <- voxelize_points(las, 6)
-plot(vox, voxel = T, bg = "white")
+plot(vox, voxel = TRUE, bg = "white")
 ```
 
 ### Cross sections 2D rendering {#plot-crossection}
@@ -293,8 +273,8 @@ las <- readLAS(LASfile)
 ```
 
 ```{r}
-p1 <- c(273357, 5274357) # these are coordinates
-p2 <- c(273542, 5274542) # these are coordinates
+p1 <- c(273357, 5274357)
+p2 <- c(273542, 5274542)
 las_tr <- clip_transect(las, p1, p2, width = 4, xz = TRUE)
 ```
 

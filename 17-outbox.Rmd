@@ -2,11 +2,11 @@
 library(lidR)
 library(ggplot2)
 library(rgl)
+library(stars)
 
 r3dDefaults = rgl::r3dDefaults
 m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
 -0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
-rgl::setupKnitr()
 r3dDefaults$FOV = 50
 r3dDefaults$userMatrix = m
 r3dDefaults$zoom = 0.75
@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
   comment =  "#>", 
   collapse = TRUE,
   fig.align = "center")
+
+rgl::setupKnitr(autoprint = TRUE)
 ```
 
 # Thinking outside the box {#outbox}
@@ -68,8 +70,8 @@ plot(las, bg = "white", color = "d", colorPalette = viridis::magma(50), size = 4
 
 Now we can compute the average in an ABA (see section \@ref(aba)).
 
-```{r plot-raster-avg-dreturns, fig.width=5.4, fig.height=5.2}
-d_first_last <- grid_metrics(las, ~mean(d), 15)
+```{r plot-raster-avg-dreturns, fig.width=6, fig.height=5}
+d_first_last <- pixel_metrics(las, ~mean(d), 15)
 plot(d_first_last, col = height.colors(50))
 ```
 
@@ -83,30 +85,17 @@ grid_distance_first_last <- function(las, res) {
   las@data[, d := Z[1]-Z[2], by = pulseID]
   las <- filter_first(las)
   las <- filter_poi(las, !is.na(d))
-  return(grid_metrics(las, ~mean(d), res))
+  return(pixel_metrics(las, ~mean(d), res))
 }
 ```
 
-Then we define a function that respects some requirement imposed by the `LAScatalog` processing engine (section \@ref(engine2)).
-
-```{r}
-my_routine <- function(chunk, res) {
-  bbox <- raster::extent(chunk)
-  las <- readLAS(chunk)
-  if (is.empty(las)) return(NULL)
-  metric <- grid_distance_first_last(las, res)
-  metric <- raster::crop(metric, bbox)
-  return(metric)
-}
-```
-
-To finish we use the `LAScatalog` processing engine with `catalog_sapply()`. We need to process with a buffer to avoid the case where pulses are separated in two files, so we use `opt_chunk_buffer(ctg) <- 2`. In addition, with the output being a raster, we ensure alignment of the chunk with the raster.
+To finish we use the `LAScatalog` processing engine with `catalog_map()`. We need to process with a buffer to avoid the case where pulses are separated in two files, so we use `opt_chunk_buffer(ctg) <- 2`. In addition, with the output being a raster, we ensure alignment of the chunk with the raster.
 
 ```r
 ctg <- readLAScatalog("folder/")
 opt_chunk_buffer(ctg) <- 2
 options <- list(raster_alignment = 15)
-metrics <- catalog_sapply(ctg, my_routine, res = 15, .options = options)
+metrics <- catalog_map(ctg, grid_distance_first_last, res = 15, .options = options)
 ```
 
 And we are done. Our innovative metric is computing with real-time monitoring. It can run in parallel on a single machine or in parallel on several machines. At the end, the output is a wall-to-wall raster map of the average distance between first and last returns for beams that return multiple returns. In 19 lines of code!
@@ -116,7 +105,7 @@ plot(metrics, col = height.colors(50))
 ```
 
 ```{r displaymap, echo=FALSE, fig.width=6.2, fig.height=6.5}
-m <- raster("data/chap12/distancefl.grd")
+m <- raster::raster("data/chap12/distancefl.grd")
 plot(m, col = height.colors(50))
 raster::scalebar(500, type = "bar")
 ```
@@ -130,31 +119,22 @@ To compute a rumple index we can triangulate points, measure the surface created
 ```{r}
 grid_rumple_index <- function(las, res) { # user-defined function
   las <- filter_surfacepoints(las, 1)
-  return(grid_metrics(las, ~rumple_index(X, Y, Z), res))
+  return(pixel_metrics(las, ~rumple_index(X, Y, Z), res))
 }
 ```
 
 Then the code is pretty much the same than in previous section
 
 ```r
-my_routine <- function(chunk, res) {
-  bbox <- raster::extent(chunk)
-  las <- readLAS(chunk)
-  if (is.empty(las)) return(NULL)
-  metric <- grid_rumple_index(las, res)
-  metric <- raster::crop(metric, bbox)
-  return(metric)
-}
-
 ctg <- readLAScatalog("folder/")
 opt_chunk_buffer(ctg) <- 1
 options <- list(raster_alignment = 20)
-metrics <- catalog_sapply(ctg, my_routine, res = 20, .options = options)
+metrics <- catalog_map(ctg, grid_rumple_index, res = 20, .options = options)
 plot(metrics, col = height.colors(50))
 ```
 
 ```{r, displaymap2, echo=FALSE, fig.width=6.2, fig.height=6.5}
-m <- raster("data/chap12/rumple.grd")
+m <- raster::raster("data/chap12/rumple.grd")
 plot(m, col = height.colors(50))
 raster::scalebar(500, type = "bar")
 ```
@@ -216,9 +196,9 @@ colorize <- function(intensity, channel)
 
 Now we can use this function with different levels of regularization. We can use `colorize()` with `grid_metrics()` in an ABA. It returns a multi-layer raster that can be interpreted as RGB
 
-```{r plot-raster-multispectral-rgb}
-rgb <- grid_metrics(las, ~colorize(Intensity, ScannerChannel), 2)
-plotRGB(rgb, axes = T)
+```{r plot-raster-multispectral-rgb,fig.width=4}
+rgb <- pixel_metrics(las, ~colorize(Intensity, ScannerChannel), 2)
+terra::plotRGB(rgb)
 ```
 
 We can also attribute an RGB color per voxel, discarding the voxels where `RGB = NA` by using `colorize()` with `voxel_metrics()` (see section \@ref(vba)).
