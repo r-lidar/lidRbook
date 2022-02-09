@@ -150,10 +150,10 @@ Note that if your file contains RGB data the string `"RGB"` is supported:
 plot(las, color ="RGB")
 ```
 
-The `trim` parameter enables trimming of values when outliers break the colour palette range. For example, intensity often contains large outliers. The palette range would be too large and most of the values will be considered as "very low", so everything will appear in the same colour. Using `trim` as an outlier threshold enable to print every value higher than `trim` using the same colour.
+The argument `breaks` enables to defined more adequate breaks in the color palette for example when intensity contains large outliers. Otherwise the palette range would be too large and most of the values would be considered as "very low", so everything would appear in the same color.
 
 ```{r plot-las-fail, rgl = TRUE, fig.width = 4, fig.height = 3}
-plot(las, color = "Intensity", trim = 1800, bg = "white")
+plot(las, color = "Intensity", breaks = "quantile", bg = "white")
 ```
 
 ### Overlays {#plot-overlay}

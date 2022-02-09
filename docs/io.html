@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-02-07" />
+<meta name="date" content="2022-02-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -384,7 +384,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-5"><a href="io.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref.  : NAD83 / UTM zone 17N </span></span>
 <span id="cb3-6"><a href="io.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area         : 51572 m²</span></span>
 <span id="cb3-7"><a href="io.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points       : 81.6 thousand points</span></span>
-<span id="cb3-8"><a href="io.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 1.58 points/m²</span></span></code></pre></div>
+<span id="cb3-8"><a href="io.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 1.58 points/m²</span></span>
+<span id="cb3-9"><a href="io.html#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 1.08 pulses/m²</span></span></code></pre></div>
 <p>For a more in-depth print out of the data use the function <code>summary()</code> instead of <code>print()</code>.</p>
 <div id="select" class="section level3" number="2.1.1">
 <h3><span class="header-section-number">2.1.1</span> Parameter <code>select</code></h3>
@@ -478,8 +479,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="lidR-book_files/figure-html/plot-las-custom-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>Note that if your file contains RGB data the string <code>"RGB"</code> is supported:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="io.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span><span class="st">&quot;RGB&quot;</span>)</span></code></pre></div>
-<p>The <code>trim</code> parameter enables trimming of values when outliers break the colour palette range. For example, intensity often contains large outliers. The palette range would be too large and most of the values will be considered as “very low”, so everything will appear in the same colour. Using <code>trim</code> as an outlier threshold enable to print every value higher than <code>trim</code> using the same colour.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="io.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="at">trim =</span> <span class="dv">1800</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
+<p>The argument <code>breaks</code> enables to defined more adequate breaks in the color palette for example when intensity contains large outliers. Otherwise the palette range would be too large and most of the values would be considered as “very low”, so everything would appear in the same color.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="io.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="at">breaks =</span> <span class="st">&quot;quantile&quot;</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-fail-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plot-overlay" class="section level3" number="2.3.2">
@@ -533,7 +534,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb18-25"><a href="io.html#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-26"><a href="io.html#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Display lines</span></span>
 <span id="cb18-27"><a href="io.html#cb18-27" aria-hidden="true" tabindex="-1"></a>rgl<span class="sc">::</span><span class="fu">segments3d</span>(M, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="lidR-book_files/figure-html/plot-las-truncks-1-rgl.png" width="384" style="display: block; margin: auto;" />/tmp/Rtmpag0iaM/filea9d6102a2405.png</p>
+<p><img src="lidR-book_files/figure-html/plot-las-truncks-1-rgl.png" width="384" style="display: block; margin: auto;" />/tmp/Rtmp0ByyQ6/filedb3d4fa77d41.png</p>
 </div>
 <div id="voxel-rendering" class="section level3" number="2.3.4">
 <h3><span class="header-section-number">2.3.4</span> Voxel rendering</h3>
