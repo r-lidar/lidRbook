@@ -1,10 +1,10 @@
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 library(lidR)
+library(stars)
 
 r3dDefaults = rgl::r3dDefaults
 m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
                 -0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
-rgl::setupKnitr()
 r3dDefaults$FOV = 50
 r3dDefaults$userMatrix = m
 r3dDefaults$zoom = 0.75
@@ -15,7 +15,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   fig.align = "center")
 
-rgdal::set_thin_PROJ6_warnings(TRUE)
+options(crayon.enabled = TRUE)
+rgl::setupKnitr(autoprint = TRUE)
+old_hooks <- fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message", "error"))
 ```
 
 # `LAScatalog` processing engine (1/2) {#engine}
@@ -26,7 +28,7 @@ So far we have demonstrated how to process a point cloud file using `readLAS()`.
 
 ```{r plot-catalog-hali, echo=FALSE, warning=FALSE}
 haliburton <- readRDS("data/ENGINE/haliburton.lascatalog")
-projection(haliburton) <- sp::CRS("+proj=utm +zone=17 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0")
+st_crs(haliburton) <- 32617
 plot(haliburton)
 ```
 
@@ -45,15 +47,15 @@ This however is very bad practice because each file is loaded without a buffer, 
 
 Let's compute a DTM (see section \@ref(dtm)) as an example, where we use a `for` loop on 4 contiguous files. We can see the obvious invalidity of the DTM between the files, but also at the periphery, even if less obvious.
 
-```{r plot-dtm-artifact, echo=FALSE, fig.height=7.9, fig.width=8,warning=FALSE}
-dtms <- stack("data/ENGINE/DTMs.grd")
-plot(dtms[[1]], col = gray.colors(50, 0, 1), legend = FALSE)
+```{r plot-dtm-artifact, echo=FALSE, fig.height=7.9, fig.width=8, warning=FALSE}
+dtms <- stars::read_stars("data/ENGINE/DTMs.grd")
+plot(dtms[,,,1], axes = T, breaks = "equal", downsample = 1)
 ```
 
 For comparison, see the accurate DTM below, that was generated with the `LAScatalog` processing engine. The benefit here is the ability to manage (among a variety of other capabilities) on-the-fly buffering.
 
 ```{r plot-dtm-no-artifact, echo=FALSE, fig.height=7.9, fig.width=8, warning = FALSE}
-plot(dtms[[2]], col = gray.colors(50, 0, 1), legend = FALSE)
+plot(dtms[,,,2], axes = T, breaks = "equal", downsample = 1)
 ```
 
 ## The `LAScatalog` engine {#engine-engine}
@@ -66,7 +68,7 @@ The `LAScatalog` class and the `LAScatalog` engine are intricately documented in
 
 ## Read a collection of files {#engine-lascatalog}
 
-The function `readLAScatalog()` reads the header of all the `LAS` files of a given folder. The header of a `LAS` file contains, among others, the bounding box of the point cloud, meaning that it's possible to know where the file is situated spatially without reading a potentially massive amount of data. `readLAScatalog()` builds a `SpatialPolygonsDataFrame` out of the bounding boxes of the files and presents them in an easily accessible manner.
+The function `readLAScatalog()` reads the header of all the `LAS` files of a given folder. The header of a `LAS` file contains, among others, the bounding box of the point cloud, meaning that it's possible to know where the file is situated spatially without reading a potentially massive amount of data. `readLAScatalog()` builds a `sf/sfc_POLYGON` out of the bounding boxes of the files and presents them in an easily accessible manner.
 
 ```r
 ctg <- readLAScatalog("path/to/folder/")
@@ -263,38 +265,38 @@ We have learned several things about the engine in this section
 
 ## Digital Terrain Model {#engine-dtm}
 
-So far we have learned enough about the engine to generate a nice and valid DTM using `grid_terrain()` (see section \@ref(dtm)).
+So far we have learned enough about the engine to generate a nice and valid DTM using `rasterize_terrain()` (see section \@ref(dtm)).
 
 ### In memory DTM {#engine-dtm-inmemory}
 
-Generating a DTM that encompasses an entire ALS acquisition is as easy as generating a DTM that encompasses a single point cloud file. The following generates a DTM with default parameters (i.e. processing by file with a 30 m buffer). In each chunk `grid_terrain()` computes a DTM. The result is a collection of rasters, however one feature of the engine is to merge everything in single, seamless, manipulable object. A raster is usually less memory intensive that a point cloud, so returning everything in memory is feasible if the raster is not too large.
+Generating a DTM that encompasses an entire ALS acquisition is as easy as generating a DTM that encompasses a single point cloud file. The following generates a DTM with default parameters (i.e. processing by file with a 30 m buffer). In each chunk `rasterize_terrain()` computes a DTM. The result is a collection of rasters, however one feature of the engine is to merge everything in single, seamless, manipulable object. A raster is usually less memory intensive that a point cloud, so returning everything in memory is feasible if the raster is not too large.
 
 ```{r, echo = FALSE}
 opt_chunk_size(ctg) <- 0
 opt_chunk_buffer(ctg) <- 30
 ```
 
-```{r, cache = TRUE}
-dtm <- grid_terrain(ctg, 2, tin())
+```{r}
+dtm <- rasterize_terrain(ctg, 2, tin(), pkg = "terra")
 ```
 
 We can render a shaded DTM like that from section \@ref(hillshade) to better visualize the output:
 
-```{r plot-shaded-dtm-catalog, fig.height=7.9, fig.width=8, cache = TRUE, warning= FALSE}
-dtm_prod <- terrain(dtm, opt = c("slope", "aspect"))
-dtm_hillshade <- hillShade(slope = dtm_prod$slope, aspect = dtm_prod$aspect)
-plot(dtm_hillshade, col = gray.colors(50, 0 ,1), legend = FALSE)
+```{r plot-shaded-dtm-catalog, fig.height=7.9, fig.width=8, warning= FALSE}
+dtm_prod <- terra::terrain(dtm, v = c("slope", "aspect"), unit = "radians")
+dtm_hillshade <- terra::shade(slope = dtm_prod$slope, aspect = dtm_prod$aspect)
+plot(dtm_hillshade, col = gray(0:50/50), legend = FALSE)
 ```
 
 ### On disk DTM {#engine-dtm-ondisk}
 
 When the DTM is too big for memory storage it can be written on disk. In this case users will have one raster file per chunk. The buffer is used to perform a valid computation but is removed after the computation, leaving no overlap between files. It is possible to build a virtual raster from multiple files to return a lightweight raster that references on disk files.
 
-```{r dtmdisk, cache = TRUE, warning=FALSE}
+```{r dtmdisk, warning=FALSE}
 opt_output_files(ctg) <- opt_output_files(ctg) <- paste0(tempdir(), "/{*}_dtm")
-dtm <- grid_terrain(ctg, 1, tin())
+dtm <- rasterize_terrain(ctg, 1, tin())
 dtm
-inMemory(dtm)
+class(dtm)
 ```
 
 Light rasters can be used as if it were an in memory raster or a single file raster and is thus much more convenient than having hundred of files on disk without any structure to hold them all. This feature is called Virtual Dataset and is part of the Geospatial Data Abstraction Library (GDAL) (see also [gdalbuildvrt](http://gdal.org/gdalbuildvrt.html)).
@@ -309,7 +311,7 @@ In this section we learned several the following about the engine in this sectio
 
 Previous sections detail considerations for using the `LAScatalog` engine to perform point cloud normalization using `normalize_height()` (see section \@ref(norm)). We created a DTM in the previous section, so we use it here to normalize.
 
-```{r normalize, cache = TRUE}
+```{r normalize}
 opt_output_files(ctg) <-  paste0(tempdir(), "/{*}_norm")
 ctg_norm <- normalize_height(ctg, dtm)
 ```
@@ -323,7 +325,7 @@ ctg_norm <- normalize_height(ctg, tin())
 
 ## Area Based Approach {#engine-aba}
 
-Area based approach (`grid_metrics()`) outputs are raster objects like a DTM. Two more options of the engine do exist that are not controllable in every function. When reading a LAS file with `readLAS()` two options `select` and `filter` are offered (see section \@ref(io)). When processing a collection of files `readLAS()` is called internally and it is not possible to modify these parameters. Instead we can use the options `opt_filter()` and `opt_select()` to propagate these arguments.
+Area based approach (`pixel_metrics()`) outputs are raster objects like a DTM. Two more options of the engine do exist that are not controllable in every function. When reading a LAS file with `readLAS()` two options `select` and `filter` are offered (see section \@ref(io)). When processing a collection of files `readLAS()` is called internally and it is not possible to modify these parameters. Instead we can use the options `opt_filter()` and `opt_select()` to propagate these arguments.
 
 ```r
 opt_select(ctg) <- "xyzci"
@@ -335,31 +337,31 @@ opt_output_files(ctg_norm) <- ""
 opt_progress(ctg_norm) <- FALSE
 ```
 
-Used in conjunction with `grid_metrics()`, these enable computation on a selected set of points (first returns for example), loading only user specified attributes. This is useful mainly to save processing memory but may also have a small favorable impact on computation time.
+Used in conjunction with `pixel_metrics()`, these enable computation on a selected set of points (first returns for example), loading only user specified attributes. This is useful mainly to save processing memory but may also have a small favorable impact on computation time.
 
-```{r plot-raster-hmean-catalog, fig.height=7, fig.width=7.1, cache = TRUE}
+```{r plot-raster-hmean-catalog, fig.height=5.9, fig.width=6.9}
 opt_select(ctg_norm) <- "xyz"
-hmean <- grid_metrics(ctg_norm, ~mean(Z), 10)
+hmean <- pixel_metrics(ctg_norm, ~mean(Z), 10)
 
 opt_select(ctg_norm) <- "xyz"
 opt_filter(ctg_norm) <- "-keep_first"
-hmean <- grid_metrics(ctg_norm, ~mean(Z), 10)
+hmean <- pixel_metrics(ctg_norm, ~mean(Z), 10)
 
-plot(hmean, col = height.colors(50))
+plot(hmean, col = height.colors(25))
 ```
 
-Not all functions respect these two options. For example it does not make sense to load only XYZ when creating a DTM because the classification of  points is required to isolate ground points. It is also non-beneficial to load intensity, user data, return number and so on to compute a DTM. The function `grid_terrain()` knows which options to choose and does not respect user inputs. This is the case of several other functions in `lidR`. But when its suitable, users can tune these options.
+Not all functions respect these two options. For example it does not make sense to load only XYZ when creating a DTM because the classification of  points is required to isolate ground points. It is also non-beneficial to load intensity, user data, return number and so on to compute a DTM. The function `rasterize_terrain()` knows which options to choose and does not respect user inputs. This is the case of several other functions in `lidR`. But when its suitable, users can tune these options.
 
 ### Summary
 
 We have learned several things about the engine in this section
 
 11. Some options from `readLAS()`can be used to optimize and tune processing
-12. Some `lidR` functions already know the best options and do not respect all user inputs. This is always documented.
+12. Some `lidR` functions already know the best options and do not respect all user inputs.
 
 ## Individual Tree Detection {#engine-itd}
 
-At this stage with have all the tools required to find each individual tree using `find_trees()` in a collection of files. The following example extracts every tree found over the acquisition. The output is returned in memory as a single, continuous object. Each chunk is processed with a buffer ensuring that trees will be properly detected at the edges of the files. A total of 100,000 trees were found in this example.
+At this stage with have all the tools required to find each individual tree using `locate_trees()` in a collection of files. The following example extracts every tree found over the acquisition. The output is returned in memory as a single, continuous object. Each chunk is processed with a buffer ensuring that trees will be properly detected at the edges of the files. A total of 100,000 trees were found in this example.
 
 ```{r, echo = FALSE}
 opt_chunk_size(ctg_norm) <- 0
@@ -367,38 +369,39 @@ opt_chunk_buffer(ctg_norm) <- 30
 opt_output_files(ctg_norm) <- ""
 ```
 
-```{r plot-tree-catalog, cache = TRUE, fig.height=7, fig.width=7, warning=FALSE}
-ttops <- find_trees(ctg_norm, lmf(4))
+```{r plot-tree-catalog, fig.height=7, fig.width=7, warning=FALSE}
+ttops <- locate_trees(ctg_norm, lmf(4))
 ttops
-plot(ttops, cex = 0.04)
+plot(ttops["Z"], cex = 0.001, pch = 19, pal = height.colors, nbreaks = 30)
 ```
 
-We see some issues with this however. Each tree is expected to be associated to a single `ID` but if we count the number of trees with the `ID = 1` we can see that we have 9 trees fitting that query. Similarly we have 9 trees labeled "2" and so on.
+We see some issues with this however. Each tree is expected to be associated to a single `ID` but if we count the number of trees with the `ID = 1` we can see that we have 9 trees fitting that query. Similarly we have 9 trees labelled "2" and so on.
 
 ```{r}
 sum(ttops$treeID == 1)
+plot(ttops["treeID"], cex = 0.3, pch = 19, nbreaks = 50)
 ```
 
-This error has been voluntarily introduced at this stage to illustrate how the `LAScatalog` engine works. In the engine, each chunk is processed **independently** of the others. They can even be processed on different machines and in a more or less random order. Thus there is no way to know how many trees were found in the first chunk to restart the numbering in the second chunk. This is mainly because the *'first and second'* chunk may not have any meaning when processing in parallel. The numbering is thus restarted to 1 in each chunk this is why there is 9 trees numbered 1. One in each chunk. When the output is returned in memory this can be easily fixed by reassigning new IDs
+This error has been voluntarily introduced at this stage to illustrate how the `LAScatalog` engine works. In the engine, each chunk is processed **independently** of the others. They can even be processed on different machines and in a more or less random order. Thus there is no way to know how many trees were found in the first chunk to restart the numbering in the second chunk. This is mainly because the *'first and second'* chunk may not have any meaning when processing in parallel. The numbering is thus restarted to 1 in each chunk. This is why there is 9 trees numbered 1. One in each chunk. When the output is returned in memory this can be easily fixed by reassigning new IDs
 
 ```r
-ttops$treeID <- 1:length(ttops)
+ttops$treeID <- 1:nrow(ttops)
 ```
 
-It is however more difficult to achieve the same task if each chunk is written in a shapefile, and almost impossible to achieve in the case of individual tree segmentation as we will see later. To solve this `lidR` has two strategies to generate reproducible unique IDs no matter the processing order or the number of trees found. For more details the reader can refer to the documentation for `find_trees()`. This option can be selected with the parameter `uniqueness`.
+It is however more difficult to achieve the same task if each chunk is written in a file, and almost impossible to achieve in the case of individual tree segmentation as we will see later. To solve this `lidR` has two strategies to generate reproducible unique IDs no matter the processing order or the number of trees found. For more details the reader can refer to the documentation for `locate_trees()`. This option can be selected with the parameter `uniqueness`.
 
-```{r, cache = TRUE, warning=FALSE}
-ttops <- find_trees(ctg_norm, lmf(4), uniqueness = "bitmerge")
-ttops
+```{r, warning=FALSE}
+ttops <- locate_trees(ctg_norm, lmf(4), uniqueness = "bitmerge")
+plot(ttops["treeID"], cex = 0.01, pch = 19)
 ```
 
 The attribute `treeID` is now an arbitrary number (here it is negative but not necessarily) computed from the XY coordinates, that is guaranteed to be **1.** unique, and **2.** reproducible. No matter how the collection of files is processed (by files or by small chunks, in parallel or sequentially, with large or narrow buffer, in memory or on disk) the IDs will always be the same for a given tree.
 
-In all the previous examples we have seen that the engine takes care of merging  intermediate results into a single usable object. When intermediate results are stored on disk, the final results in R is a single lightweight object such as a `LAScatalog` or a Virtual Data set. This is not true for `find_trees()` and other functions that return `Spatial*` objects. The default behavior is to write shapefiles (`.shp`) and there is no way to build a light weight object. What is returned is thus a vector of written files.
+In all the previous examples we have seen that the engine takes care of merging  intermediate results into a single usable object. When intermediate results are stored on disk, the final results in R is a single lightweight object such as a `LAScatalog` or a Virtual Data set. This is not true for `locate_trees()` and other functions that return spatial vectors. The default behaviour is to write Geopackage (.gpkg) and there is no way to build a light weight object. What is returned is thus a vector of written files.
 
-```{r, cache = TRUE, warning = FALSE}
+```{r, warning = FALSE}
 opt_output_files(ctg_norm) <- paste0(tempdir(), "/{*}")
-find_trees(ctg_norm, lmf(4), uniqueness = "bitmerge")
+locate_trees(ctg_norm, lmf(4), uniqueness = "bitmerge")
 ```
 
 ### Summary
@@ -406,31 +409,31 @@ find_trees(ctg_norm, lmf(4), uniqueness = "bitmerge")
 We have learned several things about the engine in this section
 
 13. Each chunk is processed strictly independently of the others. 
-14. When the intermediate outputs are LAS files, the final output is a lightweight `LAsctalog`. When the intermediate outputs are raster files, the final output is a lightweight Virtual Data set. However for shapefile and some other data types it is not always possible to aggregate files into a single lightweight object. Thus the names of the files are returned.
+14. When the intermediate outputs are LAS files, the final output is a lightweight `LASctalog`. When the intermediate outputs are raster files, the final output is a lightweight Virtual Data set. However for spatial vectors and some other data types it is not always possible to aggregate files into a single lightweight object. Thus the names of the files are returned.
 15. Strict continuity of the output is not always trivial because each chunk is processed independently of the others but `lidR` always guarantee the validity and the continuity of the outputs.
 
 ## Individual Tree Segmentation {#engine-its}
 
-Individual tree segmentation with `segment_trees()` is the most complicated function to use with a `LAScatalog` because there are many different algorithms. Some imply the use of an in memory `RasterLayer` and an in memory `SpatialPointDataFrame`, some require only an in memory `RasterLayer` and some require only a point cloud (see section \@ref(itd-its)). Moreover it is complex to manage edge artifacts. Imagine there is a tree that is situated exactly on the edge between two files. The first half on one file, the second half on another. The two files will be processed independently - maybe on different remote computers. Both sides of the tree must be attributed the same ID independently to get something that is strictly continuous. The function `segment_trees()` manages all these points. The example below uses the `dalponte2016()` algorithm.
+Individual tree segmentation with `segment_trees()` is the most complicated function to use with a `LAScatalog` because there are many different algorithms. Some imply the use of an in memory raster and an in memory vector, some require only an in memory raster and some require only a point cloud (see section \@ref(itd-its)). Moreover it is complex to manage edge artifacts. Imagine there is a tree that is situated exactly on the edge between two files. The first half on one file, the second half on another. The two files will be processed independently - maybe on different remote computers. Both sides of the tree must be attributed the same ID independently to get something that is strictly continuous. The function `segment_trees()` manages all these points. The example below uses the `dalponte2016()` algorithm.
 
 First we create a 1 m resolution CHM stored on disk and returned as a light virtual raster. 
 
-```{r plot-chm-catalog, cache = TRUE, fig.height=7, fig.width=7.1, warning=FALSE}
+```{r plot-chm-catalog, fig.height=5.9, fig.width=6.9, warning=FALSE}
 opt_output_files(ctg_norm) <- paste0(tempdir(), "/chm_{*}")
-chm <- grid_canopy(ctg_norm, 1, p2r(0.15))
+chm <- rasterize_canopy(ctg_norm, 1, p2r(0.15))
 plot(chm, col = height.colors(50))
 ```
 
-Second we compute the seeds by finding the trees as seen above. The result **must be** loaded in memory because there is no way to combine many shapefiles stored on disk like rasters. In this example it is possible because there are 100,000 trees. But for bigger collections it may not be possible to apply this algorithm in a simple way.
+Second we compute the seeds by finding the trees as seen above. The result **must be** loaded in memory because there is no way to combine many vectors stored on disk like rasters. In this example it is possible because there are 100,000 trees. But for bigger collections it may not be possible to apply this algorithm in a simple way.
 
 ```r
 opt_output_files(ctg_norm) <- ""
-ttops <- find_trees(ctg_norm, lmf(4), uniqueness = "bitmerge")
+ttops <- locate_trees(ctg_norm, lmf(4), uniqueness = "bitmerge")
 ```
 
 To finish, we apply `segment_trees()`. Here we don't need to specify any strategy to get unique IDs because the seeds are already uniquely labelled. These IDs will be preserved. But for an algorithm without any seed such as `watershed()` it is important to have a strategy.
 
-```{r, cache = TRUE, warning=FALSE}
+```{r, warning=FALSE}
 opt_output_files(ctg_norm) <- paste0(tempdir(), "/{*}_segmented")
 algo <- dalponte2016(chm, ttops)
 ctg_segmented <- segment_trees(ctg_norm, algo)
@@ -441,10 +444,13 @@ The new `LAScatalog` that is returned is made up of files that have an extra att
 ```{r plot-las-tree-segmented-cliped, rgl = TRUE}
 opt_output_files(ctg_segmented) <- ""
 lasplot <- clip_circle(ctg_segmented, 338500, 5238600, 40)
-plot(lasplot, color = "treeID", bg = "white", size = 4)
+pol = crown_metrics(lasplot, NULL, geom = "convex")
+
+plot(sf::st_geometry(pol), col = pastel.colors(250), axes = T)
+plot(ctg, add = T)
 ```
 
-We can observe that the segmentation is perfect with respect to the labeling problem. Trees that were segmented twice independently on each edge were attributed the same IDs on both sides and that the final output is wall-to-wall.
+We can observe that the segmentation is perfect with respect to the labelling problem. Trees that were segmented twice independently on each edge were attributed the same IDs on both sides and that the final output is wall-to-wall.
 
 ## Retile a catalog {#engine-retile}
 
@@ -469,7 +475,7 @@ plot(small) # some plotting
 ```{r plot-retiled-buffer, fig.height=4, fig.width=4}
 opt_chunk_buffer(ctg) <- 20 # set buffer to 20
 opt_chunk_size(ctg) <- 0 # no change to chunk size
-opt_output_files(ctg) <- paste0(tempdir(), "/{ORIGINALFILENAME}_buffered") # name outputs with original name ant "_buffered"
+opt_output_files(ctg) <- paste0(tempdir(), "/{ORIGINALFILENAME}_buffered") # name outputs with original name and "_buffered"
 buffered <- catalog_retile(ctg) # apply buffer
 plot(buffered) # some plotting
 ```
@@ -478,7 +484,7 @@ Be careful. This may be useful for processing in other softwares, but `lidR` loa
 
 ### Create a new collection with only first returns
 
-In combination with `opt_filter()`, `catalog_retile()` can be used to generate a new collection of files that contains only first returns. This is not very useful in `lidR` because this can be achieved on-the-fly when reading the files using `filter()` (see section \@ref(filter)), though could be useful to process point clouds in other softwares.
+In combination with `opt_filter()`, `catalog_retile()` can be used to generate a new collection of files that contains only first returns. This is not very useful in `lidR` because this can be achieved on-the-fly when reading the files using `filter()` (see section \@ref(filter)), though could be useful to process point clouds in other software.
 
 ```r
 opt_chunk_buffer(ctg) <- 0
@@ -512,19 +518,21 @@ The case of ground inventories or more generally independent files is particular
 plot(rois)
 ```
 
-`rois` is made of unrelated circular files. Loading a buffer is meaningless because there is no neighboring files. Creating chunks is meaningless as well because we usually want one output per file without generating a wall-to-wall object. Worse even, with the wrong options the output might be incorrect. 
+`rois` is made of unrelated circular files. Loading a buffer is meaningless because there is no neighbouring files. Creating chunks is meaningless as well because we usually want one output per file without generating a wall-to-wall object. Worse even, with the wrong options the output might be incorrect. 
 
 For example on the top right of the previous collection we can see two overlapping files. If processed by chunk and with a buffer this will load the same points twice in the overlapping area, plus some extra points from the other plot that are not related at all to the first plot. In short, in the case of ground plot inventories 99% of the cases consist in processing iteratively by file, without a buffer and without returning a single aggregated object. This case actually corresponds to a regular `for` loop, as shown in the introduction of this section. Thus there is no need for all the features provided by the `LAScatalog` engine and anyone with any background in programming can write a small script that does this job.
 
 The engine can however do it with appropriate options. In this case the `LAScatalog` processing engine becomes more or less a parallelizable `for` loop with a real time monitoring.
 
-```{r plot-dtm-inventory, fig.height=4, fig.width=4,warning=FALSE}
+```{r plot-dtm-inventory, fig.height=4, fig.width=4,warning=FALSE, eval = FALSE}
 opt_chunk_size(rois) <- 0 # processing by files
 opt_chunk_buffer(rois) <- 0 # no buffer
 opt_wall_to_wall(rois) <- FALSE # disable internal checks to ensure a valid output. Free wheel mode
+opt_merge(rois) <- FALSE
+opt_output_files(rois) <- ""
 
-dtm <- grid_terrain(rois, 1, tin())
-plot(dtm[[1]])
+dtm <- rasterize_terrain(rois, 1, tin())
+plot(dtm[[1]], col = gray(1:50/50))
 ```
 
 This can be set in one command:
@@ -537,11 +545,11 @@ Everything seen so far remains true. But with these options we are sure to not m
 
 ## Summary of available options {#engine-summary-sheet}
 
-The engine processes the covered area by chunk. A chunk is an arbitraty square region queried from the collection of files. Each chunk is loaded with a buffer, and each chunk correspond to an independent results. All together the chunks tesselate the coverage unless files are not overlaping. Results are merged into a single object at the end of the processing when possible.
+The engine processes the covered area by chunk. A chunk is an arbitrary square region queried from the collection of files. Each chunk is loaded with a buffer, and each chunk correspond to an independent results. All together the chunks tessellate the coverage unless files are not overlapping. Results are merged into a single object at the end of the processing when possible.
 
 - `opt_chunk_size(ctg) <- 800` controls the size of the chunks. Set 0 use the tiling pattern (processing by file)
 - `opt_chunk_buffer(ctg) <- 40` controls the size of the buffer around each chunks.
-- `opt_chunk_alignment(ctg) <- c(100, 200)` controls the aligment of the chunks
+- `opt_chunk_alignment(ctg) <- c(100, 200)` controls the alignment of the chunks
 - `opt_output_file(ctg) <- "{TEMPLATE}` redirects the results in files named after the templated name.
 - `opt_select(ctg) <- "xyzi"` loads only the attributes of interest when querying a chunk, in this case the xyz and intensity values (see `readLAS()` - section \@ref(read))
 - `opt_filter(ctg) <- "-keep_first"` loads only the points of interest when querying a chunk (see `readLAS()` - section \@ref(read))
