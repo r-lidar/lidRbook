@@ -24,7 +24,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-02-07" />
+<meta name="date" content="2022-05-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -398,20 +398,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-5"><a href="engine.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area        : 295.35 km²</span></span>
 <span id="cb4-6"><a href="engine.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points      : 910.11 million points</span></span>
 <span id="cb4-7"><a href="engine.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 3.1 points/m²</span></span>
-<span id="cb4-8"><a href="engine.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 361</span></span>
-<span id="cb4-9"><a href="engine.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span></code></pre></div>
+<span id="cb4-8"><a href="engine.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 2.1 pulses/m²</span></span>
+<span id="cb4-9"><a href="engine.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 361</span></span>
+<span id="cb4-10"><a href="engine.html#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-catalog-hali-2-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>In this and the following section (section <a href="engine2.html#engine2">15</a>) we will use a collection of nine 500 x 500 m files to create examples. The nine files can be downloaded here:</p>
 <ol style="list-style-type: decimal">
-<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000_1.laz">tiles_338000_5238000.laz</a></li>
-<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238500_1.laz">tiles_338000_5238500.laz</a></li>
-<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5239000_1.laz">tiles_338000_5239000.laz</a></li>
-<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238000_1.laz">tiles_338500_5238000.laz</a></li>
-<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238500_1.laz">tiles_338500_5238500.laz</a></li>
-<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5239000_1.laz">tiles_338500_5239000.laz</a></li>
-<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238000_1.laz">tiles_339000_5238000.laz</a></li>
-<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238500_1.laz">tiles_339000_5238500.laz</a></li>
-<li><a href="https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5239000_1.laz">tiles_339000_5239000.laz</a></li>
+<li><a href="https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000_1.laz">tiles_338000_5238000.laz</a></li>
+<li><a href="https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238500_1.laz">tiles_338000_5238500.laz</a></li>
+<li><a href="https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5239000_1.laz">tiles_338000_5239000.laz</a></li>
+<li><a href="https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238000_1.laz">tiles_338500_5238000.laz</a></li>
+<li><a href="https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238500_1.laz">tiles_338500_5238500.laz</a></li>
+<li><a href="https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5239000_1.laz">tiles_338500_5239000.laz</a></li>
+<li><a href="https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238000_1.laz">tiles_339000_5238000.laz</a></li>
+<li><a href="https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238500_1.laz">tiles_339000_5238500.laz</a></li>
+<li><a href="https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5239000_1.laz">tiles_339000_5239000.laz</a></li>
 </ol>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="engine.html#cb5-1" aria-hidden="true" tabindex="-1"></a>ctg <span class="ot">&lt;-</span> <span class="fu">readLAScatalog</span>(<span class="st">&quot;data/ENGINE/catalog/&quot;</span>)</span>
 <span id="cb5-2"><a href="engine.html#cb5-2" aria-hidden="true" tabindex="-1"></a>ctg</span>
@@ -421,8 +422,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-6"><a href="engine.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area        : 2.25 km²</span></span>
 <span id="cb5-7"><a href="engine.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points      : 9.45 million points</span></span>
 <span id="cb5-8"><a href="engine.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 4.2 points/m²</span></span>
-<span id="cb5-9"><a href="engine.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 9</span></span>
-<span id="cb5-10"><a href="engine.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span></code></pre></div>
+<span id="cb5-9"><a href="engine.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 3.4 pulses/m²</span></span>
+<span id="cb5-10"><a href="engine.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 9</span></span>
+<span id="cb5-11"><a href="engine.html#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-ctg-book-1-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div id="engine-asprs-compliance" class="section level2" number="14.4">
@@ -475,21 +477,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-3"><a href="engine.html#cb10-3" aria-hidden="true" tabindex="-1"></a>rois[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
 <span id="cb10-4"><a href="engine.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
 <span id="cb10-5"><a href="engine.html#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class        : LAS (v1.0 format 1)</span></span>
-<span id="cb10-6"><a href="engine.html#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; memory       : 2 Mb </span></span>
+<span id="cb10-6"><a href="engine.html#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; memory       : 1.5 Mb </span></span>
 <span id="cb10-7"><a href="engine.html#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent       : 339308.9, 339388.7, 5239214, 5239294 (xmin, xmax, ymin, ymax)</span></span>
 <span id="cb10-8"><a href="engine.html#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref.  : WGS 84 / UTM zone 19N </span></span>
-<span id="cb10-9"><a href="engine.html#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area         : 5264 m²</span></span>
+<span id="cb10-9"><a href="engine.html#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area         : 5051 m²</span></span>
 <span id="cb10-10"><a href="engine.html#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points       : 25.4 thousand points</span></span>
-<span id="cb10-11"><a href="engine.html#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 4.83 points/m²</span></span>
-<span id="cb10-12"><a href="engine.html#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-13"><a href="engine.html#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
-<span id="cb10-14"><a href="engine.html#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class        : LAS (v1.0 format 1)</span></span>
-<span id="cb10-15"><a href="engine.html#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; memory       : 1.6 Mb </span></span>
-<span id="cb10-16"><a href="engine.html#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent       : 339102, 339181.9, 5238677, 5238757 (xmin, xmax, ymin, ymax)</span></span>
-<span id="cb10-17"><a href="engine.html#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref.  : WGS 84 / UTM zone 19N </span></span>
-<span id="cb10-18"><a href="engine.html#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area         : 5252 m²</span></span>
-<span id="cb10-19"><a href="engine.html#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points       : 21.1 thousand points</span></span>
-<span id="cb10-20"><a href="engine.html#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 4.01 points/m²</span></span></code></pre></div>
+<span id="cb10-11"><a href="engine.html#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 5.04 points/m²</span></span>
+<span id="cb10-12"><a href="engine.html#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 3.9 pulses/m²</span></span>
+<span id="cb10-13"><a href="engine.html#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-14"><a href="engine.html#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
+<span id="cb10-15"><a href="engine.html#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class        : LAS (v1.0 format 1)</span></span>
+<span id="cb10-16"><a href="engine.html#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; memory       : 1.3 Mb </span></span>
+<span id="cb10-17"><a href="engine.html#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent       : 339102, 339181.9, 5238677, 5238757 (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb10-18"><a href="engine.html#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref.  : WGS 84 / UTM zone 19N </span></span>
+<span id="cb10-19"><a href="engine.html#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area         : 5013 m²</span></span>
+<span id="cb10-20"><a href="engine.html#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points       : 21.1 thousand points</span></span>
+<span id="cb10-21"><a href="engine.html#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 4.2 points/m²</span></span>
+<span id="cb10-22"><a href="engine.html#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 3.65 pulses/m²</span></span></code></pre></div>
 </div>
 </div>
 <div id="engine-options" class="section level2" number="14.6">
@@ -509,17 +513,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-7"><a href="engine.html#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area        : 38290.55 m²</span></span>
 <span id="cb11-8"><a href="engine.html#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points      : 123.8 thousand points</span></span>
 <span id="cb11-9"><a href="engine.html#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 3.2 points/m²</span></span>
-<span id="cb11-10"><a href="engine.html#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 6</span></span>
-<span id="cb11-11"><a href="engine.html#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rois)</span></code></pre></div>
+<span id="cb11-10"><a href="engine.html#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 2.7 pulses/m²</span></span>
+<span id="cb11-11"><a href="engine.html#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 6</span></span>
+<span id="cb11-12"><a href="engine.html#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rois)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-extracted-plots-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>We can check the files that were written on disk and see that the names match the template.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="engine.html#cb12-1" aria-hidden="true" tabindex="-1"></a>rois<span class="sc">$</span>filename</span>
-<span id="cb12-2"><a href="engine.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpUTF1QI/339348.8_5239254_1.las&quot;</span></span>
-<span id="cb12-3"><a href="engine.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;/tmp/RtmpUTF1QI/339141.9_5238717_2.las&quot;</span></span>
-<span id="cb12-4"><a href="engine.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;/tmp/RtmpUTF1QI/338579.6_5238169_3.las&quot;</span></span>
-<span id="cb12-5"><a href="engine.html#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;/tmp/RtmpUTF1QI/338520.8_5239318_4.las&quot;</span></span>
-<span id="cb12-6"><a href="engine.html#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;/tmp/RtmpUTF1QI/338110_5239247_5.las&quot;  </span></span>
-<span id="cb12-7"><a href="engine.html#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] &quot;/tmp/RtmpUTF1QI/339385_5239290_6.las&quot;</span></span></code></pre></div>
+<span id="cb12-2"><a href="engine.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/Rtmpwf2cf9/339348.8_5239254_1.las&quot;</span></span>
+<span id="cb12-3"><a href="engine.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;/tmp/Rtmpwf2cf9/339141.9_5238717_2.las&quot;</span></span>
+<span id="cb12-4"><a href="engine.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;/tmp/Rtmpwf2cf9/338579.6_5238169_3.las&quot;</span></span>
+<span id="cb12-5"><a href="engine.html#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;/tmp/Rtmpwf2cf9/338520.8_5239318_4.las&quot;</span></span>
+<span id="cb12-6"><a href="engine.html#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;/tmp/Rtmpwf2cf9/338110_5239247_5.las&quot;  </span></span>
+<span id="cb12-7"><a href="engine.html#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] &quot;/tmp/Rtmpwf2cf9/339385_5239290_6.las&quot;</span></span></code></pre></div>
 </div>
 <div id="engine-options-index" class="section level3" number="14.6.2">
 <h3><span class="header-section-number">14.6.2</span> Multiple extraction with point cloud indexation</h3>
@@ -575,7 +580,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="engine-options-parallel" class="section level3" number="14.7.4">
 <h3><span class="header-section-number">14.7.4</span> Parallel processing</h3>
-<p>In <code>lidR</code> every iterative process can be computed in parallel on a single machine or on multiple machines accessible remotely. Remote parallelization is a very advanced case not covered in this book for which a <a href="https://github.com/Jean-Romain/lidR/wiki/Make-cheap-High-Performance-Computing-to-process-large-datasets">wiki page</a> has been written.</p>
+<p>In <code>lidR</code> every iterative process can be computed in parallel on a single machine or on multiple machines accessible remotely. Remote parallelization is a very advanced case not covered in this book for which a <a href="https://github.com/r-lidar/lidR/wiki/Make-cheap-High-Performance-Computing-to-process-large-datasets">wiki page</a> has been written.</p>
 <p>In the following example only local parallelization is covered. Parallelization is driven by the package <a href="https://github.com/HenrikBengtsson/future"><code>future</code></a>. Understanding this package is thus a requirement for being able to parallelize tasks in <code>lidR</code>. In the following example we load <code>future</code> and register a parallelization plan to enable parallelized classification.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="engine.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
 <span id="cb17-2"><a href="engine.html#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
@@ -713,15 +718,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In all the previous examples we have seen that the engine takes care of merging intermediate results into a single usable object. When intermediate results are stored on disk, the final results in R is a single lightweight object such as a <code>LAScatalog</code> or a Virtual Data set. This is not true for <code>locate_trees()</code> and other functions that return spatial vectors. The default behaviour is to write Geopackage (.gpkg) and there is no way to build a light weight object. What is returned is thus a vector of written files.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="engine.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}&quot;</span>)</span>
 <span id="cb29-2"><a href="engine.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">locate_trees</span>(ctg_norm, <span class="fu">lmf</span>(<span class="dv">4</span>), <span class="at">uniqueness =</span> <span class="st">&quot;bitmerge&quot;</span>)</span>
-<span id="cb29-3"><a href="engine.html#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpUTF1QI/tiles_338000_5238000_1_norm.shp&quot;</span></span>
-<span id="cb29-4"><a href="engine.html#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;/tmp/RtmpUTF1QI/tiles_338000_5238500_1_norm.shp&quot;</span></span>
-<span id="cb29-5"><a href="engine.html#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;/tmp/RtmpUTF1QI/tiles_338000_5239000_1_norm.shp&quot;</span></span>
-<span id="cb29-6"><a href="engine.html#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;/tmp/RtmpUTF1QI/tiles_338500_5238000_1_norm.shp&quot;</span></span>
-<span id="cb29-7"><a href="engine.html#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;/tmp/RtmpUTF1QI/tiles_338500_5238500_1_norm.shp&quot;</span></span>
-<span id="cb29-8"><a href="engine.html#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] &quot;/tmp/RtmpUTF1QI/tiles_338500_5239000_1_norm.shp&quot;</span></span>
-<span id="cb29-9"><a href="engine.html#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7] &quot;/tmp/RtmpUTF1QI/tiles_339000_5238000_1_norm.shp&quot;</span></span>
-<span id="cb29-10"><a href="engine.html#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8] &quot;/tmp/RtmpUTF1QI/tiles_339000_5238500_1_norm.shp&quot;</span></span>
-<span id="cb29-11"><a href="engine.html#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [9] &quot;/tmp/RtmpUTF1QI/tiles_339000_5239000_1_norm.shp&quot;</span></span></code></pre></div>
+<span id="cb29-3"><a href="engine.html#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/Rtmpwf2cf9/tiles_338000_5238000_1_norm.shp&quot;</span></span>
+<span id="cb29-4"><a href="engine.html#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;/tmp/Rtmpwf2cf9/tiles_338000_5238500_1_norm.shp&quot;</span></span>
+<span id="cb29-5"><a href="engine.html#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;/tmp/Rtmpwf2cf9/tiles_338000_5239000_1_norm.shp&quot;</span></span>
+<span id="cb29-6"><a href="engine.html#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;/tmp/Rtmpwf2cf9/tiles_338500_5238000_1_norm.shp&quot;</span></span>
+<span id="cb29-7"><a href="engine.html#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;/tmp/Rtmpwf2cf9/tiles_338500_5238500_1_norm.shp&quot;</span></span>
+<span id="cb29-8"><a href="engine.html#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] &quot;/tmp/Rtmpwf2cf9/tiles_338500_5239000_1_norm.shp&quot;</span></span>
+<span id="cb29-9"><a href="engine.html#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7] &quot;/tmp/Rtmpwf2cf9/tiles_339000_5238000_1_norm.shp&quot;</span></span>
+<span id="cb29-10"><a href="engine.html#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8] &quot;/tmp/Rtmpwf2cf9/tiles_339000_5238500_1_norm.shp&quot;</span></span>
+<span id="cb29-11"><a href="engine.html#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [9] &quot;/tmp/Rtmpwf2cf9/tiles_339000_5239000_1_norm.shp&quot;</span></span></code></pre></div>
 <div id="summary-4" class="section level3" number="14.11.1">
 <h3><span class="header-section-number">14.11.1</span> Summary</h3>
 <p>We have learned several things about the engine in this section</p>
@@ -849,19 +854,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb40-5"><a href="engine.html#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area        : 2.25 km²</span></span>
 <span id="cb40-6"><a href="engine.html#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points      : 9.45 million points</span></span>
 <span id="cb40-7"><a href="engine.html#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 4.2 points/m²</span></span>
-<span id="cb40-8"><a href="engine.html#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 9 </span></span>
-<span id="cb40-9"><a href="engine.html#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; proc. opt.  : buffer: 10 | chunk: 250</span></span>
-<span id="cb40-10"><a href="engine.html#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; input opt.  : select: * | filter: -keep_class 2</span></span>
-<span id="cb40-11"><a href="engine.html#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; output opt. : on disk | w2w guaranteed | merging enabled</span></span>
-<span id="cb40-12"><a href="engine.html#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; drivers     :</span></span>
-<span id="cb40-13"><a href="engine.html#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - Raster : format = GTiff  NAflag = -999999  </span></span>
-<span id="cb40-14"><a href="engine.html#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - stars : NA_value = -999999  </span></span>
-<span id="cb40-15"><a href="engine.html#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - SpatRaster : overwrite = FALSE  NAflag = -999999  </span></span>
-<span id="cb40-16"><a href="engine.html#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - SpatVector : overwrite = FALSE  </span></span>
-<span id="cb40-17"><a href="engine.html#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - LAS : no parameter</span></span>
-<span id="cb40-18"><a href="engine.html#cb40-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - Spatial : overwrite = FALSE  </span></span>
-<span id="cb40-19"><a href="engine.html#cb40-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - sf : quiet = TRUE  </span></span>
-<span id="cb40-20"><a href="engine.html#cb40-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - data.frame : no parameter</span></span></code></pre></div>
+<span id="cb40-8"><a href="engine.html#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 3.4 pulses/m²</span></span>
+<span id="cb40-9"><a href="engine.html#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 9 </span></span>
+<span id="cb40-10"><a href="engine.html#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; proc. opt.  : buffer: 10 | chunk: 250</span></span>
+<span id="cb40-11"><a href="engine.html#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; input opt.  : select: * | filter: -keep_class 2</span></span>
+<span id="cb40-12"><a href="engine.html#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; output opt. : on disk | w2w guaranteed | merging enabled</span></span>
+<span id="cb40-13"><a href="engine.html#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; drivers     :</span></span>
+<span id="cb40-14"><a href="engine.html#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - Raster : format = GTiff  NAflag = -999999  </span></span>
+<span id="cb40-15"><a href="engine.html#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - stars : NA_value = -999999  </span></span>
+<span id="cb40-16"><a href="engine.html#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - SpatRaster : overwrite = FALSE  NAflag = -999999  </span></span>
+<span id="cb40-17"><a href="engine.html#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - SpatVector : overwrite = FALSE  </span></span>
+<span id="cb40-18"><a href="engine.html#cb40-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - LAS : no parameter</span></span>
+<span id="cb40-19"><a href="engine.html#cb40-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - Spatial : overwrite = FALSE  </span></span>
+<span id="cb40-20"><a href="engine.html#cb40-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - sf : quiet = TRUE  </span></span>
+<span id="cb40-21"><a href="engine.html#cb40-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - data.frame : no parameter</span></span></code></pre></div>
 
 </div>
 </div>

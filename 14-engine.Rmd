@@ -85,15 +85,15 @@ plot(ctg)
 
 In this and the following section (section \@ref(engine2)) we will use a collection of nine 500 x 500 m files to create examples. The nine files can be downloaded here:
 
-1. [tiles_338000_5238000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000_1.laz)
-2. [tiles_338000_5238500.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238500_1.laz)
-3. [tiles_338000_5239000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5239000_1.laz)
-4. [tiles_338500_5238000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238000_1.laz)
-5. [tiles_338500_5238500.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238500_1.laz)
-6. [tiles_338500_5239000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5239000_1.laz)
-7. [tiles_339000_5238000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238000_1.laz)
-8. [tiles_339000_5238500.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238500_1.laz)
-9. [tiles_339000_5239000.laz](https://github.com/Jean-Romain/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5239000_1.laz)
+1. [tiles_338000_5238000.laz](https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000_1.laz)
+2. [tiles_338000_5238500.laz](https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238500_1.laz)
+3. [tiles_338000_5239000.laz](https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5239000_1.laz)
+4. [tiles_338500_5238000.laz](https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238000_1.laz)
+5. [tiles_338500_5238500.laz](https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5238500_1.laz)
+6. [tiles_338500_5239000.laz](https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338500_5239000_1.laz)
+7. [tiles_339000_5238000.laz](https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238000_1.laz)
+8. [tiles_339000_5238500.laz](https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238500_1.laz)
+9. [tiles_339000_5239000.laz](https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5239000_1.laz)
 
 ```{r plot-ctg-book-1, fig.height=4, fig.width=4}
 ctg <- readLAScatalog("data/ENGINE/catalog/")
@@ -237,7 +237,7 @@ plot(ctg, chunk = TRUE)
 
 ### Parallel processing {#engine-options-parallel}
 
-In `lidR` every iterative process can be computed in parallel on a single machine or on multiple machines accessible remotely. Remote parallelization is a very advanced case not covered in this book for which a [wiki page](https://github.com/Jean-Romain/lidR/wiki/Make-cheap-High-Performance-Computing-to-process-large-datasets) has been written.
+In `lidR` every iterative process can be computed in parallel on a single machine or on multiple machines accessible remotely. Remote parallelization is a very advanced case not covered in this book for which a [wiki page](https://github.com/r-lidar/lidR/wiki/Make-cheap-High-Performance-Computing-to-process-large-datasets) has been written.
 
 In the following example only local parallelization is covered. Parallelization is driven by the package [`future`](https://github.com/HenrikBengtsson/future). Understanding this package is thus a requirement for being able to parallelize tasks in `lidR`. In the following example we load `future` and register a parallelization plan to enable parallelized classification.
 
