@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Ground classification {#gnd}
 
-Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows creation of a continuous model of terrain elevation (see section \@ref(dtm)). Many algorithms have been reported in the literature and `lidR` currently provides two of them: Progressive Morphological Filter (PMF) and Cloth Simulation Function (CSF) usable with the function `classify_ground()`. The [`lidRplugins`](https://github.com/Jean-Romain/lidRplugins) package provides Multiscale Curvature Classification (MCC).
+Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows creation of a continuous model of terrain elevation (see section \@ref(dtm)). Many algorithms have been reported in the literature and `lidR` currently provides three of them: Progressive Morphological Filter (PMF), Cloth Simulation Function (CSF) and Multiscale Curvature Classification (MCC) usable with the function `classify_ground()`.
 
 ## Progressive Morphological Filter {#pmf}
 
@@ -71,7 +71,7 @@ plot_crossection(las, p1 = p1, p2 = p2, colour_by = factor(Classification))
 
 ## Cloth Simulation Function {#csf}
 
-Cloth simulation filtering (CSF) is based on [Zhang et al 2016](http://www.mdpi.com/2072-4292/8/6/501/htm) and consists of simulating a piece of cloth draped over a reversed point cloud. In this method the point cloud is turned upside down and then a  cloth is dropped on the inverted surface. Ground points are determined by analyzing the interactions between the nodes of the cloth and the inverted surface. The cloth simulation itself is based on a grid that consists of particles with mass and interconnections that together determine the three-dimensional position and shape of the cloth.
+Cloth simulation filtering (CSF) uses the [Zhang et al 2016](http://www.mdpi.com/2072-4292/8/6/501/htm) algorithm and consists of simulating a piece of cloth draped over a reversed point cloud. In this method the point cloud is turned upside down and then a  cloth is dropped on the inverted surface. Ground points are determined by analyzing the interactions between the nodes of the cloth and the inverted surface. The cloth simulation itself is based on a grid that consists of particles with mass and interconnections that together determine the three-dimensional position and shape of the cloth.
 
 <center>
 ![](images/GND/CSF.png)
@@ -104,6 +104,19 @@ gnd <- filter_ground(las)
 plot(gnd, size = 3, bg = "white") 
 ```
 
+## Multiscale Curvature Classification (MCC) {#mcc}
+
+Multiscale Curvature Classification (MCC) uses the [Evans and Hudak 2016](https://ieeexplore.ieee.org/document/4137852) algorithm originally implemented in the [mcc-lidar](https://sourceforge.net/projects/mcclidar/) software.
+
+```{r, echo=FALSE}
+las$Classification <- 0L
+```
+
+```{r plot-gnd-crossection-5, fig.height=2, fig.width=8}
+las <- classify_ground(las, mcc(1.5,0.3))
+plot_crossection(las, p1 = p1, p2 = p2, colour_by = factor(Classification))
+```
+
 ## Edge artifacts {#edge-artifact}
 
 No matter which algorithm is used in `lidR` or other software, ground classification will be weaker at the edges of point clouds as the algorithm must analyze the local neighbourhood (which is missing on edges). To find ground points, an algorithm need to analyze the local neighborhood or local context that is missing at edge areas. When processing point clouds it's important to always consider a buffer around the region of interest to avoid edge artifacts. `lidR` has tools to manage buffered tiles and this advanced use of the package will be covered in section \@ref(engine).
@@ -116,14 +129,8 @@ If available, we recommend using classifications given by the data provider. `cl
 
 ## Other methods {#other}
 
-Ground segmentation is not limited to the 2 methods described above. Many more have been presented and described in the literature. In section \@ref(plugins) we will learn how to create a plugin algorithm and test it seamlessly in R with `lidR` using a syntax like:
+Ground segmentation is not limited to the 3 methods described above. Many more have been presented and described in the literature. In section \@ref(plugins) we will learn how to create a plugin algorithm and test it seamlessly in R with `lidR` using a syntax like:
 
 ```r
 las <- classify_ground(las, algorithm = my_new_method(param1 = 0.05))
-```
-
-As mentioned in introduction the [`lidRplugins`](https://github.com/Jean-Romain/lidRplugins) package provides Multiscale Curvature Classification (MCC)
-
-```r
-las <- classify_ground(las, algorithm = lidRplugins:mcc())
 ```

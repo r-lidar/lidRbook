@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3 Ground classification | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3 Ground classification | The lidR package" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="A guide to the lidR package" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-12-10" />
+<meta name="date" content="2022-05-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="io.html"/>
 <link rel="next" href="dtm.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,9 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -156,9 +155,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#pmf"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#csf"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
-<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
-<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
-<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#mcc"><i class="fa fa-check"></i><b>3.3</b> Multiscale Curvature Classification (MCC)</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.4</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.5</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.6" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.6</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a>
 <ul>
@@ -362,11 +362,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="gnd" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Ground classification</h1>
-<p>Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows creation of a continuous model of terrain elevation (see section <a href="dtm.html#dtm">4</a>). Many algorithms have been reported in the literature and <code>lidR</code> currently provides two of them: Progressive Morphological Filter (PMF) and Cloth Simulation Function (CSF) usable with the function <code>classify_ground()</code>. The <a href="https://github.com/Jean-Romain/lidRplugins"><code>lidRplugins</code></a> package provides Multiscale Curvature Classification (MCC).</p>
-<div id="pmf" class="section level2" number="3.1">
-<h2><span class="header-section-number">3.1</span> Progressive Morphological Filter</h2>
+<div id="gnd" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Ground classification<a href="gnd.html#gnd" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows creation of a continuous model of terrain elevation (see section <a href="dtm.html#dtm">4</a>). Many algorithms have been reported in the literature and <code>lidR</code> currently provides three of them: Progressive Morphological Filter (PMF), Cloth Simulation Function (CSF) and Multiscale Curvature Classification (MCC) usable with the function <code>classify_ground()</code>.</p>
+<div id="pmf" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Progressive Morphological Filter<a href="gnd.html#pmf" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The implementation of PMF algorithm in <code>lidR</code> is based on the method described in <a href="https://ieeexplore.ieee.org/document/1202973">Zhang et al. (2003)</a> with some technical modifications. The original method is raster-based, while <code>lidR</code> performs point-based morphological operations because <code>lidR</code> is a point cloud oriented software. The main step of the methods are summarised in the figure below:</p>
 <center>
 <img src="images/GND/PMF.png" />
@@ -391,9 +391,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="gnd.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_crossection</span>(las, <span class="at">p1 =</span> p1, <span class="at">p2 =</span> p2, <span class="at">colour_by =</span> <span class="fu">factor</span>(Classification))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-gnd-crossection-2-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
-<div id="csf" class="section level2" number="3.2">
-<h2><span class="header-section-number">3.2</span> Cloth Simulation Function</h2>
-<p>Cloth simulation filtering (CSF) is based on <a href="http://www.mdpi.com/2072-4292/8/6/501/htm">Zhang et al 2016</a> and consists of simulating a piece of cloth draped over a reversed point cloud. In this method the point cloud is turned upside down and then a cloth is dropped on the inverted surface. Ground points are determined by analyzing the interactions between the nodes of the cloth and the inverted surface. The cloth simulation itself is based on a grid that consists of particles with mass and interconnections that together determine the three-dimensional position and shape of the cloth.</p>
+<div id="csf" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Cloth Simulation Function<a href="gnd.html#csf" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Cloth simulation filtering (CSF) uses the <a href="http://www.mdpi.com/2072-4292/8/6/501/htm">Zhang et al 2016</a> algorithm and consists of simulating a piece of cloth draped over a reversed point cloud. In this method the point cloud is turned upside down and then a cloth is dropped on the inverted surface. Ground points are determined by analyzing the interactions between the nodes of the cloth and the inverted surface. The cloth simulation itself is based on a grid that consists of particles with mass and interconnections that together determine the three-dimensional position and shape of the cloth.</p>
 <center>
 <img src="images/GND/CSF.png" />
 </center>
@@ -412,21 +412,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-2"><a href="gnd.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gnd, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>) </span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-gnd-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="edge-artifact" class="section level2" number="3.3">
-<h2><span class="header-section-number">3.3</span> Edge artifacts</h2>
+<div id="mcc" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Multiscale Curvature Classification (MCC)<a href="gnd.html#mcc" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Multiscale Curvature Classification (MCC) uses the <a href="https://ieeexplore.ieee.org/document/4137852">Evans and Hudak 2016</a> algorithm originally implemented in the <a href="https://sourceforge.net/projects/mcclidar/">mcc-lidar</a> software.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="gnd.html#cb10-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="fu">mcc</span>(<span class="fl">1.5</span>,<span class="fl">0.3</span>))</span>
+<span id="cb10-2"><a href="gnd.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_crossection</span>(las, <span class="at">p1 =</span> p1, <span class="at">p2 =</span> p2, <span class="at">colour_by =</span> <span class="fu">factor</span>(Classification))</span></code></pre></div>
+<p><img src="lidR-book_files/figure-html/plot-gnd-crossection-5-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="edge-artifact" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Edge artifacts<a href="gnd.html#edge-artifact" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>No matter which algorithm is used in <code>lidR</code> or other software, ground classification will be weaker at the edges of point clouds as the algorithm must analyze the local neighbourhood (which is missing on edges). To find ground points, an algorithm need to analyze the local neighborhood or local context that is missing at edge areas. When processing point clouds it’s important to always consider a buffer around the region of interest to avoid edge artifacts. <code>lidR</code> has tools to manage buffered tiles and this advanced use of the package will be covered in section <a href="engine.html#engine">14</a>.</p>
 </div>
-<div id="method-selection" class="section level2" number="3.4">
-<h2><span class="header-section-number">3.4</span> How to choose a method and its parameters?</h2>
+<div id="method-selection" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> How to choose a method and its parameters?<a href="gnd.html#method-selection" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Identifying the optimal algorithm parameters is not a trivial task and often requires several trial runs. <code>lidR</code> proposes several algorithms, and may propose even more in future versions, however the main goal is to provide a mean to compare outputs. We don’t know which one is better, and we don’t know which parameters best suit a given terrain. It’s likely that parameters need to be dynamically adjusted to the local context, providing reasoning for why parameters works in one file may provide inadequate results in another.</p>
 <p>If available, we recommend using classifications given by the data provider. <code>classify_ground()</code>is useful for small to medium size unclassified region of interests because it is feasible to visually assess classification results. For large acquisitions where visual assessment is no longer feasible, we do not recommend performing ground classification without studying its accuracy ahead of time.</p>
 </div>
-<div id="other" class="section level2" number="3.5">
-<h2><span class="header-section-number">3.5</span> Other methods</h2>
-<p>Ground segmentation is not limited to the 2 methods described above. Many more have been presented and described in the literature. In section <a href="plugins.html#plugins">19</a> we will learn how to create a plugin algorithm and test it seamlessly in R with <code>lidR</code> using a syntax like:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="gnd.html#cb10-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="at">algorithm =</span> <span class="fu">my_new_method</span>(<span class="at">param1 =</span> <span class="fl">0.05</span>))</span></code></pre></div>
-<p>As mentioned in introduction the <a href="https://github.com/Jean-Romain/lidRplugins"><code>lidRplugins</code></a> package provides Multiscale Curvature Classification (MCC)</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="gnd.html#cb11-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="at">algorithm =</span> lidRplugins<span class="sc">:</span><span class="fu">mcc</span>())</span></code></pre></div>
+<div id="other" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Other methods<a href="gnd.html#other" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Ground segmentation is not limited to the 3 methods described above. Many more have been presented and described in the literature. In section <a href="plugins.html#plugins">19</a> we will learn how to create a plugin algorithm and test it seamlessly in R with <code>lidR</code> using a syntax like:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="gnd.html#cb11-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="at">algorithm =</span> <span class="fu">my_new_method</span>(<span class="at">param1 =</span> <span class="fl">0.05</span>))</span></code></pre></div>
 
 </div>
 </div>
