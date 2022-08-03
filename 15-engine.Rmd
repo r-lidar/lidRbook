@@ -51,11 +51,11 @@ This takes a significant amount of time. It also implies the need to create copi
 
 ## `catalog_apply()` {#engine-catalog-apply}
 
-In this section we outline the `catalog_apply()` function, which is used subliminally in every function seen in the section \@ref(engine). Here we show how to leverage its versatility to design tools that do not yet exist like the normalization + colorization example from above but also more inovative processes. 
+In this section we outline the `catalog_apply()` function, which is used subliminally in every function seen in the section \@ref(engine). Here we show how to leverage its versatility to design tools that do not yet exist, like the normalization + colorization example from above, but also more innovative processes. 
 
 Again, the `LAScatalog` class and the `LAScatalog` engine are deeply documented in a two dedicated vignettes available [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-class.html) and [here](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-engine.html). The purpose of these examples is to provide alternative, hands-on documentation with more applied examples and real use cases. 
 
-In this section we will use the same 9 files used in section \@ref(engine) and an RGB raster that encompasses the collection of file.
+In this section we will use the same 9 files used in section \@ref(engine) and an RGB raster that encompasses the collection of files.
 
 ```{r plot-ctg-engine2, fig.height=4, fig.width=4}
 ctg <- readLAScatalog("data/ENGINE/catalog/")
@@ -66,7 +66,7 @@ plot(ctg)
 opt_progress(ctg) <- FALSE
 ```
 
-RGB image is available for download [here](data/ENGINE/catalog/rgb.tif).
+The RGB image is available for download [here](data/ENGINE/catalog/rgb.tif).
 
 ```{r, echo=FALSE, eval=FALSE}
 url="https://servicesmatriciels.mern.gouv.qc.ca:443/erdas-iws/ogc/wmts/Inventaire_Ecoforestier/Inventaire_Ecoforestier/default/GoogleMapsCompatibleExt2:epsg:3857/{z}/{y}/{x}.jpg"
@@ -93,7 +93,7 @@ terra::plotRGB(rgbmap)
 
 ## Create user-defined function {#engine-user-function-generic}
 
-First we need to create a function that combined the normalization + colorization steps. Let's call it `norm_color()`. Its simple and uses only 2 functions.
+First we need to create a function that combines the normalization + colorization steps. Let's call it `norm_color()`. It's simple and uses only 2 functions.
 
 ```{r}
 norm_color <- function(las, rgbmap) # create user-defined function
@@ -122,12 +122,12 @@ So far it works only when using a `LAS` object. Now let's make it working with a
 The simple way is:
 
 ```r
-new_ctg <- catalog_map(norm_color, rgbmap = rgbmap)
+new_ctg <- catalog_map(ctg, norm_color, rgbmap = rgbmap)
 ```
 
-However here we will learn the hard way to understand better how it works internally and understand the full potential of `catalog_apply()` for which `catalog_map()` is only a simplified version.
+However, here we will learn the hard way in order to understand better how it works internally and understand the full potential of `catalog_apply()` for which `catalog_map()` is only a simplified version.
 
-The core engine is the function `catalog_apply()` but this function does not work with any user-defined function. User-defined functions must respect a specific template (take a look at the documentation in R) and is expected to perform some specific tasks. First, the primary variable must be a chunk from the catalog (see `chunk` below), the function must read the chunk, check it is not empty, then perform the computation.
+The core engine is the function `catalog_apply()` but this function does not work with any user-defined function. User-defined functions must respect a specific template (take a look at the documentation in R) and is expected to perform some specific tasks. First, the primary variable must be a chunk from the catalog (see `chunk` below), the function must read the chunk, check that it is not empty, then perform the computation.
 
 A valid function is the following:
 
@@ -156,7 +156,7 @@ output <- catalog_apply(ctg, norm_color_chunk, rgbmap = rgbmap) # implement user
 str(output)
 ```
 
-We see that the output is a `list` with the name of each file written to disk. This is the default behavior of the engine. It returns a `list` with one element per chunk. This isn't really convenient. We have seen in section \@ref(engine) that in the case of `LAS` files we can return a `LAScatalog`, which is far more convenient. 
+We can see that the output is a `list` with the name of each file written to disk. This is the default behavior of the engine. It returns a `list` with one element per chunk. This isn't really convenient. We have seen in section \@ref(engine) that in the case of `LAS` files we can return a `LAScatalog`, which is far more convenient. 
 
 We can use the option `automerge = TRUE` so `catalog_apply()` will automatically merge the list into something more user-friendly.
 
@@ -172,7 +172,7 @@ We now have a `LAscatalog`. It is much better but:
 plot(output)
 ```
 
-We still have a problem here. The files are overlapping because we read each file with a buffer and then the outputs have been written **with their buffer**. This is bad practice. Its important to always remove the buffer after the computation. In this specific case the output is a `LAS` file. When `readLAS()` reads a chunk from the catalog the points in the buffer are flagged so they can be easily manipulated. Since they are flagged, we can remove these points easily by adding this to our user-defined function. It is always the role of the user to remove the buffer of the output.
+We still have a problem here. The files are overlapping because we read each file with a buffer and then the outputs have been written **with their buffer**. This is bad practice. It's important to always remove the buffer after the computation. In this specific case, the output is a `LAS` file. When `readLAS()` reads a chunk from the catalog the points in the buffer are flagged so they can be easily manipulated. Since they are flagged, we can easily remove these points by adding this step to our user-defined function. It is always the role of the user to remove the buffer of the output.
 
 ```{r plot-ctg-colored, fig.height=4, fig.width=4}
 norm_color_chunk <- function(chunk, rgbmap)
@@ -192,7 +192,7 @@ plot(output)
 
 When the outputs are spatial vectors or spatial rasters they can be cropped using the bounding box of the chunk accessible via `extent(chunk)` or `bbox(chunk)` or `st_bbox(chunk)` or `ext(chunk)` that match respectively with `raster`, `sp`, `sf/stars` and `terra`.
 
-Nice! We created a custom function -- `norm_color()` -- and we upscale its definition to capably and efficiently process an entire ALS acquisition made up of hundreds of files. Using options described in section \@ref(engine), we can also introduce paralellization, chunk size control, and buffer size control.
+Nice! We created a custom function -- `norm_color()` -- and we upscale its definition to capably and efficiently process an entire ALS acquisition made up of hundreds of files. Using options described in section \@ref(engine), we can also introduce parallelization, chunk size control, and buffer size control.
 
 ```r
 library(future)
@@ -205,7 +205,7 @@ options <- list(automerge = TRUE)
 output <- catalog_apply(ctg, norm_color_chunk, rgbmap = rgbmap, .options = options)
 ```
 
-We can check that it worked by loading a sample from somewhere in our new catalog. According to the options put above we are expecting to get a normalized (we normalized), colored (we merged RGB image), ground points (we used `-keep_class 2`).
+We can check that it worked by loading a sample from somewhere in our new catalog. According to the options put above, we are expecting to get a normalized (we normalized), colored (we merged RGB image), ground points (we used `-keep_class 2`).
 
 ```{r plot-cliped-gnd-colored, rgl = TRUE}
 opt_output_files(output) <- ""
@@ -250,7 +250,7 @@ opt_output_files(ctg) <- paste0(tempdir(), "/{*}_norm_rgb")
 ctg_norm_colored <-  norm_color(ctg, rgbmap)
 ```
 
-The different steps to apply an a `LAScluster`  i.e. `readLAS` + remove buffer of the output are, in this case very common it is possible to use `catalog_map()` instead that is capable of doing this tasks for you. But in some cases the output may be not supported, on the cropping step is more complex. In those cases `catalog_apply()` must be used because it allows for a more accurate control.
+The different steps to apply to a `LAScluster`  (i.e. `readLAS` + remove buffer of the output) are, in this case, very common. It is possible to use `catalog_map()` instead, that is capable of doing this tasks for you. But in some cases the output may be not supported, because the cropping step is more complex. In those cases, `catalog_apply()` must be used because it allows for a more accurate control.
 
 ```{r}
 # Create a generic function
@@ -303,6 +303,6 @@ ctg_norm_colored <- norm_color(ctg, rgbmap)
 
 It failed with an informative message!
 
-We are done. This is exactly how the `lidR` package works and we have presented all the tools needed to extent it with new applications. 
+We are done. This is exactly how the `lidR` package works and we have presented all the tools needed to extend it with new applications. 
 
-More examples can be found further along in this book. For example section \@ref(outbox-distance-returns) presents how to compute a raster of the average distance between first and last returns, and section \@ref(outbox-rumple-index) presents how to compute a rumple index of the canopy from the point cloud and of course the documentation of the package itself is more comprehensive than this book.
+More examples can be found further along in this book. For example, section \@ref(outbox-distance-returns) presents how to compute a raster of the average distance between first and last returns, and section \@ref(outbox-rumple-index) presents how to compute a rumple index of the canopy from the point cloud and, of course, the documentation of the package itself is more comprehensive than this book.
