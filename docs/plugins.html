@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>19 lidR plugin system | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="19 lidR plugin system | The lidR package" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="A guide to the lidR package" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-12-10" />
+<meta name="date" content="2022-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="spatial-indexing.html"/>
 
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,18 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBLHENEPMT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBLHENEPMT');
+</script>
 
 
 <style type="text/css">
@@ -156,9 +164,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#pmf"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#csf"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
-<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
-<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
-<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#mcc"><i class="fa fa-check"></i><b>3.3</b> Multiscale Curvature Classification (MCC)</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.4</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.5</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.6" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.6</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a>
 <ul>
@@ -362,8 +371,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="plugins" class="section level1" number="19">
-<h1><span class="header-section-number">19</span> <code>lidR</code> plugin system</h1>
+<div id="plugins" class="section level1 hasAnchor" number="19">
+<h1><span class="header-section-number">19</span> <code>lidR</code> plugin system<a href="plugins.html#plugins" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>We have seen that <code>lidR</code> has many functions capable of processing a collection of files. Most of these functions support more than one algorithm to achieve a given task.</p>
 <ul>
 <li><code>rasterize_terrain()</code> supports <code>tin()</code>, <code>knnidw()</code>, <code>kriging()</code></li>
@@ -379,8 +388,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>There is another way to create new algorithms that are fully compatible with <code>lidR</code> functions. This is not documented in the package because the underlying mechanism is not yet fully consistent and is still subject to improvements.</p>
 <p>Let’s continue with the bicubic spline interpolation method for creating a digital terrain model. There is a package called <a href="https://CRAN.R-project.org/package=MBA"><code>MBA</code></a> that implements bicubic spline interpolation. We will create a function <code>mba()</code> that can be used like any other algorithm:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="plugins.html#cb1-1" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(las, <span class="at">algorithm =</span> <span class="fu">mba</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">h =</span> <span class="dv">8</span>))</span></code></pre></div>
-<div id="plugin-system" class="section level2" number="19.1">
-<h2><span class="header-section-number">19.1</span> Understanding lidR algorithms</h2>
+<div id="plugin-system" class="section level2 hasAnchor" number="19.1">
+<h2><span class="header-section-number">19.1</span> Understanding lidR algorithms<a href="plugins.html#plugin-system" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In <code>lidR</code>, an algorithm such as <code>tin()</code>, <code>p2r()</code> or <code>lmf()</code> is a function factory. The output is functions with extra classes so regular users wont immediately recognize that they are functions.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="plugins.html#cb2-1" aria-hidden="true" tabindex="-1"></a>algo <span class="ot">&lt;-</span> <span class="fu">knnidw</span>(<span class="at">k =</span> <span class="dv">10</span>)</span>
 <span id="cb2-2"><a href="plugins.html#cb2-2" aria-hidden="true" tabindex="-1"></a>algo</span>
@@ -403,16 +412,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-5"><a href="plugins.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     assert_is_valid_context(LIDRCONTEXTSPI, &quot;knnidw&quot;)</span></span>
 <span id="cb3-6"><a href="plugins.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     return(interpolate_knnidw(las, where, k, p, rmax))</span></span>
 <span id="cb3-7"><a href="plugins.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
-<span id="cb3-8"><a href="plugins.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bytecode: 0x55bc8ad025d8&gt;</span></span>
-<span id="cb3-9"><a href="plugins.html#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;environment: 0x55bc900729c8&gt;</span></span>
+<span id="cb3-8"><a href="plugins.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bytecode: 0x5635c5af2ed8&gt;</span></span>
+<span id="cb3-9"><a href="plugins.html#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;environment: 0x5635c5ae7690&gt;</span></span>
 <span id="cb3-10"><a href="plugins.html#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
 <span id="cb3-11"><a href="plugins.html#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;function&quot;</span></span></code></pre></div>
 <p>We can see how a function designed to be used in <code>rasterize_terrain()</code> is designed. The signature is</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="plugins.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(las, where)</span></code></pre></div>
 <p>When creating a new algorithm for spatial interpolation, the function factory must return a function similar to what you see above. In the case of spatial interpolation <code>las</code> is a <code>LAS</code> with X Y and Z coordinates of ground points (cleaned of duplicates). <code>where</code> is a <code>data.frame</code> with the X Y coordinates of the location where we want to interpolate Z.</p>
 </div>
-<div id="plugin-creation" class="section level2" number="19.2">
-<h2><span class="header-section-number">19.2</span> Creation of the <code>mba</code> algorithm</h2>
+<div id="plugin-creation" class="section level2 hasAnchor" number="19.2">
+<h2><span class="header-section-number">19.2</span> Creation of the <code>mba</code> algorithm<a href="plugins.html#plugin-creation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Now let’s create our <code>mba</code> algorithm.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="plugins.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mba is our function factory</span></span>
 <span id="cb5-2"><a href="plugins.html#cb5-2" aria-hidden="true" tabindex="-1"></a>mba <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">m =</span> <span class="dv">1</span>, <span class="at">h =</span> <span class="dv">8</span>, <span class="at">extend =</span> <span class="cn">TRUE</span>) {</span>
@@ -453,8 +462,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="plugins.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rasterize_canopy</span>(las, <span class="dv">1</span>, <span class="fu">mba</span>())</span>
 <span id="cb9-2"><a href="plugins.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error: The algorithm used is not an algorithm for digital surface model.</span></span></code></pre></div>
 </div>
-<div id="plugin-extensions" class="section level2" number="19.3">
-<h2><span class="header-section-number">19.3</span> What about other algorithms?</h2>
+<div id="plugin-extensions" class="section level2 hasAnchor" number="19.3">
+<h2><span class="header-section-number">19.3</span> What about other algorithms?<a href="plugins.html#plugin-extensions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><code>lidR</code> has algorithms for canopy height models, individual tree segmentation, individual tree detection, sensor tracking, snag segmentation and so on. They all have different behaviours and this is why it’s difficult to document. If you want to create a new algorithm the best first step is to communicate directly with <code>lidR</code> developers :). The <a href="https://github.com/Jean-Romain/lidRplugins"><code>lidRplugins</code></a> package makes heavy use of the plugins system to provide extra methods for diverse tasks.</p>
 
 </div>

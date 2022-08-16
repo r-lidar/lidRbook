@@ -23,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-08-03" />
+<meta name="date" content="2022-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,15 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBLHENEPMT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBLHENEPMT');
+</script>
 
 
 <style type="text/css">
@@ -437,15 +446,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-2"><a href="engine2.html#cb8-2" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">catalog_apply</span>(ctg, norm_color_chunk, <span class="at">rgbmap =</span> rgbmap) <span class="co"># implement user-defined function using catalog_apply</span></span>
 <span id="cb8-3"><a href="engine2.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(output)</span>
 <span id="cb8-4"><a href="engine2.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; List of 9</span></span>
-<span id="cb8-5"><a href="engine2.html#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpVOvhCF/tiles_338000_5238000_1_norm_rgb.las&quot;</span></span>
-<span id="cb8-6"><a href="engine2.html#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpVOvhCF/tiles_338000_5238500_1_norm_rgb.las&quot;</span></span>
-<span id="cb8-7"><a href="engine2.html#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpVOvhCF/tiles_338000_5239000_1_norm_rgb.las&quot;</span></span>
-<span id="cb8-8"><a href="engine2.html#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpVOvhCF/tiles_338500_5238000_1_norm_rgb.las&quot;</span></span>
-<span id="cb8-9"><a href="engine2.html#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpVOvhCF/tiles_338500_5238500_1_norm_rgb.las&quot;</span></span>
-<span id="cb8-10"><a href="engine2.html#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpVOvhCF/tiles_338500_5239000_1_norm_rgb.las&quot;</span></span>
-<span id="cb8-11"><a href="engine2.html#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpVOvhCF/tiles_339000_5238000_1_norm_rgb.las&quot;</span></span>
-<span id="cb8-12"><a href="engine2.html#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpVOvhCF/tiles_339000_5238500_1_norm_rgb.las&quot;</span></span>
-<span id="cb8-13"><a href="engine2.html#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/RtmpVOvhCF/tiles_339000_5239000_1_norm_rgb.las&quot;</span></span></code></pre></div>
+<span id="cb8-5"><a href="engine2.html#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/Rtmp8APxUy/tiles_338000_5238000_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-6"><a href="engine2.html#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/Rtmp8APxUy/tiles_338000_5238500_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-7"><a href="engine2.html#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/Rtmp8APxUy/tiles_338000_5239000_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-8"><a href="engine2.html#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/Rtmp8APxUy/tiles_338500_5238000_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-9"><a href="engine2.html#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/Rtmp8APxUy/tiles_338500_5238500_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-10"><a href="engine2.html#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/Rtmp8APxUy/tiles_338500_5239000_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-11"><a href="engine2.html#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/Rtmp8APxUy/tiles_339000_5238000_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-12"><a href="engine2.html#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/Rtmp8APxUy/tiles_339000_5238500_1_norm_rgb.las&quot;</span></span>
+<span id="cb8-13"><a href="engine2.html#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : chr &quot;/tmp/Rtmp8APxUy/tiles_339000_5239000_1_norm_rgb.las&quot;</span></span></code></pre></div>
 <p>We can see that the output is a <code>list</code> with the name of each file written to disk. This is the default behavior of the engine. It returns a <code>list</code> with one element per chunk. This isn’t really convenient. We have seen in section <a href="engine.html#engine">14</a> that in the case of <code>LAS</code> files we can return a <code>LAScatalog</code>, which is far more convenient.</p>
 <p>We can use the option <code>automerge = TRUE</code> so <code>catalog_apply()</code> will automatically merge the list into something more user-friendly.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="engine2.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm_rgb&quot;</span>)</span>

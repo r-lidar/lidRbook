@@ -3,7 +3,10 @@ title: "The `lidR` package"
 author: "Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
-output: bookdown::gitbook
+output: 
+    bookdown::gitbook:
+        includes:
+          in_header: gtag.html
 documentclass: book
 description: "A guide to the `lidR` package"
 ---

@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>17 Thinking outside the box | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="17 Thinking outside the box | The lidR package" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="A guide to the lidR package" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-12-10" />
+<meta name="date" content="2022-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="modeling-aba.html"/>
 <link rel="next" href="spatial-indexing.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,18 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBLHENEPMT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBLHENEPMT');
+</script>
 
 
 <style type="text/css">
@@ -156,9 +164,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#pmf"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#csf"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
-<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
-<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
-<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#mcc"><i class="fa fa-check"></i><b>3.3</b> Multiscale Curvature Classification (MCC)</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.4</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.5</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.6" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.6</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a>
 <ul>
@@ -362,13 +371,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="outbox" class="section level1" number="17">
-<h1><span class="header-section-number">17</span> Thinking outside the box</h1>
+<div id="outbox" class="section level1 hasAnchor" number="17">
+<h1><span class="header-section-number">17</span> Thinking outside the box<a href="outbox.html#outbox" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>We have presented many common processes through these tutorials. Most examples presented could have been done with other softwares, but what we have seen is only the tip of the <code>lidR</code> iceberg! In fact, <code>lidR</code> was never designed with common processes in mind, but instead to explore new ones and push innovation in this field. Some examples might be found here and there in the book. The following section presents some applications that are likely to be impossible to reproduce in other softwares, demonstrating how we can go from a novel idea to a fully functional tool using <code>lidR</code>.</p>
-<div id="outbox-custom-metrics" class="section level2" number="17.1">
-<h2><span class="header-section-number">17.1</span> New complex metrics in ABA</h2>
-<div id="outbox-distance-returns" class="section level3" number="17.1.1">
-<h3><span class="header-section-number">17.1.1</span> Distance between returns</h3>
+<div id="outbox-custom-metrics" class="section level2 hasAnchor" number="17.1">
+<h2><span class="header-section-number">17.1</span> New complex metrics in ABA<a href="outbox.html#outbox-custom-metrics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="outbox-distance-returns" class="section level3 hasAnchor" number="17.1.1">
+<h3><span class="header-section-number">17.1.1</span> Distance between returns<a href="outbox.html#outbox-distance-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In forestry, simple metrics can be derived from first returns. But what about metrics that estimate the average distance between first and last returns? Is it a valuable metric for characterizing of forest stucture? Can we refine the prediction with such metric? Nobody knows, but we can try.</p>
 <p>First, we need to retrieve each emitted pulse and keep only the first and last point of each sequence excluding sequences with only one return.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="outbox.html#cb1-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">retrieve_pulses</span>(las)</span>
@@ -380,7 +389,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="outbox.html#cb3-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">filter_first</span>(las)</span>
 <span id="cb3-2"><a href="outbox.html#cb3-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, <span class="sc">!</span><span class="fu">is.na</span>(d))</span></code></pre></div>
 <p>We can now plot the first returns colored by their distance to the last return.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="outbox.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">color =</span> <span class="st">&quot;d&quot;</span>, <span class="at">colorPalette =</span> viridis<span class="sc">::</span><span class="fu">magma</span>(<span class="dv">50</span>), <span class="at">size =</span> <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="outbox.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">color =</span> <span class="st">&quot;d&quot;</span>, <span class="at">colorPalette =</span> viridis<span class="sc">::</span><span class="fu">magma</span>(<span class="dv">50</span>), <span class="at">size =</span> <span class="dv">4</span>)</span>
+<span id="cb4-2"><a href="outbox.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The argument &#39;coloPalette&#39; is deprecated. Use &#39;pal&#39; instead</span></span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-dreturns-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Now we can compute the average in an ABA (see section <a href="aba.html#aba">10</a>).</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="outbox.html#cb5-1" aria-hidden="true" tabindex="-1"></a>d_first_last <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fu">mean</span>(d), <span class="dv">15</span>)</span>
@@ -405,8 +415,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="outbox.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics, <span class="at">col =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/displaymap-1.png" width="595.2" style="display: block; margin: auto;" /></p>
 </div>
-<div id="outbox-rumple-index" class="section level3" number="17.1.2">
-<h3><span class="header-section-number">17.1.2</span> Rumple index</h3>
+<div id="outbox-rumple-index" class="section level3 hasAnchor" number="17.1.2">
+<h3><span class="header-section-number">17.1.2</span> Rumple index<a href="outbox.html#outbox-rumple-index" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Another interesting metric that could be computed is the rumple index (see <a href="https://gis.ess.washington.edu/keck/ESS_421_additional_reading/Kane_Interpretation_and_topographic.pdf">Kane et al. (2008)</a>).</p>
 <p>To compute a rumple index we can triangulate points, measure the surface created, and divide by the projected surface. Rumple index is however expected to measure surface roughness of the canopy and it doesn’t makes sense to triangulate every point. An option is to triangulate each first return but yet first returns are not all representative of the canopy. In the following example we are using the surface points every 1 m.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="outbox.html#cb9-1" aria-hidden="true" tabindex="-1"></a>grid_rumple_index <span class="ot">&lt;-</span> <span class="cf">function</span>(las, res) { <span class="co"># user-defined function</span></span>
@@ -422,8 +432,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="lidR-book_files/figure-html/displaymap2-1.png" width="595.2" style="display: block; margin: auto;" /></p>
 </div>
 </div>
-<div id="outbox-multispectral-coloring" class="section level2" number="17.2">
-<h2><span class="header-section-number">17.2</span> Multi-spectral coloring</h2>
+<div id="outbox-multispectral-coloring" class="section level2 hasAnchor" number="17.2">
+<h2><span class="header-section-number">17.2</span> Multi-spectral coloring<a href="outbox.html#outbox-multispectral-coloring" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We have already seen a multi-spectral coloring example in section <a href="pba.html#pba-applications-coloring">13.2.3</a>. This is truly a good example of how to think outside the box with <code>lidR</code>, so we show several variants here. The goal is to use multi-spectral data to generate false coloring and see how false coloring may be used for further analyses.</p>
 <p>Multi-spectral ALS data are sampled with 3 devices each emitting a different wavelength. The point cloud is usually provided in the form of 3 <code>LAS</code> files, each file corresponding to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red, and the third as green, and thus consider that each point has a pure color.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="outbox.html#cb11-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c1_ar_c.laz&quot;</span></span>
@@ -469,7 +479,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="outbox.html#cb16-1" aria-hidden="true" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> <span class="fu">voxel_metrics</span>(las, <span class="sc">~</span><span class="fu">colorize</span>(Intensity, ScannerChannel), <span class="dv">2</span>)</span>
 <span id="cb16-2"><a href="outbox.html#cb16-2" aria-hidden="true" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> rgb[<span class="sc">!</span><span class="fu">is.na</span>(R)] <span class="co"># Remove NAs</span></span>
 <span id="cb16-3"><a href="outbox.html#cb16-3" aria-hidden="true" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> <span class="fu">LAS</span>(rgb, las<span class="sc">@</span>header) <span class="co"># Convert to LAS for display</span></span>
-<span id="cb16-4"><a href="outbox.html#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rgb, <span class="at">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="at">nbits =</span> <span class="dv">8</span>, <span class="at">size =</span> <span class="dv">5</span>)</span></code></pre></div>
+<span id="cb16-4"><a href="outbox.html#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rgb, <span class="at">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="at">nbits =</span> <span class="dv">8</span>, <span class="at">size =</span> <span class="dv">5</span>)</span>
+<span id="cb16-5"><a href="outbox.html#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The argument &#39;nbits&#39; is not longer supported. It is now infered automatically.</span></span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-voxel-multispectral-rgb-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>To finish we can <code>colorize()</code> with <code>point_metrics()</code> (see section <a href="pba.html#pba">13</a>). This has the advantage of maintaining much more points compared to the voxel-based version and to preserve coordinates.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="outbox.html#cb17-1" aria-hidden="true" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> <span class="fu">point_metrics</span>(las, <span class="sc">~</span><span class="fu">colorize</span>(Intensity, ScannerChannel), <span class="at">r =</span> <span class="fl">0.5</span>)</span>

@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>13 Derived metrics at point level | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="13 Derived metrics at point level | The lidR package" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="A guide to the lidR package" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-12-10" />
+<meta name="date" content="2022-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="vba.html"/>
 <link rel="next" href="engine.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,18 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBLHENEPMT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBLHENEPMT');
+</script>
 
 
 <style type="text/css">
@@ -156,9 +164,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#pmf"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#csf"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
-<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
-<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
-<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#mcc"><i class="fa fa-check"></i><b>3.3</b> Multiscale Curvature Classification (MCC)</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.4</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.5</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.6" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.6</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a>
 <ul>
@@ -362,10 +371,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="pba" class="section level1" number="13">
-<h1><span class="header-section-number">13</span> Derived metrics at point level</h1>
-<div id="pba-overview" class="section level2" number="13.1">
-<h2><span class="header-section-number">13.1</span> Overview</h2>
+<div id="pba" class="section level1 hasAnchor" number="13">
+<h1><span class="header-section-number">13</span> Derived metrics at point level<a href="pba.html#pba" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="pba-overview" class="section level2 hasAnchor" number="13.1">
+<h2><span class="header-section-number">13.1</span> Overview<a href="pba.html#pba-overview" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The “point” level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The <code>point_metrics()</code> function allows calculation of point-based metrics and works like <code>cloud_metrics()</code>, <code>grid_metrics()</code>, <code>tree_metrics()</code> or <code>voxel_metrics()</code> seen in section <a href="metrics.html#metrics">8</a>, <a href="cba.html#cba">9</a>, <a href="aba.html#aba">10</a>, <a href="tba.html#tba">11</a> and <a href="vba.html#vba">12</a>. Refer to these sections for a more comprehensive overview.</p>
 <p>For each point, the neighbourhood can be either:</p>
 <ol style="list-style-type: decimal">
@@ -401,10 +410,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-8"><a href="pba.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5:       5 29.28571</span></span>
 <span id="cb4-9"><a href="pba.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6:       6 23.14286</span></span></code></pre></div>
 </div>
-<div id="pba-applications" class="section level2" number="13.2">
-<h2><span class="header-section-number">13.2</span> Applications</h2>
-<div id="pba-applications-roof" class="section level3" number="13.2.1">
-<h3><span class="header-section-number">13.2.1</span> Roof segmentation</h3>
+<div id="pba-applications" class="section level2 hasAnchor" number="13.2">
+<h2><span class="header-section-number">13.2</span> Applications<a href="pba.html#pba-applications" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="pba-applications-roof" class="section level3 hasAnchor" number="13.2.1">
+<h3><span class="header-section-number">13.2.1</span> Roof segmentation<a href="pba.html#pba-applications-roof" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Roofs are flat areas. <a href="https://doi.org/10.1016/j.patcog.2014.12.020">Limberger et al. (2015)</a> described a method to find flat areas in a point clouds using an eigen values decomposition. Using a user-defined function we can use <code>point_metrics()</code> to create this algorithm. In this example we will use the following urban scene:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="pba.html#cb5-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">&quot;data/chap11/building_WilliamsAZ_Urban_normalized.laz&quot;</span>)</span>
 <span id="cb5-2"><a href="pba.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">size =</span> <span class="dv">3</span>)</span></code></pre></div>
@@ -447,8 +456,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We can do this… but we know that not everyone is well versed in C++. <code>lidR</code> therefore has a dedicated and even faster function (<code>segment_shapes()</code>) for this specific task because we believe that it’s of high interest to provide a specialized and faster version of this tool.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="pba.html#cb11-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">segment_shapes</span>(las, <span class="fu">shp_plane</span>(<span class="at">k =</span> <span class="dv">25</span>), <span class="st">&quot;planar&quot;</span>)</span></code></pre></div>
 </div>
-<div id="pba-applications-wire" class="section level3" number="13.2.2">
-<h3><span class="header-section-number">13.2.2</span> Lake and wire segmentation</h3>
+<div id="pba-applications-wire" class="section level3 hasAnchor" number="13.2.2">
+<h3><span class="header-section-number">13.2.2</span> Lake and wire segmentation<a href="pba.html#pba-applications-wire" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Eigen value decomposition applied using <code>point_metrics()</code> opens a lot of possibilities. For example, by tweaking the previous example we can design a lake segmentation algorithm. A lake is a planar region with a vertical normal vector, so to create a lake segmentation we simply need to add such constraints in <code>is.planar()</code>.</p>
 <p>We can also design a wire segmentation algorithm. For a wire we can change the <a href="https://doi.org/10.1016/j.patcog.2014.12.020">Limberger et al. (2015)</a> constrains to enable the detection of elongated linear features instead of flat feature.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="pba.html#cb12-1" aria-hidden="true" tabindex="-1"></a>is.linear <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, z, <span class="at">th =</span> <span class="dv">10</span>) {</span>
@@ -462,8 +471,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Again, <code>lidR</code> has a dedicated function for this specific task because we believe that it is of high interest to provide a specialized and faster version of this tool.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="pba.html#cb13-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">segment_shapes</span>(las, <span class="fu">shp_line</span>(<span class="at">th =</span> <span class="dv">8</span>, <span class="at">k =</span> <span class="dv">15</span>), <span class="st">&quot;linear&quot;</span>)</span></code></pre></div>
 </div>
-<div id="pba-applications-coloring" class="section level3" number="13.2.3">
-<h3><span class="header-section-number">13.2.3</span> Multi-spectral coloring</h3>
+<div id="pba-applications-coloring" class="section level3 hasAnchor" number="13.2.3">
+<h3><span class="header-section-number">13.2.3</span> Multi-spectral coloring<a href="pba.html#pba-applications-coloring" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>point_metrics()</code> is not limited to eigen value related metrics. It is only limited by a users imagination. In the following example we will demonstrate how it an be used to attribute false colors to a multi-spectral point cloud. Multi-spectral ALS data are sampled with 3 scanners each emitting a different wavelength. The point cloud is usually provided in the form of 3 <code>.las</code> files where each file corresponds to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red and the third as green, and thus consider that each point has a pure color.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="pba.html#cb14-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c1_ar_c.laz&quot;</span></span>
 <span id="cb14-2"><a href="pba.html#cb14-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c2_ar_c.laz&quot;</span></span>
@@ -501,8 +510,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="lidR-book_files/figure-html/plot-las-multispectral-rgb-pba-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>This method is a bit naive ‘as is’. First, the intensities returned by each channel are not comparable and required to be normalized. We could also argue about the choice of discarding RGB = <code>NA</code>. Instead we could have chosen to set a pure color. To finish, enforcing a maximum value to 255 works in this specific example because very few intensity values are actually above 255 but is meaningless in a general case. Either way, this is only a demo to show how to think out of the box with <code>point_metrics()</code>.</p>
 </div>
-<div id="pba-applications-outliers" class="section level3" number="13.2.4">
-<h3><span class="header-section-number">13.2.4</span> Outlier filtering</h3>
+<div id="pba-applications-outliers" class="section level3 hasAnchor" number="13.2.4">
+<h3><span class="header-section-number">13.2.4</span> Outlier filtering<a href="pba.html#pba-applications-outliers" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>An outlier is a point that is alone compared to other points. Outliers are usually high points with no close neighbors. The term “no close neighbor” can have several formal definitions such as <em>no neighbors closer than x meters</em> or <em>less than n neighbors within a distance x meter</em> among others. In all cases, it can be estimated with metrics and thus <code>point_metrics()</code> enables the design of an outlier filter method.</p>
 <p>Perhaps a potential exercise for the reader :) .</p>
 

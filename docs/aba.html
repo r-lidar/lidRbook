@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>10 Derived metrics at the pixel level | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="10 Derived metrics at the pixel level | The lidR package" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="A guide to the lidR package" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-02-07" />
+<meta name="date" content="2022-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="cba.html"/>
 <link rel="next" href="tba.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,18 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBLHENEPMT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBLHENEPMT');
+</script>
 
 
 <style type="text/css">
@@ -156,9 +164,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#pmf"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#csf"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
-<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
-<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
-<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#mcc"><i class="fa fa-check"></i><b>3.3</b> Multiscale Curvature Classification (MCC)</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.4</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.5</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.6" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.6</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a>
 <ul>
@@ -362,10 +371,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="aba" class="section level1" number="10">
-<h1><span class="header-section-number">10</span> Derived metrics at the pixel level</h1>
-<div id="aba-overview" class="section level2" number="10.1">
-<h2><span class="header-section-number">10.1</span> Overview</h2>
+<div id="aba" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number">10</span> Derived metrics at the pixel level<a href="aba.html#aba" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="aba-overview" class="section level2 hasAnchor" number="10.1">
+<h2><span class="header-section-number">10.1</span> Overview<a href="aba.html#aba-overview" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The “pixel” level of regularization corresponds to the computation of derived metrics for regularly spaced locations in 2D. Derived metrics calculated at pixel level are the basis of the area-based approach (ABA) that we discuss with more details in section <a href="modeling-aba.html#modeling-aba">16</a>. In brief, the ABA allows the creation of wall-to-wall predictions of forest inventory attributes (e.g. basal area or total volume per hectare) by linking ALS variables with field measured references. ABA is one application of derived metrics at the pixel level but not the only one.</p>
 <p>As seen in sections <a href="metrics.html#metrics">8</a> and <a href="cba.html#cba">9</a> calculating derived metrics is straightforward. The user only needs to provide a formula to calculate the metric of interest. For example, to calculate the average height (<code>mean(Z)</code>) of all points within 10 x 10 m pixels we can run the following:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="aba.html#cb1-1" aria-hidden="true" tabindex="-1"></a>hmean <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fu">mean</span>(Z), <span class="dv">10</span>) <span class="co"># calculate mean at 10 m</span></span>
@@ -405,17 +414,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-8"><a href="aba.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics, <span class="at">col =</span> <span class="fu">height.colors</span>(<span class="dv">25</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-raster-custom-2-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
-<div id="aba-applications" class="section level2" number="10.2">
-<h2><span class="header-section-number">10.2</span> Applications</h2>
-<div id="aba-applications-modeling" class="section level3" number="10.2.1">
-<h3><span class="header-section-number">10.2.1</span> Modeling</h3>
+<div id="aba-applications" class="section level2 hasAnchor" number="10.2">
+<h2><span class="header-section-number">10.2</span> Applications<a href="aba.html#aba-applications" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="aba-applications-modeling" class="section level3 hasAnchor" number="10.2.1">
+<h3><span class="header-section-number">10.2.1</span> Modeling<a href="aba.html#aba-applications-modeling" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>All <code>*_metrics</code> functions can map any kind of formula as long as it returns a number or a list of numbers, meaning that that it’s possible to input an expression derived from a predictive model to map the resource. In the section <a href="cba.html#cba">9</a> we made a model that can be written <span class="math inline">\(0.7018 \times pzabove2 + 0.9268 \times zmax\)</span>. We can map this predictive model with a resolution of 10 meters:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="aba.html#cb6-1" aria-hidden="true" tabindex="-1"></a>prediction <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fl">0.7018</span> <span class="sc">*</span> <span class="fu">sum</span>(Z <span class="sc">&gt;</span> <span class="dv">2</span>)<span class="sc">/</span><span class="fu">length</span>(Z) <span class="sc">+</span> <span class="fl">0.9268</span> <span class="sc">*</span><span class="fu">max</span>(Z), <span class="dv">20</span>) <span class="co"># predicting model mapping</span></span>
 <span id="cb6-2"><a href="aba.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(prediction, <span class="at">col =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>)) <span class="co"># some plotting</span></span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-raster-model-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 </div>
-<div id="aba-applications-density" class="section level3" number="10.2.2">
-<h3><span class="header-section-number">10.2.2</span> Density</h3>
+<div id="aba-applications-density" class="section level3 hasAnchor" number="10.2.2">
+<h3><span class="header-section-number">10.2.2</span> Density<a href="aba.html#aba-applications-density" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Point density is the number of points within a pixel divided by the area of the pixel.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="aba.html#cb7-1" aria-hidden="true" tabindex="-1"></a>density <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fu">length</span>(Z)<span class="sc">/</span><span class="dv">16</span>, <span class="dv">4</span>) <span class="co"># calculate density</span></span>
 <span id="cb7-2"><a href="aba.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(density, <span class="at">col =</span> <span class="fu">gray.colors</span>(<span class="dv">50</span>,<span class="dv">0</span>,<span class="dv">1</span>)) <span class="co"># some plotting</span></span></code></pre></div>
@@ -423,15 +432,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>When using only the first returns, the same formula gives the pulse density instead of the point density</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="aba.html#cb8-1" aria-hidden="true" tabindex="-1"></a>density <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fu">length</span>(Z)<span class="sc">/</span><span class="dv">16</span>, <span class="dv">4</span>, <span class="at">filter =</span> <span class="sc">~</span>ReturnNumber <span class="sc">==</span> 1L)</span></code></pre></div>
 </div>
-<div id="aba-applications-intensity" class="section level3" number="10.2.3">
-<h3><span class="header-section-number">10.2.3</span> Intensity</h3>
+<div id="aba-applications-intensity" class="section level3 hasAnchor" number="10.2.3">
+<h3><span class="header-section-number">10.2.3</span> Intensity<a href="aba.html#aba-applications-intensity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>It’s possible to generate a map of the average intensity of first return only</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="aba.html#cb9-1" aria-hidden="true" tabindex="-1"></a>imap <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fu">mean</span>(Intensity), <span class="dv">4</span>, <span class="at">filter =</span> <span class="sc">~</span>ReturnNumber <span class="sc">==</span> 1L) <span class="co"># mapping average intensity</span></span>
 <span id="cb9-2"><a href="aba.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(imap, <span class="at">col =</span> <span class="fu">heat.colors</span>(<span class="dv">25</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-raster-imean-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 </div>
-<div id="aba-applications-other" class="section level3" number="10.2.4">
-<h3><span class="header-section-number">10.2.4</span> Other</h3>
+<div id="aba-applications-other" class="section level3 hasAnchor" number="10.2.4">
+<h3><span class="header-section-number">10.2.4</span> Other<a href="aba.html#aba-applications-other" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Many other raster-based applications can be derived with adequate metrics. In section <a href="outbox.html#outbox">17</a> we will see some out of the box possibilities to demonstrate how the concept of metrics can be leveraged to design new applications. A simple uncommon application could be to map the ratio between multiple returns and single returns.</p>
 <p>To count single returns we can count the number of points where number of returns equal to 1. To count the number of multiple returns we can count the number of points with a return number equal to 1 <strong>AND</strong> a return number above 1.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="aba.html#cb10-1" aria-hidden="true" tabindex="-1"></a>mymetric <span class="ot">&lt;-</span> <span class="cf">function</span>(return_number, number_of_returns) { <span class="co">#user-defined function</span></span>

@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>11 Derived metrics at the tree level | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="11 Derived metrics at the tree level | The lidR package" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="A guide to the lidR package" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-12-10" />
+<meta name="date" content="2022-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="aba.html"/>
 <link rel="next" href="vba.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,18 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBLHENEPMT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBLHENEPMT');
+</script>
 
 
 <style type="text/css">
@@ -156,9 +164,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#pmf"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#csf"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
-<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
-<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
-<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#mcc"><i class="fa fa-check"></i><b>3.3</b> Multiscale Curvature Classification (MCC)</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.4</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.5</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.6" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.6</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a>
 <ul>
@@ -362,10 +371,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="tba" class="section level1" number="11">
-<h1><span class="header-section-number">11</span> Derived metrics at the tree level</h1>
-<div id="tba-overview" class="section level2" number="11.1">
-<h2><span class="header-section-number">11.1</span> Overview</h2>
+<div id="tba" class="section level1 hasAnchor" number="11">
+<h1><span class="header-section-number">11</span> Derived metrics at the tree level<a href="tba.html#tba" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="tba-overview" class="section level2 hasAnchor" number="11.1">
+<h2><span class="header-section-number">11.1</span> Overview<a href="tba.html#tba-overview" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The “tree” level of regularization corresponds to the computation of derived metrics centered on each tree using the points that belong to each tree. Derived metrics calculated at tree level are the basis for an inventory at the individual tree level or the basis for individual species identification.</p>
 <p>Similarly to what we have seen in sections <a href="metrics.html#metrics">8</a>, <a href="cba.html#cba">9</a>, and <a href="aba.html#aba">10</a> calculating derived metrics is straightforward and works exactly the same way as in <code>cloud_metrics()</code> or <code>pixel_metrics()</code>. Derived tree metrics are calculated using the <code>crown_metrics()</code> function. The input data for this function is a point cloud that needs to contain information from tree segmentation (e.g. usually the <code>treeID</code> attribute). In the majority of cases <code>crown_metrics()</code> is run after segmenting tree crowns with <code>segment_trees()</code> (section <a href="itd-its.html#itd-its">7</a>) but the segmentation could also be performed in another way independently of <code>lidR</code>.</p>
 <p>In the example below we show the basic use of the <code>crown_metrics()</code> function on the files we used in section <a href="itd-its.html#itd-its">7</a>. This file already stores an ID for each point referring to each tree, so we don’t need to perform the segmentation first. We compute two metrics <code>z_max</code> and <code>z_mean</code> using the formula <code>list(z_max = max(Z), z_mean = mean(Z)</code>. The output is a <code>sf/sfc_POINT</code>.</p>
@@ -377,16 +386,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-6"><a href="tba.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 6 features and 3 fields</span></span>
 <span id="cb1-7"><a href="tba.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
 <span id="cb1-8"><a href="tba.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XYZ</span></span>
-<span id="cb1-9"><a href="tba.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 481325.2 ymin: 3813006 xmax: 481349.8 ymax: 3813011</span></span>
-<span id="cb1-10"><a href="tba.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; z_range:       zmin: 22.23 zmax: 25.43</span></span>
+<span id="cb1-9"><a href="tba.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 481263.4 ymin: 3812992 xmax: 481294.7 ymax: 3813011</span></span>
+<span id="cb1-10"><a href="tba.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; z_range:       zmin: 9.18 zmax: 26.95</span></span>
 <span id="cb1-11"><a href="tba.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Projected CRS: NAD83 / UTM zone 12N</span></span>
 <span id="cb1-12"><a href="tba.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   treeID z_max    z_mean                       geometry</span></span>
-<span id="cb1-13"><a href="tba.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1      1 16.00  7.232609  POINT Z (481349.9 3813011 23)</span></span>
-<span id="cb1-14"><a href="tba.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2      2 26.95 19.401542 POINT Z (481336.1 3813011 2...</span></span>
-<span id="cb1-15"><a href="tba.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3      3 23.58 18.242222 POINT Z (481334.6 3813006 2...</span></span>
-<span id="cb1-16"><a href="tba.html#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4      4 15.83  8.820677 POINT Z (481332.9 3813011 2...</span></span>
-<span id="cb1-17"><a href="tba.html#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5      5 20.91 10.642114 POINT Z (481327.2 3813008 2...</span></span>
-<span id="cb1-18"><a href="tba.html#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6      6  9.18  2.578750 POINT Z (481325.2 3813011 2...</span></span></code></pre></div>
+<span id="cb1-13"><a href="tba.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1      1 16.00  7.232609  POINT Z (481294.7 3813011 16)</span></span>
+<span id="cb1-14"><a href="tba.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2      2 26.95 19.401542 POINT Z (481281.9 3813003 2...</span></span>
+<span id="cb1-15"><a href="tba.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3      3 23.58 18.242222 POINT Z (481278.4 3813002 2...</span></span>
+<span id="cb1-16"><a href="tba.html#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4      4 15.83  8.820677 POINT Z (481272.9 3813006 1...</span></span>
+<span id="cb1-17"><a href="tba.html#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5      5 20.91 10.642114 POINT Z (481265.7 3812992 2...</span></span>
+<span id="cb1-18"><a href="tba.html#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6      6  9.18  2.578750 POINT Z (481263.4 3812992 9...</span></span></code></pre></div>
 <p>The XYZ coordinates of the points correspond to the XYZ coordinates of the highest point within each tree and each point is associated to 3 attributes <code>treeID</code> + the two user-defined metrics. In the plot below the output is visualized using color to depict the <code>z_max</code> metrics.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="tba.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics[<span class="st">&quot;z_max&quot;</span>], <span class="at">pal =</span> hcl.colors, <span class="at">pch =</span> <span class="dv">19</span>) <span class="co"># plot using z_max</span></span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/spplot-tba-metrics-1.png" width="672" style="display: block; margin: auto;" /></p>
@@ -410,10 +419,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-2"><a href="tba.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics[<span class="st">&quot;z_max&quot;</span>], <span class="at">pal =</span> hcl.colors)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/spplot-tba-custom-metrics-concave-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="tba-applications" class="section level2" number="11.2">
-<h2><span class="header-section-number">11.2</span> Applications</h2>
-<div id="tba-applications-tree-selection" class="section level3" number="11.2.1">
-<h3><span class="header-section-number">11.2.1</span> Selection of trees</h3>
+<div id="tba-applications" class="section level2 hasAnchor" number="11.2">
+<h2><span class="header-section-number">11.2</span> Applications<a href="tba.html#tba-applications" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="tba-applications-tree-selection" class="section level3 hasAnchor" number="11.2.1">
+<h3><span class="header-section-number">11.2.1</span> Selection of trees<a href="tba.html#tba-applications-tree-selection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>crown_metrics()</code> gives the ID of trees and associated metrics. We can use these data to filter the scene and remove trees with a low intensity.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="tba.html#cb6-1" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">crown_metrics</span>(las, <span class="sc">~</span><span class="fu">list</span>(<span class="at">imean =</span> <span class="fu">mean</span>(Intensity))) <span class="co"># calculate tree intensity metrics</span></span>
 <span id="cb6-2"><a href="tba.html#cb6-2" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> metrics[metrics<span class="sc">$</span>imean <span class="sc">&gt;</span> <span class="dv">80</span>,] <span class="co"># filter intensity</span></span>
@@ -423,8 +432,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-6"><a href="tba.html#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(subset, <span class="at">add =</span> x <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">100</span>, <span class="dv">0</span>), <span class="at">size =</span> <span class="dv">5</span>) <span class="co"># some plotting</span></span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-selected-trees-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="tba-applications-tree-inventory" class="section level3" number="11.2.2">
-<h3><span class="header-section-number">11.2.2</span> Tree based inventory</h3>
+<div id="tba-applications-tree-inventory" class="section level3 hasAnchor" number="11.2.2">
+<h3><span class="header-section-number">11.2.2</span> Tree based inventory<a href="tba.html#tba-applications-tree-inventory" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Assuming we know a relationship between the derived metrics and a value of interest <code>G</code> - such as the biomass of a tree - we can map the resource. Lets assume that <span class="math inline">\(G = 0.7 \times z_{max} + 0.1 \times i_{mean}\)</span>. In real life a value of interest is more likely to be related to the crown size, but this is a simplified example. First we can compute <code>G</code> for each tree:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="tba.html#cb7-1" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">crown_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">custom_crown_metrics</span>(Z, Intensity)) <span class="co"># calculate intensity metrics</span></span>
 <span id="cb7-2"><a href="tba.html#cb7-2" aria-hidden="true" tabindex="-1"></a>metrics<span class="sc">$</span>G <span class="ot">&lt;-</span> <span class="fl">0.7</span> <span class="sc">*</span> metrics<span class="sc">$</span>z_max <span class="sc">+</span> <span class="fl">0.1</span> <span class="sc">*</span> metrics<span class="sc">$</span>i_mean <span class="co"># set value of interest</span></span>

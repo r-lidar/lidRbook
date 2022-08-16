@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>9 Derived metrics at the cloud level | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="9 Derived metrics at the cloud level | The lidR package" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="A guide to the lidR package" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-02-07" />
+<meta name="date" content="2022-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="metrics.html"/>
 <link rel="next" href="aba.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,18 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBLHENEPMT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBLHENEPMT');
+</script>
 
 
 <style type="text/css">
@@ -156,9 +164,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#pmf"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#csf"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
-<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
-<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
-<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#mcc"><i class="fa fa-check"></i><b>3.3</b> Multiscale Curvature Classification (MCC)</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.4</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.5</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.6" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.6</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a>
 <ul>
@@ -362,10 +371,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="cba" class="section level1" number="9">
-<h1><span class="header-section-number">9</span> Derived metrics at the cloud level</h1>
-<div id="cba-overview" class="section level2" number="9.1">
-<h2><span class="header-section-number">9.1</span> Overview</h2>
+<div id="cba" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">9</span> Derived metrics at the cloud level<a href="cba.html#cba" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="cba-overview" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Overview<a href="cba.html#cba-overview" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The “cloud” level of regularization corresponds to the computation of derived metrics using all available points. As seen in section <a href="metrics.html#metrics">8</a>, calculating derived metrics for the whole point cloud is straightforward and users only need to provide a formula to calculate metric(s) of interest. For example, to calculate the average height (<code>mean(Z)</code>) of all points we can run the following:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="cba.html#cb1-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Megaplot.laz&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
 <span id="cb1-2"><a href="cba.html#cb1-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile)</span>
@@ -382,8 +391,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-8"><a href="cba.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zkurt   : num 2.08</span></span>
 <span id="cb2-9"><a href="cba.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zentropy: num 0.903</span></span></code></pre></div>
 </div>
-<div id="cba-applications" class="section level2" number="9.2">
-<h2><span class="header-section-number">9.2</span> Applications</h2>
+<div id="cba-applications" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Applications<a href="cba.html#cba-applications" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Point cloud metrics become interesting when computed for a set of plot inventories. In this case it can serves to compute a set of metrics for each plot, where known attributes have been measured in the field to construct a predictive model. Users could easily clip and loop through plot inventory files but we defined an all-in-one convenient function <code>plot_metrics()</code>. In the following example we load a <code>.las</code> and compute the metrics for each plot inventory using a shapefile of plot centers</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="cba.html#cb3-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Megaplot.laz&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
 <span id="cb3-2"><a href="cba.html#cb3-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile, <span class="at">filter =</span> <span class="st">&quot;-keep_random_fraction 0.5&quot;</span>)</span>
@@ -410,11 +419,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-17"><a href="cba.html#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 684838.9 ymin: 5017796 xmax: 684976.6 ymax: 5017958</span></span>
 <span id="cb4-18"><a href="cba.html#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Projected CRS: NAD83 / UTM zone 17N</span></span>
 <span id="cb4-19"><a href="cba.html#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   IDPEP       VOI  zmax     zmean      zsd      zskew    zkurt  zentropy</span></span>
-<span id="cb4-20"><a href="cba.html#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 PEPQ1 14.157140 26.59 15.672381 7.086503 -1.0758591 3.170923 0.8755713</span></span>
-<span id="cb4-21"><a href="cba.html#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 PEPQ2 12.720584 25.21 16.750148 6.039667 -1.2864679 4.091311 0.8522454</span></span>
-<span id="cb4-22"><a href="cba.html#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 PEPQ3 11.396656 26.18 16.290853 6.632796 -0.7771446 2.677224 0.9188769</span></span>
-<span id="cb4-23"><a href="cba.html#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 PEPQ4 11.597471 25.08 12.428410 6.543655 -0.2428443 2.419909 0.9158456</span></span>
-<span id="cb4-24"><a href="cba.html#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 PEPQ5  8.263425 22.45  8.412273 5.971624  0.2421884 2.155230 0.9194129</span></span>
+<span id="cb4-20"><a href="cba.html#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 PEPQ1 14.157140 26.59 15.133411 7.612693 -0.9446675 2.611282 0.8705833</span></span>
+<span id="cb4-21"><a href="cba.html#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 PEPQ2 12.720584 25.21 16.080521 6.115513 -1.0047707 3.321145 0.8814483</span></span>
+<span id="cb4-22"><a href="cba.html#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 PEPQ3 11.396656 26.18 15.633750 6.682559 -0.6001914 2.382146 0.9242472</span></span>
+<span id="cb4-23"><a href="cba.html#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 PEPQ4 11.597471 25.03 12.750980 6.677977 -0.2836284 2.394358 0.9193615</span></span>
+<span id="cb4-24"><a href="cba.html#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 PEPQ5  8.263425 22.45  7.833131 6.166043  0.3510494 2.096718 0.9013117</span></span>
 <span id="cb4-25"><a href="cba.html#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   geometry</span></span>
 <span id="cb4-26"><a href="cba.html#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 POINT (684976.6 5017821)</span></span>
 <span id="cb4-27"><a href="cba.html#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 POINT (684923.9 5017958)</span></span>
@@ -430,17 +439,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-6"><a href="cba.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-7"><a href="cba.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
 <span id="cb5-8"><a href="cba.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        1        2        3        4        5 </span></span>
-<span id="cb5-9"><a href="cba.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.85711  0.78422 -1.55638  0.03515 -0.12009 </span></span>
+<span id="cb5-9"><a href="cba.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.55099  1.12349 -1.46502  0.03201 -0.24147 </span></span>
 <span id="cb5-10"><a href="cba.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-11"><a href="cba.html#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
 <span id="cb5-12"><a href="cba.html#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
-<span id="cb5-13"><a href="cba.html#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -18.3075    10.8811  -1.683    0.234</span></span>
-<span id="cb5-14"><a href="cba.html#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zsd          -0.4075     2.4834  -0.164    0.885</span></span>
-<span id="cb5-15"><a href="cba.html#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zmax          1.2973     0.7069   1.835    0.208</span></span>
+<span id="cb5-13"><a href="cba.html#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -18.6472    10.6926  -1.744    0.223</span></span>
+<span id="cb5-14"><a href="cba.html#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zsd           0.3041     1.5817   0.192    0.865</span></span>
+<span id="cb5-15"><a href="cba.html#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zmax          1.1259     0.5896   1.910    0.196</span></span>
 <span id="cb5-16"><a href="cba.html#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-17"><a href="cba.html#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 1.376 on 2 degrees of freedom</span></span>
-<span id="cb5-18"><a href="cba.html#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.8003, Adjusted R-squared:  0.6006 </span></span>
-<span id="cb5-19"><a href="cba.html#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic: 4.007 on 2 and 2 DF,  p-value: 0.1997</span></span></code></pre></div>
+<span id="cb5-17"><a href="cba.html#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 1.373 on 2 degrees of freedom</span></span>
+<span id="cb5-18"><a href="cba.html#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.8011, Adjusted R-squared:  0.6023 </span></span>
+<span id="cb5-19"><a href="cba.html#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic: 4.029 on 2 and 2 DF,  p-value: 0.1989</span></span></code></pre></div>
 <p>This example can be improved. In section <a href="engine.html#engine">14</a> we will study how to extract a ground inventory and in section <a href="modeling-aba.html#modeling-aba">16</a> we will study more in depth modelling presenting a complete workflow from the plot extraction to the mapping of the predictive model.</p>
 
 </div>

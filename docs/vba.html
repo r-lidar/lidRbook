@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>12 Derived metrics at the voxel level | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="12 Derived metrics at the voxel level | The lidR package" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="A guide to the lidR package" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-12-10" />
+<meta name="date" content="2022-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="tba.html"/>
 <link rel="next" href="pba.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,18 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBLHENEPMT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBLHENEPMT');
+</script>
 
 
 <style type="text/css">
@@ -156,9 +164,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#pmf"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#csf"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
-<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
-<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
-<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#mcc"><i class="fa fa-check"></i><b>3.3</b> Multiscale Curvature Classification (MCC)</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.4</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.5</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.6" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.6</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a>
 <ul>
@@ -362,20 +371,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="vba" class="section level1" number="12">
-<h1><span class="header-section-number">12</span> Derived metrics at the voxel level</h1>
-<div id="vba-overview" class="section level2" number="12.1">
-<h2><span class="header-section-number">12.1</span> Overview</h2>
+<div id="vba" class="section level1 hasAnchor" number="12">
+<h1><span class="header-section-number">12</span> Derived metrics at the voxel level<a href="vba.html#vba" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="vba-overview" class="section level2 hasAnchor" number="12.1">
+<h2><span class="header-section-number">12.1</span> Overview<a href="vba.html#vba-overview" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The “voxel” level of regularization corresponds to the computation of derived metrics for regularly spaced location in 3D. The <code>voxel_metrics()</code> function allows calculation of voxel-based metrics on provided point clouds and works like <code>cloud_metrics()</code>, <code>grid_metrics()</code>, and <code>tree_metrics()</code> seen in section <a href="metrics.html#metrics">8</a>, <a href="cba.html#cba">9</a>, <a href="aba.html#aba">10</a> and <a href="tba.html#tba">11</a>. In the examples below we use the <code>Megaplot.laz</code> data set, but the potential to use <code>voxel_metrics()</code> is particularly interesting for dense point clouds such as those produced by terrestrial lidar, or digital photogrammetry.</p>
 </div>
-<div id="vba-applications" class="section level2" number="12.2">
-<h2><span class="header-section-number">12.2</span> Applications</h2>
+<div id="vba-applications" class="section level2 hasAnchor" number="12.2">
+<h2><span class="header-section-number">12.2</span> Applications<a href="vba.html#vba-applications" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We can count the number of points inside each 4 x 4 x 4 m voxel:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="vba.html#cb1-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Megaplot.laz&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
 <span id="cb1-2"><a href="vba.html#cb1-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile) <span class="co"># read file</span></span>
 <span id="cb1-3"><a href="vba.html#cb1-3" aria-hidden="true" tabindex="-1"></a>vox_met <span class="ot">&lt;-</span> <span class="fu">voxel_metrics</span>(las, <span class="sc">~</span><span class="fu">list</span>(<span class="at">N =</span> <span class="fu">length</span>(Z)), <span class="dv">4</span>) <span class="co"># calculate voxel metrics</span></span></code></pre></div>
 <p>In this example the point cloud is first converted into 4 m voxels, then the function <code>length(Z)</code> is applied to all points located inside every voxel. The output is a <code>data.table</code> that contains the X, Y, and Z coordinates of voxels, and the calculated number of points and can be visualized in 3D using the <code>plot()</code> function as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="vba.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vox_met, <span class="at">color=</span><span class="st">&quot;N&quot;</span>, <span class="at">colorPalette =</span> <span class="fu">heat.colors</span>(<span class="dv">50</span>), <span class="at">size =</span> <span class="dv">4</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">voxel =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="vba.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vox_met, <span class="at">color=</span><span class="st">&quot;N&quot;</span>, <span class="at">colorPalette =</span> <span class="fu">heat.colors</span>(<span class="dv">50</span>), <span class="at">size =</span> <span class="dv">4</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">voxel =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-2"><a href="vba.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The argument &#39;coloPalette&#39; is deprecated. Use &#39;pal&#39; instead</span></span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-vox-metrics-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>Similarly to other <code>*_metrics()</code> functions designed to calculate derived metrics, <code>voxel_metrics()</code> can be used to calculate any number of pre- or user-defined summaries. For example, to calculate minimum, mean, maximum, and standard deviation of intensity in each voxel we can create a following function:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="vba.html#cb3-1" aria-hidden="true" tabindex="-1"></a>custom_metrics <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { <span class="co"># user-defined function</span></span>

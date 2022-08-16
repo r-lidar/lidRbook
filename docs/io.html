@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Reading, Plotting, Querying &amp; Validating | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Reading, Plotting, Querying &amp; Validating | The lidR package" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="A guide to the lidR package" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-02-09" />
+<meta name="date" content="2022-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="index.html"/>
 <link rel="next" href="gnd.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,18 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBLHENEPMT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBLHENEPMT');
+</script>
 
 
 <style type="text/css">
@@ -156,9 +164,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#pmf"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#csf"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
-<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
-<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
-<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#mcc"><i class="fa fa-check"></i><b>3.3</b> Multiscale Curvature Classification (MCC)</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.4</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.5</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.6" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.6</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a>
 <ul>
@@ -362,10 +371,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="io" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Reading, Plotting, Querying &amp; Validating</h1>
-<div id="read" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Reading LiDAR data using <code>readLAS</code></h2>
+<div id="io" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> Reading, Plotting, Querying &amp; Validating<a href="io.html#io" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="read" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Reading LiDAR data using <code>readLAS</code><a href="io.html#read" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Discrete return ALS sensors record a number of pieces of data. First and foremost, positional data in three dimensions (X,Y,Z), followed by additional information like the intensity for each point, the position of each point in the return sequence, or the beam incidence angle of each point. Reading, writing, and efficient storage of these ALS data is a critical step prior to any subsequent analysis.</p>
 <p>ALS data is most commonly distributed in LAS format, which is specifically designed to store ALS data in a standardized way. These data are officially documented and maintained by the <a href="http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf">American Society for Photogrammetry &amp; Remote Sensing (ASPRS)</a>. LAS files do however require a large amount of memory because they are not compressed. The LAZ format has become the standard compression scheme, because it is free and open-source.</p>
 <p>The widespread use, standardization and open source nature of the LAS and LAZ formats promoted the development of the <code>lidR</code> package, which has been designed to process LAS and LAZ files both as input and output, taking advantage of the LASlib and LASzip C++ libraries via the <a href="https://cran.r-project.org/package=rlas"><code>rlas</code></a> package.</p>
@@ -379,7 +388,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>When printed it displays a summary of its content.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="io.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(las)</span>
 <span id="cb3-2"><a href="io.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class        : LAS (v1.2 format 1)</span></span>
-<span id="cb3-3"><a href="io.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; memory       : 6.2 Mb </span></span>
+<span id="cb3-3"><a href="io.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; memory       : 4.4 Mb </span></span>
 <span id="cb3-4"><a href="io.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent       : 684766.4, 684993.3, 5017773, 5018007 (xmin, xmax, ymin, ymax)</span></span>
 <span id="cb3-5"><a href="io.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref.  : NAD83 / UTM zone 17N </span></span>
 <span id="cb3-6"><a href="io.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area         : 51572 m²</span></span>
@@ -387,16 +396,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-8"><a href="io.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 1.58 points/m²</span></span>
 <span id="cb3-9"><a href="io.html#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 1.08 pulses/m²</span></span></code></pre></div>
 <p>For a more in-depth print out of the data use the function <code>summary()</code> instead of <code>print()</code>.</p>
-<div id="select" class="section level3" number="2.1.1">
-<h3><span class="header-section-number">2.1.1</span> Parameter <code>select</code></h3>
+<div id="select" class="section level3 hasAnchor" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Parameter <code>select</code><a href="io.html#select" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>A LAS file stores the <code>X Y Z</code> coordinates of each point as well as many other data such as intensity, incidence angle, and return sequence position. We call these data <em>attributes</em>. In pratice many attributes are not actually useful but they are loaded anyway by default. This can take up a lot of processing memory because R is a language that does not allow for choosing data storage modes (see <a href="(https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAS-class.html)">this vignette</a> for more details).</p>
 <p>To save memory, <code>readLAS()</code> can take an optional parameter <code>select</code> which enables the user to selectively load the attributes of interest. For example, one can choose to load only the <code>X Y Z</code> attributes.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="io.html#cb4-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">&quot;file.las&quot;</span>, <span class="at">select =</span> <span class="st">&quot;xyz&quot;</span>)  <span class="co"># load XYZ only</span></span>
 <span id="cb4-2"><a href="io.html#cb4-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">&quot;file.las&quot;</span>, <span class="at">select =</span> <span class="st">&quot;xyzi&quot;</span>) <span class="co"># load XYZ and intensity only</span></span></code></pre></div>
 <p>Examples of other attribute abbreviations are: <code>t</code> - gpstime, <code>a</code> - scan angle, <code>n</code> - number of returns, <code>r</code> - return number, <code>c</code> - classification, <code>s</code> - synthetic flag, <code>k</code> - keypoint flag, <code>w</code> - withheld flag, <code>o</code> - overlap flag (format 6+), <code>u</code> - user data, <code>p</code> - point source ID, <code>e</code> - edge of flight line flag, <code>d</code> - direction of scan flag</p>
 </div>
-<div id="filter" class="section level3" number="2.1.2">
-<h3><span class="header-section-number">2.1.2</span> Parameter <code>filter</code></h3>
+<div id="filter" class="section level3 hasAnchor" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Parameter <code>filter</code><a href="io.html#filter" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>While <code>select</code> enables the user to select “columns” (or attributes) while reading files, <code>filter</code> allows selection of “rows” (or points) while reading. Removing superfluous data at reading time saves memory and increases computation speed. For example, it’s common practice in forestry to process using first returns.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="io.html#cb5-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">&quot;file.las&quot;</span>, <span class="at">filter =</span> <span class="st">&quot;-keep_first&quot;</span>) <span class="co"># Read only first returns</span></span></code></pre></div>
 <p>It is important to understand that the option <code>filter</code> in <code>readLAS()</code> keeps or discards point <strong>at read time</strong> i.e. while reading at the C++ level without implying any R code. For example the R function to filter points of interest (POI) is <code>filter_poi()</code> may return the exact same output as the <code>filter</code> option in <code>readLAS()</code>:</p>
@@ -409,8 +418,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The full list of available commands is given by <code>readLAS(filter = "-help")</code>. Users of <code>LAStools</code> may recognize these commands because both <code>LAStools</code> and <code>lidR</code> use the same library (<code>LASlib</code> and <code>LASzip</code>) to read and write LAS and LAZ files.</p>
 </div>
 </div>
-<div id="asprs-compliance" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> Validating lidar data</h2>
+<div id="asprs-compliance" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Validating lidar data<a href="io.html#asprs-compliance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>An important first step in ALS data processing is ensuring that your data is complete and valid according to the <a href="http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf">ASPRS LAS specifications</a>. Users commonly report bugs arising from invalid data. This is why we introduced the <code>las_check()</code> function to perform a deep inspection of <code>LAS</code> objects. This function checks if a <code>LAS</code> object meets the ASPRS LAS specifications and whether it is valid for processing, giving warnings if otherwise.</p>
 <p>A simple example that happens fairly often is that a <code>LAS</code> file contains duplicate points. This may lead to problems like trees being detected twice, to invalid metrics, or to errors in DTM generation. We can also encounter invalid return numbers, incoherent return numbers and number of returns attributes, invalid coordinate reference system etc. Always make sure to run the <code>las_check()</code> function before digging deep into your data.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="io.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">las_check</span>(las)</span></code></pre></div>
@@ -457,17 +466,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;   - Checking normalization...<span style='color: #00BB00;'> yes</span>
 #&gt;   - Checking negative outliers...<span style='color: #00BB00;'> ✓</span>
 #&gt;   - Checking flightline classification...<span style='color: #BB0000;'> no</span>
+#&gt;  Checking compression
+#&gt;   - Checking attribute compression...
+#&gt;    -  EdgeOfFlightline is compressed
+#&gt;    -  Synthetic_flag is compressed
+#&gt;    -  Keypoint_flag is compressed
+#&gt;    -  Withheld_flag is compressed
+#&gt;    -  UserData is compressed
+#&gt;    -  PointSourceID is compressed
 </CODE></PRE>
 <p>A check is performed at read time regardless, but the read time check is not as thorough as <code>las_check()</code> for computation time reasons. For example duplicated points are not checked at read time.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="io.html#cb9-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">&quot;data/chap1/corrupted.laz&quot;</span>)</span>
 <span id="cb9-2"><a href="io.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: Invalid data: 174638 points with a &#39;return number&#39; greater than the</span></span>
 <span id="cb9-3"><a href="io.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &#39;number of returns&#39;.</span></span></code></pre></div>
 </div>
-<div id="plot" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> Plotting</h2>
+<div id="plot" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Plotting<a href="io.html#plot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The <code>lidR</code> package takes advantage of the <a href="https://cran.r-project.org/package=rgl"><code>rgl</code></a> package to provide a versatile and interactive 3D viewer with points coloured by Z coordinates on a black background as default.</p>
-<div id="plot-3d" class="section level3" number="2.3.1">
-<h3><span class="header-section-number">2.3.1</span> Basic 3D rendering</h3>
+<div id="plot-3d" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Basic 3D rendering<a href="io.html#plot-3d" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The very basic way to render a point cloud is the function <code>plot()</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="io.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-1.png" width="384" style="display: block; margin: auto;" /></p>
@@ -483,8 +500,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="io.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="at">breaks =</span> <span class="st">&quot;quantile&quot;</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-fail-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
-<div id="plot-overlay" class="section level3" number="2.3.2">
-<h3><span class="header-section-number">2.3.2</span> Overlays</h3>
+<div id="plot-overlay" class="section level3 hasAnchor" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Overlays<a href="io.html#plot-overlay" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The package also provides some easy to use functions for common overlay. For example <code>add_dtm3d()</code> to add a digital terrain model (section <a href="dtm.html#dtm">4</a>) and <code>add_treetops3d()</code> to visualize the output of an individual tree detection (section <a href="itd-its.html#itd">7.1</a>)</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="io.html#cb14-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">3</span>)</span>
 <span id="cb14-2"><a href="io.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">add_dtm3d</span>(x, dtm)</span></code></pre></div>
@@ -500,8 +517,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb16-5"><a href="io.html#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(veg, <span class="at">add =</span> x)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-add-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
-<div id="plot-advanced" class="section level3" number="2.3.3">
-<h3><span class="header-section-number">2.3.3</span> Advanced 3D rendering</h3>
+<div id="plot-advanced" class="section level3 hasAnchor" number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> Advanced 3D rendering<a href="io.html#plot-advanced" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>With <code>lidR</code> being based on <code>rgl</code> it is easy to add objects in the main rendering using <code>rgl</code> functions such as <code>rgl::point3d()</code>, <code>rgl::text()</code>, <code>rgl::surface3d()</code> and so on to produce publication ready rendering. However <code>lidR</code> introduced an additional challenge because it does not display the points with their actual coordinates. The points are shifted to be rendered close to (0, 0) (a matter of accuracy because <code>rgl</code> uses <code>float</code> (decimal numbers on 32 bits) instead of <code>double</code> (decimal numbers on 64 bits)). When <code>plot()</code> is used it invisibly returns the shift values that can be used later to realign other objects.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="io.html#cb17-1" aria-hidden="true" tabindex="-1"></a>offsets <span class="ot">&lt;-</span> <span class="fu">plot</span>(las)</span>
 <span id="cb17-2"><a href="io.html#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(offsets)</span>
@@ -534,17 +551,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb18-25"><a href="io.html#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-26"><a href="io.html#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Display lines</span></span>
 <span id="cb18-27"><a href="io.html#cb18-27" aria-hidden="true" tabindex="-1"></a>rgl<span class="sc">::</span><span class="fu">segments3d</span>(M, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="lidR-book_files/figure-html/plot-las-truncks-1-rgl.png" width="384" style="display: block; margin: auto;" />/tmp/Rtmp0ByyQ6/filedb3d4fa77d41.png</p>
+<p><img src="lidR-book_files/figure-html/plot-las-truncks-1-rgl.png" width="384" style="display: block; margin: auto;" />../../../../../../tmp/Rtmp55c24j/filebd1085242171.png</p>
 </div>
-<div id="voxel-rendering" class="section level3" number="2.3.4">
-<h3><span class="header-section-number">2.3.4</span> Voxel rendering</h3>
+<div id="voxel-rendering" class="section level3 hasAnchor" number="2.3.4">
+<h3><span class="header-section-number">2.3.4</span> Voxel rendering<a href="io.html#voxel-rendering" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>It is possible to render voxels. This is useful to render the output of the function <code>voxelise_points()</code> or <code>voxel_metrics()</code> for examples.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="io.html#cb19-1" aria-hidden="true" tabindex="-1"></a>vox <span class="ot">&lt;-</span> <span class="fu">voxelize_points</span>(las, <span class="dv">6</span>)</span>
 <span id="cb19-2"><a href="io.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vox, <span class="at">voxel =</span> <span class="cn">TRUE</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-voxels-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
-<div id="plot-crossection" class="section level3" number="2.3.5">
-<h3><span class="header-section-number">2.3.5</span> Cross sections 2D rendering</h3>
+<div id="plot-crossection" class="section level3 hasAnchor" number="2.3.5">
+<h3><span class="header-section-number">2.3.5</span> Cross sections 2D rendering<a href="io.html#plot-crossection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To better visualize the vertical structure of a point cloud, investigate classification results, or compare results of different interpolation routines, a cross section can be plotted. To do that we first need to decide where the cross section is located (i.e. define the beginning and the end) and specify it’s width. The point cloud can then be clipped and the <code>X</code> and <code>Z</code> coordinates used to create the plot.</p>
 <p>For example, to create a 100 m long cross section we may define the beginning and the end and then use <code>clip_transect()</code> function to subset the point cloud.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="io.html#cb20-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">273357</span>, <span class="dv">5274357</span>)</span>

@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>4 Digital terrain model | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="4 Digital terrain model | The lidR package" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="A guide to the lidR package" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-12-10" />
+<meta name="date" content="2022-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="gnd.html"/>
 <link rel="next" href="norm.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,18 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBLHENEPMT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBLHENEPMT');
+</script>
 
 
 <style type="text/css">
@@ -156,9 +164,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#pmf"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#csf"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
-<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
-<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
-<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#mcc"><i class="fa fa-check"></i><b>3.3</b> Multiscale Curvature Classification (MCC)</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.4</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.5</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.6" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.6</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a>
 <ul>
@@ -362,16 +371,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="dtm" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Digital terrain model</h1>
+<div id="dtm" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Digital terrain model<a href="dtm.html#dtm" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Generating a Digital Terrain Model (DTM) is usually the second step in processing that follows classification of ground points (section <a href="gnd.html#gnd">3</a>). Put simply, a DTM can be described as an “image” of the ground. Methods to generate DTMs have been intensively studied and several algorithms have been proposed for various terrain situations. DTMs are used for a variety of purposes in practice, such as determination of the catchment basins of water retention and stream flow, or the identification of drivable roads to access resources. It also enables users to normalize point clouds i.e. subtract the local terrain from the elevation of points to allow a manipulation of point clouds as if they were acquired on a flat surface (section <a href="norm.html#norm">5</a>).</p>
 <p>The construction of a DTM starts with known or sampled ground points and uses various spatial interpolation techniques to infer ground points at unsampled locations. Accuracy of the DTM is very important because errors will propagate to future processing stages like tree height estimation. A wide range of methods exist for spatial interpolation of points. In the following section we will use the classified <code>Topography.laz</code> data set, which is included internally within <code>lidR</code> to create reproducible examples.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="dtm.html#cb1-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Topography.laz&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
 <span id="cb1-2"><a href="dtm.html#cb1-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile, <span class="at">select =</span> <span class="st">&quot;xyzc&quot;</span>)</span>
 <span id="cb1-3"><a href="dtm.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-topo-dtm-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div id="tin" class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> Triangular irregular network</h2>
+<div id="tin" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Triangular irregular network<a href="dtm.html#tin" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This method is based on triangular irregular network (TIN) of ground point data to derive a bivariate function for each triangle, which is then used to estimate the values at unsampled locations (between known ground points).</p>
 <p><img src="lidR-book_files/figure-html/triangulation-1-rgl.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Planar facets of each generated triangle are used to interpolate. Used with a Delaunay triangulation, this is the most simple solution because it involves no parameters. The Delaunay triangulation is unique and the linear interpolation is parameter-free. The drawbacks of the method are that it creates a non-smooth DTM and that it cannot extrapolate the terrain outside the convex hull delimited by the ground points since there are no triangle facets outside the convex hull. Moreover, the interpolation is weak at the edges because large irrelevant triangles are often created. It’s therefore important to compute the triangulation with a buffer to be able to crop the DTM and clear the edge artifacts.</p>
@@ -381,8 +390,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="lidR-book_files/figure-html/tin-dtm-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Notice the ugly edge interpolations. This occurs because we didn’t process with a buffer.</p>
 </div>
-<div id="idw" class="section level2" number="4.2">
-<h2><span class="header-section-number">4.2</span> Invert distance weighting</h2>
+<div id="idw" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Invert distance weighting<a href="dtm.html#idw" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Invert distance weighting (IDW) is one of the simplest and most readily available methods that can be applied to create DTMs. It is based on an assumption that the value at an unsampled point can be approximated as a weighted average of values at points within a certain cut-off distance <em>d</em>, or from a given number <em>k</em> of closest neighbours. Weights are usually inversely proportional to a power <em>p</em> of the distance between the location and the neighbour, which leads to the computing of an estimator.</p>
 <p>Compared to <code>tin()</code> this method is more robust to edge artifacts because it uses a more relevant neighbourhood but generates terrains that are “bumpy” and probably not as realistic as those generated using TINs. There are always trade-offs to different methods!</p>
 <p>To generate a DTM model with the IDW algorithm we use <code>rasterize_terrain()</code> where <code>algorithm = knnidw()</code>.</p>
@@ -392,8 +401,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Notice the bumpy nature of the DTM compared to the previous one generated with <code>tin()</code>. In 1D and IDW interpolation looks like:</p>
 <p><img src="lidR-book_files/figure-html/plot-1d-idw-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
-<div id="kriging" class="section level2" number="4.3">
-<h2><span class="header-section-number">4.3</span> Kriging</h2>
+<div id="kriging" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Kriging<a href="dtm.html#kriging" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Kriging is the most advanced approach and utilizes advanced geostatistical interpolation methods that take into account the relationships between the returns and their respective distances from each other. <code>lidR</code> uses the package <code>gstat</code> to perform the kriging. This method is very advanced, difficult to manipulate, and extremely slow to compute, but probably provides the best results with minimal edge artifacts.</p>
 <p>To generate a DTM model with the kriging algorithm we use <code>rasterize_terrain()</code> where <code>algorithm = kriging()</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="dtm.html#cb4-1" aria-hidden="true" tabindex="-1"></a>dtm_kriging <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(las, <span class="at">algorithm =</span> <span class="fu">kriging</span>(<span class="at">k =</span> <span class="dv">40</span>))</span>
@@ -401,8 +410,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="lidR-book_files/figure-html/kri-dtm-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Notice that the algorithm has issues interpolating regions with missing point such as lakes.</p>
 </div>
-<div id="dtm-pros-cons" class="section level2" number="4.4">
-<h2><span class="header-section-number">4.4</span> Pros and cons</h2>
+<div id="dtm-pros-cons" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Pros and cons<a href="dtm.html#dtm-pros-cons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p><strong>Triangulation</strong> is a very fast and efficient method that generates very good DTMs and is robust to empty regions inside the point cloud. It is however weak at edges. Although <code>lidR</code> uses the nearest neighbour to complete the missing pixel out of the convex hull of the ground points the interpolation remains poor. This algorithm must therefore always be used with a buffer of extra points to ensure that the region of interest is not on an edge. The TIN method is recommended for broad DTM computation but should be avoided for small regions of interest loaded without buffers.</p></li>
 <li><p><strong>Invert distance weighting</strong> is fast, but approximately twice as slower than TIN. The terrain is not very realistic, but edges are likely to be free of strong edge artifacts. IDW is a compromise between TIN and KRIGING. It is recommended if you want a simple method, if you cannot load a buffer, and if edge regions are important.</p></li>
@@ -410,18 +419,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>Whatever the method used, edges are critical. Results will always be weak if the method needs to guess the local topography with only partial information on the neighborhood. Though different methods provide better and worse estimates in these regions, best practice is to <strong>always</strong> use a buffer to obtain some information about the neighborhood and remove the buffer once the terrain is computed.</p>
 </div>
-<div id="dtm-other" class="section level2" number="4.5">
-<h2><span class="header-section-number">4.5</span> Other methods</h2>
+<div id="dtm-other" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> Other methods<a href="dtm.html#dtm-other" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Spatial interpolation is not limited to the 3 methods described above. Many more have been presented and described in the literature. In section <a href="plugins.html#plugins">19</a> we will learn how to create a plugin algorithm compatible with <code>rasterize_terrain()</code> based on a multilevel B-spline approximation (MBA) using the <a href="https://cran.r-project.org/web/packages/MBA/index.html"><code>MBA</code></a> package.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="dtm.html#cb5-1" aria-hidden="true" tabindex="-1"></a>dtm_mba <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(las, <span class="at">algorithm =</span> <span class="fu">mba</span>())</span>
 <span id="cb5-2"><a href="dtm.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_dtm3d</span>(dtm_mba, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-dtm-3d-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="hillshade" class="section level2" number="4.6">
-<h2><span class="header-section-number">4.6</span> Render shaded DTM</h2>
+<div id="hillshade" class="section level2 hasAnchor" number="4.6">
+<h2><span class="header-section-number">4.6</span> Render shaded DTM<a href="dtm.html#hillshade" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Generating a hillshade layer in R is relatively straight forward and is done using functions from the <code>terra</code> package. The <code>terrain()</code> and <code>hillShade()</code> functions can be combined to take the DTM raster layers as input and return a hillshade raster:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="dtm.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb6-2"><a href="dtm.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; terra version 1.4.22</span></span>
+<span id="cb6-2"><a href="dtm.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; terra 1.5.34</span></span>
 <span id="cb6-3"><a href="dtm.html#cb6-3" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(las, <span class="at">algorithm =</span> <span class="fu">tin</span>(), <span class="at">pkg =</span><span class="st">&quot;terra&quot;</span>)</span>
 <span id="cb6-4"><a href="dtm.html#cb6-4" aria-hidden="true" tabindex="-1"></a>dtm_prod <span class="ot">&lt;-</span> <span class="fu">terrain</span>(dtm, <span class="at">v =</span> <span class="fu">c</span>(<span class="st">&quot;slope&quot;</span>, <span class="st">&quot;aspect&quot;</span>), <span class="at">unit =</span> <span class="st">&quot;radians&quot;</span>)</span>
 <span id="cb6-5"><a href="dtm.html#cb6-5" aria-hidden="true" tabindex="-1"></a>dtm_hillshade <span class="ot">&lt;-</span> <span class="fu">shade</span>(<span class="at">slope =</span> dtm_prod<span class="sc">$</span>slope, <span class="at">aspect =</span> dtm_prod<span class="sc">$</span>aspect)</span>
@@ -430,15 +439,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The <a href="https://github.com/tylermorganwall/rayshader"><code>rayshader</code></a> package also provides interesting tools to generate shaded DTM. The dtm must be a <code>RasterLayer</code></p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="dtm.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rayshader)</span>
 <span id="cb7-2"><a href="dtm.html#cb7-2" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">raster</span>(dtm)</span>
-<span id="cb7-3"><a href="dtm.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in showSRID(SRS_string, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;, prefer_proj</span></span>
-<span id="cb7-4"><a href="dtm.html#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; = prefer_proj): Discarded datum NAD83 Canadian Spatial Reference System in Proj4</span></span>
-<span id="cb7-5"><a href="dtm.html#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; definition</span></span>
-<span id="cb7-6"><a href="dtm.html#cb7-6" aria-hidden="true" tabindex="-1"></a>elmat <span class="ot">&lt;-</span> <span class="fu">raster_to_matrix</span>(dtm)</span>
-<span id="cb7-7"><a href="dtm.html#cb7-7" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> elmat <span class="sc">%&gt;%</span></span>
-<span id="cb7-8"><a href="dtm.html#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sphere_shade</span>(<span class="at">texture =</span> <span class="st">&quot;imhof1&quot;</span>, <span class="at">progbar =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-9"><a href="dtm.html#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_water</span>(<span class="fu">detect_water</span>(elmat), <span class="at">color =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-10"><a href="dtm.html#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_shadow</span>(<span class="fu">ray_shade</span>(elmat, <span class="at">progbar =</span> <span class="cn">FALSE</span>), <span class="fl">0.5</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-11"><a href="dtm.html#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_shadow</span>(<span class="fu">ambient_shade</span>(elmat, <span class="at">progbar =</span> <span class="cn">FALSE</span>), <span class="dv">0</span>)</span></code></pre></div>
+<span id="cb7-3"><a href="dtm.html#cb7-3" aria-hidden="true" tabindex="-1"></a>elmat <span class="ot">&lt;-</span> <span class="fu">raster_to_matrix</span>(dtm)</span>
+<span id="cb7-4"><a href="dtm.html#cb7-4" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> elmat <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="dtm.html#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sphere_shade</span>(<span class="at">texture =</span> <span class="st">&quot;imhof1&quot;</span>, <span class="at">progbar =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="dtm.html#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_water</span>(<span class="fu">detect_water</span>(elmat), <span class="at">color =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="dtm.html#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_shadow</span>(<span class="fu">ray_shade</span>(elmat, <span class="at">progbar =</span> <span class="cn">FALSE</span>), <span class="fl">0.5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="dtm.html#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_shadow</span>(<span class="fu">ambient_shade</span>(elmat, <span class="at">progbar =</span> <span class="cn">FALSE</span>), <span class="dv">0</span>)</span></code></pre></div>
 <p>2D plot</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="dtm.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(map)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-2d-dtm-rayshaded-1.png" width="672" style="display: block; margin: auto;" /></p>

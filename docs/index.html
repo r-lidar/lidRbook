@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="The lidR package" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="A guide to the lidR package" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2021-11-18" />
+<meta name="date" content="2022-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 
 <link rel="next" href="io.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,18 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBLHENEPMT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBLHENEPMT');
+</script>
 
 
 
@@ -92,9 +100,10 @@
 <ul>
 <li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#pmf"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#csf"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
-<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
-<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
-<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#mcc"><i class="fa fa-check"></i><b>3.3</b> Multiscale Curvature Classification (MCC)</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.4</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.5</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.6" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.6</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a>
 <ul>
@@ -301,10 +310,10 @@
 <div id="header">
 <h1 class="title">The <code>lidR</code> package</h1>
 <p class="author"><em>Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski</em></p>
-<p class="date"><em>2021-11-18</em></p>
+<p class="date"><em>2022-08-16</em></p>
 </div>
-<div id="introduction" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
+<div id="introduction" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> Introduction<a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><code>lidR</code> is an R package for manipulating and visualizating airborne laser scanning (ALS) data with an emphasis on forestry applications. The package is entirely open source and is integrated within the geospatial R ecosytem (i.e. <code>raster/terra/stars</code> and <code>sp/sf</code>). This guide has been written to help both the ALS novice, as well as seasoned point cloud processing veterans. Key functionality of <code>lidR</code> includes functions to:</p>
 <ul>
 <li>Read and write <code>.las</code> and <code>.laz</code> files and render customized point-cloud display (section <a href="io.html#io">2</a>)</li>
@@ -319,7 +328,7 @@
 </ul>
 <p>The current release version of <code>lidR</code> can be found on <a href="https://cran.r-project.org/web/packages/lidR/">CRAN</a> and the source code is hosted on <a href="https://github.com/r-lidar/lidR">GitHub</a>.</p>
 <p>Development of the <code>lidR</code> package between 2015 and 2018 was made possible thanks to the financial support of the AWARE project <a href="https://aware.forestry.ubc.ca/">NSERC CRDPJ 462973-14</a>; grantee <a href="https://profiles.forestry.ubc.ca/person/nicholas-coops/">Prof. Nicholas C. Coops</a>.</p>
-<p>Development of the <code>lidR</code> package between 2018 and 2020 was made possible thanks to the financial support of the <a href="https://mffp.gouv.qc.ca/">Ministère des Forêts, de la Faune et des Parcs of Québec</a>.</p>
+<p>Development of the <code>lidR</code> package between 2018 and 2021 was made possible thanks to the financial support of the <a href="https://mffp.gouv.qc.ca/">Ministère des Forêts, de la Faune et des Parcs of Québec</a>.</p>
 <p>The book is shared under <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/">CC-BY-NC-SA 2.0</a></p>
 <p><a href="https://creativecommons.org/licenses/by-nc-sa/2.0/"><img src="images/by-nc-sa.png" /></a></p>
 <hr />

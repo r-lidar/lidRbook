@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>7 Indivitual tree dectection and segmentation | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="7 Indivitual tree dectection and segmentation | The lidR package" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="A guide to the lidR package" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-02-07" />
+<meta name="date" content="2022-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="chm.html"/>
 <link rel="next" href="metrics.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,8 +49,18 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBLHENEPMT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBLHENEPMT');
+</script>
 
 
 <style type="text/css">
@@ -156,9 +164,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1" data-path="gnd.html"><a href="gnd.html#pmf"><i class="fa fa-check"></i><b>3.1</b> Progressive Morphological Filter</a></li>
 <li class="chapter" data-level="3.2" data-path="gnd.html"><a href="gnd.html#csf"><i class="fa fa-check"></i><b>3.2</b> Cloth Simulation Function</a></li>
-<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.3</b> Edge artifacts</a></li>
-<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.4</b> How to choose a method and its parameters?</a></li>
-<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.5</b> Other methods</a></li>
+<li class="chapter" data-level="3.3" data-path="gnd.html"><a href="gnd.html#mcc"><i class="fa fa-check"></i><b>3.3</b> Multiscale Curvature Classification (MCC)</a></li>
+<li class="chapter" data-level="3.4" data-path="gnd.html"><a href="gnd.html#edge-artifact"><i class="fa fa-check"></i><b>3.4</b> Edge artifacts</a></li>
+<li class="chapter" data-level="3.5" data-path="gnd.html"><a href="gnd.html#method-selection"><i class="fa fa-check"></i><b>3.5</b> How to choose a method and its parameters?</a></li>
+<li class="chapter" data-level="3.6" data-path="gnd.html"><a href="gnd.html#other"><i class="fa fa-check"></i><b>3.6</b> Other methods</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="dtm.html"><a href="dtm.html"><i class="fa fa-check"></i><b>4</b> Digital terrain model</a>
 <ul>
@@ -362,19 +371,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="itd-its" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Indivitual tree dectection and segmentation</h1>
+<div id="itd-its" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">7</span> Indivitual tree dectection and segmentation<a href="itd-its.html#itd-its" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><strong>Individual tree detection (ITD)</strong> is the process of spatially locating trees and extracting height information. <strong>Individual tree segmentation (ITS)</strong> is the process of individually delineating detected trees. In <code>lidR</code>, detecting and segmenting functions are decoupled to maximize flexibility. Tree tops are first detected using the <code>locate_trees()</code> function, followed crown delineation using <code>segment_trees()</code>. In the following section we will use the <code>MixedConifer.laz</code> data set, which is included internally within <code>lidR</code> to demonstrate both ITD and ITS with reproducible examples. We will also generate a CHM (section <a href="chm.html#chm">6</a>) to help visualize the results.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="itd-its.html#cb2-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;MixedConifer.laz&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
 <span id="cb2-2"><a href="itd-its.html#cb2-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile, <span class="at">select =</span> <span class="st">&quot;xyzr&quot;</span>, <span class="at">filter =</span> <span class="st">&quot;-drop_z_below 0&quot;</span>)</span>
 <span id="cb2-3"><a href="itd-its.html#cb2-3" aria-hidden="true" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="fl">0.5</span>, <span class="fu">pitfree</span>(<span class="at">subcircle =</span> <span class="fl">0.2</span>))</span>
 <span id="cb2-4"><a href="itd-its.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">4</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-mixed-itd-1.png" width="480" style="display: block; margin: auto;" /></p>
-<div id="itd" class="section level2" number="7.1">
-<h2><span class="header-section-number">7.1</span> Individual Tree Detection (ITD)</h2>
+<div id="itd" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Individual Tree Detection (ITD)<a href="itd-its.html#itd" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Tree tops can be detected by applying a Local Maximum Filter (LMF) on the loaded data set. The LMF in <code>lidR</code> is point cloud-based, meaning that it finds the tree tops from the point cloud without using any raster. The processing, however is actually very similar. For a given point, the algorithm analyzes neighbourhood points, checking if the processed point is the highest. This algorithm can be applied with the <code>lmf()</code> function.</p>
-<div id="lmffw" class="section level3" number="7.1.1">
-<h3><span class="header-section-number">7.1.1</span> Local Maximum Filter with fixed windows size</h3>
+<div id="lmffw" class="section level3 hasAnchor" number="7.1.1">
+<h3><span class="header-section-number">7.1.1</span> Local Maximum Filter with fixed windows size<a href="itd-its.html#lmffw" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The LMF can be applied with a constant size windows. Here with a windows size of <code>ws = 5</code> meters meaning that for a given point the algorithm looks to the neigbourhood points within a 2.5 radius circle to figure out if the point is the local highest. While the algorithm does not need any CHM to work we chose to display the results on top of a CHM for better visualization.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="itd-its.html#cb3-1" aria-hidden="true" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">locate_trees</span>(las, <span class="fu">lmf</span>(<span class="at">ws =</span> <span class="dv">5</span>))</span>
 <span id="cb3-2"><a href="itd-its.html#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -396,8 +405,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-8"><a href="itd-its.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sf<span class="sc">::</span><span class="fu">st_geometry</span>(ttops_11m), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">pch =</span> <span class="dv">3</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-tree-ws-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
-<div id="lmfvw" class="section level3" number="7.1.2">
-<h3><span class="header-section-number">7.1.2</span> Local Maximum Filter with variable windows size</h3>
+<div id="lmfvw" class="section level3 hasAnchor" number="7.1.2">
+<h3><span class="header-section-number">7.1.2</span> Local Maximum Filter with variable windows size<a href="itd-its.html#lmfvw" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The examples above demonstrate the <code>lmf()</code> function with a constant window size. A large windows is suitable for large scattered trees while a small windows size if preferable for small and close trees. In reality trees of variable sizes may be present in a single scene leading to sub-optimal outputs. To overcome this issue, a windows size that adapts to the height of pixels or height of the points in our case becomes necessary.</p>
 <p>For example, a point at 30 m (a big tree) will be tested with a large window, while a point at 10 m (a smaller tree) will be tested with a smaller window. The window size can therefore be defined as a function of height. Tall trees have comparatively larger crowns, needing larger window sizes to accurately detect their treetops. Variable window sizes are especially suitable for stands of more complex structures, or when tree detection is performed on larger areas, covering heterogeneous stands.</p>
 <p>In <code>lidR</code> a user can design a function that computes a windows size as a function of point (or pixel) height. When designing a function to define the window size based on point heights we need to determine what the minimum and maximum window size should be related to the minimum and maximum tree heights. In general, the minimum window size should not be smaller than 3 meters. Below we show an example where the windows size is related to the point height with an affine relationship. When a point is at 0 the windows size is 3 meters. At 10 m it is 4 m and so on.</p>
@@ -426,8 +435,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-10"><a href="itd-its.html#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(heights, ws, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-vws-2-1.png" width="326.4" style="display: block; margin: auto;" /></p>
 </div>
-<div id="lmfchm" class="section level3" number="7.1.3">
-<h3><span class="header-section-number">7.1.3</span> Local Maximum Filter on a CHM</h3>
+<div id="lmfchm" class="section level3 hasAnchor" number="7.1.3">
+<h3><span class="header-section-number">7.1.3</span> Local Maximum Filter on a CHM<a href="itd-its.html#lmfchm" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>So far tree detection was performed on a point cloud. A CHM can however also be used to find trees instead of the point cloud. This is also a perfectly valid way to process ALS data. Performing the detection on a CHM is faster because there are less data to process, but it is also more complex because the output depends on how the CHM has been built. The spatial resolution (i.e. pixel size), the algorithm used (see section <a href="chm.html#chm">6</a>), and any additional post-processing steps will influence tree detection results.</p>
 <p>In the examples below we run tree detection on CHMs generated with different algorithms (<code>p2r</code>, <code>pitfree</code>), different resolutions (0.5 and 1 m), and different post-processing smoothing steps with a median filter applied.</p>
 <p>First the different CHMs are generated:</p>
@@ -462,8 +471,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="lidR-book_files/figure-html/plot-multichm-lmf-1.png" width="940.8" style="display: block; margin: auto;" /></p>
 </div>
 </div>
-<div id="its" class="section level2" number="7.2">
-<h2><span class="header-section-number">7.2</span> Individual Tree Segmentation (ITS)</h2>
+<div id="its" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Individual Tree Segmentation (ITS)<a href="itd-its.html#its" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>While individual tree detection provides very useful information about tree density and size, one may want to go further to segment and extract each tree individually. Several algorithms are available in <code>lidR</code> and can be divided in two families.</p>
 <ol style="list-style-type: decimal">
 <li>Point cloud-based that perform without a CHM.</li>
@@ -475,8 +484,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Algorithms that are all-in-one.</li>
 </ol>
 <p>In this section we won’t go through all of these possibilities, but its important to recognize that all algorithms are not well suited to every context. In the examples below we used the <code>dalponte2016()</code> algorithm, because we found it to perform best using the example data.</p>
-<div id="its-cloud" class="section level3" number="7.2.1">
-<h3><span class="header-section-number">7.2.1</span> Segmentation of the point-cloud</h3>
+<div id="its-cloud" class="section level3 hasAnchor" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> Segmentation of the point-cloud<a href="itd-its.html#its-cloud" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Even when the algorithm is raster-based (which is the case of <code>dalponte2016()</code>), <code>lidR</code> segments the point cloud and assigns an ID to each point by inserting a new attribute named <code>treeID</code> in the <code>LAS</code> object. This means that every point is associated with a particular tree. This is because <code>lidR</code> is point cloud oriented and we want to provide an immediate way to be able to access a segmented point cloud not the segmented raster.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="itd-its.html#cb12-1" aria-hidden="true" tabindex="-1"></a>algo <span class="ot">&lt;-</span> <span class="fu">dalponte2016</span>(chm_p2r_05_smoothed, ttops_chm_p2r_05_smoothed)</span>
 <span id="cb12-2"><a href="itd-its.html#cb12-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">segment_trees</span>(las, algo) <span class="co"># segment point cloud</span></span>
@@ -491,8 +500,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-2"><a href="itd-its.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(crowns[<span class="st">&quot;convhull_area&quot;</span>], <span class="at">main =</span> <span class="st">&quot;Crown area (convex hull)&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-tree-hulls-its-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
-<div id="its-chm" class="section level3" number="7.2.2">
-<h3><span class="header-section-number">7.2.2</span> Segmentation of the CHM</h3>
+<div id="its-chm" class="section level3 hasAnchor" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> Segmentation of the CHM<a href="itd-its.html#its-chm" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>While point cloud segmentation is standard in <code>lidR</code>, users may only have access to a CHM. There are many reasons for only using a CHM, and this is why raster-based methods can be run standalone outside <code>segment_trees()</code>. Whether using the point cloud or a raster, segmentation results will be exactly the same. The difference will be the data format of the segmentation result. In <code>lidR</code>, a <code>LAS</code> object will gain a <code>treeID</code> attribute, while for rasters, delineated crowns are returned in a raster format. To work outside <code>segment_trees()</code> it suffices to call the function standalone like this:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="itd-its.html#cb15-1" aria-hidden="true" tabindex="-1"></a>algo <span class="ot">&lt;-</span> <span class="fu">dalponte2016</span>(chm_p2r_05_smoothed, ttops_chm_p2r_05_smoothed)</span>
 <span id="cb15-2"><a href="itd-its.html#cb15-2" aria-hidden="true" tabindex="-1"></a>crowns <span class="ot">&lt;-</span> <span class="fu">algo</span>()</span>
@@ -501,8 +510,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="lidR-book_files/figure-html/plot-raster-its-1.png" width="499.2" style="display: block; margin: auto;" /></p>
 <p>The output is a raster, for which <code>lidR</code> does not provide any processing tools. At this stage it is up to the user to find the required tools to perform more analysis. The <code>terra</code> package is a good place to start!</p>
 </div>
-<div id="its-comparaison" class="section level3" number="7.2.3">
-<h3><span class="header-section-number">7.2.3</span> Comparaison of tree segmentations</h3>
+<div id="its-comparaison" class="section level3 hasAnchor" number="7.2.3">
+<h3><span class="header-section-number">7.2.3</span> Comparaison of tree segmentations<a href="itd-its.html#its-comparaison" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>At the point cloud level it’s pretty easy to compare tree segmentations by choosing a different attribute names for each method. For example we can compare <code>dalponte2016</code> (which is a raster based methods in two steps) and <code>li2012</code> (which is an <em>“all-in-one”</em> point cloud based method) side by side.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="itd-its.html#cb16-1" aria-hidden="true" tabindex="-1"></a>algo1 <span class="ot">&lt;-</span> <span class="fu">dalponte2016</span>(chm_p2r_05_smoothed, ttops_chm_p2r_05_smoothed)</span>
 <span id="cb16-2"><a href="itd-its.html#cb16-2" aria-hidden="true" tabindex="-1"></a>algo2 <span class="ot">&lt;-</span> <span class="fu">li2012</span>()</span>
@@ -510,7 +519,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb16-4"><a href="itd-its.html#cb16-4" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">segment_trees</span>(las, algo2, <span class="at">attribute =</span> <span class="st">&quot;IDli&quot;</span>)</span>
 <span id="cb16-5"><a href="itd-its.html#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-6"><a href="itd-its.html#cb16-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">color =</span> <span class="st">&quot;IDdalponte&quot;</span>, <span class="at">colorPalette =</span> <span class="fu">pastel.colors</span>(<span class="dv">200</span>))</span>
-<span id="cb16-7"><a href="itd-its.html#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">add =</span> x <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">0</span>), <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">color =</span> <span class="st">&quot;IDli&quot;</span>, <span class="at">colorPalette =</span> <span class="fu">pastel.colors</span>(<span class="dv">200</span>))</span></code></pre></div>
+<span id="cb16-7"><a href="itd-its.html#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The argument &#39;coloPalette&#39; is deprecated. Use &#39;pal&#39; instead</span></span>
+<span id="cb16-8"><a href="itd-its.html#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">add =</span> x <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">0</span>), <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">color =</span> <span class="st">&quot;IDli&quot;</span>, <span class="at">colorPalette =</span> <span class="fu">pastel.colors</span>(<span class="dv">200</span>))</span>
+<span id="cb16-9"><a href="itd-its.html#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The argument &#39;coloPalette&#39; is deprecated. Use &#39;pal&#39; instead</span></span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-compare-its-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>By comparing their crowns with <code>crown_metrics()</code> we can more easily see that the <code>li2012</code> algorithm doesn’t perform well in this example with default parameters - maybe some parameter tuning can lead to better results!</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="itd-its.html#cb17-1" aria-hidden="true" tabindex="-1"></a>crowns_dalponte <span class="ot">&lt;-</span> <span class="fu">crown_metrics</span>(las, <span class="at">func =</span> <span class="cn">NULL</span>, <span class="at">attribute =</span> <span class="st">&quot;IDdalponte&quot;</span>, <span class="at">geom =</span> <span class="st">&quot;concave&quot;</span>)</span>
