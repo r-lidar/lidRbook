@@ -132,7 +132,7 @@ abline(0,1)
 
 Now that we have created a model using plot data, we need to apply that model across our entire study area. 
 
-To do so we first need to generate the same suite of ALS metrics (`.stdmetrics_z`) for our ALS data using the `grid_metrics()` function on our original collection of files. Note that the `res` parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius = 625m^2^).
+To do so we first need to generate the same suite of ALS metrics (`.stdmetrics_z`) for our ALS data using the `pixel_metrics()` function on our original collection of files. Note that the `res` parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius = 625m^2^).
 
 ```r
 metrics_w2w <- pixel_metrics(ctg, .stdmetrics_z, res = 25, pkg = "terra")
