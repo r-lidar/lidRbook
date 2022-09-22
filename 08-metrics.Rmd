@@ -88,7 +88,7 @@ The user-defined function `f` can then be used.
 
 ```r
 cloud_metrics(las, func = ~f(Z, Intensity))
-grid_metrics(las, func = ~f(Z, Intensity))
+pixel_metrics(las, func = ~f(Z, Intensity))
 tree_metrics(las, func = ~f(Z, Intensity))
 haxagon_metrics(las, func = ~f(Z, Intensity))
 voxel_metrics(las, func = ~f(Z, Intensity))
@@ -104,7 +104,7 @@ The complete list of all metrics can be found in the [lidR wiki page](https://gi
 
 ```r
 cloud_metrics(las, func = .stdmetrics)
-grid_metrics(las, func = .stdmetrics)
+pixel_metrics(las, func = .stdmetrics)
 tree_metrics(las, func = .stdmetrics)
 voxel_metrics(las, func = .stdmetrics)
 ```
@@ -132,7 +132,7 @@ Fractal dimensions are another statistical description that is showing promise w
 
 The calculation of fractal dimensions — similarly to L-moments — can be tricky to implement efficiently, and would add an additional dependency to `lidR`'s growing list. To avoid `lidR` needing to depend on external packages, we can leverage them (in this case `Rdimtools`) to calculate fractal dimensions within a `pixel_metrics()` example.
 
-First, we can create a user-defined function that leverages the `est.boxcount()` function within `Rdimtools`. This allows us to define the variables we want the function to utilize within `grid_metrics()`
+First, we can create a user-defined function that leverages the `est.boxcount()` function within `Rdimtools`. This allows us to define the variables we want the function to utilize within `pixel_metrics()`
 
 ```r
 #create user-defined function
