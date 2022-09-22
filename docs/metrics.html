@@ -23,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-08-16" />
+<meta name="date" content="2022-09-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -426,7 +426,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-6"><a href="metrics.html#cb3-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>The user-defined function <code>f</code> can then be used.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="metrics.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
-<span id="cb4-2"><a href="metrics.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
+<span id="cb4-2"><a href="metrics.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
 <span id="cb4-3"><a href="metrics.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
 <span id="cb4-4"><a href="metrics.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">haxagon_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
 <span id="cb4-5"><a href="metrics.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span></code></pre></div>
@@ -437,7 +437,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The most commonly used metrics are already predefined in <code>lidR</code> - the <code>stdmetrics*()</code> group of functions contain metrics that summarize the vertical distribution of points, their intensities, and return structure.</p>
 <p>The complete list of all metrics can be found in the <a href="https://github.com/Jean-Romain/lidR/wiki/stdmetrics">lidR wiki page</a> and can be use that way:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="metrics.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
-<span id="cb5-2"><a href="metrics.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
+<span id="cb5-2"><a href="metrics.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
 <span id="cb5-3"><a href="metrics.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
 <span id="cb5-4"><a href="metrics.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span></code></pre></div>
 </div>
@@ -456,7 +456,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">8.4.2</span> Fractal dimensions<a href="metrics.html#metrics-fractal-dims" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Fractal dimensions are another statistical description that is showing promise within lidar and forestry related research (eg. <a href="https://doi.org/10.1002/ece3.7216">Saarinen et al., 2021</a>). The use of fractal dimensions seeks to help understand the relationship between structural complexity and stem/crown size and shape.</p>
 <p>The calculation of fractal dimensions — similarly to L-moments — can be tricky to implement efficiently, and would add an additional dependency to <code>lidR</code>’s growing list. To avoid <code>lidR</code> needing to depend on external packages, we can leverage them (in this case <code>Rdimtools</code>) to calculate fractal dimensions within a <code>pixel_metrics()</code> example.</p>
-<p>First, we can create a user-defined function that leverages the <code>est.boxcount()</code> function within <code>Rdimtools</code>. This allows us to define the variables we want the function to utilize within <code>grid_metrics()</code></p>
+<p>First, we can create a user-defined function that leverages the <code>est.boxcount()</code> function within <code>Rdimtools</code>. This allows us to define the variables we want the function to utilize within <code>pixel_metrics()</code></p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="metrics.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create user-defined function</span></span>
 <span id="cb7-2"><a href="metrics.html#cb7-2" aria-hidden="true" tabindex="-1"></a>fd <span class="ot">=</span> <span class="cf">function</span>(X,Y,Z) {</span>
 <span id="cb7-3"><a href="metrics.html#cb7-3" aria-hidden="true" tabindex="-1"></a>  M <span class="ot">=</span> <span class="fu">cbind</span>(X,Y,Z)</span>

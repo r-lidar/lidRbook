@@ -23,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-08-16" />
+<meta name="date" content="2022-09-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -462,7 +462,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="wall-to-wall-modelling" class="section level2 hasAnchor" number="16.4">
 <h2><span class="header-section-number">16.4</span> Wall to wall modelling<a href="modeling-aba.html#wall-to-wall-modelling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Now that we have created a model using plot data, we need to apply that model across our entire study area.</p>
-<p>To do so we first need to generate the same suite of ALS metrics (<code>.stdmetrics_z</code>) for our ALS data using the <code>grid_metrics()</code> function on our original collection of files. Note that the <code>res</code> parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius = 625m<sup>2</sup>).</p>
+<p>To do so we first need to generate the same suite of ALS metrics (<code>.stdmetrics_z</code>) for our ALS data using the <code>pixel_metrics()</code> function on our original collection of files. Note that the <code>res</code> parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius = 625m<sup>2</sup>).</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="modeling-aba.html#cb9-1" aria-hidden="true" tabindex="-1"></a>metrics_w2w <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(ctg, .stdmetrics_z, <span class="at">res =</span> <span class="dv">25</span>, <span class="at">pkg =</span> <span class="st">&quot;terra&quot;</span>)</span></code></pre></div>
 <p>To visualize any of the metrics you can use the <code>plot</code> function.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="modeling-aba.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics_w2w<span class="sc">$</span>zq85)</span>
