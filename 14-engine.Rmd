@@ -150,7 +150,7 @@ rois[1:2]
 
 ## Modification of default behavior {#engine-options}
 
-When processing a `LAScatalog`, no matter with which function, it internally uses what we called the `LAScatalog` processing engine. This is what happened _under the hood_ when using `clip_cirle()` in above examples. The default behavior of the engine is set in such a way that it returns what is most likely to be expected by the users. However the behavior of the engine can be tuned to optimize  processing. Engine options, at the user level, can be modified with `opt_*()` functions. 
+When processing a `LAScatalog`, no matter with which function, it internally uses what we called the `LAScatalog` processing engine. This is what happened _under the hood_ when using `clip_circle()` in above examples. The default behavior of the engine is set in such a way that it returns what is most likely to be expected by the users. However the behavior of the engine can be tuned to optimize  processing. Engine options, at the user level, can be modified with `opt_*()` functions. 
 
 The goal of this section is to present these options and how they affect the behavior of the engine.
 
