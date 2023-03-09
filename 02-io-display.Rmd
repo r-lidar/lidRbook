@@ -281,6 +281,8 @@ las_tr <- clip_transect(las, p1, p2, width = 4, xz = TRUE)
 Rendering can be achieved with base plot or `ggplot2`. Notice the use of `@data` to extract the `data.frame` from the `LAS` object.
 
 ```{r ggplot-transect, fig.height=1.5, fig.width=8}
+library(ggplot2)
+
 ggplot(las_tr@data, aes(X,Z, color = Z)) + 
   geom_point(size = 0.5) + 
   coord_equal() + 
