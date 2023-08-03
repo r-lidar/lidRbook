@@ -108,9 +108,9 @@ Let's try it on a sample plot.
 
 ```{r plot-las-rgb-colored, rgl = TRUE}
 las <- clip_circle(ctg, 338800, 5238500, 40)
-nlasrgb <- norm_color(las, rgbmap) # apply user defined function
+#nlasrgb <- norm_color(las, rgbmap) # apply user defined function
 
-plot(nlasrgb, color = "RGB", bg = "white", size = 6) # some plotting
+#plot(nlasrgb, color = "RGB", bg = "white", size = 6) # some plotting
 ```
 
 It works! We have a workable function that performs on a point cloud. Remember that `norm_color()` is just an example. You could instead choose to make an algorithm for individual tree detection or a method to sample point of interest, _let your imagination run wild!_ 
@@ -151,9 +151,9 @@ opt_filter(ctg) <- "-keep_class 2"
 ```
 
 ```{r}
-opt_output_files(ctg) <- paste0(tempdir(), "/{*}_norm_rgb") # write to disk
-output <- catalog_apply(ctg, norm_color_chunk, rgbmap = rgbmap) # implement user-defined function using catalog_apply
-str(output)
+#opt_output_files(ctg) <- paste0(tempdir(), "/{*}_norm_rgb") # write to disk
+#output <- catalog_apply(ctg, norm_color_chunk, rgbmap = rgbmap) # implement user-defined function using catalog_apply
+#str(output)
 ```
 
 We can see that the output is a `list` with the name of each file written to disk. This is the default behavior of the engine. It returns a `list` with one element per chunk. This isn't really convenient. We have seen in section \@ref(engine) that in the case of `LAS` files we can return a `LAScatalog`, which is far more convenient. 
@@ -162,14 +162,14 @@ We can use the option `automerge = TRUE` so `catalog_apply()` will automatically
 
 ```{r plot-ctg-colored-overlaps, fig.height=4, fig.width=4}
 opt_output_files(ctg) <- paste0(tempdir(), "/{*}_norm_rgb")
-options <- list(automerge = TRUE) # merge all the outputs
-output <- catalog_apply(ctg, norm_color_chunk, rgbmap = rgbmap, .options = options)
-output
+#options <- list(automerge = TRUE) # merge all the outputs
+#output <- catalog_apply(ctg, norm_color_chunk, rgbmap = rgbmap, .options = options)
+#output
 ```
 We now have a `LAscatalog`. It is much better but:
 
 ```{r}
-plot(output)
+#plot(output)
 ```
 
 We still have a problem here. The files are overlapping because we read each file with a buffer and then the outputs have been written **with their buffer**. This is bad practice. It's important to always remove the buffer after the computation. In this specific case, the output is a `LAS` file. When `readLAS()` reads a chunk from the catalog the points in the buffer are flagged so they can be easily manipulated. Since they are flagged, we can easily remove these points by adding this step to our user-defined function. It is always the role of the user to remove the buffer of the output.
@@ -184,10 +184,10 @@ norm_color_chunk <- function(chunk, rgbmap)
   return(nlasrgb)
 }
 
-opt_output_files(ctg) <- paste0(tempdir(), "/{*}_norm_rgb")
-options <- list(automerge = TRUE)
-output <- catalog_apply(ctg, norm_color_chunk, rgbmap = rgbmap, .options = options)
-plot(output)
+#opt_output_files(ctg) <- paste0(tempdir(), "/{*}_norm_rgb")
+#options <- list(automerge = TRUE)
+#output <- catalog_apply(ctg, norm_color_chunk, rgbmap = rgbmap, .options = options)
+#plot(output)
 ```
 
 When the outputs are spatial vectors or spatial rasters they can be cropped using the bounding box of the chunk accessible via `extent(chunk)` or `bbox(chunk)` or `st_bbox(chunk)` or `ext(chunk)` that match respectively with `raster`, `sp`, `sf/stars` and `terra`.
@@ -208,9 +208,9 @@ output <- catalog_apply(ctg, norm_color_chunk, rgbmap = rgbmap, .options = optio
 We can check that it worked by loading a sample from somewhere in our new catalog. According to the options put above, we are expecting to get a normalized (we normalized), colored (we merged RGB image), ground points (we used `-keep_class 2`).
 
 ```{r plot-cliped-gnd-colored, rgl = TRUE}
-opt_output_files(output) <- ""
-las <- clip_circle(output, 338800, 5238500, 60)
-plot(las, color = "RGB", size = 6, bg = "white")
+#opt_output_files(output) <- ""
+#las <- clip_circle(output, 338800, 5238500, 60)
+#plot(las, color = "RGB", size = 6, bg = "white")
 ```
 
 ## Make a user-friendly function for third party users {#engine-user-function-lascatalog}
@@ -297,8 +297,8 @@ norm_color <- function(las, rgbmap)
 We can test what happens if we use this function naively.
 
 ```{r, error = TRUE}
-opt_output_files(ctg) <- ""
-ctg_norm_colored <- norm_color(ctg, rgbmap)
+#opt_output_files(ctg) <- ""
+#ctg_norm_colored <- norm_color(ctg, rgbmap)
 ```
 
 It failed with an informative message!
