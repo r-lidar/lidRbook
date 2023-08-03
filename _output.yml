@@ -1,5 +1,8 @@
 bookdown::gitbook:
   css: style.css
+  config:
+    search:
+      engine: fuse
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex
