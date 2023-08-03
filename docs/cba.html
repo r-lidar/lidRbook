@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>9 Derived metrics at the cloud level | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="9 Derived metrics at the cloud level | The lidR package" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-08-16" />
+<meta name="date" content="2023-08-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -101,7 +101,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -114,7 +114,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -128,6 +128,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -376,82 +380,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="cba-overview" class="section level2 hasAnchor" number="9.1">
 <h2><span class="header-section-number">9.1</span> Overview<a href="cba.html#cba-overview" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The “cloud” level of regularization corresponds to the computation of derived metrics using all available points. As seen in section <a href="metrics.html#metrics">8</a>, calculating derived metrics for the whole point cloud is straightforward and users only need to provide a formula to calculate metric(s) of interest. For example, to calculate the average height (<code>mean(Z)</code>) of all points we can run the following:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="cba.html#cb1-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Megaplot.laz&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
-<span id="cb1-2"><a href="cba.html#cb1-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile)</span>
-<span id="cb1-3"><a href="cba.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z)) <span class="co"># calculate mean height</span></span>
-<span id="cb1-4"><a href="cba.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 13.27202</span></span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="cba.html#cb96-1" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Megaplot.laz&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb96-2"><a href="cba.html#cb96-2" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile)</span>
+<span id="cb96-3"><a href="cba.html#cb96-3" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z)) <span class="co"># calculate mean height</span></span>
+<span id="cb96-4"><a href="cba.html#cb96-4" tabindex="-1"></a><span class="co">#&gt; [1] 13.27202</span></span></code></pre></div>
 <p>To calculate more than one metric a custom function needs to be used, or one of the pre-defined functions within <code>lidR</code>. To calculate the whole suite of 36 metrics defined in <code>stdmetrics_z()</code> we can use <code>func = .stdmetrics_z</code>. When several metrics are computed they are returned as a <code>list</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="cba.html#cb2-1" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> .stdmetrics_z)</span>
-<span id="cb2-2"><a href="cba.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(<span class="fu">head</span>(metrics)) <span class="co"># output is a list</span></span>
-<span id="cb2-3"><a href="cba.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; List of 6</span></span>
-<span id="cb2-4"><a href="cba.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zmax    : num 30</span></span>
-<span id="cb2-5"><a href="cba.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zmean   : num 13.3</span></span>
-<span id="cb2-6"><a href="cba.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zsd     : num 7.45</span></span>
-<span id="cb2-7"><a href="cba.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zskew   : num -0.476</span></span>
-<span id="cb2-8"><a href="cba.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zkurt   : num 2.08</span></span>
-<span id="cb2-9"><a href="cba.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ zentropy: num 0.903</span></span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="cba.html#cb97-1" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> .stdmetrics_z)</span>
+<span id="cb97-2"><a href="cba.html#cb97-2" tabindex="-1"></a><span class="fu">str</span>(<span class="fu">head</span>(metrics)) <span class="co"># output is a list</span></span>
+<span id="cb97-3"><a href="cba.html#cb97-3" tabindex="-1"></a><span class="co">#&gt; List of 6</span></span>
+<span id="cb97-4"><a href="cba.html#cb97-4" tabindex="-1"></a><span class="co">#&gt;  $ zmax    : num 30</span></span>
+<span id="cb97-5"><a href="cba.html#cb97-5" tabindex="-1"></a><span class="co">#&gt;  $ zmean   : num 13.3</span></span>
+<span id="cb97-6"><a href="cba.html#cb97-6" tabindex="-1"></a><span class="co">#&gt;  $ zsd     : num 7.45</span></span>
+<span id="cb97-7"><a href="cba.html#cb97-7" tabindex="-1"></a><span class="co">#&gt;  $ zskew   : num -0.476</span></span>
+<span id="cb97-8"><a href="cba.html#cb97-8" tabindex="-1"></a><span class="co">#&gt;  $ zkurt   : num 2.08</span></span>
+<span id="cb97-9"><a href="cba.html#cb97-9" tabindex="-1"></a><span class="co">#&gt;  $ zentropy: num 0.903</span></span></code></pre></div>
 </div>
 <div id="cba-applications" class="section level2 hasAnchor" number="9.2">
 <h2><span class="header-section-number">9.2</span> Applications<a href="cba.html#cba-applications" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Point cloud metrics become interesting when computed for a set of plot inventories. In this case it can serves to compute a set of metrics for each plot, where known attributes have been measured in the field to construct a predictive model. Users could easily clip and loop through plot inventory files but we defined an all-in-one convenient function <code>plot_metrics()</code>. In the following example we load a <code>.las</code> and compute the metrics for each plot inventory using a shapefile of plot centers</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="cba.html#cb3-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Megaplot.laz&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
-<span id="cb3-2"><a href="cba.html#cb3-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile, <span class="at">filter =</span> <span class="st">&quot;-keep_random_fraction 0.5&quot;</span>)</span>
-<span id="cb3-3"><a href="cba.html#cb3-3" aria-hidden="true" tabindex="-1"></a>shpfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;efi_plot.shp&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
-<span id="cb3-4"><a href="cba.html#cb3-4" aria-hidden="true" tabindex="-1"></a>inventory <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(shpfile, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-5"><a href="cba.html#cb3-5" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">plot_metrics</span>(las, .stdmetrics_z, inventory, <span class="at">radius =</span> <span class="fl">11.28</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="cba.html#cb98-1" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Megaplot.laz&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb98-2"><a href="cba.html#cb98-2" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile, <span class="at">filter =</span> <span class="st">&quot;-keep_random_fraction 0.5&quot;</span>)</span>
+<span id="cb98-3"><a href="cba.html#cb98-3" tabindex="-1"></a>shpfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;efi_plot.shp&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb98-4"><a href="cba.html#cb98-4" tabindex="-1"></a>inventory <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(shpfile, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb98-5"><a href="cba.html#cb98-5" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">plot_metrics</span>(las, .stdmetrics_z, inventory, <span class="at">radius =</span> <span class="fl">11.28</span>)</span></code></pre></div>
 <p>Look at the content of <code>inventory</code> and <code>metrics</code>. <code>inventory</code> contains the plot IDs, their coordinates, and <code>VOI</code> a Value Of Interest. <code>metrics</code> contains 36 derived metrics for each plot combined with the <code>inventory</code> data</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="cba.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(inventory)</span>
-<span id="cb4-2"><a href="cba.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 5 features and 2 fields</span></span>
-<span id="cb4-3"><a href="cba.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
-<span id="cb4-4"><a href="cba.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
-<span id="cb4-5"><a href="cba.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 684838.9 ymin: 5017796 xmax: 684976.6 ymax: 5017958</span></span>
-<span id="cb4-6"><a href="cba.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Projected CRS: NAD83 / UTM zone 17N</span></span>
-<span id="cb4-7"><a href="cba.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   IDPEP       VOI                 geometry</span></span>
-<span id="cb4-8"><a href="cba.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 PEPQ1 14.157140 POINT (684976.6 5017821)</span></span>
-<span id="cb4-9"><a href="cba.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 PEPQ2 12.720584 POINT (684923.9 5017958)</span></span>
-<span id="cb4-10"><a href="cba.html#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 PEPQ3 11.396656 POINT (684838.9 5017942)</span></span>
-<span id="cb4-11"><a href="cba.html#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 PEPQ4 11.597471   POINT (684855 5017891)</span></span>
-<span id="cb4-12"><a href="cba.html#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 PEPQ5  8.263425   POINT (684944 5017796)</span></span>
-<span id="cb4-13"><a href="cba.html#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(metrics[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>])</span>
-<span id="cb4-14"><a href="cba.html#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 5 features and 8 fields</span></span>
-<span id="cb4-15"><a href="cba.html#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
-<span id="cb4-16"><a href="cba.html#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
-<span id="cb4-17"><a href="cba.html#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 684838.9 ymin: 5017796 xmax: 684976.6 ymax: 5017958</span></span>
-<span id="cb4-18"><a href="cba.html#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Projected CRS: NAD83 / UTM zone 17N</span></span>
-<span id="cb4-19"><a href="cba.html#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   IDPEP       VOI  zmax     zmean      zsd      zskew    zkurt  zentropy</span></span>
-<span id="cb4-20"><a href="cba.html#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 PEPQ1 14.157140 26.59 15.133411 7.612693 -0.9446675 2.611282 0.8705833</span></span>
-<span id="cb4-21"><a href="cba.html#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 PEPQ2 12.720584 25.21 16.080521 6.115513 -1.0047707 3.321145 0.8814483</span></span>
-<span id="cb4-22"><a href="cba.html#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 PEPQ3 11.396656 26.18 15.633750 6.682559 -0.6001914 2.382146 0.9242472</span></span>
-<span id="cb4-23"><a href="cba.html#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 PEPQ4 11.597471 25.03 12.750980 6.677977 -0.2836284 2.394358 0.9193615</span></span>
-<span id="cb4-24"><a href="cba.html#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 PEPQ5  8.263425 22.45  7.833131 6.166043  0.3510494 2.096718 0.9013117</span></span>
-<span id="cb4-25"><a href="cba.html#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   geometry</span></span>
-<span id="cb4-26"><a href="cba.html#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 POINT (684976.6 5017821)</span></span>
-<span id="cb4-27"><a href="cba.html#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 POINT (684923.9 5017958)</span></span>
-<span id="cb4-28"><a href="cba.html#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 POINT (684838.9 5017942)</span></span>
-<span id="cb4-29"><a href="cba.html#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4   POINT (684855 5017891)</span></span>
-<span id="cb4-30"><a href="cba.html#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5   POINT (684944 5017796)</span></span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="cba.html#cb99-1" tabindex="-1"></a><span class="fu">head</span>(inventory)</span>
+<span id="cb99-2"><a href="cba.html#cb99-2" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 5 features and 2 fields</span></span>
+<span id="cb99-3"><a href="cba.html#cb99-3" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb99-4"><a href="cba.html#cb99-4" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb99-5"><a href="cba.html#cb99-5" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 684838.9 ymin: 5017796 xmax: 684976.6 ymax: 5017958</span></span>
+<span id="cb99-6"><a href="cba.html#cb99-6" tabindex="-1"></a><span class="co">#&gt; Projected CRS: NAD83 / UTM zone 17N</span></span>
+<span id="cb99-7"><a href="cba.html#cb99-7" tabindex="-1"></a><span class="co">#&gt;   IDPEP       VOI                 geometry</span></span>
+<span id="cb99-8"><a href="cba.html#cb99-8" tabindex="-1"></a><span class="co">#&gt; 1 PEPQ1 14.157140 POINT (684976.6 5017821)</span></span>
+<span id="cb99-9"><a href="cba.html#cb99-9" tabindex="-1"></a><span class="co">#&gt; 2 PEPQ2 12.720584 POINT (684923.9 5017958)</span></span>
+<span id="cb99-10"><a href="cba.html#cb99-10" tabindex="-1"></a><span class="co">#&gt; 3 PEPQ3 11.396656 POINT (684838.9 5017942)</span></span>
+<span id="cb99-11"><a href="cba.html#cb99-11" tabindex="-1"></a><span class="co">#&gt; 4 PEPQ4 11.597471   POINT (684855 5017891)</span></span>
+<span id="cb99-12"><a href="cba.html#cb99-12" tabindex="-1"></a><span class="co">#&gt; 5 PEPQ5  8.263425   POINT (684944 5017796)</span></span>
+<span id="cb99-13"><a href="cba.html#cb99-13" tabindex="-1"></a><span class="fu">head</span>(metrics[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>])</span>
+<span id="cb99-14"><a href="cba.html#cb99-14" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 5 features and 8 fields</span></span>
+<span id="cb99-15"><a href="cba.html#cb99-15" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb99-16"><a href="cba.html#cb99-16" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb99-17"><a href="cba.html#cb99-17" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 684838.9 ymin: 5017796 xmax: 684976.6 ymax: 5017958</span></span>
+<span id="cb99-18"><a href="cba.html#cb99-18" tabindex="-1"></a><span class="co">#&gt; Projected CRS: NAD83 / UTM zone 17N</span></span>
+<span id="cb99-19"><a href="cba.html#cb99-19" tabindex="-1"></a><span class="co">#&gt;   IDPEP       VOI  zmax     zmean      zsd      zskew    zkurt  zentropy                 geometry</span></span>
+<span id="cb99-20"><a href="cba.html#cb99-20" tabindex="-1"></a><span class="co">#&gt; 1 PEPQ1 14.157140 26.51 15.402475 7.395206 -1.0168956 2.825871 0.8730854 POINT (684976.6 5017821)</span></span>
+<span id="cb99-21"><a href="cba.html#cb99-21" tabindex="-1"></a><span class="co">#&gt; 2 PEPQ2 12.720584 25.26 16.429223 5.923490 -1.0499688 3.568286 0.8865369 POINT (684923.9 5017958)</span></span>
+<span id="cb99-22"><a href="cba.html#cb99-22" tabindex="-1"></a><span class="co">#&gt; 3 PEPQ3 11.396656 26.18 16.174680 6.624851 -0.7560671 2.593582 0.9242759 POINT (684838.9 5017942)</span></span>
+<span id="cb99-23"><a href="cba.html#cb99-23" tabindex="-1"></a><span class="co">#&gt; 4 PEPQ4 11.597471 25.56 12.871502 6.588364 -0.2325813 2.489815 0.9148133   POINT (684855 5017891)</span></span>
+<span id="cb99-24"><a href="cba.html#cb99-24" tabindex="-1"></a><span class="co">#&gt; 5 PEPQ5  8.263425 21.47  8.573705 5.689968  0.1281190 2.153115 0.9344224   POINT (684944 5017796)</span></span></code></pre></div>
 <p>We have computed many metrics for each plot and we know the value of interest <code>VOI</code>. We can use that to build a linear model with some metrics. Here we have only 5 plots so it is not going to be big science</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="cba.html#cb5-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(VOI<span class="sc">~</span>zsd<span class="sc">+</span>zmax, <span class="at">data =</span> metrics)</span>
-<span id="cb5-2"><a href="cba.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span>
-<span id="cb5-3"><a href="cba.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-4"><a href="cba.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb5-5"><a href="cba.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lm(formula = VOI ~ zsd + zmax, data = metrics)</span></span>
-<span id="cb5-6"><a href="cba.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-7"><a href="cba.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
-<span id="cb5-8"><a href="cba.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        1        2        3        4        5 </span></span>
-<span id="cb5-9"><a href="cba.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.55099  1.12349 -1.46502  0.03201 -0.24147 </span></span>
-<span id="cb5-10"><a href="cba.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-11"><a href="cba.html#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb5-12"><a href="cba.html#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
-<span id="cb5-13"><a href="cba.html#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -18.6472    10.6926  -1.744    0.223</span></span>
-<span id="cb5-14"><a href="cba.html#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zsd           0.3041     1.5817   0.192    0.865</span></span>
-<span id="cb5-15"><a href="cba.html#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zmax          1.1259     0.5896   1.910    0.196</span></span>
-<span id="cb5-16"><a href="cba.html#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-17"><a href="cba.html#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 1.373 on 2 degrees of freedom</span></span>
-<span id="cb5-18"><a href="cba.html#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.8011, Adjusted R-squared:  0.6023 </span></span>
-<span id="cb5-19"><a href="cba.html#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic: 4.029 on 2 and 2 DF,  p-value: 0.1989</span></span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="cba.html#cb100-1" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(VOI<span class="sc">~</span>zsd<span class="sc">+</span>zmax, <span class="at">data =</span> metrics)</span>
+<span id="cb100-2"><a href="cba.html#cb100-2" tabindex="-1"></a><span class="fu">summary</span>(model)</span>
+<span id="cb100-3"><a href="cba.html#cb100-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb100-4"><a href="cba.html#cb100-4" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb100-5"><a href="cba.html#cb100-5" tabindex="-1"></a><span class="co">#&gt; lm(formula = VOI ~ zsd + zmax, data = metrics)</span></span>
+<span id="cb100-6"><a href="cba.html#cb100-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb100-7"><a href="cba.html#cb100-7" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
+<span id="cb100-8"><a href="cba.html#cb100-8" tabindex="-1"></a><span class="co">#&gt;        1        2        3        4        5 </span></span>
+<span id="cb100-9"><a href="cba.html#cb100-9" tabindex="-1"></a><span class="co">#&gt;  0.86492  1.08095 -1.30483 -0.56486 -0.07619 </span></span>
+<span id="cb100-10"><a href="cba.html#cb100-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb100-11"><a href="cba.html#cb100-11" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb100-12"><a href="cba.html#cb100-12" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
+<span id="cb100-13"><a href="cba.html#cb100-13" tabindex="-1"></a><span class="co">#&gt; (Intercept) -12.1213     8.6603  -1.400    0.297</span></span>
+<span id="cb100-14"><a href="cba.html#cb100-14" tabindex="-1"></a><span class="co">#&gt; zsd           0.4045     1.6778   0.241    0.832</span></span>
+<span id="cb100-15"><a href="cba.html#cb100-15" tabindex="-1"></a><span class="co">#&gt; zmax          0.8458     0.5536   1.528    0.266</span></span>
+<span id="cb100-16"><a href="cba.html#cb100-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb100-17"><a href="cba.html#cb100-17" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 1.404 on 2 degrees of freedom</span></span>
+<span id="cb100-18"><a href="cba.html#cb100-18" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.792,  Adjusted R-squared:  0.5841 </span></span>
+<span id="cb100-19"><a href="cba.html#cb100-19" tabindex="-1"></a><span class="co">#&gt; F-statistic: 3.809 on 2 and 2 DF,  p-value: 0.208</span></span></code></pre></div>
 <p>This example can be improved. In section <a href="engine.html#engine">14</a> we will study how to extract a ground inventory and in section <a href="modeling-aba.html#modeling-aba">16</a> we will study more in depth modelling presenting a complete workflow from the plot extraction to the mapping of the predictive model.</p>
 
+<pre><code>#&gt; NULL</code></pre>
 </div>
 </div>
 <script async src="//static.getclicky.com/101377207.js"></script>
@@ -516,6 +515,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

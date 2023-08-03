@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>8 Derived metrics | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="8 Derived metrics | The lidR package" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-09-22" />
+<meta name="date" content="2023-08-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -101,7 +101,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -114,7 +114,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -128,6 +128,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -392,54 +396,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="metrics-basics" class="section level2 hasAnchor" number="8.1">
 <h2><span class="header-section-number">8.1</span> The basics<a href="metrics.html#metrics-basics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>While there are some differences between functions dedicated to metric computations the basic idea is the same for all of them. In addition to the input point cloud, the user needs to provide a formula to calculate the metric(s) of interest. For example, the average height of points for the point cloud, for each pixel, for each tree crown, for each voxel or for each hexagonal cell can be be calculated using <code>mean(Z)</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="metrics.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
-<span id="cb1-2"><a href="metrics.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
-<span id="cb1-3"><a href="metrics.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
-<span id="cb1-4"><a href="metrics.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hexagon_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
-<span id="cb1-5"><a href="metrics.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="metrics.html#cb87-1" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
+<span id="cb87-2"><a href="metrics.html#cb87-2" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
+<span id="cb87-3"><a href="metrics.html#cb87-3" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
+<span id="cb87-4"><a href="metrics.html#cb87-4" tabindex="-1"></a><span class="fu">hexagon_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span>
+<span id="cb87-5"><a href="metrics.html#cb87-5" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">mean</span>(Z))</span></code></pre></div>
 <p>All the functions work the same way but the output format depends on the regularization level. In each case, outputs will be a different class (i.e. a <code>list</code>, a spatial raster, a spatial vector or a <code>data.frame</code>) to take advantage of the best storage method, but the same two metrics will be calculated for every unit of analysis. In the following example we are computing average intensity at different levels of regularization</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="metrics.html#cb2-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;MixedConifer.laz&quot;</span>, <span class="at">package =</span><span class="st">&quot;lidR&quot;</span>)</span>
-<span id="cb2-2"><a href="metrics.html#cb2-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile)</span>
-<span id="cb2-3"><a href="metrics.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="metrics.html#cb2-4" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="er">~</span><span class="fu">list</span>(<span class="at">avgI =</span> <span class="fu">mean</span>(Intensity))</span>
-<span id="cb2-5"><a href="metrics.html#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="metrics.html#cb2-6" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(las, m, <span class="at">res =</span> <span class="dv">5</span>)</span>
-<span id="cb2-7"><a href="metrics.html#cb2-7" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">crown_metrics</span>(las, m, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>)</span>
-<span id="cb2-8"><a href="metrics.html#cb2-8" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">crown_metrics</span>(las, m, <span class="at">geom =</span> <span class="st">&quot;convex&quot;</span>)</span>
-<span id="cb2-9"><a href="metrics.html#cb2-9" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">hexagon_metrics</span>(las, m, <span class="at">area =</span> <span class="dv">25</span>)</span>
-<span id="cb2-10"><a href="metrics.html#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="metrics.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
-<span id="cb2-12"><a href="metrics.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a, <span class="at">col =</span> <span class="fu">heat.colors</span>(<span class="dv">15</span>), <span class="at">legend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb2-13"><a href="metrics.html#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(b[<span class="st">&quot;avgI&quot;</span>], <span class="at">pal =</span> heat.colors, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">axes =</span> <span class="cn">TRUE</span>, <span class="at">key.pos =</span> <span class="cn">NULL</span>, <span class="at">reset =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb2-14"><a href="metrics.html#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(c[<span class="st">&quot;avgI&quot;</span>], <span class="at">pal =</span> heat.colors, <span class="at">axes =</span> <span class="cn">TRUE</span>, <span class="at">key.pos =</span> <span class="cn">NULL</span>, <span class="at">reset =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb2-15"><a href="metrics.html#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(d[<span class="st">&quot;avgI&quot;</span>], <span class="at">pal =</span> heat.colors, <span class="at">axes =</span> <span class="cn">TRUE</span>, <span class="at">key.pos =</span> <span class="cn">NULL</span>, <span class="at">reset =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="metrics.html#cb88-1" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;MixedConifer.laz&quot;</span>, <span class="at">package =</span><span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb88-2"><a href="metrics.html#cb88-2" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile)</span>
+<span id="cb88-3"><a href="metrics.html#cb88-3" tabindex="-1"></a></span>
+<span id="cb88-4"><a href="metrics.html#cb88-4" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="er">~</span><span class="fu">list</span>(<span class="at">avgI =</span> <span class="fu">mean</span>(Intensity))</span>
+<span id="cb88-5"><a href="metrics.html#cb88-5" tabindex="-1"></a></span>
+<span id="cb88-6"><a href="metrics.html#cb88-6" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(las, m, <span class="at">res =</span> <span class="dv">5</span>)</span>
+<span id="cb88-7"><a href="metrics.html#cb88-7" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">crown_metrics</span>(las, m, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>)</span>
+<span id="cb88-8"><a href="metrics.html#cb88-8" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">crown_metrics</span>(las, m, <span class="at">geom =</span> <span class="st">&quot;convex&quot;</span>)</span>
+<span id="cb88-9"><a href="metrics.html#cb88-9" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">hexagon_metrics</span>(las, m, <span class="at">area =</span> <span class="dv">25</span>)</span>
+<span id="cb88-10"><a href="metrics.html#cb88-10" tabindex="-1"></a></span>
+<span id="cb88-11"><a href="metrics.html#cb88-11" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb88-12"><a href="metrics.html#cb88-12" tabindex="-1"></a><span class="fu">plot</span>(a, <span class="at">col =</span> <span class="fu">heat.colors</span>(<span class="dv">15</span>), <span class="at">legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb88-13"><a href="metrics.html#cb88-13" tabindex="-1"></a><span class="fu">plot</span>(b[<span class="st">&quot;avgI&quot;</span>], <span class="at">pal =</span> heat.colors, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">axes =</span> <span class="cn">TRUE</span>, <span class="at">key.pos =</span> <span class="cn">NULL</span>, <span class="at">reset =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb88-14"><a href="metrics.html#cb88-14" tabindex="-1"></a><span class="fu">plot</span>(c[<span class="st">&quot;avgI&quot;</span>], <span class="at">pal =</span> heat.colors, <span class="at">axes =</span> <span class="cn">TRUE</span>, <span class="at">key.pos =</span> <span class="cn">NULL</span>, <span class="at">reset =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb88-15"><a href="metrics.html#cb88-15" tabindex="-1"></a><span class="fu">plot</span>(d[<span class="st">&quot;avgI&quot;</span>], <span class="at">pal =</span> heat.colors, <span class="at">axes =</span> <span class="cn">TRUE</span>, <span class="at">key.pos =</span> <span class="cn">NULL</span>, <span class="at">reset =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/demo-metrics-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="metrics-user-defined" class="section level2 hasAnchor" number="8.2">
 <h2><span class="header-section-number">8.2</span> User-defined metrics<a href="metrics.html#metrics-user-defined" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In the example above only a single metric is calculated - the mean intensity of the points. Calculations can however be easily extended to any number of user-defined metrics. To do this, users can design custom functions. The function can contain any number of metrics, but needs to return a labeled <code>list</code>. For example, to calculate the mean of elevation, and the standard deviation and mean of intensity, the following function can be used:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="metrics.html#cb3-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(z, i) {</span>
-<span id="cb3-2"><a href="metrics.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
-<span id="cb3-3"><a href="metrics.html#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(z), </span>
-<span id="cb3-4"><a href="metrics.html#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(i),</span>
-<span id="cb3-5"><a href="metrics.html#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">imean =</span> <span class="fu">mean</span>(i))</span>
-<span id="cb3-6"><a href="metrics.html#cb3-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="metrics.html#cb89-1" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(z, i) {</span>
+<span id="cb89-2"><a href="metrics.html#cb89-2" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb89-3"><a href="metrics.html#cb89-3" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(z), </span>
+<span id="cb89-4"><a href="metrics.html#cb89-4" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(i),</span>
+<span id="cb89-5"><a href="metrics.html#cb89-5" tabindex="-1"></a>    <span class="at">imean =</span> <span class="fu">mean</span>(i))</span>
+<span id="cb89-6"><a href="metrics.html#cb89-6" tabindex="-1"></a>}</span></code></pre></div>
 <p>The user-defined function <code>f</code> can then be used.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="metrics.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
-<span id="cb4-2"><a href="metrics.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
-<span id="cb4-3"><a href="metrics.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
-<span id="cb4-4"><a href="metrics.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">haxagon_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
-<span id="cb4-5"><a href="metrics.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="metrics.html#cb90-1" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
+<span id="cb90-2"><a href="metrics.html#cb90-2" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
+<span id="cb90-3"><a href="metrics.html#cb90-3" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
+<span id="cb90-4"><a href="metrics.html#cb90-4" tabindex="-1"></a><span class="fu">haxagon_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span>
+<span id="cb90-5"><a href="metrics.html#cb90-5" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">f</span>(Z, Intensity))</span></code></pre></div>
 <p>While any metric can be computed at any level of regularization, it’s important to recognize that they may not all be meaningful. For example, the average elevation of points has a meaning at the pixel level or at the tree level but not at the voxel level. Indeed at the voxel level it corresponds to the average elevation of the points within the voxel i.e. more or less the Z coordinate of the voxel. This in the end needs to be considered by the user. Perhaps asking <em>“does this metric make sense?”</em> is a good place to start!</p>
 </div>
 <div id="metrics-pre-defined" class="section level2 hasAnchor" number="8.3">
 <h2><span class="header-section-number">8.3</span> Pre-defined metrics<a href="metrics.html#metrics-pre-defined" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The most commonly used metrics are already predefined in <code>lidR</code> - the <code>stdmetrics*()</code> group of functions contain metrics that summarize the vertical distribution of points, their intensities, and return structure.</p>
 <p>The complete list of all metrics can be found in the <a href="https://github.com/Jean-Romain/lidR/wiki/stdmetrics">lidR wiki page</a> and can be use that way:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="metrics.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
-<span id="cb5-2"><a href="metrics.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
-<span id="cb5-3"><a href="metrics.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
-<span id="cb5-4"><a href="metrics.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="metrics.html#cb91-1" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
+<span id="cb91-2"><a href="metrics.html#cb91-2" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
+<span id="cb91-3"><a href="metrics.html#cb91-3" tabindex="-1"></a><span class="fu">tree_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span>
+<span id="cb91-4"><a href="metrics.html#cb91-4" tabindex="-1"></a><span class="fu">voxel_metrics</span>(las, <span class="at">func =</span> .stdmetrics)</span></code></pre></div>
 </div>
 <div id="metrics-3rd-party" class="section level2 hasAnchor" number="8.4">
 <h2><span class="header-section-number">8.4</span> Metrics using 3rd party packages<a href="metrics.html#metrics-3rd-party" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -448,8 +452,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">8.4.1</span> L-moments<a href="metrics.html#metrics-lmom" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>L-moments are linear combinations of ordered data values. In the context of lidar data this relates to elevation and intensity. The ratios of L-moments are comparable to variance, skewness and kurtosis, and have been shown valuable for a number of lidar-derived attribute modeling studies (eg. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0034425716303960?via%3Dihub">Valbuena et al. 2017</a>, <a href="https://www.sciencedirect.com/science/article/pii/S0034425721001826?dgcid=coauthor">Adnan et al. 2021</a>) as well as being standard metrics produced in <a href="http://forsys.cfr.washington.edu/fusion/fusion_overview.html">FUSION</a> lidar processing software.</p>
 <p>In order to calculate these metrics we can leverage the <code>lmom</code> package which provides functions to calculate L-moments and associated ratios. In the example we use the <code>samlmu()</code> function.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="metrics.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">as.list</span>(lmom<span class="sc">::</span><span class="fu">samlmu</span>(Z)))</span>
-<span id="cb6-2"><a href="metrics.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">as.list</span>(lmom<span class="sc">::</span><span class="fu">samlmu</span>(Z)), <span class="dv">10</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="metrics.html#cb92-1" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">as.list</span>(lmom<span class="sc">::</span><span class="fu">samlmu</span>(Z)))</span>
+<span id="cb92-2"><a href="metrics.html#cb92-2" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">as.list</span>(lmom<span class="sc">::</span><span class="fu">samlmu</span>(Z)), <span class="dv">10</span>) </span></code></pre></div>
 <p>We see that we can supply the <code>func</code> argument in <code>pixel_metrics()</code> with a function from an external package. This allows us to be fairly flexible with the metrics we are able to calculate without needing to introduce dependencies within the <code>lidR</code> package.</p>
 </div>
 <div id="metrics-fractal-dims" class="section level3 hasAnchor" number="8.4.2">
@@ -457,16 +461,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Fractal dimensions are another statistical description that is showing promise within lidar and forestry related research (eg. <a href="https://doi.org/10.1002/ece3.7216">Saarinen et al., 2021</a>). The use of fractal dimensions seeks to help understand the relationship between structural complexity and stem/crown size and shape.</p>
 <p>The calculation of fractal dimensions — similarly to L-moments — can be tricky to implement efficiently, and would add an additional dependency to <code>lidR</code>’s growing list. To avoid <code>lidR</code> needing to depend on external packages, we can leverage them (in this case <code>Rdimtools</code>) to calculate fractal dimensions within a <code>pixel_metrics()</code> example.</p>
 <p>First, we can create a user-defined function that leverages the <code>est.boxcount()</code> function within <code>Rdimtools</code>. This allows us to define the variables we want the function to utilize within <code>pixel_metrics()</code></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="metrics.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create user-defined function</span></span>
-<span id="cb7-2"><a href="metrics.html#cb7-2" aria-hidden="true" tabindex="-1"></a>fd <span class="ot">=</span> <span class="cf">function</span>(X,Y,Z) {</span>
-<span id="cb7-3"><a href="metrics.html#cb7-3" aria-hidden="true" tabindex="-1"></a>  M <span class="ot">=</span> <span class="fu">cbind</span>(X,Y,Z)</span>
-<span id="cb7-4"><a href="metrics.html#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">est.boxcount</span>(M)<span class="sc">$</span>estdim</span>
-<span id="cb7-5"><a href="metrics.html#cb7-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="metrics.html#cb93-1" tabindex="-1"></a><span class="co">#create user-defined function</span></span>
+<span id="cb93-2"><a href="metrics.html#cb93-2" tabindex="-1"></a>fd <span class="ot">=</span> <span class="cf">function</span>(X,Y,Z) {</span>
+<span id="cb93-3"><a href="metrics.html#cb93-3" tabindex="-1"></a>  M <span class="ot">=</span> <span class="fu">cbind</span>(X,Y,Z)</span>
+<span id="cb93-4"><a href="metrics.html#cb93-4" tabindex="-1"></a>  <span class="fu">est.boxcount</span>(M)<span class="sc">$</span>estdim</span>
+<span id="cb93-5"><a href="metrics.html#cb93-5" tabindex="-1"></a>}</span></code></pre></div>
 <p>Now the we have defined the <code>fd</code> function, which calculates our fractal dimensions using <code>XYZ</code> values, we can apply it on our lidar data and create output rasters.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="metrics.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">fd</span>(X,Y,Z), <span class="dv">10</span>)</span>
-<span id="cb8-2"><a href="metrics.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">fd</span>(X,Y,Z), <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="metrics.html#cb94-1" tabindex="-1"></a><span class="fu">cloud_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">fd</span>(X,Y,Z), <span class="dv">10</span>)</span>
+<span id="cb94-2"><a href="metrics.html#cb94-2" tabindex="-1"></a><span class="fu">pixel_metrics</span>(las, <span class="at">func =</span> <span class="sc">~</span><span class="fu">fd</span>(X,Y,Z), <span class="dv">10</span>)</span></code></pre></div>
 <p>There are obviously many potential calculations to apply and statistics to derive from lidar data. The ability to include third party functions like the examples listed above within metric calculations makes <code>lidR</code> valuable and flexible from a research standpoint.</p>
 
+<pre><code>#&gt; NULL</code></pre>
 </div>
 </div>
 </div>
@@ -532,6 +537,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

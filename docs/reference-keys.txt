@@ -13,6 +13,7 @@ plot-crossection
 gnd
 pmf
 csf
+mcc
 edge-artifact
 method-selection
 other
@@ -141,4 +142,3 @@ plugins
 plugin-system
 plugin-creation
 plugin-extensions
-mcc

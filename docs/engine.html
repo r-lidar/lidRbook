@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>14 LAScatalog processing engine (1/2) | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="14 LAScatalog processing engine (1/2) | The lidR package" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-08-16" />
+<meta name="date" content="2023-08-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -101,7 +101,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -114,7 +114,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -128,6 +128,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -378,12 +382,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>So far we have demonstrated how to process a point cloud file using <code>readLAS()</code>. In practice, ALS acquisitions are made up of hundreds or even thousands of files, not being feasible (or possible!) for all to be loaded at once into memory. For example, the image below shows an acquisition split into 320 1 km² tiles:</p>
 <p><img src="lidR-book_files/figure-html/plot-catalog-hali-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The extraction of regions of interest (ROIs) such as plot inventories becomes difficult in these situations because one must search in which file and sometimes which file<strong>s</strong> the ROI belongs. It also makes the creation of continuous outputs such as a DTM, a raster of metrics, individual tree detection, or anything else far more complicated. One may be tempted to loop though individual files (and we have seen many users doing so) like so:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="engine.html#cb2-1" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&quot;folder/&quot;</span>)</span>
-<span id="cb2-2"><a href="engine.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (file <span class="cf">in</span> files) {</span>
-<span id="cb2-3"><a href="engine.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(file)</span>
-<span id="cb2-4"><a href="engine.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  output <span class="ot">&lt;-</span> <span class="fu">do.something</span>(las)</span>
-<span id="cb2-5"><a href="engine.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write</span>(output, <span class="st">&quot;path/to/output.ext&quot;</span>)</span>
-<span id="cb2-6"><a href="engine.html#cb2-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="engine.html#cb143-1" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&quot;folder/&quot;</span>)</span>
+<span id="cb143-2"><a href="engine.html#cb143-2" tabindex="-1"></a><span class="cf">for</span> (file <span class="cf">in</span> files) {</span>
+<span id="cb143-3"><a href="engine.html#cb143-3" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(file)</span>
+<span id="cb143-4"><a href="engine.html#cb143-4" tabindex="-1"></a>  output <span class="ot">&lt;-</span> <span class="fu">do.something</span>(las)</span>
+<span id="cb143-5"><a href="engine.html#cb143-5" tabindex="-1"></a>  <span class="fu">write</span>(output, <span class="st">&quot;path/to/output.ext&quot;</span>)</span>
+<span id="cb143-6"><a href="engine.html#cb143-6" tabindex="-1"></a>}</span></code></pre></div>
 <p>This however is very bad practice because each file is loaded without a buffer, meaning outputs will be invalid or weak at the edges because of the absence of spatial context.</p>
 <p>Let’s compute a DTM (see section <a href="dtm.html#dtm">4</a>) as an example, where we use a <code>for</code> loop on 4 contiguous files. We can see the obvious invalidity of the DTM between the files, but also at the periphery, even if less obvious.</p>
 <p><img src="lidR-book_files/figure-html/plot-dtm-artifact-1.png" width="768" style="display: block; margin: auto;" /></p>
@@ -399,17 +403,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="engine-lascatalog" class="section level2 hasAnchor" number="14.3">
 <h2><span class="header-section-number">14.3</span> Read a collection of files<a href="engine.html#engine-lascatalog" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The function <code>readLAScatalog()</code> reads the header of all the <code>LAS</code> files of a given folder. The header of a <code>LAS</code> file contains, among others, the bounding box of the point cloud, meaning that it’s possible to know where the file is situated spatially without reading a potentially massive amount of data. <code>readLAScatalog()</code> builds a <code>sf/sfc_POLYGON</code> out of the bounding boxes of the files and presents them in an easily accessible manner.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="engine.html#cb3-1" aria-hidden="true" tabindex="-1"></a>ctg <span class="ot">&lt;-</span> <span class="fu">readLAScatalog</span>(<span class="st">&quot;path/to/folder/&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="engine.html#cb4-1" aria-hidden="true" tabindex="-1"></a>ctg</span>
-<span id="cb4-2"><a href="engine.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class       : LAScatalog (v1.1 format 1)</span></span>
-<span id="cb4-3"><a href="engine.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent      : 678815.8, 709272.6, 5004393, 5028388 (xmin, xmax, ymin, ymax)</span></span>
-<span id="cb4-4"><a href="engine.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 17N </span></span>
-<span id="cb4-5"><a href="engine.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area        : 295.35 km²</span></span>
-<span id="cb4-6"><a href="engine.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points      : 910.11 million points</span></span>
-<span id="cb4-7"><a href="engine.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 3.1 points/m²</span></span>
-<span id="cb4-8"><a href="engine.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 2.1 pulses/m²</span></span>
-<span id="cb4-9"><a href="engine.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 361</span></span>
-<span id="cb4-10"><a href="engine.html#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="engine.html#cb144-1" tabindex="-1"></a>ctg <span class="ot">&lt;-</span> <span class="fu">readLAScatalog</span>(<span class="st">&quot;path/to/folder/&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="engine.html#cb145-1" tabindex="-1"></a>ctg</span>
+<span id="cb145-2"><a href="engine.html#cb145-2" tabindex="-1"></a><span class="co">#&gt; class       : LAScatalog (v1.1 format 1)</span></span>
+<span id="cb145-3"><a href="engine.html#cb145-3" tabindex="-1"></a><span class="co">#&gt; extent      : 678815.8, 709272.6, 5004393, 5028388 (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb145-4"><a href="engine.html#cb145-4" tabindex="-1"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 17N </span></span>
+<span id="cb145-5"><a href="engine.html#cb145-5" tabindex="-1"></a><span class="co">#&gt; area        : 295.35 km²</span></span>
+<span id="cb145-6"><a href="engine.html#cb145-6" tabindex="-1"></a><span class="co">#&gt; points      : 910.11 million points</span></span>
+<span id="cb145-7"><a href="engine.html#cb145-7" tabindex="-1"></a><span class="co">#&gt; density     : 3.1 points/m²</span></span>
+<span id="cb145-8"><a href="engine.html#cb145-8" tabindex="-1"></a><span class="co">#&gt; density     : 2.1 pulses/m²</span></span>
+<span id="cb145-9"><a href="engine.html#cb145-9" tabindex="-1"></a><span class="co">#&gt; num. files  : 361</span></span>
+<span id="cb145-10"><a href="engine.html#cb145-10" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-catalog-hali-2-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>In this and the following section (section <a href="engine2.html#engine2">15</a>) we will use a collection of nine 500 x 500 m files to create examples. The nine files can be downloaded here:</p>
 <ol style="list-style-type: decimal">
@@ -423,23 +427,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5238500_1.laz">tiles_339000_5238500.laz</a></li>
 <li><a href="https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_339000_5239000_1.laz">tiles_339000_5239000.laz</a></li>
 </ol>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="engine.html#cb5-1" aria-hidden="true" tabindex="-1"></a>ctg <span class="ot">&lt;-</span> <span class="fu">readLAScatalog</span>(<span class="st">&quot;data/ENGINE/catalog/&quot;</span>)</span>
-<span id="cb5-2"><a href="engine.html#cb5-2" aria-hidden="true" tabindex="-1"></a>ctg</span>
-<span id="cb5-3"><a href="engine.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class       : LAScatalog (v1.0 format 1)</span></span>
-<span id="cb5-4"><a href="engine.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500 (xmin, xmax, ymin, ymax)</span></span>
-<span id="cb5-5"><a href="engine.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 19N </span></span>
-<span id="cb5-6"><a href="engine.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area        : 2.25 km²</span></span>
-<span id="cb5-7"><a href="engine.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points      : 9.45 million points</span></span>
-<span id="cb5-8"><a href="engine.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 4.2 points/m²</span></span>
-<span id="cb5-9"><a href="engine.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 3.4 pulses/m²</span></span>
-<span id="cb5-10"><a href="engine.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 9</span></span>
-<span id="cb5-11"><a href="engine.html#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="engine.html#cb146-1" tabindex="-1"></a>ctg <span class="ot">&lt;-</span> <span class="fu">readLAScatalog</span>(<span class="st">&quot;data/ENGINE/catalog/&quot;</span>)</span>
+<span id="cb146-2"><a href="engine.html#cb146-2" tabindex="-1"></a>ctg</span>
+<span id="cb146-3"><a href="engine.html#cb146-3" tabindex="-1"></a><span class="co">#&gt; class       : LAScatalog (v1.0 format 1)</span></span>
+<span id="cb146-4"><a href="engine.html#cb146-4" tabindex="-1"></a><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500 (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb146-5"><a href="engine.html#cb146-5" tabindex="-1"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 19N </span></span>
+<span id="cb146-6"><a href="engine.html#cb146-6" tabindex="-1"></a><span class="co">#&gt; area        : 2.25 km²</span></span>
+<span id="cb146-7"><a href="engine.html#cb146-7" tabindex="-1"></a><span class="co">#&gt; points      : 9.45 million points</span></span>
+<span id="cb146-8"><a href="engine.html#cb146-8" tabindex="-1"></a><span class="co">#&gt; density     : 4.2 points/m²</span></span>
+<span id="cb146-9"><a href="engine.html#cb146-9" tabindex="-1"></a><span class="co">#&gt; density     : 3.4 pulses/m²</span></span>
+<span id="cb146-10"><a href="engine.html#cb146-10" tabindex="-1"></a><span class="co">#&gt; num. files  : 9</span></span>
+<span id="cb146-11"><a href="engine.html#cb146-11" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-ctg-book-1-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div id="engine-asprs-compliance" class="section level2 hasAnchor" number="14.4">
 <h2><span class="header-section-number">14.4</span> Validation<a href="engine.html#engine-asprs-compliance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Similar to section <a href="io.html#io">2</a>, an important first step in ALS data processing is ensuring that your data is complete and valid. The <code>las_check()</code> function performs an inspection of <code>LAScatalog</code> objects for file consistency.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="engine.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">las_check</span>(ctg)</span></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="engine.html#cb147-1" tabindex="-1"></a><span class="fu">las_check</span>(ctg)</span></code></pre></div>
 <PRE class="fansi fansi-output"><CODE>#&gt; 
 #&gt;  Checking headers consistency
 #&gt;   - Checking file version consistency...<span style='color: #00BB00;'> ✓</span>
@@ -465,75 +469,75 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="engine-clip-single" class="section level3 hasAnchor" number="14.5.1">
 <h3><span class="header-section-number">14.5.1</span> Extract a single ROI<a href="engine.html#engine-clip-single" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Functions using the <code>clip_*()</code> moniker are a good starting point for exploring the capabilities of the <code>LAScataglog</code> engine. <code>clip_*()</code> functions allow for the extraction of a region of interest (ROI) from a point cloud. The following example extracts a circle from a point cloud loaded into memory in a <code>LAS</code> object:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="engine.html#cb7-1" aria-hidden="true" tabindex="-1"></a>plot <span class="ot">&lt;-</span> <span class="fu">clip_circle</span>(las, <span class="at">x =</span> <span class="dv">338700</span>, <span class="at">y =</span> <span class="dv">5238650</span>, <span class="at">radius =</span> <span class="dv">15</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="engine.html#cb148-1" tabindex="-1"></a>plot <span class="ot">&lt;-</span> <span class="fu">clip_circle</span>(las, <span class="at">x =</span> <span class="dv">338700</span>, <span class="at">y =</span> <span class="dv">5238650</span>, <span class="at">radius =</span> <span class="dv">15</span>)</span></code></pre></div>
 <p>This can be extended to a <code>LAScatalog</code> seamlessly. The engine searches in which file(s) the ROI belongs and extracts corresponding regions from all applicable files. The output is a <code>LAS</code> object.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="engine.html#cb8-1" aria-hidden="true" tabindex="-1"></a>roi <span class="ot">&lt;-</span> <span class="fu">clip_circle</span>(ctg, <span class="at">x =</span> <span class="dv">338700</span>, <span class="at">y =</span> <span class="dv">5238650</span>, <span class="at">radius =</span> <span class="dv">40</span>)</span>
-<span id="cb8-2"><a href="engine.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roi, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="engine.html#cb149-1" tabindex="-1"></a>roi <span class="ot">&lt;-</span> <span class="fu">clip_circle</span>(ctg, <span class="at">x =</span> <span class="dv">338700</span>, <span class="at">y =</span> <span class="dv">5238650</span>, <span class="at">radius =</span> <span class="dv">40</span>)</span>
+<span id="cb149-2"><a href="engine.html#cb149-2" tabindex="-1"></a><span class="fu">plot</span>(roi, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">4</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-cliped-roi-1-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div id="engine-clip-multiple" class="section level3 hasAnchor" number="14.5.2">
 <h3><span class="header-section-number">14.5.2</span> Multiple extractions<a href="engine.html#engine-clip-multiple" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Multiple extractions is also possible and is performed the same way by searching the corresponding files and then querying in each file no matter if the region of interest is situated in one or several files. The output becomes <code>list</code> of <code>LAS</code> objects.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="engine.html#cb9-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">339348.8</span>, <span class="fl">339141.9</span>, <span class="fl">338579.6</span>, <span class="fl">338520.8</span>, <span class="fl">338110.0</span>, <span class="dv">339385</span>)</span>
-<span id="cb9-2"><a href="engine.html#cb9-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5239254</span>, <span class="dv">5238717</span>, <span class="dv">5238169</span>, <span class="dv">5239318</span>, <span class="dv">5239247</span>, <span class="dv">5239290</span>)</span>
-<span id="cb9-3"><a href="engine.html#cb9-3" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">40</span></span>
-<span id="cb9-4"><a href="engine.html#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="engine.html#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span>
-<span id="cb9-6"><a href="engine.html#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x, y)</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="engine.html#cb150-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">339348.8</span>, <span class="fl">339141.9</span>, <span class="fl">338579.6</span>, <span class="fl">338520.8</span>, <span class="fl">338110.0</span>, <span class="dv">339385</span>)</span>
+<span id="cb150-2"><a href="engine.html#cb150-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5239254</span>, <span class="dv">5238717</span>, <span class="dv">5238169</span>, <span class="dv">5239318</span>, <span class="dv">5239247</span>, <span class="dv">5239290</span>)</span>
+<span id="cb150-3"><a href="engine.html#cb150-3" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">40</span></span>
+<span id="cb150-4"><a href="engine.html#cb150-4" tabindex="-1"></a></span>
+<span id="cb150-5"><a href="engine.html#cb150-5" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span>
+<span id="cb150-6"><a href="engine.html#cb150-6" tabindex="-1"></a><span class="fu">points</span>(x, y)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-ctg-plots-1.png" width="384" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="engine.html#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-2"><a href="engine.html#cb10-2" aria-hidden="true" tabindex="-1"></a>rois <span class="ot">&lt;-</span> <span class="fu">clip_circle</span>(ctg, x, y, r)</span>
-<span id="cb10-3"><a href="engine.html#cb10-3" aria-hidden="true" tabindex="-1"></a>rois[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb10-4"><a href="engine.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
-<span id="cb10-5"><a href="engine.html#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class        : LAS (v1.0 format 1)</span></span>
-<span id="cb10-6"><a href="engine.html#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; memory       : 1.5 Mb </span></span>
-<span id="cb10-7"><a href="engine.html#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent       : 339308.9, 339388.7, 5239214, 5239294 (xmin, xmax, ymin, ymax)</span></span>
-<span id="cb10-8"><a href="engine.html#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref.  : WGS 84 / UTM zone 19N </span></span>
-<span id="cb10-9"><a href="engine.html#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area         : 5051 m²</span></span>
-<span id="cb10-10"><a href="engine.html#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points       : 25.4 thousand points</span></span>
-<span id="cb10-11"><a href="engine.html#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 5.04 points/m²</span></span>
-<span id="cb10-12"><a href="engine.html#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 3.9 pulses/m²</span></span>
-<span id="cb10-13"><a href="engine.html#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-14"><a href="engine.html#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
-<span id="cb10-15"><a href="engine.html#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class        : LAS (v1.0 format 1)</span></span>
-<span id="cb10-16"><a href="engine.html#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; memory       : 1.3 Mb </span></span>
-<span id="cb10-17"><a href="engine.html#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent       : 339102, 339181.9, 5238677, 5238757 (xmin, xmax, ymin, ymax)</span></span>
-<span id="cb10-18"><a href="engine.html#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref.  : WGS 84 / UTM zone 19N </span></span>
-<span id="cb10-19"><a href="engine.html#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area         : 5013 m²</span></span>
-<span id="cb10-20"><a href="engine.html#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points       : 21.1 thousand points</span></span>
-<span id="cb10-21"><a href="engine.html#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 4.2 points/m²</span></span>
-<span id="cb10-22"><a href="engine.html#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 3.65 pulses/m²</span></span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="engine.html#cb151-1" tabindex="-1"></a></span>
+<span id="cb151-2"><a href="engine.html#cb151-2" tabindex="-1"></a>rois <span class="ot">&lt;-</span> <span class="fu">clip_circle</span>(ctg, x, y, r)</span>
+<span id="cb151-3"><a href="engine.html#cb151-3" tabindex="-1"></a>rois[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb151-4"><a href="engine.html#cb151-4" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb151-5"><a href="engine.html#cb151-5" tabindex="-1"></a><span class="co">#&gt; class        : LAS (v1.0 format 1)</span></span>
+<span id="cb151-6"><a href="engine.html#cb151-6" tabindex="-1"></a><span class="co">#&gt; memory       : 1.5 Mb </span></span>
+<span id="cb151-7"><a href="engine.html#cb151-7" tabindex="-1"></a><span class="co">#&gt; extent       : 339308.9, 339388.7, 5239214, 5239294 (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb151-8"><a href="engine.html#cb151-8" tabindex="-1"></a><span class="co">#&gt; coord. ref.  : WGS 84 / UTM zone 19N </span></span>
+<span id="cb151-9"><a href="engine.html#cb151-9" tabindex="-1"></a><span class="co">#&gt; area         : 5051 m²</span></span>
+<span id="cb151-10"><a href="engine.html#cb151-10" tabindex="-1"></a><span class="co">#&gt; points       : 25.4 thousand points</span></span>
+<span id="cb151-11"><a href="engine.html#cb151-11" tabindex="-1"></a><span class="co">#&gt; density      : 5.04 points/m²</span></span>
+<span id="cb151-12"><a href="engine.html#cb151-12" tabindex="-1"></a><span class="co">#&gt; density      : 3.9 pulses/m²</span></span>
+<span id="cb151-13"><a href="engine.html#cb151-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb151-14"><a href="engine.html#cb151-14" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
+<span id="cb151-15"><a href="engine.html#cb151-15" tabindex="-1"></a><span class="co">#&gt; class        : LAS (v1.0 format 1)</span></span>
+<span id="cb151-16"><a href="engine.html#cb151-16" tabindex="-1"></a><span class="co">#&gt; memory       : 1.3 Mb </span></span>
+<span id="cb151-17"><a href="engine.html#cb151-17" tabindex="-1"></a><span class="co">#&gt; extent       : 339102, 339181.9, 5238677, 5238757 (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb151-18"><a href="engine.html#cb151-18" tabindex="-1"></a><span class="co">#&gt; coord. ref.  : WGS 84 / UTM zone 19N </span></span>
+<span id="cb151-19"><a href="engine.html#cb151-19" tabindex="-1"></a><span class="co">#&gt; area         : 5013 m²</span></span>
+<span id="cb151-20"><a href="engine.html#cb151-20" tabindex="-1"></a><span class="co">#&gt; points       : 21.1 thousand points</span></span>
+<span id="cb151-21"><a href="engine.html#cb151-21" tabindex="-1"></a><span class="co">#&gt; density      : 4.2 points/m²</span></span>
+<span id="cb151-22"><a href="engine.html#cb151-22" tabindex="-1"></a><span class="co">#&gt; density      : 3.65 pulses/m²</span></span></code></pre></div>
 </div>
 </div>
 <div id="engine-options" class="section level2 hasAnchor" number="14.6">
 <h2><span class="header-section-number">14.6</span> Modification of default behavior<a href="engine.html#engine-options" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>When processing a <code>LAScatalog</code>, no matter with which function, it internally uses what we called the <code>LAScatalog</code> processing engine. This is what happened <em>under the hood</em> when using <code>clip_cirle()</code> in above examples. The default behavior of the engine is set in such a way that it returns what is most likely to be expected by the users. However the behavior of the engine can be tuned to optimize processing. Engine options, at the user level, can be modified with <code>opt_*()</code> functions.</p>
+<p>When processing a <code>LAScatalog</code>, no matter with which function, it internally uses what we called the <code>LAScatalog</code> processing engine. This is what happened <em>under the hood</em> when using <code>clip_circle()</code> in above examples. The default behavior of the engine is set in such a way that it returns what is most likely to be expected by the users. However the behavior of the engine can be tuned to optimize processing. Engine options, at the user level, can be modified with <code>opt_*()</code> functions.</p>
 <p>The goal of this section is to present these options and how they affect the behavior of the engine.</p>
 <div id="engine-options-ondisk" class="section level3 hasAnchor" number="14.6.1">
 <h3><span class="header-section-number">14.6.1</span> Multiple extractions on disk<a href="engine.html#engine-options-ondisk" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The engine has the ability to write generated results to disk storage rather than keeping everything in memory. This option can be activated with <code>opt_output_files() &lt;-</code> that is used to designate the path where files will be written to disk. It expects a templated filename so each written file will be attributed a unique name.</p>
 <p>In the following example, several <code>LAS</code> files will be written to disk with names like <code>339348.8_5239254_1.las</code> (center coordinates from each file) and the function returns a <code>LAScatalog</code> object that references all the new files instead of a list of <code>LAS</code> object.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="engine.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{XCENTER}_{YCENTER}_{ID}&quot;</span>)</span>
-<span id="cb11-2"><a href="engine.html#cb11-2" aria-hidden="true" tabindex="-1"></a>rois <span class="ot">&lt;-</span> <span class="fu">clip_circle</span>(ctg, x, y, r)</span>
-<span id="cb11-3"><a href="engine.html#cb11-3" aria-hidden="true" tabindex="-1"></a>rois</span>
-<span id="cb11-4"><a href="engine.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class       : LAScatalog (v1.0 format 1)</span></span>
-<span id="cb11-5"><a href="engine.html#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent      : 338070, 339424.9, 5238129, 5239358 (xmin, xmax, ymin, ymax)</span></span>
-<span id="cb11-6"><a href="engine.html#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 19N </span></span>
-<span id="cb11-7"><a href="engine.html#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area        : 38290.55 m²</span></span>
-<span id="cb11-8"><a href="engine.html#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points      : 123.8 thousand points</span></span>
-<span id="cb11-9"><a href="engine.html#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 3.2 points/m²</span></span>
-<span id="cb11-10"><a href="engine.html#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 2.7 pulses/m²</span></span>
-<span id="cb11-11"><a href="engine.html#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 6</span></span>
-<span id="cb11-12"><a href="engine.html#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rois)</span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="engine.html#cb152-1" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{XCENTER}_{YCENTER}_{ID}&quot;</span>)</span>
+<span id="cb152-2"><a href="engine.html#cb152-2" tabindex="-1"></a>rois <span class="ot">&lt;-</span> <span class="fu">clip_circle</span>(ctg, x, y, r)</span>
+<span id="cb152-3"><a href="engine.html#cb152-3" tabindex="-1"></a>rois</span>
+<span id="cb152-4"><a href="engine.html#cb152-4" tabindex="-1"></a><span class="co">#&gt; class       : LAScatalog (v1.0 format 1)</span></span>
+<span id="cb152-5"><a href="engine.html#cb152-5" tabindex="-1"></a><span class="co">#&gt; extent      : 338070, 339424.9, 5238129, 5239358 (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb152-6"><a href="engine.html#cb152-6" tabindex="-1"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 19N </span></span>
+<span id="cb152-7"><a href="engine.html#cb152-7" tabindex="-1"></a><span class="co">#&gt; area        : 38290.55 m²</span></span>
+<span id="cb152-8"><a href="engine.html#cb152-8" tabindex="-1"></a><span class="co">#&gt; points      : 123.8 thousand points</span></span>
+<span id="cb152-9"><a href="engine.html#cb152-9" tabindex="-1"></a><span class="co">#&gt; density     : 3.2 points/m²</span></span>
+<span id="cb152-10"><a href="engine.html#cb152-10" tabindex="-1"></a><span class="co">#&gt; density     : 2.7 pulses/m²</span></span>
+<span id="cb152-11"><a href="engine.html#cb152-11" tabindex="-1"></a><span class="co">#&gt; num. files  : 6</span></span>
+<span id="cb152-12"><a href="engine.html#cb152-12" tabindex="-1"></a><span class="fu">plot</span>(rois)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-extracted-plots-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>We can check the files that were written on disk and see that the names match the template.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="engine.html#cb12-1" aria-hidden="true" tabindex="-1"></a>rois<span class="sc">$</span>filename</span>
-<span id="cb12-2"><a href="engine.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpiYzMKB/339348.8_5239254_1.las&quot;</span></span>
-<span id="cb12-3"><a href="engine.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;/tmp/RtmpiYzMKB/339141.9_5238717_2.las&quot;</span></span>
-<span id="cb12-4"><a href="engine.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;/tmp/RtmpiYzMKB/338579.6_5238169_3.las&quot;</span></span>
-<span id="cb12-5"><a href="engine.html#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;/tmp/RtmpiYzMKB/338520.8_5239318_4.las&quot;</span></span>
-<span id="cb12-6"><a href="engine.html#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;/tmp/RtmpiYzMKB/338110_5239247_5.las&quot;  </span></span>
-<span id="cb12-7"><a href="engine.html#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] &quot;/tmp/RtmpiYzMKB/339385_5239290_6.las&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="engine.html#cb153-1" tabindex="-1"></a>rois<span class="sc">$</span>filename</span>
+<span id="cb153-2"><a href="engine.html#cb153-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn\\339348.8_5239254_1.las&quot;</span></span>
+<span id="cb153-3"><a href="engine.html#cb153-3" tabindex="-1"></a><span class="co">#&gt; [2] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn\\339141.9_5238717_2.las&quot;</span></span>
+<span id="cb153-4"><a href="engine.html#cb153-4" tabindex="-1"></a><span class="co">#&gt; [3] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn\\338579.6_5238169_3.las&quot;</span></span>
+<span id="cb153-5"><a href="engine.html#cb153-5" tabindex="-1"></a><span class="co">#&gt; [4] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn\\338520.8_5239318_4.las&quot;</span></span>
+<span id="cb153-6"><a href="engine.html#cb153-6" tabindex="-1"></a><span class="co">#&gt; [5] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn\\338110_5239247_5.las&quot;  </span></span>
+<span id="cb153-7"><a href="engine.html#cb153-7" tabindex="-1"></a><span class="co">#&gt; [6] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn\\339385_5239290_6.las&quot;</span></span></code></pre></div>
 </div>
 <div id="engine-options-index" class="section level3 hasAnchor" number="14.6.2">
 <h3><span class="header-section-number">14.6.2</span> Multiple extraction with point cloud indexation<a href="engine.html#engine-options-index" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -555,48 +559,48 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">14.7.1</span> Chunk processing<a href="engine.html#engine-options-chunk" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>classify_ground()</code> (see section <a href="gnd.html#gnd">3</a>) is an important function of <code>lidR</code>, which works seamlessly with the <code>LAScatalog</code> engine. An ALS acquisition is processed in pieces, referred to here as <strong>chunks</strong>. An acquisition is usually split into chunks where files correspond to a tiling pattern. Using <code>classify_ground()</code> within the <code>LAScatalog</code> engine will process each file sequentially. Given that we emphasize the importance of processing point clouds including a buffer, the engine loads a buffer on-the-fly around each tile before any processing is conducted.</p>
 <p>The most basic implementation is very similar to examples in section <a href="gnd.html#gnd">3</a>. In this case we first specify where to write the outputs using <code>opt_output_files()</code>. The files written on disk will be <code>LAS</code> files, while the output in R will be a <code>LAScatalog</code>. If we don’t write to disk, the result of each chunk will be stored into memory, potentially leading to memory issues.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="engine.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;{*}_classified&quot;</span>)</span>
-<span id="cb13-2"><a href="engine.html#cb13-2" aria-hidden="true" tabindex="-1"></a>classified_ctg <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(ctg, <span class="fu">csf</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="engine.html#cb154-1" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;{*}_classified&quot;</span>)</span>
+<span id="cb154-2"><a href="engine.html#cb154-2" tabindex="-1"></a>classified_ctg <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(ctg, <span class="fu">csf</span>())</span></code></pre></div>
 <p>In reality, R won’t crash because the function won’t allow users to classify a collection of files without providing a path to save outputs. Most functions in <code>lidR</code> check user inputs to mitigate issues.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="engine.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb14-2"><a href="engine.html#cb14-2" aria-hidden="true" tabindex="-1"></a>classified_ctg <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(ctg, <span class="fu">csf</span>())</span>
-<span id="cb14-3"><a href="engine.html#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error: This function requires that the LAScatalog provides an output file template.</span></span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="engine.html#cb155-1" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb155-2"><a href="engine.html#cb155-2" tabindex="-1"></a>classified_ctg <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(ctg, <span class="fu">csf</span>())</span>
+<span id="cb155-3"><a href="engine.html#cb155-3" tabindex="-1"></a><span class="co">#&gt; Error: This function requires that the LAScatalog provides an output file template.</span></span></code></pre></div>
 </div>
 <div id="engine-options-chunk-buffer" class="section level3 hasAnchor" number="14.7.2">
 <h3><span class="header-section-number">14.7.2</span> Modifying buffers<a href="engine.html#engine-options-chunk-buffer" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>It is possible to modify the behavior of the engine by modifying the size of the buffer with <code>opt_chunk_buffer() &lt;-</code>. The option <code>chunk = TRUE</code> of the function <code>plot()</code> allows visualization of how an option affects the processing pattern. The red boundaries show the chunks that will be sequentially processed and the green dotted lines show the extended regions used for buffering each chunk.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="engine.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">20</span></span>
-<span id="cb15-2"><a href="engine.html#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg, <span class="at">chunk =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb15-3"><a href="engine.html#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="engine.html#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb15-5"><a href="engine.html#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg, <span class="at">chunk =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="engine.html#cb156-1" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb156-2"><a href="engine.html#cb156-2" tabindex="-1"></a><span class="fu">plot</span>(ctg, <span class="at">chunk =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb156-3"><a href="engine.html#cb156-3" tabindex="-1"></a></span>
+<span id="cb156-4"><a href="engine.html#cb156-4" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb156-5"><a href="engine.html#cb156-5" tabindex="-1"></a><span class="fu">plot</span>(ctg, <span class="at">chunk =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-buffer-pattern-1.png" width="384" style="display: block; margin: auto;" /><img src="lidR-book_files/figure-html/plot-buffer-pattern-2.png" width="384" style="display: block; margin: auto;" /></p>
 <p>Depending on the point cloud density and the processes applied, it might be necessary to increase the default buffer. Sometimes no buffer is needed at all. No matter the size, the buffered region is only useful to derive a spatial context that extends the actual size of the chunk. After processing, the buffer is removed and never returned in memory or saved in files. It is only loaded temporarily for computation.</p>
 </div>
 <div id="engine-options-chunk-size" class="section level3 hasAnchor" number="14.7.3">
 <h3><span class="header-section-number">14.7.3</span> Modify the chunk size<a href="engine.html#engine-options-chunk-size" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In the example above we have seen that each chunk is actually a file. This is the default behavior because it corresponds to the physical splitting pattern. The engine can however sequentially process a <code>LAScatalog</code> in any arbitrarily sized chunk. This may be useful when each file is too big to be loaded in memory, and reducing the size of each processing region may be suitable. Sometimes increasing chunk size to process more than a single file might be useful as well. This is controlled by <code>opt_chunk_size() &lt;-</code>, and again the function <code>plot()</code> enables the preview of the processing pattern.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="engine.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Process sequentially tiny 250 x 250 chunks with 10 m buffer</span></span>
-<span id="cb16-2"><a href="engine.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">250</span></span>
-<span id="cb16-3"><a href="engine.html#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb16-4"><a href="engine.html#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg, <span class="at">chunk =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-5"><a href="engine.html#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="engine.html#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Process sequentially bigger 800 x 800 chunks with 40 m buffer</span></span>
-<span id="cb16-7"><a href="engine.html#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">800</span></span>
-<span id="cb16-8"><a href="engine.html#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">40</span></span>
-<span id="cb16-9"><a href="engine.html#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg, <span class="at">chunk =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="engine.html#cb157-1" tabindex="-1"></a><span class="co"># Process sequentially tiny 250 x 250 chunks with 10 m buffer</span></span>
+<span id="cb157-2"><a href="engine.html#cb157-2" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">250</span></span>
+<span id="cb157-3"><a href="engine.html#cb157-3" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb157-4"><a href="engine.html#cb157-4" tabindex="-1"></a><span class="fu">plot</span>(ctg, <span class="at">chunk =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb157-5"><a href="engine.html#cb157-5" tabindex="-1"></a></span>
+<span id="cb157-6"><a href="engine.html#cb157-6" tabindex="-1"></a><span class="co"># Process sequentially bigger 800 x 800 chunks with 40 m buffer</span></span>
+<span id="cb157-7"><a href="engine.html#cb157-7" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">800</span></span>
+<span id="cb157-8"><a href="engine.html#cb157-8" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">40</span></span>
+<span id="cb157-9"><a href="engine.html#cb157-9" tabindex="-1"></a><span class="fu">plot</span>(ctg, <span class="at">chunk =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chunk-pattern-1.png" width="384" style="display: block; margin: auto;" /><img src="lidR-book_files/figure-html/plot-chunk-pattern-2.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div id="engine-options-parallel" class="section level3 hasAnchor" number="14.7.4">
 <h3><span class="header-section-number">14.7.4</span> Parallel processing<a href="engine.html#engine-options-parallel" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In <code>lidR</code> every iterative process can be computed in parallel on a single machine or on multiple machines accessible remotely. Remote parallelization is a very advanced case not covered in this book for which a <a href="https://github.com/r-lidar/lidR/wiki/Make-cheap-High-Performance-Computing-to-process-large-datasets">wiki page</a> has been written.</p>
 <p>In the following example only local parallelization is covered. Parallelization is driven by the package <a href="https://github.com/HenrikBengtsson/future"><code>future</code></a>. Understanding this package is thus a requirement for being able to parallelize tasks in <code>lidR</code>. In the following example we load <code>future</code> and register a parallelization plan to enable parallelized classification.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="engine.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
-<span id="cb17-2"><a href="engine.html#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
-<span id="cb17-3"><a href="engine.html#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">400</span></span>
-<span id="cb17-4"><a href="engine.html#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">40</span></span>
-<span id="cb17-5"><a href="engine.html#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_classified&quot;</span>)</span>
-<span id="cb17-6"><a href="engine.html#cb17-6" aria-hidden="true" tabindex="-1"></a>classified_ctg <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(ctg, <span class="fu">csf</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="engine.html#cb158-1" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb158-2"><a href="engine.html#cb158-2" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb158-3"><a href="engine.html#cb158-3" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">400</span></span>
+<span id="cb158-4"><a href="engine.html#cb158-4" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">40</span></span>
+<span id="cb158-5"><a href="engine.html#cb158-5" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_classified&quot;</span>)</span>
+<span id="cb158-6"><a href="engine.html#cb158-6" tabindex="-1"></a>classified_ctg <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(ctg, <span class="fu">csf</span>())</span></code></pre></div>
 <p>Parallelization is a capability of the engine and every function is capable of benefiting from parallel processing. Registering a parallelization plan would have worked with <code>clip_circle()</code> as well. However doing so does no mean that classification is performed in parallel, but that <strong>several chunks will be processed simultaneously</strong>. This means that its important to pay attention to memory requirements and parallelization is not necessarily relevant in all cases or in all computers.</p>
 </div>
 <div id="summary-1" class="section level3 hasAnchor" number="14.7.5">
@@ -618,32 +622,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="engine-dtm-inmemory" class="section level3 hasAnchor" number="14.8.1">
 <h3><span class="header-section-number">14.8.1</span> In memory DTM<a href="engine.html#engine-dtm-inmemory" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Generating a DTM that encompasses an entire ALS acquisition is as easy as generating a DTM that encompasses a single point cloud file. The following generates a DTM with default parameters (i.e. processing by file with a 30 m buffer). In each chunk <code>rasterize_terrain()</code> computes a DTM. The result is a collection of rasters, however one feature of the engine is to merge everything in single, seamless, manipulable object. A raster is usually less memory intensive that a point cloud, so returning everything in memory is feasible if the raster is not too large.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="engine.html#cb18-1" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(ctg, <span class="dv">2</span>, <span class="fu">tin</span>(), <span class="at">pkg =</span> <span class="st">&quot;terra&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="engine.html#cb159-1" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(ctg, <span class="dv">2</span>, <span class="fu">tin</span>(), <span class="at">pkg =</span> <span class="st">&quot;terra&quot;</span>)</span></code></pre></div>
 <p>We can render a shaded DTM like that from section <a href="dtm.html#hillshade">4.6</a> to better visualize the output:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="engine.html#cb19-1" aria-hidden="true" tabindex="-1"></a>dtm_prod <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">terrain</span>(dtm, <span class="at">v =</span> <span class="fu">c</span>(<span class="st">&quot;slope&quot;</span>, <span class="st">&quot;aspect&quot;</span>), <span class="at">unit =</span> <span class="st">&quot;radians&quot;</span>)</span>
-<span id="cb19-2"><a href="engine.html#cb19-2" aria-hidden="true" tabindex="-1"></a>dtm_hillshade <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">shade</span>(<span class="at">slope =</span> dtm_prod<span class="sc">$</span>slope, <span class="at">aspect =</span> dtm_prod<span class="sc">$</span>aspect)</span>
-<span id="cb19-3"><a href="engine.html#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dtm_hillshade, <span class="at">col =</span> <span class="fu">gray</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">50</span><span class="sc">/</span><span class="dv">50</span>), <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="engine.html#cb160-1" tabindex="-1"></a>dtm_prod <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">terrain</span>(dtm, <span class="at">v =</span> <span class="fu">c</span>(<span class="st">&quot;slope&quot;</span>, <span class="st">&quot;aspect&quot;</span>), <span class="at">unit =</span> <span class="st">&quot;radians&quot;</span>)</span>
+<span id="cb160-2"><a href="engine.html#cb160-2" tabindex="-1"></a>dtm_hillshade <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">shade</span>(<span class="at">slope =</span> dtm_prod<span class="sc">$</span>slope, <span class="at">aspect =</span> dtm_prod<span class="sc">$</span>aspect)</span>
+<span id="cb160-3"><a href="engine.html#cb160-3" tabindex="-1"></a><span class="fu">plot</span>(dtm_hillshade, <span class="at">col =</span> <span class="fu">gray</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">50</span><span class="sc">/</span><span class="dv">50</span>), <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-shaded-dtm-catalog-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="engine-dtm-ondisk" class="section level3 hasAnchor" number="14.8.2">
 <h3><span class="header-section-number">14.8.2</span> On disk DTM<a href="engine.html#engine-dtm-ondisk" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>When the DTM is too big for memory storage it can be written on disk. In this case users will have one raster file per chunk. The buffer is used to perform a valid computation but is removed after the computation, leaving no overlap between files. It is possible to build a virtual raster from multiple files to return a lightweight raster that references on disk files.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="engine.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_dtm&quot;</span>)</span>
-<span id="cb20-2"><a href="engine.html#cb20-2" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(ctg, <span class="dv">1</span>, <span class="fu">tin</span>())</span>
-<span id="cb20-3"><a href="engine.html#cb20-3" aria-hidden="true" tabindex="-1"></a>dtm</span>
-<span id="cb20-4"><a href="engine.html#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class       : SpatRaster </span></span>
-<span id="cb20-5"><a href="engine.html#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dimensions  : 1500, 1500, 1  (nrow, ncol, nlyr)</span></span>
-<span id="cb20-6"><a href="engine.html#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; resolution  : 1, 1  (x, y)</span></span>
-<span id="cb20-7"><a href="engine.html#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500  (xmin, xmax, ymin, ymax)</span></span>
-<span id="cb20-8"><a href="engine.html#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 19N (EPSG:32619) </span></span>
-<span id="cb20-9"><a href="engine.html#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; source      : rasterize_terrain.vrt </span></span>
-<span id="cb20-10"><a href="engine.html#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; name        :       Z </span></span>
-<span id="cb20-11"><a href="engine.html#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; min value   : 534.024 </span></span>
-<span id="cb20-12"><a href="engine.html#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; max value   : 803.364</span></span>
-<span id="cb20-13"><a href="engine.html#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dtm)</span>
-<span id="cb20-14"><a href="engine.html#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;SpatRaster&quot;</span></span>
-<span id="cb20-15"><a href="engine.html#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;package&quot;)</span></span>
-<span id="cb20-16"><a href="engine.html#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;terra&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="engine.html#cb161-1" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_dtm&quot;</span>)</span>
+<span id="cb161-2"><a href="engine.html#cb161-2" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(ctg, <span class="dv">1</span>, <span class="fu">tin</span>())</span>
+<span id="cb161-3"><a href="engine.html#cb161-3" tabindex="-1"></a>dtm</span>
+<span id="cb161-4"><a href="engine.html#cb161-4" tabindex="-1"></a><span class="co">#&gt; class       : SpatRaster </span></span>
+<span id="cb161-5"><a href="engine.html#cb161-5" tabindex="-1"></a><span class="co">#&gt; dimensions  : 1500, 1500, 1  (nrow, ncol, nlyr)</span></span>
+<span id="cb161-6"><a href="engine.html#cb161-6" tabindex="-1"></a><span class="co">#&gt; resolution  : 1, 1  (x, y)</span></span>
+<span id="cb161-7"><a href="engine.html#cb161-7" tabindex="-1"></a><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500  (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb161-8"><a href="engine.html#cb161-8" tabindex="-1"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 19N (EPSG:32619) </span></span>
+<span id="cb161-9"><a href="engine.html#cb161-9" tabindex="-1"></a><span class="co">#&gt; source      : rasterize_terrain.vrt </span></span>
+<span id="cb161-10"><a href="engine.html#cb161-10" tabindex="-1"></a><span class="co">#&gt; name        :       Z </span></span>
+<span id="cb161-11"><a href="engine.html#cb161-11" tabindex="-1"></a><span class="co">#&gt; min value   : 534.024 </span></span>
+<span id="cb161-12"><a href="engine.html#cb161-12" tabindex="-1"></a><span class="co">#&gt; max value   : 803.364</span></span>
+<span id="cb161-13"><a href="engine.html#cb161-13" tabindex="-1"></a><span class="fu">class</span>(dtm)</span>
+<span id="cb161-14"><a href="engine.html#cb161-14" tabindex="-1"></a><span class="co">#&gt; [1] &quot;SpatRaster&quot;</span></span>
+<span id="cb161-15"><a href="engine.html#cb161-15" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;package&quot;)</span></span>
+<span id="cb161-16"><a href="engine.html#cb161-16" tabindex="-1"></a><span class="co">#&gt; [1] &quot;terra&quot;</span></span></code></pre></div>
 <p>Light rasters can be used as if it were an in memory raster or a single file raster and is thus much more convenient than having hundred of files on disk without any structure to hold them all. This feature is called Virtual Dataset and is part of the Geospatial Data Abstraction Library (GDAL) (see also <a href="http://gdal.org/gdalbuildvrt.html">gdalbuildvrt</a>).</p>
 </div>
 <div id="summary-2" class="section level3 hasAnchor" number="14.8.3">
@@ -657,26 +661,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="engine-normalization" class="section level2 hasAnchor" number="14.9">
 <h2><span class="header-section-number">14.9</span> Height normalization<a href="engine.html#engine-normalization" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Previous sections detail considerations for using the <code>LAScatalog</code> engine to perform point cloud normalization using <code>normalize_height()</code> (see section <a href="norm.html#norm">5</a>). We created a DTM in the previous section, so we use it here to normalize.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="engine.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span>  <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm&quot;</span>)</span>
-<span id="cb21-2"><a href="engine.html#cb21-2" aria-hidden="true" tabindex="-1"></a>ctg_norm <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(ctg, dtm)</span></code></pre></div>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="engine.html#cb162-1" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span>  <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm&quot;</span>)</span>
+<span id="cb162-2"><a href="engine.html#cb162-2" tabindex="-1"></a>ctg_norm <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(ctg, dtm)</span></code></pre></div>
 <p>A point cloud-based normalization without a raster is also possible:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="engine.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span>  <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm&quot;</span>)</span>
-<span id="cb22-2"><a href="engine.html#cb22-2" aria-hidden="true" tabindex="-1"></a>ctg_norm <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(ctg, <span class="fu">tin</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="engine.html#cb163-1" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span>  <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_norm&quot;</span>)</span>
+<span id="cb163-2"><a href="engine.html#cb163-2" tabindex="-1"></a>ctg_norm <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(ctg, <span class="fu">tin</span>())</span></code></pre></div>
 </div>
 <div id="engine-aba" class="section level2 hasAnchor" number="14.10">
 <h2><span class="header-section-number">14.10</span> Area Based Approach<a href="engine.html#engine-aba" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Area based approach (<code>pixel_metrics()</code>) outputs are raster objects like a DTM. Two more options of the engine do exist that are not controllable in every function. When reading a LAS file with <code>readLAS()</code> two options <code>select</code> and <code>filter</code> are offered (see section <a href="io.html#io">2</a>). When processing a collection of files <code>readLAS()</code> is called internally and it is not possible to modify these parameters. Instead we can use the options <code>opt_filter()</code> and <code>opt_select()</code> to propagate these arguments.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="engine.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_select</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;xyzci&quot;</span></span>
-<span id="cb23-2"><a href="engine.html#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;-keep_first&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="engine.html#cb164-1" tabindex="-1"></a><span class="fu">opt_select</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;xyzci&quot;</span></span>
+<span id="cb164-2"><a href="engine.html#cb164-2" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;-keep_first&quot;</span></span></code></pre></div>
 <p>Used in conjunction with <code>pixel_metrics()</code>, these enable computation on a selected set of points (first returns for example), loading only user specified attributes. This is useful mainly to save processing memory but may also have a small favorable impact on computation time.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="engine.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_select</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="st">&quot;xyz&quot;</span></span>
-<span id="cb24-2"><a href="engine.html#cb24-2" aria-hidden="true" tabindex="-1"></a>hmean <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(ctg_norm, <span class="sc">~</span><span class="fu">mean</span>(Z), <span class="dv">10</span>)</span>
-<span id="cb24-3"><a href="engine.html#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="engine.html#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_select</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="st">&quot;xyz&quot;</span></span>
-<span id="cb24-5"><a href="engine.html#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="st">&quot;-keep_first&quot;</span></span>
-<span id="cb24-6"><a href="engine.html#cb24-6" aria-hidden="true" tabindex="-1"></a>hmean <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(ctg_norm, <span class="sc">~</span><span class="fu">mean</span>(Z), <span class="dv">10</span>)</span>
-<span id="cb24-7"><a href="engine.html#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="engine.html#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hmean, <span class="at">col =</span> <span class="fu">height.colors</span>(<span class="dv">25</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="engine.html#cb165-1" tabindex="-1"></a><span class="fu">opt_select</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="st">&quot;xyz&quot;</span></span>
+<span id="cb165-2"><a href="engine.html#cb165-2" tabindex="-1"></a>hmean <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(ctg_norm, <span class="sc">~</span><span class="fu">mean</span>(Z), <span class="dv">10</span>)</span>
+<span id="cb165-3"><a href="engine.html#cb165-3" tabindex="-1"></a></span>
+<span id="cb165-4"><a href="engine.html#cb165-4" tabindex="-1"></a><span class="fu">opt_select</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="st">&quot;xyz&quot;</span></span>
+<span id="cb165-5"><a href="engine.html#cb165-5" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="st">&quot;-keep_first&quot;</span></span>
+<span id="cb165-6"><a href="engine.html#cb165-6" tabindex="-1"></a>hmean <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(ctg_norm, <span class="sc">~</span><span class="fu">mean</span>(Z), <span class="dv">10</span>)</span>
+<span id="cb165-7"><a href="engine.html#cb165-7" tabindex="-1"></a></span>
+<span id="cb165-8"><a href="engine.html#cb165-8" tabindex="-1"></a><span class="fu">plot</span>(hmean, <span class="at">col =</span> <span class="fu">height.colors</span>(<span class="dv">25</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-raster-hmean-catalog-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 <p>Not all functions respect these two options. For example it does not make sense to load only XYZ when creating a DTM because the classification of points is required to isolate ground points. It is also non-beneficial to load intensity, user data, return number and so on to compute a DTM. The function <code>rasterize_terrain()</code> knows which options to choose and does not respect user inputs. This is the case of several other functions in <code>lidR</code>. But when its suitable, users can tune these options.</p>
 <div id="summary-3" class="section level3 hasAnchor" number="14.10.1">
@@ -691,51 +695,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="engine-itd" class="section level2 hasAnchor" number="14.11">
 <h2><span class="header-section-number">14.11</span> Individual Tree Detection<a href="engine.html#engine-itd" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>At this stage with have all the tools required to find each individual tree using <code>locate_trees()</code> in a collection of files. The following example extracts every tree found over the acquisition. The output is returned in memory as a single, continuous object. Each chunk is processed with a buffer ensuring that trees will be properly detected at the edges of the files. A total of 100,000 trees were found in this example.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="engine.html#cb25-1" aria-hidden="true" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">locate_trees</span>(ctg_norm, <span class="fu">lmf</span>(<span class="dv">4</span>))</span>
-<span id="cb25-2"><a href="engine.html#cb25-2" aria-hidden="true" tabindex="-1"></a>ttops</span>
-<span id="cb25-3"><a href="engine.html#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 102492 features and 2 fields</span></span>
-<span id="cb25-4"><a href="engine.html#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
-<span id="cb25-5"><a href="engine.html#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
-<span id="cb25-6"><a href="engine.html#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 338000 ymin: 5238000 xmax: 339500 ymax: 5239500</span></span>
-<span id="cb25-7"><a href="engine.html#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Projected CRS: WGS 84 / UTM zone 19N</span></span>
-<span id="cb25-8"><a href="engine.html#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; First 10 features:</span></span>
-<span id="cb25-9"><a href="engine.html#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    treeID      Z                 geometry</span></span>
-<span id="cb25-10"><a href="engine.html#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       1 17.441 POINT (338007.6 5238481)</span></span>
-<span id="cb25-11"><a href="engine.html#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       2 16.313 POINT (338012.7 5238481)</span></span>
-<span id="cb25-12"><a href="engine.html#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       3 16.342 POINT (338007.1 5238488)</span></span>
-<span id="cb25-13"><a href="engine.html#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       4 16.199 POINT (338007.4 5238491)</span></span>
-<span id="cb25-14"><a href="engine.html#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5       5 14.140 POINT (338002.9 5238497)</span></span>
-<span id="cb25-15"><a href="engine.html#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6       6 18.999 POINT (338019.3 5238496)</span></span>
-<span id="cb25-16"><a href="engine.html#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7       7 16.330 POINT (338012.1 5238499)</span></span>
-<span id="cb25-17"><a href="engine.html#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8       8 18.669   POINT (338018 5238492)</span></span>
-<span id="cb25-18"><a href="engine.html#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9       9 18.508 POINT (338016.3 5238493)</span></span>
-<span id="cb25-19"><a href="engine.html#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10     10 17.622 POINT (338014.6 5238491)</span></span>
-<span id="cb25-20"><a href="engine.html#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ttops[<span class="st">&quot;Z&quot;</span>], <span class="at">cex =</span> <span class="fl">0.001</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">pal =</span> height.colors, <span class="at">nbreaks =</span> <span class="dv">30</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="engine.html#cb166-1" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">locate_trees</span>(ctg_norm, <span class="fu">lmf</span>(<span class="dv">4</span>))</span>
+<span id="cb166-2"><a href="engine.html#cb166-2" tabindex="-1"></a>ttops</span>
+<span id="cb166-3"><a href="engine.html#cb166-3" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 102492 features and 2 fields</span></span>
+<span id="cb166-4"><a href="engine.html#cb166-4" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb166-5"><a href="engine.html#cb166-5" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb166-6"><a href="engine.html#cb166-6" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 338000 ymin: 5238000 xmax: 339500 ymax: 5239500</span></span>
+<span id="cb166-7"><a href="engine.html#cb166-7" tabindex="-1"></a><span class="co">#&gt; Projected CRS: WGS 84 / UTM zone 19N</span></span>
+<span id="cb166-8"><a href="engine.html#cb166-8" tabindex="-1"></a><span class="co">#&gt; First 10 features:</span></span>
+<span id="cb166-9"><a href="engine.html#cb166-9" tabindex="-1"></a><span class="co">#&gt;    treeID      Z                 geometry</span></span>
+<span id="cb166-10"><a href="engine.html#cb166-10" tabindex="-1"></a><span class="co">#&gt; 1       1 17.441 POINT (338007.6 5238481)</span></span>
+<span id="cb166-11"><a href="engine.html#cb166-11" tabindex="-1"></a><span class="co">#&gt; 2       2 16.313 POINT (338012.7 5238481)</span></span>
+<span id="cb166-12"><a href="engine.html#cb166-12" tabindex="-1"></a><span class="co">#&gt; 3       3 16.342 POINT (338007.1 5238488)</span></span>
+<span id="cb166-13"><a href="engine.html#cb166-13" tabindex="-1"></a><span class="co">#&gt; 4       4 16.199 POINT (338007.4 5238491)</span></span>
+<span id="cb166-14"><a href="engine.html#cb166-14" tabindex="-1"></a><span class="co">#&gt; 5       5 14.140 POINT (338002.9 5238497)</span></span>
+<span id="cb166-15"><a href="engine.html#cb166-15" tabindex="-1"></a><span class="co">#&gt; 6       6 18.999 POINT (338019.3 5238496)</span></span>
+<span id="cb166-16"><a href="engine.html#cb166-16" tabindex="-1"></a><span class="co">#&gt; 7       7 16.330 POINT (338012.1 5238499)</span></span>
+<span id="cb166-17"><a href="engine.html#cb166-17" tabindex="-1"></a><span class="co">#&gt; 8       8 18.669   POINT (338018 5238492)</span></span>
+<span id="cb166-18"><a href="engine.html#cb166-18" tabindex="-1"></a><span class="co">#&gt; 9       9 18.508 POINT (338016.3 5238493)</span></span>
+<span id="cb166-19"><a href="engine.html#cb166-19" tabindex="-1"></a><span class="co">#&gt; 10     10 17.622 POINT (338014.6 5238491)</span></span>
+<span id="cb166-20"><a href="engine.html#cb166-20" tabindex="-1"></a><span class="fu">plot</span>(ttops[<span class="st">&quot;Z&quot;</span>], <span class="at">cex =</span> <span class="fl">0.001</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">pal =</span> height.colors, <span class="at">nbreaks =</span> <span class="dv">30</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-tree-catalog-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We see some issues with this however. Each tree is expected to be associated to a single <code>ID</code> but if we count the number of trees with the <code>ID = 1</code> we can see that we have 9 trees fitting that query. Similarly we have 9 trees labelled “2” and so on.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="engine.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(ttops<span class="sc">$</span>treeID <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb26-2"><a href="engine.html#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 9</span></span>
-<span id="cb26-3"><a href="engine.html#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ttops[<span class="st">&quot;treeID&quot;</span>], <span class="at">cex =</span> <span class="fl">0.3</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">nbreaks =</span> <span class="dv">50</span>)</span></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="engine.html#cb167-1" tabindex="-1"></a><span class="fu">sum</span>(ttops<span class="sc">$</span>treeID <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb167-2"><a href="engine.html#cb167-2" tabindex="-1"></a><span class="co">#&gt; [1] 9</span></span>
+<span id="cb167-3"><a href="engine.html#cb167-3" tabindex="-1"></a><span class="fu">plot</span>(ttops[<span class="st">&quot;treeID&quot;</span>], <span class="at">cex =</span> <span class="fl">0.3</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">nbreaks =</span> <span class="dv">50</span>)</span></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-61-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>This error has been voluntarily introduced at this stage to illustrate how the <code>LAScatalog</code> engine works. In the engine, each chunk is processed <strong>independently</strong> of the others. They can even be processed on different machines and in a more or less random order. Thus there is no way to know how many trees were found in the first chunk to restart the numbering in the second chunk. This is mainly because the <em>‘first and second’</em> chunk may not have any meaning when processing in parallel. The numbering is thus restarted to 1 in each chunk. This is why there is 9 trees numbered 1. One in each chunk. When the output is returned in memory this can be easily fixed by reassigning new IDs</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="engine.html#cb27-1" aria-hidden="true" tabindex="-1"></a>ttops<span class="sc">$</span>treeID <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ttops)</span></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="engine.html#cb168-1" tabindex="-1"></a>ttops<span class="sc">$</span>treeID <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ttops)</span></code></pre></div>
 <p>It is however more difficult to achieve the same task if each chunk is written in a file, and almost impossible to achieve in the case of individual tree segmentation as we will see later. To solve this <code>lidR</code> has two strategies to generate reproducible unique IDs no matter the processing order or the number of trees found. For more details the reader can refer to the documentation for <code>locate_trees()</code>. This option can be selected with the parameter <code>uniqueness</code>.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="engine.html#cb28-1" aria-hidden="true" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">locate_trees</span>(ctg_norm, <span class="fu">lmf</span>(<span class="dv">4</span>), <span class="at">uniqueness =</span> <span class="st">&quot;bitmerge&quot;</span>)</span>
-<span id="cb28-2"><a href="engine.html#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ttops[<span class="st">&quot;treeID&quot;</span>], <span class="at">cex =</span> <span class="fl">0.01</span>, <span class="at">pch =</span> <span class="dv">19</span>)</span></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="engine.html#cb169-1" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">locate_trees</span>(ctg_norm, <span class="fu">lmf</span>(<span class="dv">4</span>), <span class="at">uniqueness =</span> <span class="st">&quot;bitmerge&quot;</span>)</span>
+<span id="cb169-2"><a href="engine.html#cb169-2" tabindex="-1"></a><span class="fu">plot</span>(ttops[<span class="st">&quot;treeID&quot;</span>], <span class="at">cex =</span> <span class="fl">0.01</span>, <span class="at">pch =</span> <span class="dv">19</span>)</span></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-62-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The attribute <code>treeID</code> is now an arbitrary number (here it is negative but not necessarily) computed from the XY coordinates, that is guaranteed to be <strong>1.</strong> unique, and <strong>2.</strong> reproducible. No matter how the collection of files is processed (by files or by small chunks, in parallel or sequentially, with large or narrow buffer, in memory or on disk) the IDs will always be the same for a given tree.</p>
 <p>In all the previous examples we have seen that the engine takes care of merging intermediate results into a single usable object. When intermediate results are stored on disk, the final results in R is a single lightweight object such as a <code>LAScatalog</code> or a Virtual Data set. This is not true for <code>locate_trees()</code> and other functions that return spatial vectors. The default behaviour is to write Geopackage (.gpkg) and there is no way to build a light weight object. What is returned is thus a vector of written files.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="engine.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}&quot;</span>)</span>
-<span id="cb29-2"><a href="engine.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">locate_trees</span>(ctg_norm, <span class="fu">lmf</span>(<span class="dv">4</span>), <span class="at">uniqueness =</span> <span class="st">&quot;bitmerge&quot;</span>)</span>
-<span id="cb29-3"><a href="engine.html#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpiYzMKB/tiles_338000_5238000_1_norm.shp&quot;</span></span>
-<span id="cb29-4"><a href="engine.html#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;/tmp/RtmpiYzMKB/tiles_338000_5238500_1_norm.shp&quot;</span></span>
-<span id="cb29-5"><a href="engine.html#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;/tmp/RtmpiYzMKB/tiles_338000_5239000_1_norm.shp&quot;</span></span>
-<span id="cb29-6"><a href="engine.html#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;/tmp/RtmpiYzMKB/tiles_338500_5238000_1_norm.shp&quot;</span></span>
-<span id="cb29-7"><a href="engine.html#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;/tmp/RtmpiYzMKB/tiles_338500_5238500_1_norm.shp&quot;</span></span>
-<span id="cb29-8"><a href="engine.html#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] &quot;/tmp/RtmpiYzMKB/tiles_338500_5239000_1_norm.shp&quot;</span></span>
-<span id="cb29-9"><a href="engine.html#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7] &quot;/tmp/RtmpiYzMKB/tiles_339000_5238000_1_norm.shp&quot;</span></span>
-<span id="cb29-10"><a href="engine.html#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8] &quot;/tmp/RtmpiYzMKB/tiles_339000_5238500_1_norm.shp&quot;</span></span>
-<span id="cb29-11"><a href="engine.html#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [9] &quot;/tmp/RtmpiYzMKB/tiles_339000_5239000_1_norm.shp&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="engine.html#cb170-1" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}&quot;</span>)</span>
+<span id="cb170-2"><a href="engine.html#cb170-2" tabindex="-1"></a><span class="fu">locate_trees</span>(ctg_norm, <span class="fu">lmf</span>(<span class="dv">4</span>), <span class="at">uniqueness =</span> <span class="st">&quot;bitmerge&quot;</span>)</span>
+<span id="cb170-3"><a href="engine.html#cb170-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn/tiles_338000_5238000_1_norm.shp&quot;</span></span>
+<span id="cb170-4"><a href="engine.html#cb170-4" tabindex="-1"></a><span class="co">#&gt; [2] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn/tiles_338000_5238500_1_norm.shp&quot;</span></span>
+<span id="cb170-5"><a href="engine.html#cb170-5" tabindex="-1"></a><span class="co">#&gt; [3] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn/tiles_338000_5239000_1_norm.shp&quot;</span></span>
+<span id="cb170-6"><a href="engine.html#cb170-6" tabindex="-1"></a><span class="co">#&gt; [4] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn/tiles_338500_5238000_1_norm.shp&quot;</span></span>
+<span id="cb170-7"><a href="engine.html#cb170-7" tabindex="-1"></a><span class="co">#&gt; [5] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn/tiles_338500_5238500_1_norm.shp&quot;</span></span>
+<span id="cb170-8"><a href="engine.html#cb170-8" tabindex="-1"></a><span class="co">#&gt; [6] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn/tiles_338500_5239000_1_norm.shp&quot;</span></span>
+<span id="cb170-9"><a href="engine.html#cb170-9" tabindex="-1"></a><span class="co">#&gt; [7] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn/tiles_339000_5238000_1_norm.shp&quot;</span></span>
+<span id="cb170-10"><a href="engine.html#cb170-10" tabindex="-1"></a><span class="co">#&gt; [8] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn/tiles_339000_5238500_1_norm.shp&quot;</span></span>
+<span id="cb170-11"><a href="engine.html#cb170-11" tabindex="-1"></a><span class="co">#&gt; [9] &quot;C:\\Users\\tgood\\AppData\\Local\\Temp\\RtmpYnwvYn/tiles_339000_5239000_1_norm.shp&quot;</span></span></code></pre></div>
 <div id="summary-4" class="section level3 hasAnchor" number="14.11.1">
 <h3><span class="header-section-number">14.11.1</span> Summary<a href="engine.html#summary-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We have learned several things about the engine in this section</p>
@@ -750,24 +754,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">14.12</span> Individual Tree Segmentation<a href="engine.html#engine-its" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Individual tree segmentation with <code>segment_trees()</code> is the most complicated function to use with a <code>LAScatalog</code> because there are many different algorithms. Some imply the use of an in memory raster and an in memory vector, some require only an in memory raster and some require only a point cloud (see section <a href="itd-its.html#itd-its">7</a>). Moreover it is complex to manage edge artifacts. Imagine there is a tree that is situated exactly on the edge between two files. The first half on one file, the second half on another. The two files will be processed independently - maybe on different remote computers. Both sides of the tree must be attributed the same ID independently to get something that is strictly continuous. The function <code>segment_trees()</code> manages all these points. The example below uses the <code>dalponte2016()</code> algorithm.</p>
 <p>First we create a 1 m resolution CHM stored on disk and returned as a light virtual raster.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="engine.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/chm_{*}&quot;</span>)</span>
-<span id="cb30-2"><a href="engine.html#cb30-2" aria-hidden="true" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(ctg_norm, <span class="dv">1</span>, <span class="fu">p2r</span>(<span class="fl">0.15</span>))</span>
-<span id="cb30-3"><a href="engine.html#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="engine.html#cb171-1" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/chm_{*}&quot;</span>)</span>
+<span id="cb171-2"><a href="engine.html#cb171-2" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(ctg_norm, <span class="dv">1</span>, <span class="fu">p2r</span>(<span class="fl">0.15</span>))</span>
+<span id="cb171-3"><a href="engine.html#cb171-3" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-catalog-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 <p>Second we compute the seeds by finding the trees as seen above. The result <strong>must be</strong> loaded in memory because there is no way to combine many vectors stored on disk like rasters. In this example it is possible because there are 100,000 trees. But for bigger collections it may not be possible to apply this algorithm in a simple way.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="engine.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb31-2"><a href="engine.html#cb31-2" aria-hidden="true" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">locate_trees</span>(ctg_norm, <span class="fu">lmf</span>(<span class="dv">4</span>), <span class="at">uniqueness =</span> <span class="st">&quot;bitmerge&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="engine.html#cb172-1" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb172-2"><a href="engine.html#cb172-2" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">locate_trees</span>(ctg_norm, <span class="fu">lmf</span>(<span class="dv">4</span>), <span class="at">uniqueness =</span> <span class="st">&quot;bitmerge&quot;</span>)</span></code></pre></div>
 <p>To finish, we apply <code>segment_trees()</code>. Here we don’t need to specify any strategy to get unique IDs because the seeds are already uniquely labelled. These IDs will be preserved. But for an algorithm without any seed such as <code>watershed()</code> it is important to have a strategy.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="engine.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_segmented&quot;</span>)</span>
-<span id="cb32-2"><a href="engine.html#cb32-2" aria-hidden="true" tabindex="-1"></a>algo <span class="ot">&lt;-</span> <span class="fu">dalponte2016</span>(chm, ttops)</span>
-<span id="cb32-3"><a href="engine.html#cb32-3" aria-hidden="true" tabindex="-1"></a>ctg_segmented <span class="ot">&lt;-</span> <span class="fu">segment_trees</span>(ctg_norm, algo)</span></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="engine.html#cb173-1" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{*}_segmented&quot;</span>)</span>
+<span id="cb173-2"><a href="engine.html#cb173-2" tabindex="-1"></a>algo <span class="ot">&lt;-</span> <span class="fu">dalponte2016</span>(chm, ttops)</span>
+<span id="cb173-3"><a href="engine.html#cb173-3" tabindex="-1"></a>ctg_segmented <span class="ot">&lt;-</span> <span class="fu">segment_trees</span>(ctg_norm, algo)</span></code></pre></div>
 <p>The new <code>LAScatalog</code> that is returned is made up of files that have an extra attribute named <code>treeID</code> where each point is labelled with an ID thats unique for each tree, even those that belong between two or more files that were processed independently. We can load a plot between two files to check:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="engine.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg_segmented) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb33-2"><a href="engine.html#cb33-2" aria-hidden="true" tabindex="-1"></a>lasplot <span class="ot">&lt;-</span> <span class="fu">clip_circle</span>(ctg_segmented, <span class="dv">338500</span>, <span class="dv">5238600</span>, <span class="dv">40</span>)</span>
-<span id="cb33-3"><a href="engine.html#cb33-3" aria-hidden="true" tabindex="-1"></a>pol <span class="ot">=</span> <span class="fu">crown_metrics</span>(lasplot, <span class="cn">NULL</span>, <span class="at">geom =</span> <span class="st">&quot;convex&quot;</span>)</span>
-<span id="cb33-4"><a href="engine.html#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-5"><a href="engine.html#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sf<span class="sc">::</span><span class="fu">st_geometry</span>(pol), <span class="at">col =</span> <span class="fu">pastel.colors</span>(<span class="dv">250</span>), <span class="at">axes =</span> T)</span>
-<span id="cb33-6"><a href="engine.html#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg, <span class="at">add =</span> T)</span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="engine.html#cb174-1" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg_segmented) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb174-2"><a href="engine.html#cb174-2" tabindex="-1"></a>lasplot <span class="ot">&lt;-</span> <span class="fu">clip_circle</span>(ctg_segmented, <span class="dv">338500</span>, <span class="dv">5238600</span>, <span class="dv">40</span>)</span>
+<span id="cb174-3"><a href="engine.html#cb174-3" tabindex="-1"></a>pol <span class="ot">=</span> <span class="fu">crown_metrics</span>(lasplot, <span class="cn">NULL</span>, <span class="at">geom =</span> <span class="st">&quot;convex&quot;</span>)</span>
+<span id="cb174-4"><a href="engine.html#cb174-4" tabindex="-1"></a></span>
+<span id="cb174-5"><a href="engine.html#cb174-5" tabindex="-1"></a><span class="fu">plot</span>(sf<span class="sc">::</span><span class="fu">st_geometry</span>(pol), <span class="at">col =</span> <span class="fu">pastel.colors</span>(<span class="dv">250</span>), <span class="at">axes =</span> T)</span>
+<span id="cb174-6"><a href="engine.html#cb174-6" tabindex="-1"></a><span class="fu">plot</span>(ctg, <span class="at">add =</span> T)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-tree-segmented-cliped-1.png" width="672" style="display: block; margin: auto;" /><img src="lidR-book_files/figure-html/plot-las-tree-segmented-cliped-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We can observe that the segmentation is perfect with respect to the labelling problem. Trees that were segmented twice independently on each edge were attributed the same IDs on both sides and that the final output is wall-to-wall.</p>
 </div>
@@ -777,45 +781,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="retile-a-catalog-into-smaller-files" class="section level3 hasAnchor" number="14.13.1">
 <h3><span class="header-section-number">14.13.1</span> Retile a catalog into smaller files<a href="engine.html#retile-a-catalog-into-smaller-files" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>catalog_retile()</code> allows for retiling the acquisition of files in tiles of any size.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="engine.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{XLEFT}_{YBOTTOM}&quot;</span>) <span class="co"># label outputs based on coordinates</span></span>
-<span id="cb34-2"><a href="engine.html#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb34-3"><a href="engine.html#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">250</span> <span class="co"># retile to 250 m</span></span>
-<span id="cb34-4"><a href="engine.html#cb34-4" aria-hidden="true" tabindex="-1"></a>small <span class="ot">&lt;-</span> <span class="fu">catalog_retile</span>(ctg) <span class="co"># apply retile</span></span>
-<span id="cb34-5"><a href="engine.html#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(small) <span class="co"># some plotting</span></span></code></pre></div>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="engine.html#cb175-1" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{XLEFT}_{YBOTTOM}&quot;</span>) <span class="co"># label outputs based on coordinates</span></span>
+<span id="cb175-2"><a href="engine.html#cb175-2" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb175-3"><a href="engine.html#cb175-3" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">250</span> <span class="co"># retile to 250 m</span></span>
+<span id="cb175-4"><a href="engine.html#cb175-4" tabindex="-1"></a>small <span class="ot">&lt;-</span> <span class="fu">catalog_retile</span>(ctg) <span class="co"># apply retile</span></span>
+<span id="cb175-5"><a href="engine.html#cb175-5" tabindex="-1"></a><span class="fu">plot</span>(small) <span class="co"># some plotting</span></span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-retiled-small-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div id="add-a-buffer-around-each-file" class="section level3 hasAnchor" number="14.13.2">
 <h3><span class="header-section-number">14.13.2</span> Add a buffer around each file<a href="engine.html#add-a-buffer-around-each-file" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>catalog_retile()</code> is a special case where the buffer <strong>is not</strong> removed after computation. The function does not compute anything, but only streams point from inputs files to output files. It can be used to add a buffer around each file.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="engine.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">20</span> <span class="co"># set buffer to 20</span></span>
-<span id="cb35-2"><a href="engine.html#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># no change to chunk size</span></span>
-<span id="cb35-3"><a href="engine.html#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{ORIGINALFILENAME}_buffered&quot;</span>) <span class="co"># name outputs with original name and &quot;_buffered&quot;</span></span>
-<span id="cb35-4"><a href="engine.html#cb35-4" aria-hidden="true" tabindex="-1"></a>buffered <span class="ot">&lt;-</span> <span class="fu">catalog_retile</span>(ctg) <span class="co"># apply buffer</span></span>
-<span id="cb35-5"><a href="engine.html#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(buffered) <span class="co"># some plotting</span></span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="engine.html#cb176-1" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">20</span> <span class="co"># set buffer to 20</span></span>
+<span id="cb176-2"><a href="engine.html#cb176-2" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># no change to chunk size</span></span>
+<span id="cb176-3"><a href="engine.html#cb176-3" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{ORIGINALFILENAME}_buffered&quot;</span>) <span class="co"># name outputs with original name and &quot;_buffered&quot;</span></span>
+<span id="cb176-4"><a href="engine.html#cb176-4" tabindex="-1"></a>buffered <span class="ot">&lt;-</span> <span class="fu">catalog_retile</span>(ctg) <span class="co"># apply buffer</span></span>
+<span id="cb176-5"><a href="engine.html#cb176-5" tabindex="-1"></a><span class="fu">plot</span>(buffered) <span class="co"># some plotting</span></span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-retiled-buffer-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>Be careful. This may be useful for processing in other softwares, but <code>lidR</code> loads a buffers on-the-fly and does not support already buffered files. When processing a buffered collection in <code>lidR</code> the output is likely to be incorrect with the default parameters.</p>
 </div>
 <div id="create-a-new-collection-with-only-first-returns" class="section level3 hasAnchor" number="14.13.3">
 <h3><span class="header-section-number">14.13.3</span> Create a new collection with only first returns<a href="engine.html#create-a-new-collection-with-only-first-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In combination with <code>opt_filter()</code>, <code>catalog_retile()</code> can be used to generate a new collection of files that contains only first returns. This is not very useful in <code>lidR</code> because this can be achieved on-the-fly when reading the files using <code>filter()</code> (see section <a href="io.html#filter">2.1.2</a>), though could be useful to process point clouds in other software.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="engine.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb36-2"><a href="engine.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb36-3"><a href="engine.html#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{ORIGINALFILENAME}_first&quot;</span>)</span>
-<span id="cb36-4"><a href="engine.html#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;-keep_first&quot;</span></span>
-<span id="cb36-5"><a href="engine.html#cb36-5" aria-hidden="true" tabindex="-1"></a>first <span class="ot">&lt;-</span> <span class="fu">catalog_retile</span>(ctg)</span></code></pre></div>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="engine.html#cb177-1" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb177-2"><a href="engine.html#cb177-2" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb177-3"><a href="engine.html#cb177-3" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{ORIGINALFILENAME}_first&quot;</span>)</span>
+<span id="cb177-4"><a href="engine.html#cb177-4" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;-keep_first&quot;</span></span>
+<span id="cb177-5"><a href="engine.html#cb177-5" tabindex="-1"></a>first <span class="ot">&lt;-</span> <span class="fu">catalog_retile</span>(ctg)</span></code></pre></div>
 </div>
 <div id="create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel" class="section level3 hasAnchor" number="14.13.4">
 <h3><span class="header-section-number">14.13.4</span> Create a new collection of small and buffered ground returns in parallel<a href="engine.html#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We can combine all the options seen in this section to generate a buffered set of tiny files containing only ground returns. We present that here in parallel.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="engine.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
-<span id="cb37-2"><a href="engine.html#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
-<span id="cb37-3"><a href="engine.html#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-4"><a href="engine.html#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{XLEFT}_{YBOTTOM}_first_buffered&quot;</span>)</span>
-<span id="cb37-5"><a href="engine.html#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb37-6"><a href="engine.html#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">250</span></span>
-<span id="cb37-7"><a href="engine.html#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;-keep_class 2&quot;</span></span>
-<span id="cb37-8"><a href="engine.html#cb37-8" aria-hidden="true" tabindex="-1"></a>newctg <span class="ot">&lt;-</span> <span class="fu">catalog_retile</span>(ctg)</span>
-<span id="cb37-9"><a href="engine.html#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(newctg)</span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="engine.html#cb178-1" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb178-2"><a href="engine.html#cb178-2" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb178-3"><a href="engine.html#cb178-3" tabindex="-1"></a></span>
+<span id="cb178-4"><a href="engine.html#cb178-4" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/{XLEFT}_{YBOTTOM}_first_buffered&quot;</span>)</span>
+<span id="cb178-5"><a href="engine.html#cb178-5" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb178-6"><a href="engine.html#cb178-6" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">250</span></span>
+<span id="cb178-7"><a href="engine.html#cb178-7" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;-keep_class 2&quot;</span></span>
+<span id="cb178-8"><a href="engine.html#cb178-8" tabindex="-1"></a>newctg <span class="ot">&lt;-</span> <span class="fu">catalog_retile</span>(ctg)</span>
+<span id="cb178-9"><a href="engine.html#cb178-9" tabindex="-1"></a><span class="fu">plot</span>(newctg)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-retiled-all-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -826,16 +830,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><code>rois</code> is made of unrelated circular files. Loading a buffer is meaningless because there is no neighbouring files. Creating chunks is meaningless as well because we usually want one output per file without generating a wall-to-wall object. Worse even, with the wrong options the output might be incorrect.</p>
 <p>For example on the top right of the previous collection we can see two overlapping files. If processed by chunk and with a buffer this will load the same points twice in the overlapping area, plus some extra points from the other plot that are not related at all to the first plot. In short, in the case of ground plot inventories 99% of the cases consist in processing iteratively by file, without a buffer and without returning a single aggregated object. This case actually corresponds to a regular <code>for</code> loop, as shown in the introduction of this section. Thus there is no need for all the features provided by the <code>LAScatalog</code> engine and anyone with any background in programming can write a small script that does this job.</p>
 <p>The engine can however do it with appropriate options. In this case the <code>LAScatalog</code> processing engine becomes more or less a parallelizable <code>for</code> loop with a real time monitoring.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="engine.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(rois) <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># processing by files</span></span>
-<span id="cb38-2"><a href="engine.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(rois) <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># no buffer</span></span>
-<span id="cb38-3"><a href="engine.html#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_wall_to_wall</span>(rois) <span class="ot">&lt;-</span> <span class="cn">FALSE</span> <span class="co"># disable internal checks to ensure a valid output. Free wheel mode</span></span>
-<span id="cb38-4"><a href="engine.html#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_merge</span>(rois) <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb38-5"><a href="engine.html#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(rois) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb38-6"><a href="engine.html#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-7"><a href="engine.html#cb38-7" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(rois, <span class="dv">1</span>, <span class="fu">tin</span>())</span>
-<span id="cb38-8"><a href="engine.html#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dtm[[<span class="dv">1</span>]], <span class="at">col =</span> <span class="fu">gray</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span><span class="sc">/</span><span class="dv">50</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="engine.html#cb179-1" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(rois) <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># processing by files</span></span>
+<span id="cb179-2"><a href="engine.html#cb179-2" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(rois) <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># no buffer</span></span>
+<span id="cb179-3"><a href="engine.html#cb179-3" tabindex="-1"></a><span class="fu">opt_wall_to_wall</span>(rois) <span class="ot">&lt;-</span> <span class="cn">FALSE</span> <span class="co"># disable internal checks to ensure a valid output. Free wheel mode</span></span>
+<span id="cb179-4"><a href="engine.html#cb179-4" tabindex="-1"></a><span class="fu">opt_merge</span>(rois) <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb179-5"><a href="engine.html#cb179-5" tabindex="-1"></a><span class="fu">opt_output_files</span>(rois) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb179-6"><a href="engine.html#cb179-6" tabindex="-1"></a></span>
+<span id="cb179-7"><a href="engine.html#cb179-7" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(rois, <span class="dv">1</span>, <span class="fu">tin</span>())</span>
+<span id="cb179-8"><a href="engine.html#cb179-8" tabindex="-1"></a><span class="fu">plot</span>(dtm[[<span class="dv">1</span>]], <span class="at">col =</span> <span class="fu">gray</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span><span class="sc">/</span><span class="dv">50</span>))</span></code></pre></div>
 <p>This can be set in one command:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="engine.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_independent_files</span>(rois) <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="engine.html#cb180-1" tabindex="-1"></a><span class="fu">opt_independent_files</span>(rois) <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span></code></pre></div>
 <p>Everything seen so far remains true. But with these options we are sure to not make mistakes when processing independent files.</p>
 </div>
 <div id="engine-summary-sheet" class="section level2 hasAnchor" number="14.15">
@@ -856,28 +860,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Use <code>future</code> and register a parallelization plan to process several chunks at a time taking advantage of multiple cores or multiple machines architectures.</li>
 </ul>
 <p>One can use the function <code>summary()</code> to display the main current processing options of the catalog:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="engine.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ctg)</span>
-<span id="cb40-2"><a href="engine.html#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class       : LAScatalog (v1.0 format 1)</span></span>
-<span id="cb40-3"><a href="engine.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500 (xmin, xmax, ymin, ymax)</span></span>
-<span id="cb40-4"><a href="engine.html#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 19N </span></span>
-<span id="cb40-5"><a href="engine.html#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area        : 2.25 km²</span></span>
-<span id="cb40-6"><a href="engine.html#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points      : 9.45 million points</span></span>
-<span id="cb40-7"><a href="engine.html#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 4.2 points/m²</span></span>
-<span id="cb40-8"><a href="engine.html#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 3.4 pulses/m²</span></span>
-<span id="cb40-9"><a href="engine.html#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 9 </span></span>
-<span id="cb40-10"><a href="engine.html#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; proc. opt.  : buffer: 10 | chunk: 250</span></span>
-<span id="cb40-11"><a href="engine.html#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; input opt.  : select: * | filter: -keep_class 2</span></span>
-<span id="cb40-12"><a href="engine.html#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; output opt. : on disk | w2w guaranteed | merging enabled</span></span>
-<span id="cb40-13"><a href="engine.html#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; drivers     :</span></span>
-<span id="cb40-14"><a href="engine.html#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - Raster : format = GTiff  NAflag = -999999  </span></span>
-<span id="cb40-15"><a href="engine.html#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - stars : NA_value = -999999  </span></span>
-<span id="cb40-16"><a href="engine.html#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - SpatRaster : overwrite = FALSE  NAflag = -999999  </span></span>
-<span id="cb40-17"><a href="engine.html#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - SpatVector : overwrite = FALSE  </span></span>
-<span id="cb40-18"><a href="engine.html#cb40-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - LAS : no parameter</span></span>
-<span id="cb40-19"><a href="engine.html#cb40-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - Spatial : overwrite = FALSE  </span></span>
-<span id="cb40-20"><a href="engine.html#cb40-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - sf : quiet = TRUE  </span></span>
-<span id="cb40-21"><a href="engine.html#cb40-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - data.frame : no parameter</span></span></code></pre></div>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="engine.html#cb181-1" tabindex="-1"></a><span class="fu">summary</span>(ctg)</span>
+<span id="cb181-2"><a href="engine.html#cb181-2" tabindex="-1"></a><span class="co">#&gt; class       : LAScatalog (v1.0 format 1)</span></span>
+<span id="cb181-3"><a href="engine.html#cb181-3" tabindex="-1"></a><span class="co">#&gt; extent      : 338000, 339500, 5238000, 5239500 (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb181-4"><a href="engine.html#cb181-4" tabindex="-1"></a><span class="co">#&gt; coord. ref. : WGS 84 / UTM zone 19N </span></span>
+<span id="cb181-5"><a href="engine.html#cb181-5" tabindex="-1"></a><span class="co">#&gt; area        : 2.25 km²</span></span>
+<span id="cb181-6"><a href="engine.html#cb181-6" tabindex="-1"></a><span class="co">#&gt; points      : 9.45 million points</span></span>
+<span id="cb181-7"><a href="engine.html#cb181-7" tabindex="-1"></a><span class="co">#&gt; density     : 4.2 points/m²</span></span>
+<span id="cb181-8"><a href="engine.html#cb181-8" tabindex="-1"></a><span class="co">#&gt; density     : 3.4 pulses/m²</span></span>
+<span id="cb181-9"><a href="engine.html#cb181-9" tabindex="-1"></a><span class="co">#&gt; num. files  : 9 </span></span>
+<span id="cb181-10"><a href="engine.html#cb181-10" tabindex="-1"></a><span class="co">#&gt; proc. opt.  : buffer: 10 | chunk: 250</span></span>
+<span id="cb181-11"><a href="engine.html#cb181-11" tabindex="-1"></a><span class="co">#&gt; input opt.  : select: * | filter: -keep_class 2</span></span>
+<span id="cb181-12"><a href="engine.html#cb181-12" tabindex="-1"></a><span class="co">#&gt; output opt. : on disk | w2w guaranteed | merging enabled</span></span>
+<span id="cb181-13"><a href="engine.html#cb181-13" tabindex="-1"></a><span class="co">#&gt; drivers     :</span></span>
+<span id="cb181-14"><a href="engine.html#cb181-14" tabindex="-1"></a><span class="co">#&gt;  - Raster : format = GTiff  NAflag = -999999  </span></span>
+<span id="cb181-15"><a href="engine.html#cb181-15" tabindex="-1"></a><span class="co">#&gt;  - stars : NA_value = -999999  </span></span>
+<span id="cb181-16"><a href="engine.html#cb181-16" tabindex="-1"></a><span class="co">#&gt;  - SpatRaster : overwrite = FALSE  NAflag = -999999  </span></span>
+<span id="cb181-17"><a href="engine.html#cb181-17" tabindex="-1"></a><span class="co">#&gt;  - SpatVector : overwrite = FALSE  </span></span>
+<span id="cb181-18"><a href="engine.html#cb181-18" tabindex="-1"></a><span class="co">#&gt;  - LAS : no parameter</span></span>
+<span id="cb181-19"><a href="engine.html#cb181-19" tabindex="-1"></a><span class="co">#&gt;  - Spatial : overwrite = FALSE  </span></span>
+<span id="cb181-20"><a href="engine.html#cb181-20" tabindex="-1"></a><span class="co">#&gt;  - sf : quiet = TRUE  </span></span>
+<span id="cb181-21"><a href="engine.html#cb181-21" tabindex="-1"></a><span class="co">#&gt;  - data.frame : no parameter</span></span></code></pre></div>
 
+<pre><code>#&gt; NULL</code></pre>
 </div>
 </div>
 <script async src="//static.getclicky.com/101377207.js"></script>
@@ -942,6 +947,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

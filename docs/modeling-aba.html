@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>16 The Area-Based Approach (ABA) to forest modelling | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="16 The Area-Based Approach (ABA) to forest modelling | The lidR package" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-09-22" />
+<meta name="date" content="2023-08-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -101,7 +101,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -114,7 +114,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -128,6 +128,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -374,43 +378,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="modeling-aba" class="section level1 hasAnchor" number="16">
 <h1><span class="header-section-number">16</span> The Area-Based Approach (ABA) to forest modelling<a href="modeling-aba.html#modeling-aba" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This section presents a complete workflow about processing ALS point cloud data to create wall-to-wall predictions of selected forest stand attributes using an area-based approach (ABA) to forest inventories. The steps used in this vignette as well as further details about enhanced forest inventories (EFI) are described in depth in <a href="https://cfs.nrcan.gc.ca/publications?id=34887">White et al. 2013</a> and <a href="https://cfs.nrcan.gc.ca/publications?id=38945">White et al. 2017</a>. This vignette assumes that the user has a directory of classified and normalized <code>.las/.laz</code> files. First we load the package <code>sf</code> to work with spatial data.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="modeling-aba.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="modeling-aba.html#cb201-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div>
 <div id="modeling-read-data" class="section level2 hasAnchor" number="16.1">
 <h2><span class="header-section-number">16.1</span> Read in data<a href="modeling-aba.html#modeling-read-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The function <code>readLAScatalog()</code> seen in section <a href="engine.html#engine">14</a> builds a <code>LAScatalog</code> object from a folder. Make sure the ALS files have associated index files - for details see: <a href="https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html">Speed-up the computations on a LAScatalog</a>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="modeling-aba.html#cb2-1" aria-hidden="true" tabindex="-1"></a>ctg <span class="ot">&lt;-</span> <span class="fu">readLAScatalog</span>(<span class="st">&quot;folder/&quot;</span>)</span>
-<span id="cb2-2"><a href="modeling-aba.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ctg)</span>
-<span id="cb2-3"><a href="modeling-aba.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class       : LAScatalog</span></span>
-<span id="cb2-4"><a href="modeling-aba.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent      : 297317.5 , 316001 , 5089000 , 5099000 (xmin, xmax, ymin, ymax)</span></span>
-<span id="cb2-5"><a href="modeling-aba.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref. : +proj=utm +zone=18 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs </span></span>
-<span id="cb2-6"><a href="modeling-aba.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area        : 125.19 km²</span></span>
-<span id="cb2-7"><a href="modeling-aba.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points      : 1.58 billion points</span></span>
-<span id="cb2-8"><a href="modeling-aba.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density     : 12.6 points/m²</span></span>
-<span id="cb2-9"><a href="modeling-aba.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; num. files  : 138</span></span>
-<span id="cb2-10"><a href="modeling-aba.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span></code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="modeling-aba.html#cb202-1" tabindex="-1"></a>ctg <span class="ot">&lt;-</span> <span class="fu">readLAScatalog</span>(<span class="st">&quot;folder/&quot;</span>)</span>
+<span id="cb202-2"><a href="modeling-aba.html#cb202-2" tabindex="-1"></a><span class="fu">print</span>(ctg)</span>
+<span id="cb202-3"><a href="modeling-aba.html#cb202-3" tabindex="-1"></a><span class="co">#&gt; class       : LAScatalog</span></span>
+<span id="cb202-4"><a href="modeling-aba.html#cb202-4" tabindex="-1"></a><span class="co">#&gt; extent      : 297317.5 , 316001 , 5089000 , 5099000 (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb202-5"><a href="modeling-aba.html#cb202-5" tabindex="-1"></a><span class="co">#&gt; coord. ref. : +proj=utm +zone=18 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs </span></span>
+<span id="cb202-6"><a href="modeling-aba.html#cb202-6" tabindex="-1"></a><span class="co">#&gt; area        : 125.19 km²</span></span>
+<span id="cb202-7"><a href="modeling-aba.html#cb202-7" tabindex="-1"></a><span class="co">#&gt; points      : 1.58 billion points</span></span>
+<span id="cb202-8"><a href="modeling-aba.html#cb202-8" tabindex="-1"></a><span class="co">#&gt; density     : 12.6 points/m²</span></span>
+<span id="cb202-9"><a href="modeling-aba.html#cb202-9" tabindex="-1"></a><span class="co">#&gt; num. files  : 138</span></span>
+<span id="cb202-10"><a href="modeling-aba.html#cb202-10" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span></code></pre></div>
 <center>
 <img src="images/ABA/01_ctg_map.png" />
 </center>
 <p>Now that our ALS data is prepared lets read in our inventory data using the <code>st_read()</code> function from the <code>sf</code> package. We read in a <code>.shp</code> file where each features is a point with a unique plot ID and corresponding plot level inventory summaries.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="modeling-aba.html#cb3-1" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;PRF_plots.shp&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="modeling-aba.html#cb203-1" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;PRF_plots.shp&quot;</span>)</span></code></pre></div>
 <p>Our <code>plots</code> object contains 203 plots with coordinates of plot centers, plot name, and stand attributes: Lorey’s height (HL), Basal area (BA), and gross timber volume (GTV).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="modeling-aba.html#cb4-1" aria-hidden="true" tabindex="-1"></a>plots</span>
-<span id="cb4-2"><a href="modeling-aba.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 203 features and 4 fields</span></span>
-<span id="cb4-3"><a href="modeling-aba.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; geometry type:  POINT</span></span>
-<span id="cb4-4"><a href="modeling-aba.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dimension:      XY</span></span>
-<span id="cb4-5"><a href="modeling-aba.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bbox:           xmin: 299051.3 ymin: 5089952 xmax: 314849.4 ymax: 5098426</span></span>
-<span id="cb4-6"><a href="modeling-aba.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; epsg (SRID):    NA</span></span>
-<span id="cb4-7"><a href="modeling-aba.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; proj4string:    +proj=utm +zone=18 +ellps=GRS80 +units=m +no_defs</span></span>
-<span id="cb4-8"><a href="modeling-aba.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; First 5 features:</span></span>
-<span id="cb4-9"><a href="modeling-aba.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    PlotID       HL       BA      GTV                 geometry</span></span>
-<span id="cb4-10"><a href="modeling-aba.html#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  PRF002 20.71166 38.21648 322.1351 POINT (313983.8 5094190)</span></span>
-<span id="cb4-11"><a href="modeling-aba.html#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  PRF003 19.46735 28.92692 251.1327 POINT (312218.6 5091995)</span></span>
-<span id="cb4-12"><a href="modeling-aba.html#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  PRF004 21.74877 45.16215 467.1033 POINT (311125.1 5092501)</span></span>
-<span id="cb4-13"><a href="modeling-aba.html#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  PRF005 27.76175 61.55561 783.9303 POINT (313425.2 5091836)</span></span>
-<span id="cb4-14"><a href="modeling-aba.html#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  PRF006 27.26387 39.78153 508.0337 POINT (313106.2 5091393)</span></span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="modeling-aba.html#cb204-1" tabindex="-1"></a>plots</span>
+<span id="cb204-2"><a href="modeling-aba.html#cb204-2" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 203 features and 4 fields</span></span>
+<span id="cb204-3"><a href="modeling-aba.html#cb204-3" tabindex="-1"></a><span class="co">#&gt; geometry type:  POINT</span></span>
+<span id="cb204-4"><a href="modeling-aba.html#cb204-4" tabindex="-1"></a><span class="co">#&gt; dimension:      XY</span></span>
+<span id="cb204-5"><a href="modeling-aba.html#cb204-5" tabindex="-1"></a><span class="co">#&gt; bbox:           xmin: 299051.3 ymin: 5089952 xmax: 314849.4 ymax: 5098426</span></span>
+<span id="cb204-6"><a href="modeling-aba.html#cb204-6" tabindex="-1"></a><span class="co">#&gt; epsg (SRID):    NA</span></span>
+<span id="cb204-7"><a href="modeling-aba.html#cb204-7" tabindex="-1"></a><span class="co">#&gt; proj4string:    +proj=utm +zone=18 +ellps=GRS80 +units=m +no_defs</span></span>
+<span id="cb204-8"><a href="modeling-aba.html#cb204-8" tabindex="-1"></a><span class="co">#&gt; First 5 features:</span></span>
+<span id="cb204-9"><a href="modeling-aba.html#cb204-9" tabindex="-1"></a><span class="co">#&gt;    PlotID       HL       BA      GTV                 geometry</span></span>
+<span id="cb204-10"><a href="modeling-aba.html#cb204-10" tabindex="-1"></a><span class="co">#&gt; 1  PRF002 20.71166 38.21648 322.1351 POINT (313983.8 5094190)</span></span>
+<span id="cb204-11"><a href="modeling-aba.html#cb204-11" tabindex="-1"></a><span class="co">#&gt; 2  PRF003 19.46735 28.92692 251.1327 POINT (312218.6 5091995)</span></span>
+<span id="cb204-12"><a href="modeling-aba.html#cb204-12" tabindex="-1"></a><span class="co">#&gt; 3  PRF004 21.74877 45.16215 467.1033 POINT (311125.1 5092501)</span></span>
+<span id="cb204-13"><a href="modeling-aba.html#cb204-13" tabindex="-1"></a><span class="co">#&gt; 4  PRF005 27.76175 61.55561 783.9303 POINT (313425.2 5091836)</span></span>
+<span id="cb204-14"><a href="modeling-aba.html#cb204-14" tabindex="-1"></a><span class="co">#&gt; 5  PRF006 27.26387 39.78153 508.0337 POINT (313106.2 5091393)</span></span></code></pre></div>
 <p>To visualize where the plots are in our study area we can overlay them on the <code>LAScatalog</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="modeling-aba.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span>
-<span id="cb5-2"><a href="modeling-aba.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(plots, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="modeling-aba.html#cb205-1" tabindex="-1"></a><span class="fu">plot</span>(ctg)</span>
+<span id="cb205-2"><a href="modeling-aba.html#cb205-2" tabindex="-1"></a><span class="fu">plot</span>(plots, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <center>
 <img src="images/ABA/02_ctg_map_with_plots.png" />
 </center>
@@ -425,36 +429,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Associate stand attributes (ID,HL,BA,GTV) to the metrics.</li>
 </ol>
 <p>This can be done with a single function <code>plot_metrics()</code>. We also use the <code>opt_filter()</code> function on the <code>LAScatalog</code> to ignore noise below 0 m at read time so that they do not influence future processing. We clip discs with a <code>radius</code> of 14.1 meters because our plot radius is 14.1 m.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="modeling-aba.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;-drop_z_below 0&quot;</span> <span class="co"># Ignore points with elevations below 0</span></span>
-<span id="cb6-2"><a href="modeling-aba.html#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="modeling-aba.html#cb6-3" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="fu">plot_metrics</span>(ctg, .stdmetrics_z, plots, <span class="at">radius =</span> <span class="fl">14.1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="modeling-aba.html#cb206-1" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg) <span class="ot">&lt;-</span> <span class="st">&quot;-drop_z_below 0&quot;</span> <span class="co"># Ignore points with elevations below 0</span></span>
+<span id="cb206-2"><a href="modeling-aba.html#cb206-2" tabindex="-1"></a></span>
+<span id="cb206-3"><a href="modeling-aba.html#cb206-3" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="fu">plot_metrics</span>(ctg, .stdmetrics_z, plots, <span class="at">radius =</span> <span class="fl">14.1</span>)</span></code></pre></div>
 <p>We have now calculated a variety of ALS metrics for each plot.</p>
 </div>
 <div id="modeling-build-model" class="section level2 hasAnchor" number="16.3">
 <h2><span class="header-section-number">16.3</span> Statistical modeling<a href="modeling-aba.html#modeling-build-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Here we provide a simple example of how to create an OLS model (<code>lm</code>) for Lorey’s Mean Height (HL). Using the <code>summary</code> and <code>plot</code> functions we found that the 85<sup>th</sup> percentile of height (<code>zq85</code>) for ALS metrics explain a large amount of variation in <code>HL</code> values. We are more than happy with this simple model.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="modeling-aba.html#cb7-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">lm</span>(HL <span class="sc">~</span> zq85, <span class="at">data =</span> D)</span>
-<span id="cb7-2"><a href="modeling-aba.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m)</span>
-<span id="cb7-3"><a href="modeling-aba.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb7-4"><a href="modeling-aba.html#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lm(formula = HL ~ zq85, data = D)</span></span>
-<span id="cb7-5"><a href="modeling-aba.html#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-6"><a href="modeling-aba.html#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
-<span id="cb7-7"><a href="modeling-aba.html#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min     1Q Median     3Q    Max </span></span>
-<span id="cb7-8"><a href="modeling-aba.html#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -4.640 -1.053 -0.031  1.030  4.258 </span></span>
-<span id="cb7-9"><a href="modeling-aba.html#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-10"><a href="modeling-aba.html#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb7-11"><a href="modeling-aba.html#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span id="cb7-12"><a href="modeling-aba.html#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)  2.29496    0.31116   7.376  4.2e-12 ***</span></span>
-<span id="cb7-13"><a href="modeling-aba.html#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; zq85         0.93389    0.01525  61.237  &lt; 2e-16 ***</span></span>
-<span id="cb7-14"><a href="modeling-aba.html#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb7-15"><a href="modeling-aba.html#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span></span>
-<span id="cb7-16"><a href="modeling-aba.html#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-17"><a href="modeling-aba.html#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 1.5 on 201 degrees of freedom</span></span>
-<span id="cb7-18"><a href="modeling-aba.html#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.9491, Adjusted R-squared:  0.9489 </span></span>
-<span id="cb7-19"><a href="modeling-aba.html#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic:  3750 on 1 and 201 DF,  p-value: &lt; 2.2e-16</span></span></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="modeling-aba.html#cb207-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">lm</span>(HL <span class="sc">~</span> zq85, <span class="at">data =</span> D)</span>
+<span id="cb207-2"><a href="modeling-aba.html#cb207-2" tabindex="-1"></a><span class="fu">summary</span>(m)</span>
+<span id="cb207-3"><a href="modeling-aba.html#cb207-3" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb207-4"><a href="modeling-aba.html#cb207-4" tabindex="-1"></a><span class="co">#&gt; lm(formula = HL ~ zq85, data = D)</span></span>
+<span id="cb207-5"><a href="modeling-aba.html#cb207-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb207-6"><a href="modeling-aba.html#cb207-6" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
+<span id="cb207-7"><a href="modeling-aba.html#cb207-7" tabindex="-1"></a><span class="co">#&gt;    Min     1Q Median     3Q    Max </span></span>
+<span id="cb207-8"><a href="modeling-aba.html#cb207-8" tabindex="-1"></a><span class="co">#&gt; -4.640 -1.053 -0.031  1.030  4.258 </span></span>
+<span id="cb207-9"><a href="modeling-aba.html#cb207-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb207-10"><a href="modeling-aba.html#cb207-10" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb207-11"><a href="modeling-aba.html#cb207-11" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb207-12"><a href="modeling-aba.html#cb207-12" tabindex="-1"></a><span class="co">#&gt; (Intercept)  2.29496    0.31116   7.376  4.2e-12 ***</span></span>
+<span id="cb207-13"><a href="modeling-aba.html#cb207-13" tabindex="-1"></a><span class="co">#&gt; zq85         0.93389    0.01525  61.237  &lt; 2e-16 ***</span></span>
+<span id="cb207-14"><a href="modeling-aba.html#cb207-14" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb207-15"><a href="modeling-aba.html#cb207-15" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span></span>
+<span id="cb207-16"><a href="modeling-aba.html#cb207-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb207-17"><a href="modeling-aba.html#cb207-17" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 1.5 on 201 degrees of freedom</span></span>
+<span id="cb207-18"><a href="modeling-aba.html#cb207-18" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.9491, Adjusted R-squared:  0.9489 </span></span>
+<span id="cb207-19"><a href="modeling-aba.html#cb207-19" tabindex="-1"></a><span class="co">#&gt; F-statistic:  3750 on 1 and 201 DF,  p-value: &lt; 2.2e-16</span></span></code></pre></div>
 <p>Here we visualize the relationship between the observed (measured) and predicted (ALS-based) HL values.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="modeling-aba.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(D<span class="sc">$</span>HL, <span class="fu">predict</span>(m))</span>
-<span id="cb8-2"><a href="modeling-aba.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="modeling-aba.html#cb208-1" tabindex="-1"></a><span class="fu">plot</span>(D<span class="sc">$</span>HL, <span class="fu">predict</span>(m))</span>
+<span id="cb208-2"><a href="modeling-aba.html#cb208-2" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code></pre></div>
 <center>
 <img src="images/ABA/05_scatterplot_HL.png" />
 </center>
@@ -463,22 +467,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">16.4</span> Wall to wall modelling<a href="modeling-aba.html#wall-to-wall-modelling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Now that we have created a model using plot data, we need to apply that model across our entire study area.</p>
 <p>To do so we first need to generate the same suite of ALS metrics (<code>.stdmetrics_z</code>) for our ALS data using the <code>pixel_metrics()</code> function on our original collection of files. Note that the <code>res</code> parameter is set to 25 because we want the resolution of our metrics to match the area of our sample plots (14.1 m radius = 625m<sup>2</sup>).</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="modeling-aba.html#cb9-1" aria-hidden="true" tabindex="-1"></a>metrics_w2w <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(ctg, .stdmetrics_z, <span class="at">res =</span> <span class="dv">25</span>, <span class="at">pkg =</span> <span class="st">&quot;terra&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="modeling-aba.html#cb209-1" tabindex="-1"></a>metrics_w2w <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(ctg, .stdmetrics_z, <span class="at">res =</span> <span class="dv">25</span>, <span class="at">pkg =</span> <span class="st">&quot;terra&quot;</span>)</span></code></pre></div>
 <p>To visualize any of the metrics you can use the <code>plot</code> function.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="modeling-aba.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics_w2w<span class="sc">$</span>zq85)</span>
-<span id="cb10-2"><a href="modeling-aba.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics_w2w<span class="sc">$</span>zmean)</span>
-<span id="cb10-3"><a href="modeling-aba.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics_w2w<span class="sc">$</span>pzabovezmean)</span></code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="modeling-aba.html#cb210-1" tabindex="-1"></a><span class="fu">plot</span>(metrics_w2w<span class="sc">$</span>zq85)</span>
+<span id="cb210-2"><a href="modeling-aba.html#cb210-2" tabindex="-1"></a><span class="fu">plot</span>(metrics_w2w<span class="sc">$</span>zmean)</span>
+<span id="cb210-3"><a href="modeling-aba.html#cb210-3" tabindex="-1"></a><span class="fu">plot</span>(metrics_w2w<span class="sc">$</span>pzabovezmean)</span></code></pre></div>
 </div>
 <div id="calculate-wall-to-wall-predictions" class="section level2 hasAnchor" number="16.5">
 <h2><span class="header-section-number">16.5</span> Calculate wall-to-wall predictions<a href="modeling-aba.html#calculate-wall-to-wall-predictions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We can use the <code>predict()</code> function to produce <code>HL_pred</code> which is a wall-to-wall raster of predicted Lorey’s mean height.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="modeling-aba.html#cb11-1" aria-hidden="true" tabindex="-1"></a>HL_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(metrics_w2w, m)</span></code></pre></div>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="modeling-aba.html#cb211-1" tabindex="-1"></a>HL_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(metrics_w2w, m)</span></code></pre></div>
 <p>To visualize wall-to-wall predictions use</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="modeling-aba.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(HL_pred)</span></code></pre></div>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="modeling-aba.html#cb212-1" tabindex="-1"></a><span class="fu">plot</span>(HL_pred)</span></code></pre></div>
 <center>
 <img src="images/ABA/06_HL_pred.png" />
 </center>
 
+<pre><code>#&gt; NULL</code></pre>
 </div>
 </div>
 <script async src="//static.getclicky.com/101377207.js"></script>
@@ -543,6 +548,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

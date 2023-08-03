@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>17 Thinking outside the box | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="17 Thinking outside the box | The lidR package" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-08-16" />
+<meta name="date" content="2023-08-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -101,7 +101,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -114,7 +114,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -128,6 +128,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -380,55 +384,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">17.1.1</span> Distance between returns<a href="outbox.html#outbox-distance-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In forestry, simple metrics can be derived from first returns. But what about metrics that estimate the average distance between first and last returns? Is it a valuable metric for characterizing of forest stucture? Can we refine the prediction with such metric? Nobody knows, but we can try.</p>
 <p>First, we need to retrieve each emitted pulse and keep only the first and last point of each sequence excluding sequences with only one return.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="outbox.html#cb1-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">retrieve_pulses</span>(las)</span>
-<span id="cb1-2"><a href="outbox.html#cb1-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">filter_firstlast</span>(las)</span>
-<span id="cb1-3"><a href="outbox.html#cb1-3" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, NumberOfReturns <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="outbox.html#cb214-1" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">retrieve_pulses</span>(las)</span>
+<span id="cb214-2"><a href="outbox.html#cb214-2" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">filter_firstlast</span>(las)</span>
+<span id="cb214-3"><a href="outbox.html#cb214-3" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, NumberOfReturns <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code></pre></div>
 <p>Using the <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html"><code>data.table</code> syntax</a> we can compute the distance between first and last returns for each pulse. It could be done with <code>dplyr</code> as well using <code>group_by() %&gt;%  mutate()</code> but we are proponent of using <code>data.table()</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="outbox.html#cb2-1" aria-hidden="true" tabindex="-1"></a>las<span class="sc">@</span>data[, d <span class="sc">:</span><span class="er">=</span> Z[<span class="dv">1</span>]<span class="sc">-</span>Z[<span class="dv">2</span>], by <span class="ot">=</span> pulseID]</span></code></pre></div>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="outbox.html#cb215-1" tabindex="-1"></a>las<span class="sc">@</span>data[, d <span class="sc">:=</span> Z[<span class="dv">1</span>]<span class="sc">-</span>Z[<span class="dv">2</span>], by <span class="ot">=</span> pulseID]</span></code></pre></div>
 <p>At this stage our data set contains distances twice. <strong>1</strong> associated with the first return and <strong>2</strong> with the last return. We only need a single value, so lets keep only first returns. Some distances are <code>NA</code> and correspond to pulses at the very edge of the file. We can discard those case for the moment.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="outbox.html#cb3-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">filter_first</span>(las)</span>
-<span id="cb3-2"><a href="outbox.html#cb3-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, <span class="sc">!</span><span class="fu">is.na</span>(d))</span></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="outbox.html#cb216-1" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">filter_first</span>(las)</span>
+<span id="cb216-2"><a href="outbox.html#cb216-2" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, <span class="sc">!</span><span class="fu">is.na</span>(d))</span></code></pre></div>
 <p>We can now plot the first returns colored by their distance to the last return.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="outbox.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">color =</span> <span class="st">&quot;d&quot;</span>, <span class="at">colorPalette =</span> viridis<span class="sc">::</span><span class="fu">magma</span>(<span class="dv">50</span>), <span class="at">size =</span> <span class="dv">4</span>)</span>
-<span id="cb4-2"><a href="outbox.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The argument &#39;coloPalette&#39; is deprecated. Use &#39;pal&#39; instead</span></span></code></pre></div>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="outbox.html#cb217-1" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">color =</span> <span class="st">&quot;d&quot;</span>, <span class="at">colorPalette =</span> viridis<span class="sc">::</span><span class="fu">magma</span>(<span class="dv">50</span>), <span class="at">size =</span> <span class="dv">4</span>)</span>
+<span id="cb217-2"><a href="outbox.html#cb217-2" tabindex="-1"></a><span class="co">#&gt; The argument &#39;coloPalette&#39; is deprecated. Use &#39;pal&#39; instead</span></span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-dreturns-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Now we can compute the average in an ABA (see section <a href="aba.html#aba">10</a>).</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="outbox.html#cb5-1" aria-hidden="true" tabindex="-1"></a>d_first_last <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fu">mean</span>(d), <span class="dv">15</span>)</span>
-<span id="cb5-2"><a href="outbox.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(d_first_last, <span class="at">col =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="outbox.html#cb218-1" tabindex="-1"></a>d_first_last <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fu">mean</span>(d), <span class="dv">15</span>)</span>
+<span id="cb218-2"><a href="outbox.html#cb218-2" tabindex="-1"></a><span class="fu">plot</span>(d_first_last, <span class="at">col =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-raster-avg-dreturns-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>Now we have a working method, we can extend the idea to apply it over a broad coverage using the <code>LAScatalog</code> processing engine (section <a href="engine.html#engine">14</a>). First we create a function that does this job. This is not mandatory but factorizing the code is good practice.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="outbox.html#cb6-1" aria-hidden="true" tabindex="-1"></a>grid_distance_first_last <span class="ot">&lt;-</span> <span class="cf">function</span>(las, res) {</span>
-<span id="cb6-2"><a href="outbox.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">retrieve_pulses</span>(las)</span>
-<span id="cb6-3"><a href="outbox.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">filter_firstlast</span>(las)</span>
-<span id="cb6-4"><a href="outbox.html#cb6-4" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, NumberOfReturns <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
-<span id="cb6-5"><a href="outbox.html#cb6-5" aria-hidden="true" tabindex="-1"></a>  las<span class="sc">@</span>data[, d <span class="sc">:</span><span class="er">=</span> Z[<span class="dv">1</span>]<span class="sc">-</span>Z[<span class="dv">2</span>], by <span class="ot">=</span> pulseID]</span>
-<span id="cb6-6"><a href="outbox.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">filter_first</span>(las)</span>
-<span id="cb6-7"><a href="outbox.html#cb6-7" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, <span class="sc">!</span><span class="fu">is.na</span>(d))</span>
-<span id="cb6-8"><a href="outbox.html#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fu">mean</span>(d), res))</span>
-<span id="cb6-9"><a href="outbox.html#cb6-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="outbox.html#cb219-1" tabindex="-1"></a>grid_distance_first_last <span class="ot">&lt;-</span> <span class="cf">function</span>(las, res) {</span>
+<span id="cb219-2"><a href="outbox.html#cb219-2" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">retrieve_pulses</span>(las)</span>
+<span id="cb219-3"><a href="outbox.html#cb219-3" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">filter_firstlast</span>(las)</span>
+<span id="cb219-4"><a href="outbox.html#cb219-4" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, NumberOfReturns <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
+<span id="cb219-5"><a href="outbox.html#cb219-5" tabindex="-1"></a>  las<span class="sc">@</span>data[, d <span class="sc">:=</span> Z[<span class="dv">1</span>]<span class="sc">-</span>Z[<span class="dv">2</span>], by <span class="ot">=</span> pulseID]</span>
+<span id="cb219-6"><a href="outbox.html#cb219-6" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">filter_first</span>(las)</span>
+<span id="cb219-7"><a href="outbox.html#cb219-7" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, <span class="sc">!</span><span class="fu">is.na</span>(d))</span>
+<span id="cb219-8"><a href="outbox.html#cb219-8" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fu">mean</span>(d), res))</span>
+<span id="cb219-9"><a href="outbox.html#cb219-9" tabindex="-1"></a>}</span></code></pre></div>
 <p>To finish we use the <code>LAScatalog</code> processing engine with <code>catalog_map()</code>. We need to process with a buffer to avoid the case where pulses are separated in two files, so we use <code>opt_chunk_buffer(ctg) &lt;- 2</code>. In addition, with the output being a raster, we ensure alignment of the chunk with the raster.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="outbox.html#cb7-1" aria-hidden="true" tabindex="-1"></a>ctg <span class="ot">&lt;-</span> <span class="fu">readLAScatalog</span>(<span class="st">&quot;folder/&quot;</span>)</span>
-<span id="cb7-2"><a href="outbox.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb7-3"><a href="outbox.html#cb7-3" aria-hidden="true" tabindex="-1"></a>options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">raster_alignment =</span> <span class="dv">15</span>)</span>
-<span id="cb7-4"><a href="outbox.html#cb7-4" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">catalog_map</span>(ctg, grid_distance_first_last, <span class="at">res =</span> <span class="dv">15</span>, <span class="at">.options =</span> options)</span></code></pre></div>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="outbox.html#cb220-1" tabindex="-1"></a>ctg <span class="ot">&lt;-</span> <span class="fu">readLAScatalog</span>(<span class="st">&quot;folder/&quot;</span>)</span>
+<span id="cb220-2"><a href="outbox.html#cb220-2" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb220-3"><a href="outbox.html#cb220-3" tabindex="-1"></a>options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">raster_alignment =</span> <span class="dv">15</span>)</span>
+<span id="cb220-4"><a href="outbox.html#cb220-4" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">catalog_map</span>(ctg, grid_distance_first_last, <span class="at">res =</span> <span class="dv">15</span>, <span class="at">.options =</span> options)</span></code></pre></div>
 <p>And we are done. Our innovative metric is computing with real-time monitoring. It can run in parallel on a single machine or in parallel on several machines. At the end, the output is a wall-to-wall raster map of the average distance between first and last returns for beams that return multiple returns. In 19 lines of code!</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="outbox.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics, <span class="at">col =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="outbox.html#cb221-1" tabindex="-1"></a><span class="fu">plot</span>(metrics, <span class="at">col =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/displaymap-1.png" width="595.2" style="display: block; margin: auto;" /></p>
 </div>
 <div id="outbox-rumple-index" class="section level3 hasAnchor" number="17.1.2">
 <h3><span class="header-section-number">17.1.2</span> Rumple index<a href="outbox.html#outbox-rumple-index" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Another interesting metric that could be computed is the rumple index (see <a href="https://gis.ess.washington.edu/keck/ESS_421_additional_reading/Kane_Interpretation_and_topographic.pdf">Kane et al. (2008)</a>).</p>
 <p>To compute a rumple index we can triangulate points, measure the surface created, and divide by the projected surface. Rumple index is however expected to measure surface roughness of the canopy and it doesn’t makes sense to triangulate every point. An option is to triangulate each first return but yet first returns are not all representative of the canopy. In the following example we are using the surface points every 1 m.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="outbox.html#cb9-1" aria-hidden="true" tabindex="-1"></a>grid_rumple_index <span class="ot">&lt;-</span> <span class="cf">function</span>(las, res) { <span class="co"># user-defined function</span></span>
-<span id="cb9-2"><a href="outbox.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">filter_surfacepoints</span>(las, <span class="dv">1</span>)</span>
-<span id="cb9-3"><a href="outbox.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fu">rumple_index</span>(X, Y, Z), res))</span>
-<span id="cb9-4"><a href="outbox.html#cb9-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="outbox.html#cb222-1" tabindex="-1"></a>grid_rumple_index <span class="ot">&lt;-</span> <span class="cf">function</span>(las, res) { <span class="co"># user-defined function</span></span>
+<span id="cb222-2"><a href="outbox.html#cb222-2" tabindex="-1"></a>  las <span class="ot">&lt;-</span> <span class="fu">filter_surfacepoints</span>(las, <span class="dv">1</span>)</span>
+<span id="cb222-3"><a href="outbox.html#cb222-3" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fu">rumple_index</span>(X, Y, Z), res))</span>
+<span id="cb222-4"><a href="outbox.html#cb222-4" tabindex="-1"></a>}</span></code></pre></div>
 <p>Then the code is pretty much the same than in previous section</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="outbox.html#cb10-1" aria-hidden="true" tabindex="-1"></a>ctg <span class="ot">&lt;-</span> <span class="fu">readLAScatalog</span>(<span class="st">&quot;folder/&quot;</span>)</span>
-<span id="cb10-2"><a href="outbox.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb10-3"><a href="outbox.html#cb10-3" aria-hidden="true" tabindex="-1"></a>options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">raster_alignment =</span> <span class="dv">20</span>)</span>
-<span id="cb10-4"><a href="outbox.html#cb10-4" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">catalog_map</span>(ctg, grid_rumple_index, <span class="at">res =</span> <span class="dv">20</span>, <span class="at">.options =</span> options)</span>
-<span id="cb10-5"><a href="outbox.html#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(metrics, <span class="at">col =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="outbox.html#cb223-1" tabindex="-1"></a>ctg <span class="ot">&lt;-</span> <span class="fu">readLAScatalog</span>(<span class="st">&quot;folder/&quot;</span>)</span>
+<span id="cb223-2"><a href="outbox.html#cb223-2" tabindex="-1"></a><span class="fu">opt_chunk_buffer</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb223-3"><a href="outbox.html#cb223-3" tabindex="-1"></a>options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">raster_alignment =</span> <span class="dv">20</span>)</span>
+<span id="cb223-4"><a href="outbox.html#cb223-4" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">catalog_map</span>(ctg, grid_rumple_index, <span class="at">res =</span> <span class="dv">20</span>, <span class="at">.options =</span> options)</span>
+<span id="cb223-5"><a href="outbox.html#cb223-5" tabindex="-1"></a><span class="fu">plot</span>(metrics, <span class="at">col =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/displaymap2-1.png" width="595.2" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -436,59 +440,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">17.2</span> Multi-spectral coloring<a href="outbox.html#outbox-multispectral-coloring" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We have already seen a multi-spectral coloring example in section <a href="pba.html#pba-applications-coloring">13.2.3</a>. This is truly a good example of how to think outside the box with <code>lidR</code>, so we show several variants here. The goal is to use multi-spectral data to generate false coloring and see how false coloring may be used for further analyses.</p>
 <p>Multi-spectral ALS data are sampled with 3 devices each emitting a different wavelength. The point cloud is usually provided in the form of 3 <code>LAS</code> files, each file corresponding to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red, and the third as green, and thus consider that each point has a pure color.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="outbox.html#cb11-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c1_ar_c.laz&quot;</span></span>
-<span id="cb11-2"><a href="outbox.html#cb11-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c2_ar_c.laz&quot;</span></span>
-<span id="cb11-3"><a href="outbox.html#cb11-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c3_ar_c.laz&quot;</span></span>
-<span id="cb11-4"><a href="outbox.html#cb11-4" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readMSLAS</span>(f1, f2, f3,  <span class="at">filter =</span> <span class="st">&quot;-keep_z_below 300&quot;</span>)</span>
-<span id="cb11-5"><a href="outbox.html#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">&quot;ScannerChannel&quot;</span>, <span class="at">size =</span> <span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="outbox.html#cb224-1" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c1_ar_c.laz&quot;</span></span>
+<span id="cb224-2"><a href="outbox.html#cb224-2" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c2_ar_c.laz&quot;</span></span>
+<span id="cb224-3"><a href="outbox.html#cb224-3" tabindex="-1"></a>f3 <span class="ot">&lt;-</span> <span class="st">&quot;data/chap11/PR1107_c3_ar_c.laz&quot;</span></span>
+<span id="cb224-4"><a href="outbox.html#cb224-4" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readMSLAS</span>(f1, f2, f3,  <span class="at">filter =</span> <span class="st">&quot;-keep_z_below 300&quot;</span>)</span>
+<span id="cb224-5"><a href="outbox.html#cb224-5" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">&quot;ScannerChannel&quot;</span>, <span class="at">size =</span> <span class="dv">6</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-multispectral-otb-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Each channel’s returns vary in intensities as seen in the figure below because of the wavelength reflectance properties of the targets. A first step could be to normalize the intensities. For this example we won’t do that to keep things simple.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="outbox.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb12-2"><a href="outbox.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(las<span class="sc">@</span>data) <span class="sc">+</span></span>
-<span id="cb12-3"><a href="outbox.html#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Intensity, <span class="at">fill =</span> <span class="fu">as.factor</span>(ScannerChannel)) <span class="sc">+</span> </span>
-<span id="cb12-4"><a href="outbox.html#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
-<span id="cb12-5"><a href="outbox.html#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb12-6"><a href="outbox.html#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(.<span class="dv">9</span>, .<span class="dv">90</span>),</span>
-<span id="cb12-7"><a href="outbox.html#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="outbox.html#cb225-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb225-2"><a href="outbox.html#cb225-2" tabindex="-1"></a><span class="fu">ggplot</span>(las<span class="sc">@</span>data) <span class="sc">+</span></span>
+<span id="cb225-3"><a href="outbox.html#cb225-3" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Intensity, <span class="at">fill =</span> <span class="fu">as.factor</span>(ScannerChannel)) <span class="sc">+</span> </span>
+<span id="cb225-4"><a href="outbox.html#cb225-4" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb225-5"><a href="outbox.html#cb225-5" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb225-6"><a href="outbox.html#cb225-6" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(.<span class="dv">9</span>, .<span class="dv">90</span>),</span>
+<span id="cb225-7"><a href="outbox.html#cb225-7" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/ggplot-hist-intensities-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>In this specific example, notice that only few intensities are above 255, So intensity ranges from 0 to almost 255. This is very convenient because we will be able to use the raw values as color without transformation. We will simply force values above 255 to be 255. This is a dirty solution but fair enough for the example which is not about intensity normalization.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="outbox.html#cb13-1" aria-hidden="true" tabindex="-1"></a>las<span class="sc">@</span>data[Intensity <span class="sc">&gt;</span> 255L, Intensity <span class="sc">:</span><span class="er">=</span> 255L]</span></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="outbox.html#cb226-1" tabindex="-1"></a>las<span class="sc">@</span>data[Intensity <span class="sc">&gt;</span> 255L, Intensity <span class="sc">:=</span> 255L]</span></code></pre></div>
 <p>To finish, we define a function that takes the intensities and the associated channel as inputs. This function decomposes the 3 channels, computes the average intensity of each channel, and returns these 3 values that will later be interpreted as RGB. Also if one color is missing we force RGB to be NA.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="outbox.html#cb14-1" aria-hidden="true" tabindex="-1"></a>colorize <span class="ot">&lt;-</span> <span class="cf">function</span>(intensity, channel)</span>
-<span id="cb14-2"><a href="outbox.html#cb14-2" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb14-3"><a href="outbox.html#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Split the intensities of each channel</span></span>
-<span id="cb14-4"><a href="outbox.html#cb14-4" aria-hidden="true" tabindex="-1"></a>  i1 <span class="ot">&lt;-</span> intensity[channel <span class="sc">==</span> 1L]</span>
-<span id="cb14-5"><a href="outbox.html#cb14-5" aria-hidden="true" tabindex="-1"></a>  i2 <span class="ot">&lt;-</span> intensity[channel <span class="sc">==</span> 2L]</span>
-<span id="cb14-6"><a href="outbox.html#cb14-6" aria-hidden="true" tabindex="-1"></a>  i3 <span class="ot">&lt;-</span> intensity[channel <span class="sc">==</span> 3L]</span>
-<span id="cb14-7"><a href="outbox.html#cb14-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb14-8"><a href="outbox.html#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># If one channel is missing return RGB = NA</span></span>
-<span id="cb14-9"><a href="outbox.html#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(i1) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">length</span>(i2) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">length</span>(i3) <span class="sc">==</span> <span class="dv">0</span>)</span>
-<span id="cb14-10"><a href="outbox.html#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">R =</span> <span class="cn">NA_integer_</span>, <span class="at">G =</span> <span class="cn">NA_integer_</span>, <span class="at">B =</span> <span class="cn">NA_integer_</span>))</span>
-<span id="cb14-11"><a href="outbox.html#cb14-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb14-12"><a href="outbox.html#cb14-12" aria-hidden="true" tabindex="-1"></a>  i1 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">mean</span>(i1))</span>
-<span id="cb14-13"><a href="outbox.html#cb14-13" aria-hidden="true" tabindex="-1"></a>  i2 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">mean</span>(i2))</span>
-<span id="cb14-14"><a href="outbox.html#cb14-14" aria-hidden="true" tabindex="-1"></a>  i3 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">mean</span>(i3))</span>
-<span id="cb14-15"><a href="outbox.html#cb14-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb14-16"><a href="outbox.html#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">R =</span> i1, <span class="at">G =</span> i2, <span class="at">B =</span> i3))</span>
-<span id="cb14-17"><a href="outbox.html#cb14-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="outbox.html#cb227-1" tabindex="-1"></a>colorize <span class="ot">&lt;-</span> <span class="cf">function</span>(intensity, channel)</span>
+<span id="cb227-2"><a href="outbox.html#cb227-2" tabindex="-1"></a>{</span>
+<span id="cb227-3"><a href="outbox.html#cb227-3" tabindex="-1"></a>  <span class="co"># Split the intensities of each channel</span></span>
+<span id="cb227-4"><a href="outbox.html#cb227-4" tabindex="-1"></a>  i1 <span class="ot">&lt;-</span> intensity[channel <span class="sc">==</span> 1L]</span>
+<span id="cb227-5"><a href="outbox.html#cb227-5" tabindex="-1"></a>  i2 <span class="ot">&lt;-</span> intensity[channel <span class="sc">==</span> 2L]</span>
+<span id="cb227-6"><a href="outbox.html#cb227-6" tabindex="-1"></a>  i3 <span class="ot">&lt;-</span> intensity[channel <span class="sc">==</span> 3L]</span>
+<span id="cb227-7"><a href="outbox.html#cb227-7" tabindex="-1"></a>  </span>
+<span id="cb227-8"><a href="outbox.html#cb227-8" tabindex="-1"></a>  <span class="co"># If one channel is missing return RGB = NA</span></span>
+<span id="cb227-9"><a href="outbox.html#cb227-9" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(i1) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">length</span>(i2) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">length</span>(i3) <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb227-10"><a href="outbox.html#cb227-10" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">R =</span> <span class="cn">NA_integer_</span>, <span class="at">G =</span> <span class="cn">NA_integer_</span>, <span class="at">B =</span> <span class="cn">NA_integer_</span>))</span>
+<span id="cb227-11"><a href="outbox.html#cb227-11" tabindex="-1"></a>  </span>
+<span id="cb227-12"><a href="outbox.html#cb227-12" tabindex="-1"></a>  i1 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">mean</span>(i1))</span>
+<span id="cb227-13"><a href="outbox.html#cb227-13" tabindex="-1"></a>  i2 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">mean</span>(i2))</span>
+<span id="cb227-14"><a href="outbox.html#cb227-14" tabindex="-1"></a>  i3 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">mean</span>(i3))</span>
+<span id="cb227-15"><a href="outbox.html#cb227-15" tabindex="-1"></a>  </span>
+<span id="cb227-16"><a href="outbox.html#cb227-16" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">R =</span> i1, <span class="at">G =</span> i2, <span class="at">B =</span> i3))</span>
+<span id="cb227-17"><a href="outbox.html#cb227-17" tabindex="-1"></a>}</span></code></pre></div>
 <p>Now we can use this function with different levels of regularization. We can use <code>colorize()</code> with <code>grid_metrics()</code> in an ABA. It returns a multi-layer raster that can be interpreted as RGB</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="outbox.html#cb15-1" aria-hidden="true" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fu">colorize</span>(Intensity, ScannerChannel), <span class="dv">2</span>)</span>
-<span id="cb15-2"><a href="outbox.html#cb15-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plotRGB</span>(rgb)</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="outbox.html#cb228-1" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> <span class="fu">pixel_metrics</span>(las, <span class="sc">~</span><span class="fu">colorize</span>(Intensity, ScannerChannel), <span class="dv">2</span>)</span>
+<span id="cb228-2"><a href="outbox.html#cb228-2" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plotRGB</span>(rgb)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-raster-multispectral-rgb-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>We can also attribute an RGB color per voxel, discarding the voxels where <code>RGB = NA</code> by using <code>colorize()</code> with <code>voxel_metrics()</code> (see section <a href="vba.html#vba">12</a>).</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="outbox.html#cb16-1" aria-hidden="true" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> <span class="fu">voxel_metrics</span>(las, <span class="sc">~</span><span class="fu">colorize</span>(Intensity, ScannerChannel), <span class="dv">2</span>)</span>
-<span id="cb16-2"><a href="outbox.html#cb16-2" aria-hidden="true" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> rgb[<span class="sc">!</span><span class="fu">is.na</span>(R)] <span class="co"># Remove NAs</span></span>
-<span id="cb16-3"><a href="outbox.html#cb16-3" aria-hidden="true" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> <span class="fu">LAS</span>(rgb, las<span class="sc">@</span>header) <span class="co"># Convert to LAS for display</span></span>
-<span id="cb16-4"><a href="outbox.html#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rgb, <span class="at">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="at">nbits =</span> <span class="dv">8</span>, <span class="at">size =</span> <span class="dv">5</span>)</span>
-<span id="cb16-5"><a href="outbox.html#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The argument &#39;nbits&#39; is not longer supported. It is now infered automatically.</span></span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="outbox.html#cb229-1" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> <span class="fu">voxel_metrics</span>(las, <span class="sc">~</span><span class="fu">colorize</span>(Intensity, ScannerChannel), <span class="dv">2</span>)</span>
+<span id="cb229-2"><a href="outbox.html#cb229-2" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> rgb[<span class="sc">!</span><span class="fu">is.na</span>(R)] <span class="co"># Remove NAs</span></span>
+<span id="cb229-3"><a href="outbox.html#cb229-3" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> <span class="fu">LAS</span>(rgb, las<span class="sc">@</span>header) <span class="co"># Convert to LAS for display</span></span>
+<span id="cb229-4"><a href="outbox.html#cb229-4" tabindex="-1"></a><span class="fu">plot</span>(rgb, <span class="at">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="at">size =</span> <span class="dv">5</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-voxel-multispectral-rgb-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>To finish we can <code>colorize()</code> with <code>point_metrics()</code> (see section <a href="pba.html#pba">13</a>). This has the advantage of maintaining much more points compared to the voxel-based version and to preserve coordinates.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="outbox.html#cb17-1" aria-hidden="true" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> <span class="fu">point_metrics</span>(las, <span class="sc">~</span><span class="fu">colorize</span>(Intensity, ScannerChannel), <span class="at">r =</span> <span class="fl">0.5</span>)</span>
-<span id="cb17-2"><a href="outbox.html#cb17-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">add_lasrgb</span>(las, rgb<span class="sc">$</span>R, rgb<span class="sc">$</span>G, rgb<span class="sc">$</span>B)</span>
-<span id="cb17-3"><a href="outbox.html#cb17-3" aria-hidden="true" tabindex="-1"></a>colored <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, <span class="sc">!</span><span class="fu">is.na</span>(R)) <span class="co"># Remove NAs</span></span>
-<span id="cb17-4"><a href="outbox.html#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(colored, <span class="at">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="at">size =</span> <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="outbox.html#cb230-1" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> <span class="fu">point_metrics</span>(las, <span class="sc">~</span><span class="fu">colorize</span>(Intensity, ScannerChannel), <span class="at">r =</span> <span class="fl">0.5</span>)</span>
+<span id="cb230-2"><a href="outbox.html#cb230-2" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">add_lasrgb</span>(las, rgb<span class="sc">$</span>R, rgb<span class="sc">$</span>G, rgb<span class="sc">$</span>B)</span>
+<span id="cb230-3"><a href="outbox.html#cb230-3" tabindex="-1"></a>colored <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, <span class="sc">!</span><span class="fu">is.na</span>(R)) <span class="co"># Remove NAs</span></span>
+<span id="cb230-4"><a href="outbox.html#cb230-4" tabindex="-1"></a><span class="fu">plot</span>(colored, <span class="at">color =</span> <span class="st">&quot;RGB&quot;</span>, <span class="at">size =</span> <span class="dv">4</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-multispectral-rgb-otb-1.png" width="672" style="display: block; margin: auto;" /></p>
 
+<pre><code>#&gt; NULL</code></pre>
 </div>
 </div>
 <script async src="//static.getclicky.com/101377207.js"></script>
@@ -553,6 +557,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

@@ -207,7 +207,7 @@ We can also attribute an RGB color per voxel, discarding the voxels where `RGB =
 rgb <- voxel_metrics(las, ~colorize(Intensity, ScannerChannel), 2)
 rgb <- rgb[!is.na(R)] # Remove NAs
 rgb <- LAS(rgb, las@header) # Convert to LAS for display
-plot(rgb, color = "RGB", nbits = 8, size = 5)
+plot(rgb, color = "RGB", size = 5)
 ```
 
 To finish we can `colorize()` with `point_metrics()` (see section \@ref(pba)). This has the advantage of maintaining much more points compared to the voxel-based version and to preserve coordinates.

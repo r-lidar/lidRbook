@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>6 Digital Surface Model and Canopy Height model | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="6 Digital Surface Model and Canopy Height model | The lidR package" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-08-16" />
+<meta name="date" content="2023-08-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -101,7 +101,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -114,7 +114,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -128,6 +128,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -375,56 +379,56 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">6</span> Digital Surface Model and Canopy Height model<a href="chm.html#chm" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Digital Surface Models (DSM) and Canopy Height Models (CHM) are raster layers that represent - more or less - the highest elevation of ALS returns. In the case of a normalized point cloud, the derived surface represents the canopy height (for vegetated areas) and is referred to as CHM. When the original (non-normalized) point cloud with absolute elevations is used, the derived layer represents the elevation of the top of the canopy above sea level, and is referred to as DSM. Both surface models are derived using the same algorithms, with the only difference being the elevation values of the point cloud.</p>
 <p>Different methods exist to create DSMs and CHMs. In the most simple case, a grid can be created with a user-defined pixel size and the elevations of the highest point can be assigned to each grid cell. This is called point-to-raster. More complex methods have been presented in the literature. In this section we will use the normalized <code>MixedConifer.laz</code> data set, which is included internally within <code>lidR</code> to create reproducible examples.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="chm.html#cb2-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;MixedConifer.laz&quot;</span>, <span class="at">package =</span><span class="st">&quot;lidR&quot;</span>)</span>
-<span id="cb2-2"><a href="chm.html#cb2-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile)</span>
-<span id="cb2-3"><a href="chm.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
-<p><img src="lidR-book_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="chm.html#cb55-1" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;MixedConifer.laz&quot;</span>, <span class="at">package =</span><span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb55-2"><a href="chm.html#cb55-2" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile)</span>
+<span id="cb55-3"><a href="chm.html#cb55-3" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
+<p><img src="lidR-book_files/figure-html/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div id="p2r" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Point-to-raster<a href="chm.html#p2r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Point-to-raster algorithms are conceptually simple, consisting of establishing a grid at a user defined resolution and attributing the elevation of the highest point to each pixel. Algorithmic implementations are computationally simple and extremely fast. In the first example we will set the pixel size to <code>1</code> and set <code>algorithm = p2r()</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="chm.html#cb3-1" aria-hidden="true" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="dv">1</span>, <span class="at">algorithm =</span> <span class="fu">p2r</span>())</span>
-<span id="cb3-2"><a href="chm.html#cb3-2" aria-hidden="true" tabindex="-1"></a>col <span class="ot">&lt;-</span> <span class="fu">height.colors</span>(<span class="dv">25</span>)</span>
-<span id="cb3-3"><a href="chm.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="chm.html#cb56-1" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="dv">1</span>, <span class="at">algorithm =</span> <span class="fu">p2r</span>())</span>
+<span id="cb56-2"><a href="chm.html#cb56-2" tabindex="-1"></a>col <span class="ot">&lt;-</span> <span class="fu">height.colors</span>(<span class="dv">25</span>)</span>
+<span id="cb56-3"><a href="chm.html#cb56-3" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-p2r-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 <p>One drawback of the point-to-raster method is that some pixels can be empty if the grid resolution is too fine for the available point density. Some pixels may then fall within a location that does not contain any points, and as a result the value is not defined.</p>
 <p>In the following example we will use the exact same method, but increase the spatial resolution of the raster by changing the pixel size to 0.5 m.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="chm.html#cb4-1" aria-hidden="true" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">p2r</span>())</span>
-<span id="cb4-2"><a href="chm.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="chm.html#cb57-1" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">p2r</span>())</span>
+<span id="cb57-2"><a href="chm.html#cb57-2" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-p2r-2-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 <p>We can clearly see that there are a lot of empty pixels in the derived surface that correspond to <code>NA</code> pixels in the point cloud. The spatial resolution was increased, however the CHM contains to many voids.</p>
 <p>One option to reduce the number of voids in the surface model is to replace every point in the point cloud with a disk of a known radius (e.g. 15 cm). This operation is meant to simulate the fact that the laser footprint is not a point, but rather a circular area. It is equivalent to computing the CHM from a densified point cloud in a way that tries to have a physical meaning.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="chm.html#cb5-1" aria-hidden="true" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">p2r</span>(<span class="at">subcircle =</span> <span class="fl">0.15</span>))</span>
-<span id="cb5-2"><a href="chm.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="chm.html#cb58-1" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">p2r</span>(<span class="at">subcircle =</span> <span class="fl">0.15</span>))</span>
+<span id="cb58-2"><a href="chm.html#cb58-2" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-p2r-subcirc-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 <p>This CHM is the CHM computed <em>“as if”</em> the point cloud was the following</p>
 <p><img src="lidR-book_files/figure-html/plot-las-subcircled-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 <p>We can zoom in to see the small disks that replace each point.</p>
 <p><img src="lidR-book_files/figure-html/plot-las-subcircled-zoom-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The <code>p2r()</code> function contains one additional argument that allows to interpolate the remaining empty pixels. Empty pixels are interpolated using methods described in section <a href="dtm.html#dtm">4</a>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="chm.html#cb6-1" aria-hidden="true" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="fu">p2r</span>(<span class="fl">0.2</span>, <span class="at">na.fill =</span> <span class="fu">tin</span>()))</span>
-<span id="cb6-2"><a href="chm.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="chm.html#cb59-1" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="fu">p2r</span>(<span class="fl">0.2</span>, <span class="at">na.fill =</span> <span class="fu">tin</span>()))</span>
+<span id="cb59-2"><a href="chm.html#cb59-2" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-p2r-nafill-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 </div>
 <div id="chm-tin" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> Triangulation<a href="chm.html#chm-tin" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The triangulation algorithm works by first creating a triangular irregular network (TIN) using first returns only, followed by interpolation within each triangle to compute an elevation value for each pixel of a raster. In its simplest form, this method consists of a strict 2-D triangulation of first returns. Despite being more complex compared to the point-to-raster algorithm, an advantage of the triangulation approach is that it is parameter free and it does not output empty pixels, regardless of the resolution of the output raster (i.e. the entire area is interpolated).</p>
 <p>Like point-to-raster however, the TIN method can lead to gaps and other noise in the surface - referred to as “pits” - that are attributable to first returns that penetrated deep into the canopy. Pits can make individual tree segmentation more difficult and change the texture of the canopy in a unrealistic way. To avoid this issue the CHM is often smoothed in post processing in an attempt to produce a more realistic surface with fewer pits and less noise. To create a surface model using triangulation we use <code>algorithm = dsmtin()</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="chm.html#cb7-1" aria-hidden="true" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">dsmtin</span>())</span>
-<span id="cb7-2"><a href="chm.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="chm.html#cb60-1" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">dsmtin</span>())</span>
+<span id="cb60-2"><a href="chm.html#cb60-2" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-dsmtin-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 <p>The triangulation method may also be weak when a lot of points are missing. We can generate an example using the <code>Topography.laz</code> data set that contains empty lakes.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="chm.html#cb8-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Topography.laz&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lidR&quot;</span>)</span>
-<span id="cb8-2"><a href="chm.html#cb8-2" aria-hidden="true" tabindex="-1"></a>las2 <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile)</span>
-<span id="cb8-3"><a href="chm.html#cb8-3" aria-hidden="true" tabindex="-1"></a>las2 <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(las2, <span class="at">algorithm =</span> <span class="fu">tin</span>())</span>
-<span id="cb8-4"><a href="chm.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las2, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="chm.html#cb61-1" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Topography.laz&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb61-2"><a href="chm.html#cb61-2" tabindex="-1"></a>las2 <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile)</span>
+<span id="cb61-3"><a href="chm.html#cb61-3" tabindex="-1"></a>las2 <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(las2, <span class="at">algorithm =</span> <span class="fu">tin</span>())</span>
+<span id="cb61-4"><a href="chm.html#cb61-4" tabindex="-1"></a><span class="fu">plot</span>(las2, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-las-topo-chm-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>In this case the CHM is incorrectly computed in the empty lakes</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="chm.html#cb9-1" aria-hidden="true" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las2, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">dsmtin</span>())</span>
-<span id="cb9-2"><a href="chm.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="chm.html#cb62-1" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las2, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">dsmtin</span>())</span>
+<span id="cb62-2"><a href="chm.html#cb62-2" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-dsmtin-lakes-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 <p>To fix this, one option is to use the <code>max_edge</code> argument, which defines the maximum edge of a triangle allowed in the Delaunay triangulation. By default this argument is set to <code>0</code> meaning that no triangle are removed. If set to e.g. 8 it means that every triangle with an edge longer than 8 will be discarded from the triangulation.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="chm.html#cb10-1" aria-hidden="true" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las2, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">dsmtin</span>(<span class="at">max_edge =</span> <span class="dv">8</span>))</span>
-<span id="cb10-2"><a href="chm.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="chm.html#cb63-1" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las2, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">dsmtin</span>(<span class="at">max_edge =</span> <span class="dv">8</span>))</span>
+<span id="cb63-2"><a href="chm.html#cb63-2" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-dsmtin-maxedge-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 </div>
 <div id="pitfree" class="section level2 hasAnchor" number="6.3">
@@ -434,53 +438,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <img src="images/DSM/pitfree.png" />
 </center>
 <p>To understand this method better, we can reproduce the figure above with <code>algorithm = dsmtin()</code>:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="chm.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The first layer is a regular triangulation</span></span>
-<span id="cb11-2"><a href="chm.html#cb11-2" aria-hidden="true" tabindex="-1"></a>layer0 <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">dsmtin</span>())</span>
-<span id="cb11-3"><a href="chm.html#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="chm.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Triangulation of first return above 10 m</span></span>
-<span id="cb11-5"><a href="chm.html#cb11-5" aria-hidden="true" tabindex="-1"></a>above10 <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, Z <span class="sc">&gt;=</span> <span class="dv">10</span>)</span>
-<span id="cb11-6"><a href="chm.html#cb11-6" aria-hidden="true" tabindex="-1"></a>layer10 <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(above10, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">dsmtin</span>(<span class="at">max_edge =</span> <span class="fl">1.5</span>))</span>
-<span id="cb11-7"><a href="chm.html#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="chm.html#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Triangulation of first return above 20 m</span></span>
-<span id="cb11-9"><a href="chm.html#cb11-9" aria-hidden="true" tabindex="-1"></a>above20 <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(above10, Z <span class="sc">&gt;=</span> <span class="dv">20</span>)</span>
-<span id="cb11-10"><a href="chm.html#cb11-10" aria-hidden="true" tabindex="-1"></a>layer20 <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(above20, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">dsmtin</span>(<span class="at">max_edge =</span> <span class="fl">1.5</span>))</span>
-<span id="cb11-11"><a href="chm.html#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-12"><a href="chm.html#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># The final surface is a stack of the partial rasters</span></span>
-<span id="cb11-13"><a href="chm.html#cb11-13" aria-hidden="true" tabindex="-1"></a>dsm <span class="ot">&lt;-</span> layer0</span>
-<span id="cb11-14"><a href="chm.html#cb11-14" aria-hidden="true" tabindex="-1"></a>dsm[] <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="fu">as.numeric</span>(layer0[]), <span class="fu">as.numeric</span>(layer10[]), <span class="fu">as.numeric</span>(layer20[]), <span class="at">na.rm =</span> T)</span>
-<span id="cb11-15"><a href="chm.html#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-16"><a href="chm.html#cb11-16" aria-hidden="true" tabindex="-1"></a>layers <span class="ot">&lt;-</span> <span class="fu">c</span>(layer0, layer10, layer20, dsm)</span>
-<span id="cb11-17"><a href="chm.html#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(layers) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Base&quot;</span>, <span class="st">&quot;Layer10m&quot;</span>, <span class="st">&quot;Layer20m&quot;</span>, <span class="st">&quot;pitfree&quot;</span>)</span>
-<span id="cb11-18"><a href="chm.html#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(layers, <span class="at">col =</span> col)</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="chm.html#cb64-1" tabindex="-1"></a><span class="co"># The first layer is a regular triangulation</span></span>
+<span id="cb64-2"><a href="chm.html#cb64-2" tabindex="-1"></a>layer0 <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">dsmtin</span>())</span>
+<span id="cb64-3"><a href="chm.html#cb64-3" tabindex="-1"></a></span>
+<span id="cb64-4"><a href="chm.html#cb64-4" tabindex="-1"></a><span class="co"># Triangulation of first return above 10 m</span></span>
+<span id="cb64-5"><a href="chm.html#cb64-5" tabindex="-1"></a>above10 <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, Z <span class="sc">&gt;=</span> <span class="dv">10</span>)</span>
+<span id="cb64-6"><a href="chm.html#cb64-6" tabindex="-1"></a>layer10 <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(above10, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">dsmtin</span>(<span class="at">max_edge =</span> <span class="fl">1.5</span>))</span>
+<span id="cb64-7"><a href="chm.html#cb64-7" tabindex="-1"></a></span>
+<span id="cb64-8"><a href="chm.html#cb64-8" tabindex="-1"></a><span class="co"># Triangulation of first return above 20 m</span></span>
+<span id="cb64-9"><a href="chm.html#cb64-9" tabindex="-1"></a>above20 <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(above10, Z <span class="sc">&gt;=</span> <span class="dv">20</span>)</span>
+<span id="cb64-10"><a href="chm.html#cb64-10" tabindex="-1"></a>layer20 <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(above20, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">dsmtin</span>(<span class="at">max_edge =</span> <span class="fl">1.5</span>))</span>
+<span id="cb64-11"><a href="chm.html#cb64-11" tabindex="-1"></a></span>
+<span id="cb64-12"><a href="chm.html#cb64-12" tabindex="-1"></a><span class="co"># The final surface is a stack of the partial rasters</span></span>
+<span id="cb64-13"><a href="chm.html#cb64-13" tabindex="-1"></a>dsm <span class="ot">&lt;-</span> layer0</span>
+<span id="cb64-14"><a href="chm.html#cb64-14" tabindex="-1"></a>dsm[] <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="fu">as.numeric</span>(layer0[]), <span class="fu">as.numeric</span>(layer10[]), <span class="fu">as.numeric</span>(layer20[]), <span class="at">na.rm =</span> T)</span>
+<span id="cb64-15"><a href="chm.html#cb64-15" tabindex="-1"></a></span>
+<span id="cb64-16"><a href="chm.html#cb64-16" tabindex="-1"></a>layers <span class="ot">&lt;-</span> <span class="fu">c</span>(layer0, layer10, layer20, dsm)</span>
+<span id="cb64-17"><a href="chm.html#cb64-17" tabindex="-1"></a><span class="fu">names</span>(layers) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Base&quot;</span>, <span class="st">&quot;Layer10m&quot;</span>, <span class="st">&quot;Layer20m&quot;</span>, <span class="st">&quot;pitfree&quot;</span>)</span>
+<span id="cb64-18"><a href="chm.html#cb64-18" tabindex="-1"></a><span class="fu">plot</span>(layers, <span class="at">col =</span> col)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-pitfree-build-1.png" width="710.4" style="display: block; margin: auto;" /></p>
 <p>In practice, the internal implementation of <code>pitfree()</code> works much like the example above but is easier to use.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="chm.html#cb12-1" aria-hidden="true" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="fu">pitfree</span>(<span class="at">thresholds =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>), <span class="at">max_edge =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1.5</span>)))</span>
-<span id="cb12-2"><a href="chm.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="chm.html#cb65-1" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="fu">pitfree</span>(<span class="at">thresholds =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>), <span class="at">max_edge =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1.5</span>)))</span>
+<span id="cb65-2"><a href="chm.html#cb65-2" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-pitfree-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 <p>By increasing the <code>max_edge</code> argument for the pit-free triangulation part from <code>1.5</code> to <code>2</code> the CHM becomes smoother but also less realistic:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="chm.html#cb13-1" aria-hidden="true" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="fu">pitfree</span>(<span class="at">max_edge =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">2.5</span>)))</span>
-<span id="cb13-2"><a href="chm.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="chm.html#cb66-1" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="fu">pitfree</span>(<span class="at">max_edge =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">2.5</span>)))</span>
+<span id="cb66-2"><a href="chm.html#cb66-2" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-pitfree-maxedge-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 <p>Similarly to point-to-raster, the pit-free algorithm in <code>lidR</code> also includes a <code>subcircle</code> option that replaces each first return by a disk made of 8 points. Because it would be too computationally demanding to triangulate 8 times more points, the choice was made to select only the highest point of each pixel after subcircling to perform the triangulation.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="chm.html#cb14-1" aria-hidden="true" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="fu">pitfree</span>(<span class="at">subcircle =</span> <span class="fl">0.15</span>))</span>
-<span id="cb14-2"><a href="chm.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="chm.html#cb67-1" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="fu">pitfree</span>(<span class="at">subcircle =</span> <span class="fl">0.15</span>))</span>
+<span id="cb67-2"><a href="chm.html#cb67-2" tabindex="-1"></a><span class="fu">plot</span>(chm, <span class="at">col =</span> col)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-pitfree-subcirc-1.png" width="662.4" style="display: block; margin: auto;" /></p>
 </div>
 <div id="chm-post-process" class="section level2 hasAnchor" number="6.4">
 <h2><span class="header-section-number">6.4</span> Post-processing a CHM<a href="chm.html#chm-post-process" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>CHMs are usually post-processed to smooth or to fill empty pixels. This is mainly because most publications use a point-to-raster approach without any tweaks. One may want to apply a post-processing step to the CHM. Sadly <code>lidR</code> does not provide any tools for that. <code>lidR</code> is a point cloud oriented software. Once a function has returned a raster, the job of the <code>lidR</code> package has ended. Further work requires other dedicated tools to process rasters. The <code>terra</code> package is one of those. The code below presents a simple option to fill NAs and smooth a CHM with the <code>terra</code> package. For more details see the documentation of the package <code>terra</code>.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="chm.html#cb15-1" aria-hidden="true" tabindex="-1"></a>fill.na <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">i=</span><span class="dv">5</span>) { <span class="cf">if</span> (<span class="fu">is.na</span>(x)[i]) { <span class="fu">return</span>(<span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) } <span class="cf">else</span> { <span class="fu">return</span>(x[i]) }}</span>
-<span id="cb15-2"><a href="chm.html#cb15-2" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
-<span id="cb15-3"><a href="chm.html#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="chm.html#cb15-4" aria-hidden="true" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">p2r</span>(<span class="at">subcircle =</span> <span class="fl">0.15</span>), <span class="at">pkg =</span> <span class="st">&quot;terra&quot;</span>)</span>
-<span id="cb15-5"><a href="chm.html#cb15-5" aria-hidden="true" tabindex="-1"></a>filled <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">focal</span>(chm, w, <span class="at">fun =</span> fill.na)</span>
-<span id="cb15-6"><a href="chm.html#cb15-6" aria-hidden="true" tabindex="-1"></a>smoothed <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">focal</span>(chm, w, <span class="at">fun =</span> mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb15-7"><a href="chm.html#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="chm.html#cb15-8" aria-hidden="true" tabindex="-1"></a>chms <span class="ot">&lt;-</span> <span class="fu">c</span>(chm, filled, smoothed)</span>
-<span id="cb15-9"><a href="chm.html#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(chms) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Base&quot;</span>, <span class="st">&quot;Filled&quot;</span>, <span class="st">&quot;Smoothed&quot;</span>)</span>
-<span id="cb15-10"><a href="chm.html#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(chms, <span class="at">col =</span> col)</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="chm.html#cb68-1" tabindex="-1"></a>fill.na <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">i=</span><span class="dv">5</span>) { <span class="cf">if</span> (<span class="fu">is.na</span>(x)[i]) { <span class="fu">return</span>(<span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) } <span class="cf">else</span> { <span class="fu">return</span>(x[i]) }}</span>
+<span id="cb68-2"><a href="chm.html#cb68-2" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb68-3"><a href="chm.html#cb68-3" tabindex="-1"></a></span>
+<span id="cb68-4"><a href="chm.html#cb68-4" tabindex="-1"></a>chm <span class="ot">&lt;-</span> <span class="fu">rasterize_canopy</span>(las, <span class="at">res =</span> <span class="fl">0.5</span>, <span class="at">algorithm =</span> <span class="fu">p2r</span>(<span class="at">subcircle =</span> <span class="fl">0.15</span>), <span class="at">pkg =</span> <span class="st">&quot;terra&quot;</span>)</span>
+<span id="cb68-5"><a href="chm.html#cb68-5" tabindex="-1"></a>filled <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">focal</span>(chm, w, <span class="at">fun =</span> fill.na)</span>
+<span id="cb68-6"><a href="chm.html#cb68-6" tabindex="-1"></a>smoothed <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">focal</span>(chm, w, <span class="at">fun =</span> mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb68-7"><a href="chm.html#cb68-7" tabindex="-1"></a></span>
+<span id="cb68-8"><a href="chm.html#cb68-8" tabindex="-1"></a>chms <span class="ot">&lt;-</span> <span class="fu">c</span>(chm, filled, smoothed)</span>
+<span id="cb68-9"><a href="chm.html#cb68-9" tabindex="-1"></a><span class="fu">names</span>(chms) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Base&quot;</span>, <span class="st">&quot;Filled&quot;</span>, <span class="st">&quot;Smoothed&quot;</span>)</span>
+<span id="cb68-10"><a href="chm.html#cb68-10" tabindex="-1"></a><span class="fu">plot</span>(chms, <span class="at">col =</span> col)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-chm-postprod-1.png" width="710.4" style="display: block; margin: auto;" /></p>
 
+<pre><code>#&gt; NULL
+#&gt; NULL</code></pre>
 </div>
 </div>
 <script async src="//static.getclicky.com/101377207.js"></script>
@@ -545,6 +551,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

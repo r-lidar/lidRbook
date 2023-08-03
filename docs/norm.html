@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5 Height normalization | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5 Height normalization | The lidR package" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-08-16" />
+<meta name="date" content="2023-08-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -101,7 +101,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -114,7 +114,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -128,6 +128,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -375,13 +379,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">5</span> Height normalization<a href="norm.html#norm" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>The purpose of the DTM, apart from using it as a stand alone product for water drainage, archaeology, road planning etc. is to facilitate terrain normalization. Described simply, point cloud normalization removes the influence of terrain on above ground measurements. This makes comparison of above ground vegetation heights possible and simplifies analyses across acquisition areas.</p>
 <p>When reading a non-normalized file we can see the terrain variation are visible.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="norm.html#cb1-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Topography.laz&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
-<span id="cb1-2"><a href="norm.html#cb1-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile)</span>
-<span id="cb1-3"><a href="norm.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="norm.html#cb44-1" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Topography.laz&quot;</span>, <span class="at">package=</span><span class="st">&quot;lidR&quot;</span>)</span>
+<span id="cb44-2"><a href="norm.html#cb44-2" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile)</span>
+<span id="cb44-3"><a href="norm.html#cb44-3" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-topo-norm-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>To get a better idea of what the terrain looks like lets remove all non-ground points</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="norm.html#cb2-1" aria-hidden="true" tabindex="-1"></a>gnd <span class="ot">&lt;-</span> <span class="fu">filter_ground</span>(las)</span>
-<span id="cb2-2"><a href="norm.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gnd, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Classification&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="norm.html#cb45-1" tabindex="-1"></a>gnd <span class="ot">&lt;-</span> <span class="fu">filter_ground</span>(las)</span>
+<span id="cb45-2"><a href="norm.html#cb45-2" tabindex="-1"></a><span class="fu">plot</span>(gnd, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Classification&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-gnd-norm-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The goal of normalization is to get a flat terrain. Two normalization approaches are most commonly used:</p>
 <ol style="list-style-type: decimal">
@@ -391,33 +395,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="norm-dtm" class="section level2 hasAnchor" number="5.1">
 <h2><span class="header-section-number">5.1</span> DTM normalization<a href="norm.html#norm-dtm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To normalize points using a DTM we first need to create the DTM itself. For this we use the <code>rasterize_terrain()</code> function (see section <a href="dtm.html#dtm">4</a>). For this example we chose to use a grid resolution of 1 m and to use the <code>knnidw()</code> algorithm with default parameters.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="norm.html#cb3-1" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(las, <span class="dv">1</span>, <span class="fu">knnidw</span>())</span>
-<span id="cb3-2"><a href="norm.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dtm, <span class="at">col =</span> <span class="fu">gray</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span><span class="sc">/</span><span class="dv">50</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="norm.html#cb46-1" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(las, <span class="dv">1</span>, <span class="fu">knnidw</span>())</span>
+<span id="cb46-2"><a href="norm.html#cb46-2" tabindex="-1"></a><span class="fu">plot</span>(dtm, <span class="at">col =</span> <span class="fu">gray</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span><span class="sc">/</span><span class="dv">50</span>))</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-dtm-norm-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>Now that we have our surface and are satisfied with it we can use it to normalize our point cloud through subtraction.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="norm.html#cb4-1" aria-hidden="true" tabindex="-1"></a>nlas <span class="ot">&lt;-</span> las <span class="sc">-</span> dtm</span>
-<span id="cb4-2"><a href="norm.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nlas, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="norm.html#cb47-1" tabindex="-1"></a>nlas <span class="ot">&lt;-</span> las <span class="sc">-</span> dtm</span>
+<span id="cb47-2"><a href="norm.html#cb47-2" tabindex="-1"></a><span class="fu">plot</span>(nlas, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-norm-las-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We can see that the point cloud has been normalized, making the point cloud flat. All the elevations are now relative to the ground surface. The ground surface being the reference 0 all the ground points are expected to be at Z = 0 by definition. But are they? Lets look at the distribution of ground points.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="norm.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">filter_ground</span>(nlas)<span class="sc">$</span>Z, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">0.6</span>, <span class="fl">0.6</span>, <span class="fl">0.01</span>), <span class="at">main =</span> <span class="st">&quot;&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Elevation&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="norm.html#cb48-1" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">filter_ground</span>(nlas)<span class="sc">$</span>Z, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">0.6</span>, <span class="fl">0.6</span>, <span class="fl">0.01</span>), <span class="at">main =</span> <span class="st">&quot;&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Elevation&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-hist-gnd-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>We can see that the ground points are <strong>not</strong> all at Z=0 and the histogram shows some points at +/- 25 cm. This occurs because the DTM is a discretized raster. The location of the pixels do not match the locations of the ground points. Lets assume we have two ground points with elevations of 257.5 and 258 meters respectively in a given pixel at 257.9 m. After normalization, their respective elevation will be -0.4 m and 0.1 m because each pixel has a single value meaning that all the points within a given pixel get normalized with the exact same elevation value. In a raster, the elevations are a succession of flat areas with discontinuities at each pixel. Thus a simple subtraction of the raster gives good results visually, but in practice can lead to many inaccuracies because of the discretized nature of the storage format.</p>
 </div>
 <div id="norm-point-cloud" class="section level2 hasAnchor" number="5.2">
 <h2><span class="header-section-number">5.2</span> Point cloud normalization<a href="norm.html#norm-point-cloud" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Point cloud normalization without a DTM interpolates the elevation of every single point locations using ground points. It no longer uses elevations at discrete predefined locations. Thus the methods is exact, <strong>computationally speaking</strong>. It means that it is equivalent to using a continuous DTM but it is important to recall that all interpolation methods are interpolation and by definition make guesses with different strategies. Thus by “exact” we mean “continuous”. To compute the continuous normalization, we can feed <code>normalize_height()</code> with an algorithm for spatial interpolation instead of a raster.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="norm.html#cb6-1" aria-hidden="true" tabindex="-1"></a>nlas <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(las, <span class="fu">knnidw</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="norm.html#cb49-1" tabindex="-1"></a>nlas <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(las, <span class="fu">knnidw</span>())</span></code></pre></div>
 <p>All the ground points should be exactly 0. Let check it:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="norm.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">filter_ground</span>(nlas)<span class="sc">$</span>Z, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">0.6</span>, <span class="fl">0.6</span>, <span class="fl">0.01</span>), <span class="at">main =</span> <span class="st">&quot;&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Elevation&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="norm.html#cb50-1" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">filter_ground</span>(nlas)<span class="sc">$</span>Z, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">0.6</span>, <span class="fl">0.6</span>, <span class="fl">0.01</span>), <span class="at">main =</span> <span class="st">&quot;&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Elevation&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-hist-gnd-3-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>One can reproduce this with other algorithm such as <code>tin()</code>. It’s also important to recall buffer and edge artifacts also apply here</p>
 </div>
 <div id="hybrid-method" class="section level2 hasAnchor" number="5.3">
 <h2><span class="header-section-number">5.3</span> Hybrid method<a href="norm.html#hybrid-method" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><code>nlas &lt;- las - dtm</code> makes very simple subtractions without any interpolation. <code>normalize_height(las, knnidw())</code> computes on-the-fly the interpolation of the ground points and estimates the exact elevation of every points. An hybrid method consists in the interpolation of the pixel of an already computed DTM.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="norm.html#cb8-1" aria-hidden="true" tabindex="-1"></a>nlas <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(las, <span class="fu">tin</span>(), <span class="at">dtm =</span> dtm)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="norm.html#cb51-1" tabindex="-1"></a>nlas <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(las, <span class="fu">tin</span>(), <span class="at">dtm =</span> dtm)</span></code></pre></div>
 <p>In this case, the ground points in <code>las</code> are not considered for interpolation. The DTM is used as regularly spaced ground points that are triangulated.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="norm.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">filter_ground</span>(nlas)<span class="sc">$</span>Z, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">0.6</span>, <span class="fl">0.6</span>, <span class="fl">0.01</span>), <span class="at">main =</span> <span class="st">&quot;&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Elevation&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="norm.html#cb52-1" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">filter_ground</span>(nlas)<span class="sc">$</span>Z, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">0.6</span>, <span class="fl">0.6</span>, <span class="fl">0.01</span>), <span class="at">main =</span> <span class="st">&quot;&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Elevation&quot;</span>)</span></code></pre></div>
 <p><img src="lidR-book_files/figure-html/plot-hist-gnd-4-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div id="norm-pros-cons" class="section level2 hasAnchor" number="5.4">
@@ -427,8 +431,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="norm-reverse" class="section level2 hasAnchor" number="5.5">
 <h2><span class="header-section-number">5.5</span> Reversing normalization<a href="norm.html#norm-reverse" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><code>lidR</code> also has the capacity to reverse normalization using the <code>unnormalize_height</code> function. This reverts the normalized point cloud to its pre-normalized state.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="norm.html#cb10-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">unnormalize_height</span>(nlas)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="norm.html#cb53-1" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">unnormalize_height</span>(nlas)</span></code></pre></div>
 
+<pre><code>#&gt; NULL</code></pre>
 </div>
 </div>
 <script async src="//static.getclicky.com/101377207.js"></script>
@@ -493,6 +498,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
