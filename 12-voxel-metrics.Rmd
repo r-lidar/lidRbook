@@ -35,7 +35,7 @@ vox_met <- voxel_metrics(las, ~list(N = length(Z)), 4) # calculate voxel metrics
 In this example the point cloud is first converted into 4 m voxels, then the function `length(Z)` is applied to all points located inside every voxel. The output is a `data.table` that contains the X, Y, and Z coordinates of voxels, and the calculated number of points and can be visualized in 3D using the `plot()` function as follows:
 
 ```{r plot-vox-metrics, rgl = TRUE, fig.width = 4, fig.height = 3}
-plot(vox_met, color="N", colorPalette = heat.colors(50), size = 4, bg = "white", voxel = TRUE)
+plot(vox_met, color="N", pal = heat.colors, size = 4, bg = "white", voxel = TRUE)
 ```
 
 Similarly to other `*_metrics()` functions designed to calculate derived metrics, `voxel_metrics()` can be used to calculate any number of pre- or user-defined summaries. For example, to calculate minimum, mean, maximum, and standard deviation of intensity in each voxel we can create a following function:

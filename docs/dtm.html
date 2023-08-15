@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>4 Digital terrain model | The lidR package</title>
   <meta name="description" content="A guide to the lidR package" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="4 Digital terrain model | The lidR package" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski" />
 
 
-<meta name="date" content="2022-08-16" />
+<meta name="date" content="2023-08-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -101,7 +101,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -114,7 +114,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -128,6 +128,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -430,7 +434,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">4.6</span> Render shaded DTM<a href="dtm.html#hillshade" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Generating a hillshade layer in R is relatively straight forward and is done using functions from the <code>terra</code> package. The <code>terrain()</code> and <code>hillShade()</code> functions can be combined to take the DTM raster layers as input and return a hillshade raster:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="dtm.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb6-2"><a href="dtm.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; terra 1.5.34</span></span>
+<span id="cb6-2"><a href="dtm.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; terra 1.7.29</span></span>
 <span id="cb6-3"><a href="dtm.html#cb6-3" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(las, <span class="at">algorithm =</span> <span class="fu">tin</span>(), <span class="at">pkg =</span><span class="st">&quot;terra&quot;</span>)</span>
 <span id="cb6-4"><a href="dtm.html#cb6-4" aria-hidden="true" tabindex="-1"></a>dtm_prod <span class="ot">&lt;-</span> <span class="fu">terrain</span>(dtm, <span class="at">v =</span> <span class="fu">c</span>(<span class="st">&quot;slope&quot;</span>, <span class="st">&quot;aspect&quot;</span>), <span class="at">unit =</span> <span class="st">&quot;radians&quot;</span>)</span>
 <span id="cb6-5"><a href="dtm.html#cb6-5" aria-hidden="true" tabindex="-1"></a>dtm_hillshade <span class="ot">&lt;-</span> <span class="fu">shade</span>(<span class="at">slope =</span> dtm_prod<span class="sc">$</span>slope, <span class="at">aspect =</span> dtm_prod<span class="sc">$</span>aspect)</span>

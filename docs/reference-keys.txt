@@ -142,3 +142,4 @@ plugin-system
 plugin-creation
 plugin-extensions
 mcc
+cpp-api

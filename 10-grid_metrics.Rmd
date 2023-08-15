@@ -11,6 +11,8 @@ knitr::opts_chunk$set(
 library(lidR)
 library(stars)
 rgl::setupKnitr(autoprint = TRUE)
+
+options(lidR.progress = F)
 ```
 
 # Derived metrics at the pixel level {#aba}
