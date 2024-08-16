@@ -28,9 +28,15 @@ description: "A guide to the `lidR` package"
 
 The current release version of `lidR` can be found on [CRAN](https://cran.r-project.org/web/packages/lidR/) and the source code is hosted on [GitHub](https://github.com/r-lidar/lidR).
 
-Development of the `lidR` package between 2015 and 2018 was made possible thanks to the financial support of the AWARE project [NSERC CRDPJ 462973-14](https://aware.forestry.ubc.ca/); grantee [Prof. Nicholas C. Coops](https://profiles.forestry.ubc.ca/person/nicholas-coops/).
+Development of the `lidR` package was made possible thanks to the financial support of:
 
-Development of the `lidR` package between 2018 and 2021 was made possible thanks to the financial support of the [Ministère des Forêts, de la Faune et des Parcs of Québec](https://mffp.gouv.qc.ca/).
+- **2015-2018:** the AWARE project [NSERC CRDPJ 462973-14](https://aware.forestry.ubc.ca/); grantee [Prof. Nicholas C. Coops](https://profiles.forestry.ubc.ca/person/nicholas-coops/) and the [Laval University](https://www.ulaval.ca/en).
+- **2018-2021:** the financial support of the [Ministère des Forêts, de la Faune et des Parcs of Québec](https://mffp.gouv.qc.ca/) and the [Laval University](https://www.ulaval.ca/en).
+- **2021-2024:** the [Laval University](https://www.ulaval.ca/en).
+
+<div style="border: 2px solid #f39c12; background-color: #fef5e7; padding: 15px; margin: 20px 0; border-radius: 5px;">
+Since 2024, the `lidR` package (as well as the [`lasR`](https://github.com/r-lidar/lasR) package) are no longer supported by Laval University. While the software will remain free and open-source, `r-lidar` has transitioned into a company to ensure sustainability. We now offer independent services for training courses, consulting, and development. For more information, please visit our website: [r-lidar.com](https://www.r-lidar.com/).</div>
+
 
 The book is shared under [CC-BY-NC-SA 2.0](https://creativecommons.org/licenses/by-nc-sa/2.0/)
 
@@ -39,5 +45,3 @@ The book is shared under [CC-BY-NC-SA 2.0](https://creativecommons.org/licenses/
 --------
 
 _This book was created to provide hands on descriptions and tutorials for using `lidR` and is **not** the formal package documentation. The comprehensive package documentation is shipped with the package._
-
-![](images/logo.png)
