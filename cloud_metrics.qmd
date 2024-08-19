@@ -1,0 +1,60 @@
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+r3dDefaults = rgl::r3dDefaults
+r3dDefaults$FOV = 50
+r3dDefaults$zoom = 0.5
+
+knitr::opts_chunk$set(
+  comment =  "#>", 
+  collapse = TRUE,
+  fig.align = "center")
+
+library(lidR)
+rgl::setupKnitr(autoprint = TRUE)
+```
+
+# Derived metrics at the cloud level {#sec-cba}
+
+## Overview {#sec-cba-overview}
+
+The "cloud" level of regularization corresponds to the computation of derived metrics using all available points. As seen in section @sec-metrics, calculating derived metrics for the whole point cloud is straightforward and users only need to provide a formula to calculate metric(s) of interest. For example, to calculate the average height (`mean(Z)`) of all points we can run the following:
+
+```{r}
+LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+las <- readLAS(LASfile)
+cloud_metrics(las, func = ~mean(Z)) # calculate mean height
+```
+
+To calculate more than one metric a custom function needs to be used, or one of the pre-defined functions within `lidR`. To calculate the whole suite of 36 metrics defined in `stdmetrics_z()` we can use `func = .stdmetrics_z`. When several metrics are computed they are returned as a `list`.
+
+```{r}
+metrics <- cloud_metrics(las, func = .stdmetrics_z)
+str(head(metrics)) # output is a list
+```
+
+## Applications {#sec-cba-applications}
+
+Point cloud metrics become interesting when computed for a set of plot inventories. In this case it can serves to compute a set of metrics for each plot, where known attributes have been measured in the field to construct a predictive model. Users could easily clip and loop through plot inventory files but we defined an all-in-one convenient function `plot_metrics()`. In the following example we load a `.las` and compute the metrics for each plot inventory using a shapefile of plot centers
+
+```{r}
+LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+las <- readLAS(LASfile, filter = "-keep_random_fraction 0.5")
+shpfile <- system.file("extdata", "efi_plot.shp", package="lidR")
+inventory <- sf::st_read(shpfile, quiet = TRUE)
+metrics <- plot_metrics(las, .stdmetrics_z, inventory, radius = 11.28)
+```
+
+Look at the content of `inventory` and `metrics`. `inventory` contains the plot IDs, their coordinates, and `VOI` a Value Of Interest. `metrics` contains 36 derived metrics for each plot combined with the `inventory` data
+
+```{r}
+head(inventory)
+head(metrics[,1:8])
+```
+
+We have computed many metrics for each plot and we know the value of interest `VOI`. We can use that to build a linear model with some metrics. Here we have only 5 plots so it is not going to be big science
+
+```{r}
+model <- lm(VOI~zsd+zmax, data = metrics)
+summary(model)
+```
+
+This example can be improved. In @sec-engine we will study how to extract a ground inventory and in @sec-modeling-aba we will study more in depth modelling presenting a complete workflow from the plot extraction to the mapping of the predictive model.

@@ -1,0 +1,46 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "The lidR package"
+  author: "Jean-Romain Roussel, Tristan R.H. Goodbody, Piotr Tompalski"
+  description: "A guide to the `lidR` package"
+  repo-url: https://github.com/r-lidar/lidRbook
+  site-url: https://r-lidar.com
+  search: true
+  chapters:
+    - index.qmd
+    - io.qmd
+    - gnd.qmd
+    - dtm.qmd
+    - normalization.qmd
+    - dsm.qmd
+    - itd.qmd
+    - metrics.qmd
+    - cloud_metrics.qmd
+    - grid_metrics.qmd
+    - tree_metrics.qmd
+    - voxel_metrics.qmd
+    - point_metrics.qmd
+    - engine.qmd
+    - engine2.qmd
+    - modelling.qmd
+    - outbox.qmd
+    - spatialindex.qmd
+    - plugins.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    include-after-body: clicky.html
+    include-in-header: gtag.html
+
+editor: visual
+
+execute:
+  freeze: auto
+
+number-depth: 2

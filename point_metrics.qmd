@@ -1,0 +1,228 @@
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+r3dDefaults = rgl::r3dDefaults
+r3dDefaults$FOV = 50
+r3dDefaults$zoom = 0.5
+
+knitr::opts_chunk$set(
+  comment =  "#>", 
+  collapse = TRUE,
+  fig.align = "center")
+
+library(lidR)
+rgl::setupKnitr(autoprint = TRUE)
+options(lidR.progress = FALSE)
+```
+
+# Derived metrics at point level {#sec-pba}
+
+::: {.callout-important}
+Due to a new CRAN policy affecting numerous packages, we have temporarily removed the `point_metrics()` function. This function relies on internal R functions that package developers are no longer permitted to use. To allow us time to find a workaround and prevent the package from being removed from CRAN, some examples in this section may not work with `lidR v4.1.2`. To obtain a version of the package with this function enabled, please contact us.
+:::
+
+## Overview {#sec-pba-overview}
+
+The "point" level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The `point_metrics()` function allows calculation of point-based metrics and works like `cloud_metrics()`, `grid_metrics()`, `tree_metrics()` or `voxel_metrics()` seen in  @sec-metrics, @sec-cba, @sec-aba, @sec-tba and @sec-vba. Refer to these sections for a more comprehensive overview.
+
+For each point, the neighbourhood can be either:
+
+1.  The k nearest neighbours
+2.  The points within a sphere centred on the processed point, or
+3.  The k nearest neighbours but with a limited radius search.
+
+The syntax for these 3 options is given below:
+
+```{r}
+LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+las <- readLAS(LASfile) # read file
+metrics <- point_metrics(las, ~list(imean = mean(Intensity)), k = 7)        # 1
+metrics <- point_metrics(las, ~list(imean = mean(Intensity)), r = 3)        # 2
+metrics <- point_metrics(las, ~list(imean = mean(Intensity)), k = 7, r = 3) # 3
+```
+
+The output is a `data.table` with the ID of the reference points and the metric(s) for each.
+
+```{r}
+head(metrics)
+```
+
+Instead of the ID, one may prefer to get the coordinates with `xyz = TRUE`:
+
+``` r
+metrics <- point_metrics(las, ~list(imean = mean(Intensity)), k = 7, xyz = TRUE)
+```
+
+It is also possible to process a selection of points (excluding some points) without creating a copy of the point cloud. In the following, the mean intensity is computed excluding outliers with an intensity above 100. No metric is computed for outliers, and they are not used to get the local neighborhood of the other points.
+
+```{r}
+metrics <- point_metrics(las, ~list(imean = mean(Intensity)), k = 7, filter = ~Intensity < 100 ) # calculate mean intensity and exclude outliers
+head(metrics)
+```
+
+## Applications {#sec-pba-applications}
+
+### Roof segmentation {#sec-pba-applications-roof}
+
+Roofs are flat areas. [Limberger et al. (2015)](https://doi.org/10.1016/j.patcog.2014.12.020) described a method to find flat areas in a point clouds using an eigen values decomposition. Using a user-defined function we can use `point_metrics()` to create this algorithm. In this example we will use the following urban scene:
+
+```{r plot-las-building, rgl = TRUE}
+las <- readLAS("data/chap11/building_WilliamsAZ_Urban_normalized.laz")
+plot(las, size = 3)
+```
+
+First we need to define a function that computes the eigen value decomposition of a set of points and estimates if the set of points is flat according to the [Limberger et al. (2015)](https://doi.org/10.1016/j.patcog.2014.12.020) criteria.
+
+``` r
+is.planar <- function(x, y, z, th1 = 25, th2 = 6) {
+  xyz <- cbind(x,y,z)
+  cov_m <- cov(xyz)
+  eigen_m <- eigen(cov_m)$value
+  is_planar <- eigen_m[2] > (th1*eigen_m[3]) && (th2*eigen_m[2]) > eigen_m[1]
+  return(list(planar = is_planar))
+}
+```
+
+We then apply this function using 20 neighbors. We also use `filter = ~Classification != LASGROUND` to not process points classified as ground. We do this first, because the scene is normalized so by definition each ground point is expected to be part of a flat planar surface, and second, because it will speed-up computation because fewer points will be considered.
+
+``` r
+M <- point_metrics(las, ~is.planar(X,Y,Z), k = 20, filter = ~Classification != LASGROUND)
+```
+
+We finally merge the output with the point cloud to visualize the result:
+
+``` r
+las <- add_attribute(las, FALSE, "planar")
+las$planar[M$pointID] <- M$planar
+plot(las, color = "planar")
+```
+
+```{r plot-las-building-segmented, echo = FALSE, rgl = TRUE}
+# here I'm cheating for the rendering the example above being too long to compute
+options(lidR.progress = FALSE)
+las <- readLAS("data/chap11/building_WilliamsAZ_Urban_normalized.laz")
+las <- segment_shapes(las, shp_plane(k = 20), "planar", filter = ~Classification != LASGROUND)
+plot(las, color = "planar", size = 3)
+```
+
+We can eventually set a valid classification (`LASBUILDING`) to those points:
+
+``` r
+las$Classification[M$pointID] <- LASBUILDING
+```
+
+The function `is.planar()` is highly inefficient because `eigen()` is very slow. We can rewrite the eigen decomposition in C++ with `Rcpp` to make the function 10 times faster!
+
+``` r
+Rcpp::sourceCpp(code = "
+#include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::export]]
+arma::vec eigen_values(arma::mat A) {
+arma::mat coeff, score;
+arma::vec latent;
+arma::princomp(coeff, score, latent, A);
+return(latent);
+}")
+
+is.planar <- function(x, y, z, th1 = 25, th2 = 6) {
+  xyz <- cbind(x,y,z)
+  eigen_m <- eigen_values(xyz)
+  is_planar <- eigen_m[2] > (th1*eigen_m[3]) && (th2*eigen_m[2]) > eigen_m[1]
+  return(list(planar = is_planar))
+}
+```
+
+We can do this... but we know that not everyone is well versed in C++. `lidR` therefore has a dedicated and even faster function (`segment_shapes()`) for this specific task because we believe that it's of high interest to provide a specialized and faster version of this tool.
+
+``` r
+las <- segment_shapes(las, shp_plane(k = 25), "planar")
+```
+
+### Lake and wire segmentation {#sec-pba-applications-wire}
+
+Eigen value decomposition applied using `point_metrics()` opens a lot of possibilities. For example, by tweaking the previous example we can design a lake segmentation algorithm. A lake is a planar region with a vertical normal vector, so to create a lake segmentation we simply need to add such constraints in `is.planar()`.
+
+We can also design a wire segmentation algorithm. For a wire we can change the [Limberger et al. (2015)](https://doi.org/10.1016/j.patcog.2014.12.020) constrains to enable the detection of elongated linear features instead of flat feature.
+
+```{r, warning =FALSE}
+is.linear <- function(x, y, z, th = 10) {
+  xyz <- cbind(x,y,z)
+  eigen_m <- eigen_values(xyz)
+  is_linear <-  th*eigen_m[3] < eigen_m[1] && th*eigen_m[2] < eigen_m[1]
+  return(list(linear = is_linear))
+}
+```
+
+```{r plot-las-wire, echo = FALSE, rgl = TRUE}
+las <- readLAS("data/chap11/wires.laz", filter = "-keep_random_fraction 0.3")
+las <- segment_shapes(las, shp_line(th1 = 8, k = 15), "linear", filter = ~Classification != LASGROUND)
+plot(las, size = 5)
+```
+
+```{r  plot-las-wire-segmented, echo = FALSE, rgl = TRUE}
+plot(las, color = "linear", size = 5)
+```
+
+```{r, echo = FALSE}
+r3dDefaults$zoom <- 0.7
+```
+
+Again, `lidR` has a dedicated function for this specific task because we believe that it is of high interest to provide a specialized and faster version of this tool.
+
+``` r
+las <- segment_shapes(las, shp_line(th = 8, k = 15), "linear")
+```
+
+### Multi-spectral coloring {#sec-pba-applications-coloring}
+
+`point_metrics()` is not limited to eigen value related metrics. It is only limited by a users imagination. In the following example we will demonstrate how it an be used to attribute false colors to a multi-spectral point cloud. Multi-spectral ALS data are sampled with 3 scanners each emitting a different wavelength. The point cloud is usually provided in the form of 3 `.las` files where each file corresponds to a spectral wavelength. No matter the actual wavelength, we can consider the first band as blue, the second as red and the third as green, and thus consider that each point has a pure color.
+
+```{r  plot-las-multispectral-pba, rgl = TRUE, message=FALSE}
+f1 <- "data/chap11/PR1107_c1_ar_c.laz"
+f2 <- "data/chap11/PR1107_c2_ar_c.laz"
+f3 <- "data/chap11/PR1107_c3_ar_c.laz"
+las <- readMSLAS(f1, f2, f3,  filter = "-keep_z_below 300")
+plot(las, color = "ScannerChannel", size = 5)
+```
+
+We now want to attribute an RGB value to each point. A single point being sampled with a single 'color' we need to use its neighborhood to define 3 bands. For each point we look in its neighbourhood, where some points are red, some are blue, and some are green. We average the intensities of each color and we consider these 3 values as the RGB color of the central point. Because some points are likely to have 0 red/blue/green neighbours we can set R, G, and B equal to `NA` for those points and later discard those points.
+
+```{r}
+set.color <- function(intensity, channel)
+{
+  # Split the intensities of each channel
+  i1 <- intensity[channel == 1]
+  i2 <- intensity[channel == 2]
+  i3 <- intensity[channel == 3]
+  
+  # If one channel is missing return RGB = NA
+  if (length(i1) == 0 | length(i2) == 0 | length(i3) == 0)
+    return(list(R = NA_integer_, G = NA_integer_, B = NA_integer_))
+  
+  # Average and normalise the intensities
+  i1 <- as.integer(mean(i1))
+  i2 <- as.integer(mean(i2))
+  i3 <- as.integer(mean(i3))
+  if (i1 > 255L) i1 <- 255L
+  if (i2 > 255L) i2 <- 255L
+  if (i3 > 255L) i3 <- 255L
+  
+  return(list(R = i1, G = i2, B = i3))
+}
+```
+
+We can then apply this function with `point_metrics()` using a spherical neighborhood. The next steps being to assign the output of `point_metrics()` back into the `LAS` object for a nice display.
+
+```{r plot-las-multispectral-rgb-pba, rgl = TRUE}
+M <- point_metrics(las, ~set.color(Intensity, ScannerChannel), r = 0.5)
+las <- add_lasrgb(las, M$R, M$G, M$B)
+colored <- filter_poi(las, !is.na(R)) # remove RGB = NA
+plot(colored, color = "RGB", size = 3)
+```
+
+This method is a bit naive 'as is'. First, the intensities returned by each channel are not comparable and required to be normalized. We could also argue about the choice of discarding RGB = `NA`. Instead we could have chosen to set a pure color. To finish, enforcing a maximum value to 255 works in this specific example because very few intensity values are actually above 255 but is meaningless in a general case. Either way, this is only a demo to show how to think out of the box with `point_metrics()`.
+
+### Outlier filtering {#sec-pba-applications-outliers}
+
+An outlier is a point that is alone compared to other points. Outliers are usually high points with no close neighbors. The term "no close neighbor" can have several formal definitions such as *no neighbors closer than x meters* or *less than n neighbors within a distance x meter* among others. In all cases, it can be estimated with metrics and thus `point_metrics()` enables the design of an outlier filter method.
+
+Perhaps a potential exercise for the reader :) .

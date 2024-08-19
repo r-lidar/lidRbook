@@ -1,0 +1,380 @@
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+library(lidR)
+options(lidR.progress = F)
+r3dDefaults = rgl::r3dDefaults
+m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
+-0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
+r3dDefaults$FOV = 50
+r3dDefaults$userMatrix = m
+r3dDefaults$zoom = 0.75
+knitr::opts_chunk$set(
+  comment =  "#>", 
+  collapse = TRUE,
+  fig.align = "center")
+rgl::setupKnitr(autoprint = TRUE)
+```
+
+# Spatial indexing {#sec-spatial-indexing}
+
+Spatial indexing is a key feature for performing spatial queries over a large point cloud. Any search for points of interest in the absence of indexing would require a “sequential scan” of every point - this could take *a lot* of time. In brief, spatial indexing organizes data into a search structure that can be quickly traversed to find specific records. Some algorithms would take unreasonable amounts of time to complete without spatial indexing.
+
+## Introduction to spatial indexes {#sec-spatial-indexing-intro}
+
+This section presents a layman overview of how spatial indexing works. If the reader is already knowledgeable about spatial indexing, they can skip this section.
+
+Imagine we have a lidar point cloud with 1 million points (sounds like alot... but it isn't!). We want to query all points that fall within the extent of a circle centered on the coordinates `p = c(300, 350)` with a radius (`R`) of 25 meters. This is a typical query made thousands of times per second by many algorithms including the local maximum filter (@sec-lmffw) to locate individual trees. Without spatial indexing, the method consists of computing the distance to `p` for every single point. This is called a 'sequential scan', and it means that the computation for distance and comparisons must be conducted 1,000,000 times each.
+
+In R we can write:
+
+```{r spi-sequential-scan}
+p = c(300, 350)
+R = 25
+X = runif(1e4, 0, 1000)
+Y = runif(1e4, 0, 1000)
+query = sqrt((X - p[1])^2 + (Y - p[2])^2) < R
+Xq = X[query]
+Yq = Y[query]
+```
+
+```{r plot-sequential-scan, echo = FALSE, fig.width=4.4}
+plot(X,Y, pch = 19, cex = 0.1, asp = 1)
+points(Xq, Yq, col = "red", cex = 0.4, pch = 19)
+```
+
+This is what the `filter_poi()` function does. It a non-specialized function that enables querying points of interest (POI) based on their attribute values (including non-spatial queries such as `Intensity > x`).
+
+``` r
+filter_poi(las, sqrt((X - p[1])^2 + (Y - p[2])^2) < R)
+```
+
+Now imagine we want to perform 1,000,000 queries like that for 1,000,000 different points. That translates to 1,000,000 x 1,000,000 = 1 **billion** operations. This does not scale-up and quickly becomes unrealistic (or at *least* dramatically slow).
+
+With a spatial index, the points are organized in such a way that the computer does not need to perform all the comparisons. In a [quadtree](https://en.wikipedia.org/wiki/Quadtree), for example, the point cloud can be subdivided in 4 quadrants that are themselves subdivided in four quadrants and so on hierarchically (see figure below).
+
+```{r plot-quadtree-scan, echo=FALSE, fig.width=4.4}
+plot(X,Y, pch = 19, cex = 0.1, asp = 1)
+
+rect(0,0,1000,1000, border = "red", lwd = 3)
+
+lines(c(500,500), c(0,1000), col = "red", lwd = 3)
+lines(c(0,1000), c(500,500), col = "red", lwd = 3)
+
+rect(8,8,492,492, border = "blue", lwd = 2)
+rect(8+500,8,492+500,492, border = "blue", lwd = 2)
+rect(8,8+500,492,492+500, border = "blue", lwd = 2)
+rect(8+500,8+500,492+500,492+500, border = "blue", lwd = 2)
+
+lines(c(250, 250),c(8,492), col = "blue", lwd = 2)
+lines(c(250, 250),c(8,492)+500, col = "blue", lwd = 2)
+lines(c(250, 250)+500,c(8,492), col = "blue", lwd = 2)
+lines(c(250, 250)+500,c(8,492)+500, col = "blue", lwd = 2)
+
+lines(c(8, 492),c(250, 250), col = "blue", lwd = 2)
+lines(c(8, 492),c(250, 250)+500, col = "blue", lwd = 2)
+lines(c(8, 492)+500,c(250, 250), col = "blue", lwd = 2)
+lines(c(8, 492)+500,c(250, 250)+500, col = "blue", lwd = 2)
+
+points(Xq, Yq, col = "red", cex = 0.5, pch = 19)
+```
+
+In this example we can immediately exclude 75% of the points (750,000 points) in 4 operations at the top level (in red). The bounding box of our query being `[275,325]x[325,375]` we know that the POIs do not belong in top-left quadrant `([0,500] x [500,1000])` nor in top-right quadrant `([500,1000] x [500,1000])` nor in bottom-right quadrant. At the second level (in blue) in 4 more operations we can exclude another 75% of the remaining points to search only in one quadrant. At this stage we can perform a sequential scan on only 1/16^th^ of the points (i.e. 62,500 points) meaning that we discarded 937,500 points in 8 operations! Consequently our query is (roughly) 16 times faster and could be even faster yet with more subdivision levels. In `lidR` a typical quadtree has 8 levels i.e. the space is subdivided in (2^8^)^2^ = 65,536 quadrants.
+
+As we can see, spatial indexing provides a way to dramatically speed-up many common spatial queries using discs, rectangles, polygons, 2D, 3D and so on. Different types of spatial indexes exist for different purposes but in all cases the use of a spatial index is not free and comes at the cost of greater memory usage.
+
+## Spatial indexes for LAS objects {#sec-spatial-indexing-las}
+
+### Overview {#sec-spatial-indexing-oveview}
+
+`lidR` makes use of spatial indexes in many functions and can choose different types of spatial indexes on-the-fly. So far, the book only presented the function `readLAS()` (see @sec-io) but the package has some variations of `readLAS()` named `readALSLAS()`, `readTLSLAS()`, `readUAVLAS()` and so on that enable the registration of a point cloud type allowing `lidR` to adequately choose the most appropriated spatial indexing method to perform a given computation as fast as possible.
+
+As an example we can use the TLS point cloud `pine_plot.laz` from the `TreeLS` package.
+
+First we read the file with `readLAS()`, which considers the point cloud to be ALS because `lidR` was originally designed for ALS and by legacy `readLAS()` from version \<= 3.1 behaves optimally for ALS. In the second case we use `readTLSLAS()` to inform `lidR` that this point cloud was sampled with a terrestrial device.
+
+In the following test we can see that the computation time was reduced from \~2.5 sec to \~1.3 sec by registering the proper point type. Improvements may range from 2 to 10 times faster depending on the point cloud and the method used.
+
+```{r bench-segment-shape}
+las <- readLAS("data/pine_plot.laz", select='xyz')
+tls <- readTLSLAS("data/pine_plot.laz", select='xyz')
+
+system.time(segment_shapes(las, shp_plane(k = 15), "Coplanar"))
+system.time(segment_shapes(tls, shp_plane(k = 15), "Coplanar"))
+
+```
+
+This works for each method that implies many sequential spatial queries.
+
+In the following example we can observe a \~8 fold processing time reduction.
+
+```{r bench-point-metrics}
+system.time(point_metrics(las, r = 1, ~length(Z)))
+system.time(point_metrics(tls, r = 1, ~length(Z)))
+```
+
+Now lets try with an ALS point cloud. We can see that it's better to read an ALS point cloud as ALS rather than as TLS (\~2 fold difference). This is because registering the correct point cloud type enables the selection of the optimal spatial indexing algorithm internally.
+
+```{r bench-classify-noise}
+als = readALSLAS("data/ENGINE/catalog/tiles_338000_5238500_1.laz")
+tls = readTLSLAS("data/ENGINE/catalog/tiles_338000_5238500_1.laz")
+
+system.time(classify_noise(als, sor()))
+system.time(classify_noise(tls, sor()))
+```
+
+> **Take away**: It is always a good idea to use the functions `readALSLAS()`, `readTLSLAS()`, `readDAPLAS()`, and so on introduced in `lidR v3.1.0`.
+
+There are however caveats resulting from using the optimal `read*LAS()` function that may not guarantee optimal processing performance.
+
+1.  All functions do not use spatial indexing or do not use the spatial index framework of `lidR`. For example, the `kriging()` function is based on the `gstat` package.
+
+2.  The choice of spatial index relies on some assumptions that may not be met in specific point clouds. The internal dispatch is designed to work with 'typical' point clouds under some assumptions. An ALS point-cloud is typically spatially large (1 km² or more) with little `Z` dispersion (0 to 40 meters) relative to the `XY` dispersion (0 to 1000 meters). On the contrary, a TLS point cloud is typically spatially narrow (\~3000 m²) with larger variations in `Z` relative to `XY`.
+
+`read*LAS()` should be sufficient for most use cases but for some specific cases users can manually choose which spatial index is best suited. We cover this in the next section.
+
+### Spatial indexes and selection strategies {#sec-spatial-indexing-strategies}
+
+`lidR` currently has 4 spatial indexes: a grid partition, a voxel partition, a quadtree and an octree. Each has its own pros and cons.
+
+Grid partition and quadtree are 2D indexes while voxel partition and octree are 3D indexes. They are all able to perform any kind of spatial query similarly. This is why it doesn't matter if the point cloud is read with `readALSLAS()` or `readTLSLAS()`. The result will be the same. However their efficiency depends on the point cloud type and the query type. This is why using the proper `read*LAS()` function can matter.
+
+#### ALS strategies {#sec-spi-ALS-strategy}
+
+For ALS we use a 2D index even for 3D queries.
+
+Indeed, an ALS point cloud is 'mostly 2D' because more than **99% of the dispersion is in XY**. When querying the knn of a given point (3D query) from a 2D index the vast majority of the points are discarded on a 2D basis. The remaining sequential scan occurs only on a very tiny fraction of the data set. This is also true for a 3D index but querying a 3D spatial index is slower and thus in `lidR` our 2D indexes perform best for ALS. A grid partition is used by default because it is often faster than a quadtree because ALS points are **uniformly distributed** on `XY`.
+
+The following example demonstrates how to manually register a spatial index and compare the computation times for a quadtree and an octree.
+
+```{r bench-classify-noise-2, error=T}
+las = readLAS("data/ENGINE/catalog/tiles_338000_5238500_1.laz", select = "xyz")
+
+index(las) <- "quadtree"
+system.time(classify_noise(las, sor()))
+
+index(las) <- "octree"
+system.time(classify_noise(las, sor()))
+```
+
+#### TLS strategies {#sec-spi-TLS-strategy}
+
+For TLS we use a 3D index because the points are **almost evenly distributed in XYZ** and thus a 2D query does not allow for discarding a large fraction of the points - the sequential scan remains important. An octree is used because points are expected to be **not uniformly** distributed on `XYZ`.
+
+```{r bench-classify-noise-3, error=TRUE}
+file <- system.file("extdata", "pine_plot.laz", package="TreeLS")
+las <- readLAS(file, select='xyz')
+
+index(las) <- "quadtree"
+system.time(classify_noise(las, sor()))
+
+index(las) <- "octree"
+system.time(classify_noise(las, sor()))
+```
+
+#### DAP and UAV strategies
+
+For digital photogrammetry and UAV data we apply the same rules as TLS. When encountering a data set that does not follow these rules, it may be optimal to manually select a spatial index. This is the case of the data set seen in chapter @sec-pba-applications-roof, which is an ALS data set but in practice it's a small subset in which we can no longer say that more than 99% of the point dispersion is in `XY` only. In that sense it's more of a TLS *ish* point cloud. But in the meantime the points are uniformly spread on `XY` because it's actually an ALS data set. Thus making 3D queries using a 3D index most viable. Let's try it:
+
+```{r bench-segment-shape-2}
+las <- readLAS("data/chap11/building_WilliamsAZ_Urban_normalized.laz")
+
+index(las) <- "gridpartition"
+system.time(segment_shapes(las, shp_plane(k = 20), "planar", filter = ~Classification != LASGROUND))
+
+index(las) <- "voxelpartition"
+system.time(segment_shapes(las, shp_plane(k = 20), "planar", filter = ~Classification != LASGROUND))
+```
+
+We see that both tests are almost equal, and that octree is slower. But one may find limit cases where its worth it to perform manual selection and thus `lidR` allows for overwriting the default rules. More details in `help("lidR-spatial-index")`.
+
+### C++ API {#sec-spatial-indexing-cpp-api}
+
+For more advanced users and developers, the `lidR` spatial index framework is provided as header-only C++ classes meaning that users can link to `lidR` to develop R/C++ applications using `lidR` spatial indexes. If the reader is not comfortable with the terms C++, Rcpp, header-only, external pointer and other C++ related concepts, we understand! You can skip this section, which is dedicated to advanced users and package developers who want to develop complex and efficient tools.
+
+For the purpose of this example we will create a function `clip_disc()` similar to `clip_circle()` available in `lidR`. `clip_circle()` performs a sequential scan and is thus not suitable to perform many queries in a loop. The function `clip_disc()` on the contrary will take advantage of spatial indexing.
+
+There is only one C++ class to know named `SpatialIndex`. It has one constructor that accepts an `S4` class and has two public members `knn` and `lookup`.
+
+First we can write a C++ function that returns a pointer on a `SpatialIndex`. Here we are using an external pointer because it's simple to write, and implies fewer lines of code. We can however also imagine taking advantage of Rcpp modules.
+
+``` cpp
+// [[Rcpp::depends(lidR)]]
+#include <SpatialIndex.h>
+using namespace Rcpp;
+using namespace lidR;
+
+// [[Rcpp::export]]
+XPtr<SpatialIndex> spatial_index(S4 las) {
+  SpatialIndex* idx = new SpatialIndex(las);
+  XPtr<SpatialIndex> p(idx, true);
+  return p;
+```
+
+```{r compile-spatial-index, echo=FALSE}
+Rcpp::sourceCpp(code = "
+// [[Rcpp::depends(lidR)]]
+#include <SpatialIndex.h>
+using namespace Rcpp;
+using namespace lidR;
+
+// [[Rcpp::export]]
+XPtr<SpatialIndex> spatial_index(S4 las) {
+  SpatialIndex* idx = new SpatialIndex(las);
+  XPtr<SpatialIndex> p(idx, true);
+  return p;
+}")
+```
+
+Now we can instantiate a `SpatialIndex` at the R level.
+
+```{r run-spatial-index}
+las = readLAS("data/ENGINE/catalog/tiles_338000_5238500_1.laz")
+index = spatial_index(las)
+index
+```
+
+What has been created here is either a grid partition, a voxel partition, a quadtree or an octree depending on which `readLAS()` function was used to read the files or depending on the spatial index that was manually registered.
+
+Then we can write the C++ side of the query.
+
+``` cpp
+// [[Rcpp::export]]
+IntegerVector filter_disc_with_index(SEXP xptr, double xc, double yc, double r) {
+  XPtr<SpatialIndex> tree(xptr);
+  Circle circ(xc, yc, r);
+  std::vector<PointXYZ> pts;
+  tree->lookup(circ, pts);
+
+  IntegerVector ids(pts.size());
+  for(int i = 0 ; i < pts.size(); i++) { ids[i] = pts[i].id; }
+  return ids + 1; // C++ is 0-indexed
+}
+```
+
+```{r compile-clip-disc, echo = FALSE}
+Rcpp::sourceCpp(code = "
+// [[Rcpp::depends(lidR)]]
+#include <SpatialIndex.h>
+using namespace Rcpp;
+using namespace lidR;
+
+// [[Rcpp::export]]
+IntegerVector filter_disc_with_index(SEXP xptr, double xc, double yc, double r) {
+  XPtr<SpatialIndex> tree(xptr);
+  Circle circ(xc, yc, r);
+  std::vector<PointXYZ> pts;
+  tree->lookup(circ, pts);
+
+  IntegerVector ids(pts.size());
+  for(int i = 0 ; i < pts.size(); i++)
+    ids[i] = pts[i].id;
+
+  return ids + 1; // C++ is 0-indexed
+}")
+```
+
+And the R side of the query
+
+```{r define-clip-disc}
+clip_disc = function(las, index, xcenter, ycenter, radius) {
+  ii <- filter_disc_with_index(index, xcenter, ycenter, radius)
+  return(las[ii])
+}
+```
+
+Now we can make a query and verify that both functions return the same points.
+
+```{r run-clip-disc}
+sub1 = clip_disc(las, index, 338200, 5238585, 10)
+sub2 = clip_circle(las, 338200, 5238585, 10)
+sub1
+sub2
+```
+
+While there is no gain with a single query because of the overhead of creating an index, it is indispensable to perform many successive queries. In the following we perform 50 queries in a loop.
+
+```{r bench-clip-disc}
+n = 50
+x = runif(n, 338000, 338500)
+y = runif(n, 5238500, 5239000)
+
+system.time(for (i in 1:n) u = clip_circle(las, x[i], y[i], 10))
+system.time(for (i in 1:n) u = clip_disc(las, index, x[i], y[i], 10))
+```
+
+For more functionalities one can look at the source code of [SpatialIndex](https://github.com/Jean-Romain/lidR/blob/devel/inst/include/SpatialIndex.h) where we can see there are actually 2 constructors and 5 members including 2D and 3D knn, 2D and 3D knn with maximum radius and `lookup` that is templated to allow queries within any kind of user-defined shapes. The source code of many `lidR` functions such as [lmf()](https://github.com/Jean-Romain/lidR/blob/20893dd0d737394c876bd8238b3a88ad6141ea62/src/LAS.cpp#L360) or [detect_shape()](https://github.com/Jean-Romain/lidR/blob/20893dd0d737394c876bd8238b3a88ad6141ea62/src/LAS.cpp#L649) might be useful resources as well.
+
+``` cpp
+SpatialIndex(const Rcpp::S4 las);
+SpatialIndex(const Rcpp::S4 las, const std::vector<bool>& filter);
+template<typename T> void lookup(T& shape, std::vector<PointXYZ>& res);
+void knn(const PointXY& p, const unsigned int k, std::vector<PointXYZ>& res);
+void knn(const PointXYZ& p, const unsigned int k, std::vector<PointXYZ>& res);
+void knn(const PointXY& p, const unsigned int k, const double r, std::vector<PointXYZ>& res);
+void knn(const PointXYZ& p, const unsigned int k, const double r, std::vector<PointXYZ>& res);
+```
+
+### Benchmark {#sec-spatial-indexing-benchmark}
+
+`lidR`'s spatial index framework is very fast, especially when large point clouds are used. In the following we compare how fast `lidR` searches for the 10-nearest neighbours of every point in a 2.3 million point ALS point cloud relative to the `RANN`, `FANN` and `nabor` packages.
+
+```{r bench-knn, echo = FALSE, fig.height=3, fig.width=5, fig.align="center"}
+library(ggplot2)
+ctg = readLAScatalog("data/ENGINE/catalog/")[1:2,]
+las = readLAS(ctg, select = "xyz")
+XX = lidR:::coordinates3D(las)
+k = 10
+
+res <- microbenchmark::microbenchmark(
+          RANN = RANN::nn2(XX, k = k),
+          FNN = FNN::get.knnx(XX, XX, k = k),
+          nabor = nabor::knn(XX, XX, k = k),
+          `lidR (1 core)` = lidR:::C_knn(XX$X, XX$Y, XX$X, XX$Y, k, 1L), # 1 cores
+          `lidR (4 cores)` = lidR:::C_knn(XX$X, XX$Y,XX$X, XX$Y, k, 4L),  # 4 cores
+          times = 1L)
+res <- data.frame(
+  package = res$expr,
+  runtime = res$time/1e9)
+
+res = res[order(res$runtime),]
+res$package = factor(res$package,levels = res$package)
+
+ggplot(res) +
+  aes(y = runtime, x = package) +
+  geom_bar(stat = "identity") +
+  theme_bw() + 
+  xlab("Package") + ylab("Time (s)")
+```
+
+We see that it is competitive with the very fast `libnabo` library but does more than `libnabo` since it also performs range queries such as point in discs, rectangles, cylinders, triangles, polygons.
+
+We don't know any R library providing such capability to produce benchmark comparisons. Moreover, `lidR` leverages the C++ classes to allow the creation of efficient third party applications. This functionality is heavily used in the [lidRplugins](https://github.com/Jean-Romain/lidRplugins) package.
+
+## Spatial index for LAS files {#sec-spatial-indexing-files}
+
+Previous sections were dedicated to explaining spatial indexing for `LAS` objects i.e. point clouds read with `readLAS()` and loaded in memory. This section focuses on spatial indexing for LAS files i.e. point clouds stored in las/laz files and not (yet) loaded in memory. The problem of spatial queries at read time is the same but the solution is different because it was developed in an independent context.
+
+Fast spatial queries are made possible by indexing the `.las` or `.laz` files with `.lax` files. A `.lax` file is a tiny file associated with a `.las` or `.laz` file that spatially indexes the points. This file type was created by Martin Isenburg in [LAStools](https://rapidlasso.com/). For a better understanding of how it works one can refer to a talk given by Martin Isenburg about [lasindex](https://rapidlasso.com/2012/12/03/lasindex-spatial-indexing-of-lidar-data/). In short it uses quadtree.
+
+By adding `.lax` files along with your `.las`/`.laz` files it is possible to make fast 2D queries **without reading the whole file**. The best way to create a `.lax` file is to use [laxindex](https://www.cs.unc.edu/~isenburg/lastools/download/lasindex_README.txt) from [LAStools](https://rapidlasso.com/lastools/). It is a free and open-source part of LAStools. If you cannot or do not want to use LAStools the `rlas` package has a function to creates lax files but `lasindex` should be preferred.
+
+``` r
+rlas::writelax("file.las")
+```
+
+The gain is really significant and transparent for users. If you have a `.lax` file it will be used.
+
+Here we test with 150 queries from the same indexed and a non-indexed `LAScatalog` with 400 files:
+
+``` r
+indexed = readLAScatalog("LiDAR with lax/")
+noindex = readLAScatalog("LiDAR no lax/")
+
+clip_circle(indexed, xc, yc, radius = 12)
+#> 45 sec
+clip_circle(noindex, xc, yc, radius = 12)
+#> 4 sec
+```
+
+If the reader did not skip @sec-spatial-indexing-cpp-api they might have noticed that `clip_circle()` can use a spatial index with a `LAScatalog` but not with a `LAS`. This is because they behave very differently internally and rely on two independent mechanisms. With a `LAScatalog` it inherits the capabilities of the library used to read the files while with a `LAS` object nothing has been implemented (yet) for taking advantage of spatial indexing at the R level (but the section above provide the solution).
+
+It's easy to guess that every `clip_something()` function can take advantage of spatial indexing with `.lax` files but the `LAScatalog` processing engine also makes heavy usage of such features. Users can significantly reduce the processing time by loading a buffer faster. Indeed loading a buffer implies spatial queries. This topic is covered by the vignette: [Speed-up the computations on a LAScatalog](https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html).

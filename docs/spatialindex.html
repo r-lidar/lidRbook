@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="A guide to the lidR package">
+
+<title>18&nbsp; Spatial indexing – The lidR package</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./plugins.html" rel="next">
+<link href="./outbox.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-ZBLHENEPMT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBLHENEPMT');
+</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./spatialindex.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Spatial indexing</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The lidR package</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/r-lidar/lidRbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./io.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Plotting, Querying &amp; Validating</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gnd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ground Classification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dtm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Digital terrain model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./normalization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Height normalization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dsm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital Surface Model and Canopy Height model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./itd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Indivitual tree dectection and segmentation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Derived metrics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cloud_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Derived metrics at the cloud level</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./grid_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Derived metrics at the pixel level</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tree_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Derived metrics at the tree level</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./voxel_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Derived metrics at the voxel level</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./point_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Derived metrics at point level</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./engine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title"><code>LAScatalog</code> processing engine (1/2)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./engine2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">LAScatalog processing engine (2/2)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modelling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Area-Based Approach (ABA) to forest modelling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./outbox.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking outside the box</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spatialindex.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Spatial indexing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./plugins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title"><code>lidR</code> plugin system</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-spatial-indexing-intro" id="toc-sec-spatial-indexing-intro" class="nav-link active" data-scroll-target="#sec-spatial-indexing-intro"><span class="header-section-number">18.1</span> Introduction to spatial indexes</a></li>
+  <li><a href="#sec-spatial-indexing-las" id="toc-sec-spatial-indexing-las" class="nav-link" data-scroll-target="#sec-spatial-indexing-las"><span class="header-section-number">18.2</span> Spatial indexes for LAS objects</a>
+  <ul class="collapse">
+  <li><a href="#sec-spatial-indexing-oveview" id="toc-sec-spatial-indexing-oveview" class="nav-link" data-scroll-target="#sec-spatial-indexing-oveview">Overview</a></li>
+  <li><a href="#sec-spatial-indexing-strategies" id="toc-sec-spatial-indexing-strategies" class="nav-link" data-scroll-target="#sec-spatial-indexing-strategies">Spatial indexes and selection strategies</a></li>
+  <li><a href="#sec-spatial-indexing-cpp-api" id="toc-sec-spatial-indexing-cpp-api" class="nav-link" data-scroll-target="#sec-spatial-indexing-cpp-api">C++ API</a></li>
+  <li><a href="#sec-spatial-indexing-benchmark" id="toc-sec-spatial-indexing-benchmark" class="nav-link" data-scroll-target="#sec-spatial-indexing-benchmark">Benchmark</a></li>
+  </ul></li>
+  <li><a href="#sec-spatial-indexing-files" id="toc-sec-spatial-indexing-files" class="nav-link" data-scroll-target="#sec-spatial-indexing-files"><span class="header-section-number">18.3</span> Spatial index for LAS files</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-spatial-indexing" class="quarto-section-identifier"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Spatial indexing</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Spatial indexing is a key feature for performing spatial queries over a large point cloud. Any search for points of interest in the absence of indexing would require a “sequential scan” of every point - this could take <em>a lot</em> of time. In brief, spatial indexing organizes data into a search structure that can be quickly traversed to find specific records. Some algorithms would take unreasonable amounts of time to complete without spatial indexing.</p>
+<section id="sec-spatial-indexing-intro" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="sec-spatial-indexing-intro"><span class="header-section-number">18.1</span> Introduction to spatial indexes</h2>
+<p>This section presents a layman overview of how spatial indexing works. If the reader is already knowledgeable about spatial indexing, they can skip this section.</p>
+<p>Imagine we have a lidar point cloud with 1 million points (sounds like alot… but it isn’t!). We want to query all points that fall within the extent of a circle centered on the coordinates <code>p = c(300, 350)</code> with a radius (<code>R</code>) of 25 meters. This is a typical query made thousands of times per second by many algorithms including the local maximum filter (<a href="itd.html#sec-lmffw" class="quarto-xref"><span>Section 7.1.1</span></a>) to locate individual trees. Without spatial indexing, the method consists of computing the distance to <code>p</code> for every single point. This is called a ‘sequential scan’, and it means that the computation for distance and comparisons must be conducted 1,000,000 times each.</p>
+<p>In R we can write:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">300</span>, <span class="dv">350</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>R <span class="ot">=</span> <span class="dv">25</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">runif</span>(<span class="fl">1e4</span>, <span class="dv">0</span>, <span class="dv">1000</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> <span class="fu">runif</span>(<span class="fl">1e4</span>, <span class="dv">0</span>, <span class="dv">1000</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>query <span class="ot">=</span> <span class="fu">sqrt</span>((X <span class="sc">-</span> p[<span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (Y <span class="sc">-</span> p[<span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span>) <span class="sc">&lt;</span> R</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>Xq <span class="ot">=</span> X[query]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>Yq <span class="ot">=</span> Y[query]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="spatialindex_files/figure-html/plot-sequential-scan-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="422"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This is what the <code>filter_poi()</code> function does. It a non-specialized function that enables querying points of interest (POI) based on their attribute values (including non-spatial queries such as <code>Intensity &gt; x</code>).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter_poi</span>(las, <span class="fu">sqrt</span>((X <span class="sc">-</span> p[<span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (Y <span class="sc">-</span> p[<span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span>) <span class="sc">&lt;</span> R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now imagine we want to perform 1,000,000 queries like that for 1,000,000 different points. That translates to 1,000,000 x 1,000,000 = 1 <strong>billion</strong> operations. This does not scale-up and quickly becomes unrealistic (or at <em>least</em> dramatically slow).</p>
+<p>With a spatial index, the points are organized in such a way that the computer does not need to perform all the comparisons. In a <a href="https://en.wikipedia.org/wiki/Quadtree">quadtree</a>, for example, the point cloud can be subdivided in 4 quadrants that are themselves subdivided in four quadrants and so on hierarchically (see figure below).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="spatialindex_files/figure-html/plot-quadtree-scan-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="422"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In this example we can immediately exclude 75% of the points (750,000 points) in 4 operations at the top level (in red). The bounding box of our query being <code>[275,325]x[325,375]</code> we know that the POIs do not belong in top-left quadrant <code>([0,500] x [500,1000])</code> nor in top-right quadrant <code>([500,1000] x [500,1000])</code> nor in bottom-right quadrant. At the second level (in blue) in 4 more operations we can exclude another 75% of the remaining points to search only in one quadrant. At this stage we can perform a sequential scan on only 1/16<sup>th</sup> of the points (i.e.&nbsp;62,500 points) meaning that we discarded 937,500 points in 8 operations! Consequently our query is (roughly) 16 times faster and could be even faster yet with more subdivision levels. In <code>lidR</code> a typical quadtree has 8 levels i.e.&nbsp;the space is subdivided in (2<sup>8</sup>)<sup>2</sup> = 65,536 quadrants.</p>
+<p>As we can see, spatial indexing provides a way to dramatically speed-up many common spatial queries using discs, rectangles, polygons, 2D, 3D and so on. Different types of spatial indexes exist for different purposes but in all cases the use of a spatial index is not free and comes at the cost of greater memory usage.</p>
+</section>
+<section id="sec-spatial-indexing-las" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="sec-spatial-indexing-las"><span class="header-section-number">18.2</span> Spatial indexes for LAS objects</h2>
+<section id="sec-spatial-indexing-oveview" class="level3">
+<h3 class="anchored" data-anchor-id="sec-spatial-indexing-oveview">Overview</h3>
+<p><code>lidR</code> makes use of spatial indexes in many functions and can choose different types of spatial indexes on-the-fly. So far, the book only presented the function <code>readLAS()</code> (see <a href="io.html" class="quarto-xref"><span>Chapter 2</span></a>) but the package has some variations of <code>readLAS()</code> named <code>readALSLAS()</code>, <code>readTLSLAS()</code>, <code>readUAVLAS()</code> and so on that enable the registration of a point cloud type allowing <code>lidR</code> to adequately choose the most appropriated spatial indexing method to perform a given computation as fast as possible.</p>
+<p>As an example we can use the TLS point cloud <code>pine_plot.laz</code> from the <code>TreeLS</code> package.</p>
+<p>First we read the file with <code>readLAS()</code>, which considers the point cloud to be ALS because <code>lidR</code> was originally designed for ALS and by legacy <code>readLAS()</code> from version &lt;= 3.1 behaves optimally for ALS. In the second case we use <code>readTLSLAS()</code> to inform <code>lidR</code> that this point cloud was sampled with a terrestrial device.</p>
+<p>In the following test we can see that the computation time was reduced from ~2.5 sec to ~1.3 sec by registering the proper point type. Improvements may range from 2 to 10 times faster depending on the point cloud and the method used.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"data/pine_plot.laz"</span>, <span class="at">select=</span><span class="st">'xyz'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>tls <span class="ot">&lt;-</span> <span class="fu">readTLSLAS</span>(<span class="st">"data/pine_plot.laz"</span>, <span class="at">select=</span><span class="st">'xyz'</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">segment_shapes</span>(las, <span class="fu">shp_plane</span>(<span class="at">k =</span> <span class="dv">15</span>), <span class="st">"Coplanar"</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; utilisateur     système      écoulé </span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       1.419       0.000       0.289</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">segment_shapes</span>(tls, <span class="fu">shp_plane</span>(<span class="at">k =</span> <span class="dv">15</span>), <span class="st">"Coplanar"</span>))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; utilisateur     système      écoulé </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       0.838       0.000       0.159</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This works for each method that implies many sequential spatial queries.</p>
+<p>In the following example we can observe a ~8 fold processing time reduction.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">point_metrics</span>(las, <span class="at">r =</span> <span class="dv">1</span>, <span class="sc">~</span><span class="fu">length</span>(Z)))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; utilisateur     système      écoulé </span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       3.616       0.000       3.616</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">point_metrics</span>(tls, <span class="at">r =</span> <span class="dv">1</span>, <span class="sc">~</span><span class="fu">length</span>(Z)))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; utilisateur     système      écoulé </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       1.012       0.000       1.013</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now lets try with an ALS point cloud. We can see that it’s better to read an ALS point cloud as ALS rather than as TLS (~2 fold difference). This is because registering the correct point cloud type enables the selection of the optimal spatial indexing algorithm internally.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>als <span class="ot">=</span> <span class="fu">readALSLAS</span>(<span class="st">"data/ENGINE/catalog/tiles_338000_5238500_1.laz"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tls <span class="ot">=</span> <span class="fu">readTLSLAS</span>(<span class="st">"data/ENGINE/catalog/tiles_338000_5238500_1.laz"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">classify_noise</span>(als, <span class="fu">sor</span>()))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; utilisateur     système      écoulé </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       2.934       0.008       0.577</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">classify_noise</span>(tls, <span class="fu">sor</span>()))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; utilisateur     système      écoulé </span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       8.110       0.008       1.581</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Take away</strong>: It is always a good idea to use the functions <code>readALSLAS()</code>, <code>readTLSLAS()</code>, <code>readDAPLAS()</code>, and so on introduced in <code>lidR v3.1.0</code>.</p>
+</blockquote>
+<p>There are however caveats resulting from using the optimal <code>read*LAS()</code> function that may not guarantee optimal processing performance.</p>
+<ol type="1">
+<li><p>All functions do not use spatial indexing or do not use the spatial index framework of <code>lidR</code>. For example, the <code>kriging()</code> function is based on the <code>gstat</code> package.</p></li>
+<li><p>The choice of spatial index relies on some assumptions that may not be met in specific point clouds. The internal dispatch is designed to work with ‘typical’ point clouds under some assumptions. An ALS point-cloud is typically spatially large (1 km² or more) with little <code>Z</code> dispersion (0 to 40 meters) relative to the <code>XY</code> dispersion (0 to 1000 meters). On the contrary, a TLS point cloud is typically spatially narrow (~3000 m²) with larger variations in <code>Z</code> relative to <code>XY</code>.</p></li>
+</ol>
+<p><code>read*LAS()</code> should be sufficient for most use cases but for some specific cases users can manually choose which spatial index is best suited. We cover this in the next section.</p>
+</section>
+<section id="sec-spatial-indexing-strategies" class="level3">
+<h3 class="anchored" data-anchor-id="sec-spatial-indexing-strategies">Spatial indexes and selection strategies</h3>
+<p><code>lidR</code> currently has 4 spatial indexes: a grid partition, a voxel partition, a quadtree and an octree. Each has its own pros and cons.</p>
+<p>Grid partition and quadtree are 2D indexes while voxel partition and octree are 3D indexes. They are all able to perform any kind of spatial query similarly. This is why it doesn’t matter if the point cloud is read with <code>readALSLAS()</code> or <code>readTLSLAS()</code>. The result will be the same. However their efficiency depends on the point cloud type and the query type. This is why using the proper <code>read*LAS()</code> function can matter.</p>
+<section id="sec-spi-ALS-strategy" class="level4">
+<h4 class="anchored" data-anchor-id="sec-spi-ALS-strategy">ALS strategies</h4>
+<p>For ALS we use a 2D index even for 3D queries.</p>
+<p>Indeed, an ALS point cloud is ‘mostly 2D’ because more than <strong>99% of the dispersion is in XY</strong>. When querying the knn of a given point (3D query) from a 2D index the vast majority of the points are discarded on a 2D basis. The remaining sequential scan occurs only on a very tiny fraction of the data set. This is also true for a 3D index but querying a 3D spatial index is slower and thus in <code>lidR</code> our 2D indexes perform best for ALS. A grid partition is used by default because it is often faster than a quadtree because ALS points are <strong>uniformly distributed</strong> on <code>XY</code>.</p>
+<p>The following example demonstrates how to manually register a spatial index and compare the computation times for a quadtree and an octree.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">=</span> <span class="fu">readLAS</span>(<span class="st">"data/ENGINE/catalog/tiles_338000_5238500_1.laz"</span>, <span class="at">select =</span> <span class="st">"xyz"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">index</span>(las) <span class="ot">&lt;-</span> <span class="st">"quadtree"</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">classify_noise</span>(las, <span class="fu">sor</span>()))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; utilisateur     système      écoulé </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       2.416       0.000       0.519</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">index</span>(las) <span class="ot">&lt;-</span> <span class="st">"octree"</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">classify_noise</span>(las, <span class="fu">sor</span>()))</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error in eval(expr, envir, enclos): Error: octree no longer supported.</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Chronométrage arrêté à : 0 0 0.001</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sec-spi-TLS-strategy" class="level4">
+<h4 class="anchored" data-anchor-id="sec-spi-TLS-strategy">TLS strategies</h4>
+<p>For TLS we use a 3D index because the points are <strong>almost evenly distributed in XYZ</strong> and thus a 2D query does not allow for discarding a large fraction of the points - the sequential scan remains important. An octree is used because points are expected to be <strong>not uniformly</strong> distributed on <code>XYZ</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"pine_plot.laz"</span>, <span class="at">package=</span><span class="st">"TreeLS"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(file, <span class="at">select=</span><span class="st">'xyz'</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error: File does not exist.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">index</span>(las) <span class="ot">&lt;-</span> <span class="st">"quadtree"</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">classify_noise</span>(las, <span class="fu">sor</span>()))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; utilisateur     système      écoulé </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       2.387       0.000       0.506</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">index</span>(las) <span class="ot">&lt;-</span> <span class="st">"octree"</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">classify_noise</span>(las, <span class="fu">sor</span>()))</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error in eval(expr, envir, enclos): Error: octree no longer supported.</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Chronométrage arrêté à : 0.001 0 0.001</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="dap-and-uav-strategies" class="level4">
+<h4 class="anchored" data-anchor-id="dap-and-uav-strategies">DAP and UAV strategies</h4>
+<p>For digital photogrammetry and UAV data we apply the same rules as TLS. When encountering a data set that does not follow these rules, it may be optimal to manually select a spatial index. This is the case of the data set seen in chapter <a href="point_metrics.html#sec-pba-applications-roof" class="quarto-xref"><span>Section 13.2.1</span></a>, which is an ALS data set but in practice it’s a small subset in which we can no longer say that more than 99% of the point dispersion is in <code>XY</code> only. In that sense it’s more of a TLS <em>ish</em> point cloud. But in the meantime the points are uniformly spread on <code>XY</code> because it’s actually an ALS data set. Thus making 3D queries using a 3D index most viable. Let’s try it:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"data/chap11/building_WilliamsAZ_Urban_normalized.laz"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">index</span>(las) <span class="ot">&lt;-</span> <span class="st">"gridpartition"</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">segment_shapes</span>(las, <span class="fu">shp_plane</span>(<span class="at">k =</span> <span class="dv">20</span>), <span class="st">"planar"</span>, <span class="at">filter =</span> <span class="sc">~</span>Classification <span class="sc">!=</span> LASGROUND))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; utilisateur     système      écoulé </span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       1.557       0.004       0.326</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">index</span>(las) <span class="ot">&lt;-</span> <span class="st">"voxelpartition"</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">segment_shapes</span>(las, <span class="fu">shp_plane</span>(<span class="at">k =</span> <span class="dv">20</span>), <span class="st">"planar"</span>, <span class="at">filter =</span> <span class="sc">~</span>Classification <span class="sc">!=</span> LASGROUND))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; utilisateur     système      écoulé </span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       1.668       0.000       0.330</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We see that both tests are almost equal, and that octree is slower. But one may find limit cases where its worth it to perform manual selection and thus <code>lidR</code> allows for overwriting the default rules. More details in <code>help("lidR-spatial-index")</code>.</p>
+</section>
+</section>
+<section id="sec-spatial-indexing-cpp-api" class="level3">
+<h3 class="anchored" data-anchor-id="sec-spatial-indexing-cpp-api">C++ API</h3>
+<p>For more advanced users and developers, the <code>lidR</code> spatial index framework is provided as header-only C++ classes meaning that users can link to <code>lidR</code> to develop R/C++ applications using <code>lidR</code> spatial indexes. If the reader is not comfortable with the terms C++, Rcpp, header-only, external pointer and other C++ related concepts, we understand! You can skip this section, which is dedicated to advanced users and package developers who want to develop complex and efficient tools.</p>
+<p>For the purpose of this example we will create a function <code>clip_disc()</code> similar to <code>clip_circle()</code> available in <code>lidR</code>. <code>clip_circle()</code> performs a sequential scan and is thus not suitable to perform many queries in a loop. The function <code>clip_disc()</code> on the contrary will take advantage of spatial indexing.</p>
+<p>There is only one C++ class to know named <code>SpatialIndex</code>. It has one constructor that accepts an <code>S4</code> class and has two public members <code>knn</code> and <code>lookup</code>.</p>
+<p>First we can write a C++ function that returns a pointer on a <code>SpatialIndex</code>. Here we are using an external pointer because it’s simple to write, and implies fewer lines of code. We can however also imagine taking advantage of Rcpp modules.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::depends(lidR)]]</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;SpatialIndex.h&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">namespace</span> Rcpp<span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">namespace</span> lidR<span class="op">;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>XPtr<span class="op">&lt;</span>SpatialIndex<span class="op">&gt;</span> spatial_index<span class="op">(</span>S4 las<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  SpatialIndex<span class="op">*</span> idx <span class="op">=</span> <span class="kw">new</span> SpatialIndex<span class="op">(</span>las<span class="op">);</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  XPtr<span class="op">&lt;</span>SpatialIndex<span class="op">&gt;</span> p<span class="op">(</span>idx<span class="op">,</span> <span class="kw">true</span><span class="op">);</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> p<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now we can instantiate a <code>SpatialIndex</code> at the R level.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">=</span> <span class="fu">readLAS</span>(<span class="st">"data/ENGINE/catalog/tiles_338000_5238500_1.laz"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>index <span class="ot">=</span> <span class="fu">spatial_index</span>(las)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>index</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;pointer: 0x60374eeecb30&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What has been created here is either a grid partition, a voxel partition, a quadtree or an octree depending on which <code>readLAS()</code> function was used to read the files or depending on the spatial index that was manually registered.</p>
+<p>Then we can write the C++ side of the query.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>IntegerVector filter_disc_with_index<span class="op">(</span>SEXP xptr<span class="op">,</span> <span class="dt">double</span> xc<span class="op">,</span> <span class="dt">double</span> yc<span class="op">,</span> <span class="dt">double</span> r<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  XPtr<span class="op">&lt;</span>SpatialIndex<span class="op">&gt;</span> tree<span class="op">(</span>xptr<span class="op">);</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  Circle circ<span class="op">(</span>xc<span class="op">,</span> yc<span class="op">,</span> r<span class="op">);</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">std::</span>vector<span class="op">&lt;</span>PointXYZ<span class="op">&gt;</span> pts<span class="op">;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  tree<span class="op">-&gt;</span>lookup<span class="op">(</span>circ<span class="op">,</span> pts<span class="op">);</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  IntegerVector ids<span class="op">(</span>pts<span class="op">.</span>size<span class="op">());</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span> <span class="op">;</span> i <span class="op">&lt;</span> pts<span class="op">.</span>size<span class="op">();</span> i<span class="op">++)</span> <span class="op">{</span> ids<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> pts<span class="op">[</span>i<span class="op">].</span>id<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> ids <span class="op">+</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// C++ is 0-indexed</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And the R side of the query</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>clip_disc <span class="ot">=</span> <span class="cf">function</span>(las, index, xcenter, ycenter, radius) {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  ii <span class="ot">&lt;-</span> <span class="fu">filter_disc_with_index</span>(index, xcenter, ycenter, radius)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(las[ii])</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can make a query and verify that both functions return the same points.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>sub1 <span class="ot">=</span> <span class="fu">clip_disc</span>(las, index, <span class="dv">338200</span>, <span class="dv">5238585</span>, <span class="dv">10</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>sub2 <span class="ot">=</span> <span class="fu">clip_circle</span>(las, <span class="dv">338200</span>, <span class="dv">5238585</span>, <span class="dv">10</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>sub1</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class        : LAS (v1.0 format 1)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; memory       : 78.6 Kb </span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent       : 338190, 338209.9, 5238575, 5238595 (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref.  : WGS 84 / UTM zone 19N </span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area         : 305.5 m²</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points       : 1.1 thousand points</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 3.75 points/m²</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 2.92 pulses/m²</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>sub2</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class        : LAS (v1.0 format 1)</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; memory       : 78.6 Kb </span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent       : 338190, 338209.9, 5238575, 5238595 (xmin, xmax, ymin, ymax)</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref.  : WGS 84 / UTM zone 19N </span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area         : 305.5 m²</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points       : 1.1 thousand points</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 3.75 points/m²</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 2.92 pulses/m²</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>While there is no gain with a single query because of the overhead of creating an index, it is indispensable to perform many successive queries. In the following we perform 50 queries in a loop.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">50</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">runif</span>(n, <span class="dv">338000</span>, <span class="dv">338500</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">runif</span>(n, <span class="dv">5238500</span>, <span class="dv">5239000</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) <span class="at">u =</span> <span class="fu">clip_circle</span>(las, x[i], y[i], <span class="dv">10</span>))</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; utilisateur     système      écoulé </span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       1.550       0.063       1.216</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) <span class="at">u =</span> <span class="fu">clip_disc</span>(las, index, x[i], y[i], <span class="dv">10</span>))</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; utilisateur     système      écoulé </span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       0.191       0.000       0.099</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For more functionalities one can look at the source code of <a href="https://github.com/Jean-Romain/lidR/blob/devel/inst/include/SpatialIndex.h">SpatialIndex</a> where we can see there are actually 2 constructors and 5 members including 2D and 3D knn, 2D and 3D knn with maximum radius and <code>lookup</code> that is templated to allow queries within any kind of user-defined shapes. The source code of many <code>lidR</code> functions such as <a href="https://github.com/Jean-Romain/lidR/blob/20893dd0d737394c876bd8238b3a88ad6141ea62/src/LAS.cpp#L360">lmf()</a> or <a href="https://github.com/Jean-Romain/lidR/blob/20893dd0d737394c876bd8238b3a88ad6141ea62/src/LAS.cpp#L649">detect_shape()</a> might be useful resources as well.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>SpatialIndex<span class="op">(</span><span class="at">const</span> Rcpp<span class="op">::</span>S4 las<span class="op">);</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>SpatialIndex<span class="op">(</span><span class="at">const</span> Rcpp<span class="op">::</span>S4 las<span class="op">,</span> <span class="at">const</span> <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">bool</span><span class="op">&gt;&amp;</span> filter<span class="op">);</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span> <span class="dt">void</span> lookup<span class="op">(</span>T<span class="op">&amp;</span> shape<span class="op">,</span> <span class="bu">std::</span>vector<span class="op">&lt;</span>PointXYZ<span class="op">&gt;&amp;</span> res<span class="op">);</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> knn<span class="op">(</span><span class="at">const</span> PointXY<span class="op">&amp;</span> p<span class="op">,</span> <span class="at">const</span> <span class="dt">unsigned</span> <span class="dt">int</span> k<span class="op">,</span> <span class="bu">std::</span>vector<span class="op">&lt;</span>PointXYZ<span class="op">&gt;&amp;</span> res<span class="op">);</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> knn<span class="op">(</span><span class="at">const</span> PointXYZ<span class="op">&amp;</span> p<span class="op">,</span> <span class="at">const</span> <span class="dt">unsigned</span> <span class="dt">int</span> k<span class="op">,</span> <span class="bu">std::</span>vector<span class="op">&lt;</span>PointXYZ<span class="op">&gt;&amp;</span> res<span class="op">);</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> knn<span class="op">(</span><span class="at">const</span> PointXY<span class="op">&amp;</span> p<span class="op">,</span> <span class="at">const</span> <span class="dt">unsigned</span> <span class="dt">int</span> k<span class="op">,</span> <span class="at">const</span> <span class="dt">double</span> r<span class="op">,</span> <span class="bu">std::</span>vector<span class="op">&lt;</span>PointXYZ<span class="op">&gt;&amp;</span> res<span class="op">);</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> knn<span class="op">(</span><span class="at">const</span> PointXYZ<span class="op">&amp;</span> p<span class="op">,</span> <span class="at">const</span> <span class="dt">unsigned</span> <span class="dt">int</span> k<span class="op">,</span> <span class="at">const</span> <span class="dt">double</span> r<span class="op">,</span> <span class="bu">std::</span>vector<span class="op">&lt;</span>PointXYZ<span class="op">&gt;&amp;</span> res<span class="op">);</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-spatial-indexing-benchmark" class="level3">
+<h3 class="anchored" data-anchor-id="sec-spatial-indexing-benchmark">Benchmark</h3>
+<p><code>lidR</code>’s spatial index framework is very fast, especially when large point clouds are used. In the following we compare how fast <code>lidR</code> searches for the 10-nearest neighbours of every point in a 2.3 million point ALS point cloud relative to the <code>RANN</code>, <code>FANN</code> and <code>nabor</code> packages.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="spatialindex_files/figure-html/bench-knn-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We see that it is competitive with the very fast <code>libnabo</code> library but does more than <code>libnabo</code> since it also performs range queries such as point in discs, rectangles, cylinders, triangles, polygons.</p>
+<p>We don’t know any R library providing such capability to produce benchmark comparisons. Moreover, <code>lidR</code> leverages the C++ classes to allow the creation of efficient third party applications. This functionality is heavily used in the <a href="https://github.com/Jean-Romain/lidRplugins">lidRplugins</a> package.</p>
+</section>
+</section>
+<section id="sec-spatial-indexing-files" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="sec-spatial-indexing-files"><span class="header-section-number">18.3</span> Spatial index for LAS files</h2>
+<p>Previous sections were dedicated to explaining spatial indexing for <code>LAS</code> objects i.e.&nbsp;point clouds read with <code>readLAS()</code> and loaded in memory. This section focuses on spatial indexing for LAS files i.e.&nbsp;point clouds stored in las/laz files and not (yet) loaded in memory. The problem of spatial queries at read time is the same but the solution is different because it was developed in an independent context.</p>
+<p>Fast spatial queries are made possible by indexing the <code>.las</code> or <code>.laz</code> files with <code>.lax</code> files. A <code>.lax</code> file is a tiny file associated with a <code>.las</code> or <code>.laz</code> file that spatially indexes the points. This file type was created by Martin Isenburg in <a href="https://rapidlasso.com/">LAStools</a>. For a better understanding of how it works one can refer to a talk given by Martin Isenburg about <a href="https://rapidlasso.com/2012/12/03/lasindex-spatial-indexing-of-lidar-data/">lasindex</a>. In short it uses quadtree.</p>
+<p>By adding <code>.lax</code> files along with your <code>.las</code>/<code>.laz</code> files it is possible to make fast 2D queries <strong>without reading the whole file</strong>. The best way to create a <code>.lax</code> file is to use <a href="https://www.cs.unc.edu/~isenburg/lastools/download/lasindex_README.txt">laxindex</a> from <a href="https://rapidlasso.com/lastools/">LAStools</a>. It is a free and open-source part of LAStools. If you cannot or do not want to use LAStools the <code>rlas</code> package has a function to creates lax files but <code>lasindex</code> should be preferred.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>rlas<span class="sc">::</span><span class="fu">writelax</span>(<span class="st">"file.las"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The gain is really significant and transparent for users. If you have a <code>.lax</code> file it will be used.</p>
+<p>Here we test with 150 queries from the same indexed and a non-indexed <code>LAScatalog</code> with 400 files:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>indexed <span class="ot">=</span> <span class="fu">readLAScatalog</span>(<span class="st">"LiDAR with lax/"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>noindex <span class="ot">=</span> <span class="fu">readLAScatalog</span>(<span class="st">"LiDAR no lax/"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">clip_circle</span>(indexed, xc, yc, <span class="at">radius =</span> <span class="dv">12</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 45 sec</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">clip_circle</span>(noindex, xc, yc, <span class="at">radius =</span> <span class="dv">12</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 sec</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If the reader did not skip <a href="#sec-spatial-indexing-cpp-api" class="quarto-xref"><span>Section 18.2.3</span></a> they might have noticed that <code>clip_circle()</code> can use a spatial index with a <code>LAScatalog</code> but not with a <code>LAS</code>. This is because they behave very differently internally and rely on two independent mechanisms. With a <code>LAScatalog</code> it inherits the capabilities of the library used to read the files while with a <code>LAS</code> object nothing has been implemented (yet) for taking advantage of spatial indexing at the R level (but the section above provide the solution).</p>
+<p>It’s easy to guess that every <code>clip_something()</code> function can take advantage of spatial indexing with <code>.lax</code> files but the <code>LAScatalog</code> processing engine also makes heavy usage of such features. Users can significantly reduce the processing time by loading a buffer faster. Indeed loading a buffer implies spatial queries. This topic is covered by the vignette: <a href="https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html">Speed-up the computations on a LAScatalog</a>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script async="" data-id="101462122" src="//static.getclicky.com/js"></script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/r-lidar\.com");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./outbox.html" class="pagination-link" aria-label="Thinking outside the box">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking outside the box</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./plugins.html" class="pagination-link" aria-label="`lidR` plugin system">
+        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title"><code>lidR</code> plugin system</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

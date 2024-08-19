@@ -1,0 +1,54 @@
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+r3dDefaults = rgl::r3dDefaults
+m = structure(c(0.921, -0.146, 0.362, 0, 0.386, 0.482, -0.787, 0, 
+                -0.06, 0.864, 0.5, 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
+r3dDefaults$FOV = 50
+r3dDefaults$userMatrix = m
+r3dDefaults$zoom = 0.75
+
+knitr::opts_chunk$set(
+  comment =  "#>", 
+  collapse = TRUE,
+  fig.align = "center")
+
+library(lidR)
+rgl::setupKnitr(autoprint = TRUE)
+```
+
+# Derived metrics at the voxel level {#sec-vba}
+
+## Overview {#sec-vba-overview}
+
+The "voxel" level of regularization corresponds to the computation of derived metrics for regularly spaced location in 3D. The `voxel_metrics()` function allows calculation of voxel-based metrics on provided point clouds and works like `cloud_metrics()`, `grid_metrics()`, and `tree_metrics()` seen in @sec-metrics, @sec-cba, @sec-aba and @sec-tba. In the examples below we use the `Megaplot.laz` data set, but the potential to use `voxel_metrics()` is particularly interesting for dense point clouds such as those produced by terrestrial lidar, or digital photogrammetry.
+
+## Applications {#sec-vba-applications}
+
+We can count the number of points inside each 4 x 4 x 4 m voxel:
+
+```{r}
+LASfile <- system.file("extdata", "Megaplot.laz", package="lidR")
+las <- readLAS(LASfile) # read file
+vox_met <- voxel_metrics(las, ~list(N = length(Z)), 4) # calculate voxel metrics
+```
+
+In this example the point cloud is first converted into 4 m voxels, then the function `length(Z)` is applied to all points located inside every voxel. The output is a `data.table` that contains the X, Y, and Z coordinates of voxels, and the calculated number of points and can be visualized in 3D using the `plot()` function as follows:
+
+```{r plot-vox-metrics, rgl = TRUE, fig.width = 4, fig.height = 3}
+plot(vox_met, color="N", pal = heat.colors, size = 4, bg = "white", voxel = TRUE)
+```
+
+Similarly to other `*_metrics()` functions designed to calculate derived metrics, `voxel_metrics()` can be used to calculate any number of pre- or user-defined summaries. For example, to calculate minimum, mean, maximum, and standard deviation of intensity in each voxel we can create a following function:
+
+```{r}
+custom_metrics <- function(x) { # user-defined function
+  m <- list(
+    i_min = min(x),
+    i_mean = mean(x),
+    i_max = max(x),
+    i_sd = sd(x)
+  )
+  return(m) # output
+}
+
+vox_met <- voxel_metrics(las, ~custom_metrics(Intensity), 4) # calculate voxel metrics
+```
