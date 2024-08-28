@@ -8,7 +8,7 @@
 
 <meta name="description" content="A guide to the lidR package">
 
-<title>14&nbsp; LAScatalog processing engine (1/2) – The lidR package</title>
+<title>15&nbsp; LAScatalog processing engine (1/2) – The lidR package</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -125,7 +125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./engine.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title"><code>LAScatalog</code> processing engine (1/2)</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./engine.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title"><code>LAScatalog</code> processing engine (1/2)</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -162,109 +162,115 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./io.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Plotting, Querying &amp; Validating</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Querying &amp; Validating</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./view.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Plotting</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./gnd.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ground Classification</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ground Classification</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dtm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Digital terrain model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Digital terrain model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./normalization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Height normalization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Height normalization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dsm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital Surface Model and Canopy Height model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Digital Surface Model and Canopy Height model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./itd.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Indivitual tree dectection and segmentation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Indivitual tree dectection and segmentation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Derived metrics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Derived metrics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cloud_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Derived metrics at the cloud level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Derived metrics at the cloud level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./grid_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Derived metrics at the pixel level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Derived metrics at the pixel level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tree_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Derived metrics at the tree level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Derived metrics at the tree level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./voxel_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Derived metrics at the voxel level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Derived metrics at the voxel level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./point_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Derived metrics at point level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Derived metrics at point level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./engine.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title"><code>LAScatalog</code> processing engine (1/2)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title"><code>LAScatalog</code> processing engine (1/2)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./engine2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">LAScatalog processing engine (2/2)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">LAScatalog processing engine (2/2)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./modelling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Area-Based Approach (ABA) to forest modelling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Area-Based Approach (ABA) to forest modelling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./outbox.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking outside the box</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Thinking outside the box</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./spatialindex.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Spatial indexing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Spatial indexing</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./plugins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title"><code>lidR</code> plugin system</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title"><code>lidR</code> plugin system</span></span></a>
   </div>
 </li>
     </ul>
@@ -277,22 +283,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-engine-rationale" id="toc-sec-engine-rationale" class="nav-link active" data-scroll-target="#sec-engine-rationale"><span class="header-section-number">14.1</span> Rationale for <code>LAScatalog</code> functionality</a></li>
-  <li><a href="#sec-engine-engine" id="toc-sec-engine-engine" class="nav-link" data-scroll-target="#sec-engine-engine"><span class="header-section-number">14.2</span> The <code>LAScatalog</code> engine</a></li>
-  <li><a href="#sec-engine-lascatalog" id="toc-sec-engine-lascatalog" class="nav-link" data-scroll-target="#sec-engine-lascatalog"><span class="header-section-number">14.3</span> Read a collection of files</a></li>
-  <li><a href="#sec-engine-asprs-compliance" id="toc-sec-engine-asprs-compliance" class="nav-link" data-scroll-target="#sec-engine-asprs-compliance"><span class="header-section-number">14.4</span> Validation</a></li>
-  <li><a href="#sec-engine-clip" id="toc-sec-engine-clip" class="nav-link" data-scroll-target="#sec-engine-clip"><span class="header-section-number">14.5</span> Extract Regions of interest</a>
+  <li><a href="#sec-engine-rationale" id="toc-sec-engine-rationale" class="nav-link active" data-scroll-target="#sec-engine-rationale"><span class="header-section-number">15.1</span> Rationale for <code>LAScatalog</code> functionality</a></li>
+  <li><a href="#sec-engine-engine" id="toc-sec-engine-engine" class="nav-link" data-scroll-target="#sec-engine-engine"><span class="header-section-number">15.2</span> The <code>LAScatalog</code> engine</a></li>
+  <li><a href="#sec-engine-lascatalog" id="toc-sec-engine-lascatalog" class="nav-link" data-scroll-target="#sec-engine-lascatalog"><span class="header-section-number">15.3</span> Read a collection of files</a></li>
+  <li><a href="#sec-engine-asprs-compliance" id="toc-sec-engine-asprs-compliance" class="nav-link" data-scroll-target="#sec-engine-asprs-compliance"><span class="header-section-number">15.4</span> Validation</a></li>
+  <li><a href="#sec-engine-clip" id="toc-sec-engine-clip" class="nav-link" data-scroll-target="#sec-engine-clip"><span class="header-section-number">15.5</span> Extract Regions of interest</a>
   <ul class="collapse">
   <li><a href="#sec-engine-clip-single" id="toc-sec-engine-clip-single" class="nav-link" data-scroll-target="#sec-engine-clip-single">Extract a single ROI</a></li>
   <li><a href="#sec-engine-clip-multiple" id="toc-sec-engine-clip-multiple" class="nav-link" data-scroll-target="#sec-engine-clip-multiple">Multiple extractions</a></li>
   </ul></li>
-  <li><a href="#sec-engine-options" id="toc-sec-engine-options" class="nav-link" data-scroll-target="#sec-engine-options"><span class="header-section-number">14.6</span> Modification of default behavior</a>
+  <li><a href="#sec-engine-options" id="toc-sec-engine-options" class="nav-link" data-scroll-target="#sec-engine-options"><span class="header-section-number">15.6</span> Modification of default behavior</a>
   <ul class="collapse">
   <li><a href="#sec-engine-options-ondisk" id="toc-sec-engine-options-ondisk" class="nav-link" data-scroll-target="#sec-engine-options-ondisk">Multiple extractions on disk</a></li>
   <li><a href="#sec-engine-options-index" id="toc-sec-engine-options-index" class="nav-link" data-scroll-target="#sec-engine-options-index">Multiple extraction with point cloud indexation</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul></li>
-  <li><a href="#sec-engine-gnd-classification" id="toc-sec-engine-gnd-classification" class="nav-link" data-scroll-target="#sec-engine-gnd-classification"><span class="header-section-number">14.7</span> Ground classification</a>
+  <li><a href="#sec-engine-gnd-classification" id="toc-sec-engine-gnd-classification" class="nav-link" data-scroll-target="#sec-engine-gnd-classification"><span class="header-section-number">15.7</span> Ground classification</a>
   <ul class="collapse">
   <li><a href="#sec-engine-options-chunk" id="toc-sec-engine-options-chunk" class="nav-link" data-scroll-target="#sec-engine-options-chunk">Chunk processing</a></li>
   <li><a href="#sec-engine-options-chunk-buffer" id="toc-sec-engine-options-chunk-buffer" class="nav-link" data-scroll-target="#sec-engine-options-chunk-buffer">Modifying buffers</a></li>
@@ -300,31 +306,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sec-engine-options-parallel" id="toc-sec-engine-options-parallel" class="nav-link" data-scroll-target="#sec-engine-options-parallel">Parallel processing</a></li>
   <li><a href="#summary-1" id="toc-summary-1" class="nav-link" data-scroll-target="#summary-1">Summary</a></li>
   </ul></li>
-  <li><a href="#sec-engine-dtm" id="toc-sec-engine-dtm" class="nav-link" data-scroll-target="#sec-engine-dtm"><span class="header-section-number">14.8</span> Digital Terrain Model</a>
+  <li><a href="#sec-engine-dtm" id="toc-sec-engine-dtm" class="nav-link" data-scroll-target="#sec-engine-dtm"><span class="header-section-number">15.8</span> Digital Terrain Model</a>
   <ul class="collapse">
   <li><a href="#sec-engine-dtm-inmemory" id="toc-sec-engine-dtm-inmemory" class="nav-link" data-scroll-target="#sec-engine-dtm-inmemory">In memory DTM</a></li>
   <li><a href="#sec-engine-dtm-ondisk" id="toc-sec-engine-dtm-ondisk" class="nav-link" data-scroll-target="#sec-engine-dtm-ondisk">On disk DTM</a></li>
   <li><a href="#summary-2" id="toc-summary-2" class="nav-link" data-scroll-target="#summary-2">Summary</a></li>
   </ul></li>
-  <li><a href="#sec-engine-normalization" id="toc-sec-engine-normalization" class="nav-link" data-scroll-target="#sec-engine-normalization"><span class="header-section-number">14.9</span> Height normalization</a></li>
-  <li><a href="#sec-engine-aba" id="toc-sec-engine-aba" class="nav-link" data-scroll-target="#sec-engine-aba"><span class="header-section-number">14.10</span> Area Based Approach</a>
+  <li><a href="#sec-engine-normalization" id="toc-sec-engine-normalization" class="nav-link" data-scroll-target="#sec-engine-normalization"><span class="header-section-number">15.9</span> Height normalization</a></li>
+  <li><a href="#sec-engine-aba" id="toc-sec-engine-aba" class="nav-link" data-scroll-target="#sec-engine-aba"><span class="header-section-number">15.10</span> Area Based Approach</a>
   <ul class="collapse">
   <li><a href="#summary-3" id="toc-summary-3" class="nav-link" data-scroll-target="#summary-3">Summary</a></li>
   </ul></li>
-  <li><a href="#sec-engine-itd" id="toc-sec-engine-itd" class="nav-link" data-scroll-target="#sec-engine-itd"><span class="header-section-number">14.11</span> Individual Tree Detection</a>
+  <li><a href="#sec-engine-itd" id="toc-sec-engine-itd" class="nav-link" data-scroll-target="#sec-engine-itd"><span class="header-section-number">15.11</span> Individual Tree Detection</a>
   <ul class="collapse">
   <li><a href="#summary-4" id="toc-summary-4" class="nav-link" data-scroll-target="#summary-4">Summary</a></li>
   </ul></li>
-  <li><a href="#sec-engine-its" id="toc-sec-engine-its" class="nav-link" data-scroll-target="#sec-engine-its"><span class="header-section-number">14.12</span> Individual Tree Segmentation</a></li>
-  <li><a href="#sec-engine-retile" id="toc-sec-engine-retile" class="nav-link" data-scroll-target="#sec-engine-retile"><span class="header-section-number">14.13</span> Retile a catalog</a>
+  <li><a href="#sec-engine-its" id="toc-sec-engine-its" class="nav-link" data-scroll-target="#sec-engine-its"><span class="header-section-number">15.12</span> Individual Tree Segmentation</a></li>
+  <li><a href="#sec-engine-retile" id="toc-sec-engine-retile" class="nav-link" data-scroll-target="#sec-engine-retile"><span class="header-section-number">15.13</span> Retile a catalog</a>
   <ul class="collapse">
   <li><a href="#retile-a-catalog-into-smaller-files" id="toc-retile-a-catalog-into-smaller-files" class="nav-link" data-scroll-target="#retile-a-catalog-into-smaller-files">Retile a catalog into smaller files</a></li>
   <li><a href="#add-a-buffer-around-each-file" id="toc-add-a-buffer-around-each-file" class="nav-link" data-scroll-target="#add-a-buffer-around-each-file">Add a buffer around each file</a></li>
   <li><a href="#create-a-new-collection-with-only-first-returns" id="toc-create-a-new-collection-with-only-first-returns" class="nav-link" data-scroll-target="#create-a-new-collection-with-only-first-returns">Create a new collection with only first returns</a></li>
   <li><a href="#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel" id="toc-create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel" class="nav-link" data-scroll-target="#create-a-new-collection-of-small-and-buffered-ground-returns-in-parallel">Create a new collection of small and buffered ground returns in parallel</a></li>
   </ul></li>
-  <li><a href="#sec-engine-independent-files" id="toc-sec-engine-independent-files" class="nav-link" data-scroll-target="#sec-engine-independent-files"><span class="header-section-number">14.14</span> The case of ground inventories</a></li>
-  <li><a href="#sec-engine-summary-sheet" id="toc-sec-engine-summary-sheet" class="nav-link" data-scroll-target="#sec-engine-summary-sheet"><span class="header-section-number">14.15</span> Summary of available options</a></li>
+  <li><a href="#sec-engine-independent-files" id="toc-sec-engine-independent-files" class="nav-link" data-scroll-target="#sec-engine-independent-files"><span class="header-section-number">15.14</span> The case of ground inventories</a></li>
+  <li><a href="#sec-engine-summary-sheet" id="toc-sec-engine-summary-sheet" class="nav-link" data-scroll-target="#sec-engine-summary-sheet"><span class="header-section-number">15.15</span> Summary of available options</a></li>
   </ul>
 </nav>
     </div>
@@ -333,7 +339,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-engine" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title"><code>LAScatalog</code> processing engine (1/2)</span></span></h1>
+<h1 class="title"><span id="sec-engine" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title"><code>LAScatalog</code> processing engine (1/2)</span></span></h1>
 </div>
 
 
@@ -350,8 +356,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="sec-engine-rationale" class="level2" data-number="14.1">
-<h2 data-number="14.1" class="anchored" data-anchor-id="sec-engine-rationale"><span class="header-section-number">14.1</span> Rationale for <code>LAScatalog</code> functionality</h2>
+<section id="sec-engine-rationale" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="sec-engine-rationale"><span class="header-section-number">15.1</span> Rationale for <code>LAScatalog</code> functionality</h2>
 <p>So far we have demonstrated how to process a point cloud file using <code>readLAS()</code>. In practice, ALS acquisitions are made up of hundreds or even thousands of files, not being feasible (or possible!) for all to be loaded at once into memory. For example, the image below shows an acquisition split into 320 1 km² tiles:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -370,7 +376,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write</span>(output, <span class="st">"path/to/output.ext"</span>)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This however is very bad practice because each file is loaded without a buffer, meaning outputs will be invalid or weak at the edges because of the absence of spatial context.</p>
-<p>Let’s compute a DTM (see <a href="dtm.html" class="quarto-xref"><span>Chapter 4</span></a>) as an example, where we use a <code>for</code> loop on 4 contiguous files. We can see the obvious invalidity of the DTM between the files, but also at the periphery, even if less obvious.</p>
+<p>Let’s compute a DTM (see <a href="dtm.html" class="quarto-xref"><span>Chapter 5</span></a>) as an example, where we use a <code>for</code> loop on 4 contiguous files. We can see the obvious invalidity of the DTM between the files, but also at the periphery, even if less obvious.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -391,14 +397,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="sec-engine-engine" class="level2" data-number="14.2">
-<h2 data-number="14.2" class="anchored" data-anchor-id="sec-engine-engine"><span class="header-section-number">14.2</span> The <code>LAScatalog</code> engine</h2>
+<section id="sec-engine-engine" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="sec-engine-engine"><span class="header-section-number">15.2</span> The <code>LAScatalog</code> engine</h2>
 <p>The <code>lidR</code> package provides a powerful and versatile set of tools to work with collections of files and enables the application of workflow with an automatic management of tile buffering, on disk storage, parallelization of tasks and so on. While the engine is powerful and versatile, it’s also a complex tool, so we have dedicated two section to its description.</p>
 <p>This section presents the justification for the engine and demonstrates how to use it by applying common <code>lidR</code> functions seen in previous section. The next section goes deeper into the engine to demonstrate how developers can leverage the internal functionality of <code>lidR</code> to create their own applications.</p>
 <p>The <code>LAScatalog</code> class and the <code>LAScatalog</code> engine are intricately documented in two dedicated vignettes available <a href="https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-class.html">here</a> and <a href="https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAScatalog-engine.html">here</a>. The purpose of this book is to propose alternative documentation with more illustrated examples and real use cases.</p>
 </section>
-<section id="sec-engine-lascatalog" class="level2" data-number="14.3">
-<h2 data-number="14.3" class="anchored" data-anchor-id="sec-engine-lascatalog"><span class="header-section-number">14.3</span> Read a collection of files</h2>
+<section id="sec-engine-lascatalog" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="sec-engine-lascatalog"><span class="header-section-number">15.3</span> Read a collection of files</h2>
 <p>The function <code>readLAScatalog()</code> reads the header of all the <code>LAS</code> files of a given folder. The header of a <code>LAS</code> file contains, among others, the bounding box of the point cloud, meaning that it’s possible to know where the file is situated spatially without reading a potentially massive amount of data. <code>readLAScatalog()</code> builds a <code>sf/sfc_POLYGON</code> out of the bounding boxes of the files and presents them in an easily accessible manner.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ctg <span class="ot">&lt;-</span> <span class="fu">readLAScatalog</span>(<span class="st">"path/to/folder/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell" data-layout-align="center">
@@ -420,7 +426,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>In this and the following chapter (<a href="engine2.html" class="quarto-xref"><span>Chapter 15</span></a>) we will use a collection of nine 500 x 500 m files to create examples. The nine files can be downloaded here:</p>
+<p>In this and the following chapter (<a href="engine2.html" class="quarto-xref"><span>Chapter 16</span></a>) we will use a collection of nine 500 x 500 m files to create examples. The nine files can be downloaded here:</p>
 <ol type="1">
 <li><a href="https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238000_1.laz">tiles_338000_5238000.laz</a></li>
 <li><a href="https://github.com/r-lidar/lidRbook/raw/master/data/ENGINE/catalog/tiles_338000_5238500_1.laz">tiles_338000_5238500.laz</a></li>
@@ -453,8 +459,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="sec-engine-asprs-compliance" class="level2" data-number="14.4">
-<h2 data-number="14.4" class="anchored" data-anchor-id="sec-engine-asprs-compliance"><span class="header-section-number">14.4</span> Validation</h2>
+<section id="sec-engine-asprs-compliance" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="sec-engine-asprs-compliance"><span class="header-section-number">15.4</span> Validation</h2>
 <p>Similar to <a href="io.html" class="quarto-xref"><span>Chapter 2</span></a>, an important first step in ALS data processing is ensuring that your data is complete and valid. The <code>las_check()</code> function performs an inspection of <code>LAScatalog</code> objects for file consistency.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">las_check</span>(ctg)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Checking headers consistency</span></span>
@@ -467,8 +473,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [...]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For a deep (and longer) inspection of each file use <code>deep = TRUE</code>. This will sequentially load each file entirely. It’s thus important to be sure you have enough memory to manage this.</p>
 </section>
-<section id="sec-engine-clip" class="level2" data-number="14.5">
-<h2 data-number="14.5" class="anchored" data-anchor-id="sec-engine-clip"><span class="header-section-number">14.5</span> Extract Regions of interest</h2>
+<section id="sec-engine-clip" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="sec-engine-clip"><span class="header-section-number">15.5</span> Extract Regions of interest</h2>
 <section id="sec-engine-clip-single" class="level3">
 <h3 class="anchored" data-anchor-id="sec-engine-clip-single">Extract a single ROI</h3>
 <p>Functions using the <code>clip_*()</code> moniker are a good starting point for exploring the capabilities of the <code>LAScataglog</code> engine. <code>clip_*()</code> functions allow for the extraction of a region of interest (ROI) from a point cloud. The following example extracts a circle from a point cloud loaded into memory in a <code>LAS</code> object:</p>
@@ -528,8 +534,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="sec-engine-options" class="level2" data-number="14.6">
-<h2 data-number="14.6" class="anchored" data-anchor-id="sec-engine-options"><span class="header-section-number">14.6</span> Modification of default behavior</h2>
+<section id="sec-engine-options" class="level2" data-number="15.6">
+<h2 data-number="15.6" class="anchored" data-anchor-id="sec-engine-options"><span class="header-section-number">15.6</span> Modification of default behavior</h2>
 <p>When processing a <code>LAScatalog</code>, no matter with which function, it internally uses what we called the <code>LAScatalog</code> processing engine. This is what happened <em>under the hood</em> when using <code>clip_circle()</code> in above examples. The default behavior of the engine is set in such a way that it returns what is most likely to be expected by the users. However the behavior of the engine can be tuned to optimize processing. Engine options, at the user level, can be modified with <code>opt_*()</code> functions.</p>
 <p>The goal of this section is to present these options and how they affect the behavior of the engine.</p>
 <section id="sec-engine-options-ondisk" class="level3">
@@ -582,12 +588,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 </section>
 </section>
-<section id="sec-engine-gnd-classification" class="level2" data-number="14.7">
-<h2 data-number="14.7" class="anchored" data-anchor-id="sec-engine-gnd-classification"><span class="header-section-number">14.7</span> Ground classification</h2>
+<section id="sec-engine-gnd-classification" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="sec-engine-gnd-classification"><span class="header-section-number">15.7</span> Ground classification</h2>
 <section id="sec-engine-options-chunk" class="level3">
 <h3 class="anchored" data-anchor-id="sec-engine-options-chunk">Chunk processing</h3>
-<p><code>classify_ground()</code> (see <a href="gnd.html" class="quarto-xref"><span>Chapter 3</span></a>) is an important function of <code>lidR</code>, which works seamlessly with the <code>LAScatalog</code> engine. An ALS acquisition is processed in pieces, referred to here as <strong>chunks</strong>. An acquisition is usually split into chunks where files correspond to a tiling pattern. Using <code>classify_ground()</code> within the <code>LAScatalog</code> engine will process each file sequentially. Given that we emphasize the importance of processing point clouds including a buffer, the engine loads a buffer on-the-fly around each tile before any processing is conducted.</p>
-<p>The most basic implementation is very similar to examples in <a href="gnd.html" class="quarto-xref"><span>Chapter 3</span></a>. In this case we first specify where to write the outputs using <code>opt_output_files()</code>. The files written on disk will be <code>LAS</code> files, while the output in R will be a <code>LAScatalog</code>. If we don’t write to disk, the result of each chunk will be stored into memory, potentially leading to memory issues.</p>
+<p><code>classify_ground()</code> (see <a href="gnd.html" class="quarto-xref"><span>Chapter 4</span></a>) is an important function of <code>lidR</code>, which works seamlessly with the <code>LAScatalog</code> engine. An ALS acquisition is processed in pieces, referred to here as <strong>chunks</strong>. An acquisition is usually split into chunks where files correspond to a tiling pattern. Using <code>classify_ground()</code> within the <code>LAScatalog</code> engine will process each file sequentially. Given that we emphasize the importance of processing point clouds including a buffer, the engine loads a buffer on-the-fly around each tile before any processing is conducted.</p>
+<p>The most basic implementation is very similar to examples in <a href="gnd.html" class="quarto-xref"><span>Chapter 4</span></a>. In this case we first specify where to write the outputs using <code>opt_output_files()</code>. The files written on disk will be <code>LAS</code> files, while the output in R will be a <code>LAScatalog</code>. If we don’t write to disk, the result of each chunk will be stored into memory, potentially leading to memory issues.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">"{*}_classified"</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>classified_ctg <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(ctg, <span class="fu">csf</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In reality, R won’t crash because the function won’t allow users to classify a collection of files without providing a path to save outputs. Most functions in <code>lidR</code> check user inputs to mitigate issues.</p>
@@ -677,16 +683,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 </section>
 </section>
-<section id="sec-engine-dtm" class="level2" data-number="14.8">
-<h2 data-number="14.8" class="anchored" data-anchor-id="sec-engine-dtm"><span class="header-section-number">14.8</span> Digital Terrain Model</h2>
-<p>So far we have learned enough about the engine to generate a nice and valid DTM using <code>rasterize_terrain()</code> (see <a href="dtm.html" class="quarto-xref"><span>Chapter 4</span></a>).</p>
+<section id="sec-engine-dtm" class="level2" data-number="15.8">
+<h2 data-number="15.8" class="anchored" data-anchor-id="sec-engine-dtm"><span class="header-section-number">15.8</span> Digital Terrain Model</h2>
+<p>So far we have learned enough about the engine to generate a nice and valid DTM using <code>rasterize_terrain()</code> (see <a href="dtm.html" class="quarto-xref"><span>Chapter 5</span></a>).</p>
 <section id="sec-engine-dtm-inmemory" class="level3">
 <h3 class="anchored" data-anchor-id="sec-engine-dtm-inmemory">In memory DTM</h3>
 <p>Generating a DTM that encompasses an entire ALS acquisition is as easy as generating a DTM that encompasses a single point cloud file. The following generates a DTM with default parameters (i.e.&nbsp;processing by file with a 30 m buffer). In each chunk <code>rasterize_terrain()</code> computes a DTM. The result is a collection of rasters, however one feature of the engine is to merge everything in single, seamless, manipulable object. A raster is usually less memory intensive that a point cloud, so returning everything in memory is feasible if the raster is not too large.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(ctg, <span class="dv">2</span>, <span class="fu">tin</span>(), <span class="at">pkg =</span> <span class="st">"terra"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can render a shaded DTM like that from <a href="dtm.html#sec-hillshade" class="quarto-xref"><span>Section 4.6</span></a>) to better visualize the output:</p>
+<p>We can render a shaded DTM like that from <a href="dtm.html#sec-hillshade" class="quarto-xref"><span>Section 5.6</span></a>) to better visualize the output:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>dtm_prod <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">terrain</span>(dtm, <span class="at">v =</span> <span class="fu">c</span>(<span class="st">"slope"</span>, <span class="st">"aspect"</span>), <span class="at">unit =</span> <span class="st">"radians"</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>dtm_hillshade <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">shade</span>(<span class="at">slope =</span> dtm_prod<span class="sc">$</span>slope, <span class="at">aspect =</span> dtm_prod<span class="sc">$</span>aspect)</span>
@@ -731,9 +737,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 </section>
 </section>
-<section id="sec-engine-normalization" class="level2" data-number="14.9">
-<h2 data-number="14.9" class="anchored" data-anchor-id="sec-engine-normalization"><span class="header-section-number">14.9</span> Height normalization</h2>
-<p>Previous sections detail considerations for using the <code>LAScatalog</code> engine to perform point cloud normalization using <code>normalize_height()</code> (see <a href="normalization.html" class="quarto-xref"><span>Chapter 5</span></a>. We created a DTM in the previous section, so we use it here to normalize.</p>
+<section id="sec-engine-normalization" class="level2" data-number="15.9">
+<h2 data-number="15.9" class="anchored" data-anchor-id="sec-engine-normalization"><span class="header-section-number">15.9</span> Height normalization</h2>
+<p>Previous sections detail considerations for using the <code>LAScatalog</code> engine to perform point cloud normalization using <code>normalize_height()</code> (see <a href="normalization.html" class="quarto-xref"><span>Chapter 6</span></a>. We created a DTM in the previous section, so we use it here to normalize.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span>  <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">"/{*}_norm"</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>ctg_norm <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(ctg, dtm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -742,8 +748,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span>  <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">"/{*}_norm"</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ctg_norm <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(ctg, <span class="fu">tin</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="sec-engine-aba" class="level2" data-number="14.10">
-<h2 data-number="14.10" class="anchored" data-anchor-id="sec-engine-aba"><span class="header-section-number">14.10</span> Area Based Approach</h2>
+<section id="sec-engine-aba" class="level2" data-number="15.10">
+<h2 data-number="15.10" class="anchored" data-anchor-id="sec-engine-aba"><span class="header-section-number">15.10</span> Area Based Approach</h2>
 <p>Area based approach (<code>pixel_metrics()</code>) outputs are raster objects like a DTM. Two more options of the engine do exist that are not controllable in every function. When reading a LAS file with <code>readLAS()</code> two options <code>select</code> and <code>filter</code> are offered (see <a href="io.html" class="quarto-xref"><span>Chapter 2</span></a>)). When processing a collection of files <code>readLAS()</code> is called internally and it is not possible to modify these parameters. Instead we can use the options <code>opt_filter()</code> and <code>opt_select()</code> to propagate these arguments.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_select</span>(ctg) <span class="ot">&lt;-</span> <span class="st">"xyzci"</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_filter</span>(ctg) <span class="ot">&lt;-</span> <span class="st">"-keep_first"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -775,8 +781,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 </section>
 </section>
-<section id="sec-engine-itd" class="level2" data-number="14.11">
-<h2 data-number="14.11" class="anchored" data-anchor-id="sec-engine-itd"><span class="header-section-number">14.11</span> Individual Tree Detection</h2>
+<section id="sec-engine-itd" class="level2" data-number="15.11">
+<h2 data-number="15.11" class="anchored" data-anchor-id="sec-engine-itd"><span class="header-section-number">15.11</span> Individual Tree Detection</h2>
 <p>At this stage with have all the tools required to find each individual tree using <code>locate_trees()</code> in a collection of files. The following example extracts every tree found over the acquisition. The output is returned in memory as a single, continuous object. Each chunk is processed with a buffer ensuring that trees will be properly detected at the edges of the files. A total of 100,000 trees were found in this example.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">locate_trees</span>(ctg_norm, <span class="fu">lmf</span>(<span class="dv">4</span>))</span>
@@ -859,9 +865,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 </section>
 </section>
-<section id="sec-engine-its" class="level2" data-number="14.12">
-<h2 data-number="14.12" class="anchored" data-anchor-id="sec-engine-its"><span class="header-section-number">14.12</span> Individual Tree Segmentation</h2>
-<p>Individual tree segmentation with <code>segment_trees()</code> is the most complicated function to use with a <code>LAScatalog</code> because there are many different algorithms. Some imply the use of an in memory raster and an in memory vector, some require only an in memory raster and some require only a point cloud (see <a href="itd.html" class="quarto-xref"><span>Chapter 7</span></a>). Moreover it is complex to manage edge artifacts. Imagine there is a tree that is situated exactly on the edge between two files. The first half on one file, the second half on another. The two files will be processed independently - maybe on different remote computers. Both sides of the tree must be attributed the same ID independently to get something that is strictly continuous. The function <code>segment_trees()</code> manages all these points. The example below uses the <code>dalponte2016()</code> algorithm.</p>
+<section id="sec-engine-its" class="level2" data-number="15.12">
+<h2 data-number="15.12" class="anchored" data-anchor-id="sec-engine-its"><span class="header-section-number">15.12</span> Individual Tree Segmentation</h2>
+<p>Individual tree segmentation with <code>segment_trees()</code> is the most complicated function to use with a <code>LAScatalog</code> because there are many different algorithms. Some imply the use of an in memory raster and an in memory vector, some require only an in memory raster and some require only a point cloud (see <a href="itd.html" class="quarto-xref"><span>Chapter 8</span></a>). Moreover it is complex to manage edge artifacts. Imagine there is a tree that is situated exactly on the edge between two files. The first half on one file, the second half on another. The two files will be processed independently - maybe on different remote computers. Both sides of the tree must be attributed the same ID independently to get something that is strictly continuous. The function <code>segment_trees()</code> manages all these points. The example below uses the <code>dalponte2016()</code> algorithm.</p>
 <p>First we create a 1 m resolution CHM stored on disk and returned as a light virtual raster.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">"/chm_{*}"</span>)</span>
@@ -909,8 +915,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We can observe that the segmentation is perfect with respect to the labelling problem. Trees that were segmented twice independently on each edge were attributed the same IDs on both sides and that the final output is wall-to-wall.</p>
 </section>
-<section id="sec-engine-retile" class="level2" data-number="14.13">
-<h2 data-number="14.13" class="anchored" data-anchor-id="sec-engine-retile"><span class="header-section-number">14.13</span> Retile a catalog</h2>
+<section id="sec-engine-retile" class="level2" data-number="15.13">
+<h2 data-number="15.13" class="anchored" data-anchor-id="sec-engine-retile"><span class="header-section-number">15.13</span> Retile a catalog</h2>
 <p>The function <code>catalog_retile()</code> allows for retiling an ALS acquisition of files. This is the best example to combine everything we have seen in this section.</p>
 <section id="retile-a-catalog-into-smaller-files" class="level3">
 <h3 class="anchored" data-anchor-id="retile-a-catalog-into-smaller-files">Retile a catalog into smaller files</h3>
@@ -981,8 +987,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="sec-engine-independent-files" class="level2" data-number="14.14">
-<h2 data-number="14.14" class="anchored" data-anchor-id="sec-engine-independent-files"><span class="header-section-number">14.14</span> The case of ground inventories</h2>
+<section id="sec-engine-independent-files" class="level2" data-number="15.14">
+<h2 data-number="15.14" class="anchored" data-anchor-id="sec-engine-independent-files"><span class="header-section-number">15.14</span> The case of ground inventories</h2>
 <p>The case of ground inventories or more generally independent files is particular. We generated such collections in the first example of this section.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -1012,8 +1018,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Everything seen so far remains true. But with these options we are sure to not make mistakes when processing independent files.</p>
 </section>
-<section id="sec-engine-summary-sheet" class="level2" data-number="14.15">
-<h2 data-number="14.15" class="anchored" data-anchor-id="sec-engine-summary-sheet"><span class="header-section-number">14.15</span> Summary of available options</h2>
+<section id="sec-engine-summary-sheet" class="level2" data-number="15.15">
+<h2 data-number="15.15" class="anchored" data-anchor-id="sec-engine-summary-sheet"><span class="header-section-number">15.15</span> Summary of available options</h2>
 <p>The engine processes the covered area by chunk. A chunk is an arbitrary square region queried from the collection of files. Each chunk is loaded with a buffer, and each chunk correspond to an independent results. All together the chunks tessellate the coverage unless files are not overlapping. Results are merged into a single object at the end of the processing when possible.</p>
 <ul>
 <li><code>opt_chunk_size(ctg) &lt;- 800</code> controls the size of the chunks. Set 0 use the tiling pattern (processing by file)</li>
@@ -1483,12 +1489,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./point_metrics.html" class="pagination-link" aria-label="Derived metrics at point level">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Derived metrics at point level</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Derived metrics at point level</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./engine2.html" class="pagination-link" aria-label="LAScatalog processing engine (2/2)">
-        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">LAScatalog processing engine (2/2)</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">LAScatalog processing engine (2/2)</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

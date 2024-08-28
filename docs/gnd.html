@@ -8,7 +8,7 @@
 
 <meta name="description" content="A guide to the lidR package">
 
-<title>3&nbsp; Ground Classification – The lidR package</title>
+<title>4&nbsp; Ground Classification – The lidR package</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./dtm.html" rel="next">
-<link href="./io.html" rel="prev">
+<link href="./view.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -125,7 +125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./gnd.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ground Classification</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./gnd.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ground Classification</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -162,109 +162,115 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./io.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Plotting, Querying &amp; Validating</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Querying &amp; Validating</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./view.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Plotting</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./gnd.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ground Classification</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ground Classification</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dtm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Digital terrain model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Digital terrain model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./normalization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Height normalization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Height normalization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dsm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital Surface Model and Canopy Height model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Digital Surface Model and Canopy Height model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./itd.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Indivitual tree dectection and segmentation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Indivitual tree dectection and segmentation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Derived metrics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Derived metrics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cloud_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Derived metrics at the cloud level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Derived metrics at the cloud level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./grid_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Derived metrics at the pixel level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Derived metrics at the pixel level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tree_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Derived metrics at the tree level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Derived metrics at the tree level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./voxel_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Derived metrics at the voxel level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Derived metrics at the voxel level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./point_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Derived metrics at point level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Derived metrics at point level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./engine.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title"><code>LAScatalog</code> processing engine (1/2)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title"><code>LAScatalog</code> processing engine (1/2)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./engine2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">LAScatalog processing engine (2/2)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">LAScatalog processing engine (2/2)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./modelling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Area-Based Approach (ABA) to forest modelling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Area-Based Approach (ABA) to forest modelling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./outbox.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking outside the box</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Thinking outside the box</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./spatialindex.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Spatial indexing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Spatial indexing</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./plugins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title"><code>lidR</code> plugin system</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title"><code>lidR</code> plugin system</span></span></a>
   </div>
 </li>
     </ul>
@@ -277,12 +283,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-pmf" id="toc-sec-pmf" class="nav-link active" data-scroll-target="#sec-pmf"><span class="header-section-number">3.1</span> Progressive Morphological Filter</a></li>
-  <li><a href="#sec-csf" id="toc-sec-csf" class="nav-link" data-scroll-target="#sec-csf"><span class="header-section-number">3.2</span> Cloth Simulation Function</a></li>
-  <li><a href="#sec-mcc" id="toc-sec-mcc" class="nav-link" data-scroll-target="#sec-mcc"><span class="header-section-number">3.3</span> Multiscale Curvature Classification (MCC)</a></li>
-  <li><a href="#sec-edge-artifact" id="toc-sec-edge-artifact" class="nav-link" data-scroll-target="#sec-edge-artifact"><span class="header-section-number">3.4</span> Edge Artifacts</a></li>
-  <li><a href="#sec-method-selection" id="toc-sec-method-selection" class="nav-link" data-scroll-target="#sec-method-selection"><span class="header-section-number">3.5</span> How to Choose a Method and Its Parameters?</a></li>
-  <li><a href="#sec-other" id="toc-sec-other" class="nav-link" data-scroll-target="#sec-other"><span class="header-section-number">3.6</span> Other Methods</a></li>
+  <li><a href="#sec-pmf" id="toc-sec-pmf" class="nav-link active" data-scroll-target="#sec-pmf"><span class="header-section-number">4.1</span> Progressive Morphological Filter</a></li>
+  <li><a href="#sec-csf" id="toc-sec-csf" class="nav-link" data-scroll-target="#sec-csf"><span class="header-section-number">4.2</span> Cloth Simulation Function</a></li>
+  <li><a href="#sec-mcc" id="toc-sec-mcc" class="nav-link" data-scroll-target="#sec-mcc"><span class="header-section-number">4.3</span> Multiscale Curvature Classification (MCC)</a></li>
+  <li><a href="#sec-edge-artifact" id="toc-sec-edge-artifact" class="nav-link" data-scroll-target="#sec-edge-artifact"><span class="header-section-number">4.4</span> Edge Artifacts</a></li>
+  <li><a href="#sec-method-selection" id="toc-sec-method-selection" class="nav-link" data-scroll-target="#sec-method-selection"><span class="header-section-number">4.5</span> How to Choose a Method and Its Parameters?</a></li>
+  <li><a href="#sec-other" id="toc-sec-other" class="nav-link" data-scroll-target="#sec-other"><span class="header-section-number">4.6</span> Other Methods</a></li>
   </ul>
 </nav>
     </div>
@@ -291,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-gnd" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ground Classification</span></span></h1>
+<h1 class="title"><span id="sec-gnd" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ground Classification</span></span></h1>
 </div>
 
 
@@ -308,9 +314,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows creation of a continuous model of terrain elevation (see <a href="dtm.html" class="quarto-xref"><span>Chapter 4</span></a>)). Many algorithms have been reported in the literature and <code>lidR</code> currently provides three of them: Progressive Morphological Filter (PMF), Cloth Simulation Function (CSF) and Multiscale Curvature Classification (MCC) usable with the function <code>classify_ground()</code>.</p>
-<section id="sec-pmf" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="sec-pmf"><span class="header-section-number">3.1</span> Progressive Morphological Filter</h2>
+<p>Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows creation of a continuous model of terrain elevation (see <a href="dtm.html" class="quarto-xref"><span>Chapter 5</span></a>)). Many algorithms have been reported in the literature and <code>lidR</code> currently provides three of them: Progressive Morphological Filter (PMF), Cloth Simulation Function (CSF) and Multiscale Curvature Classification (MCC) usable with the function <code>classify_ground()</code>.</p>
+<section id="sec-pmf" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="sec-pmf"><span class="header-section-number">4.1</span> Progressive Morphological Filter</h2>
 <p>The implementation of PMF algorithm in <code>lidR</code> is based on the method described in <a href="https://ieeexplore.ieee.org/document/1202973">Zhang et al.&nbsp;(2003)</a> with some technical modifications. The original method is raster-based, while <code>lidR</code> performs point-based morphological operations because <code>lidR</code> is a point cloud oriented software. The main step of the methods are summarised in the figure below:</p>
 <center>
 <img src="images/GND/PMF.png" class="img-fluid">
@@ -332,7 +338,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>To better illustrate the classification results we can generate and plot a cross section of the point cloud (see <a href="io.html#sec-plot-crossection" class="quarto-xref"><span>Section 2.3.5</span></a>)).</p>
+<p>To better illustrate the classification results we can generate and plot a cross section of the point cloud (see <a href="view.html#sec-plot-crossection" class="quarto-xref"><span>Section 3.3</span></a>)).</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -359,8 +365,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="sec-csf" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="sec-csf"><span class="header-section-number">3.2</span> Cloth Simulation Function</h2>
+<section id="sec-csf" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="sec-csf"><span class="header-section-number">4.2</span> Cloth Simulation Function</h2>
 <p>Cloth simulation filtering (CSF) uses the <a href="http://www.mdpi.com/2072-4292/8/6/501/htm">Zhang et al 2016</a> algorithm and consists of simulating a piece of cloth draped over a reversed point cloud. In this method the point cloud is turned upside down and then a cloth is dropped on the inverted surface. Ground points are determined by analyzing the interactions between the nodes of the cloth and the inverted surface. The cloth simulation itself is based on a grid that consists of particles with mass and interconnections that together determine the three-dimensional position and shape of the cloth.</p>
 <center>
 <img src="images/GND/CSF.png" class="img-fluid">
@@ -406,8 +412,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="sec-mcc" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="sec-mcc"><span class="header-section-number">3.3</span> Multiscale Curvature Classification (MCC)</h2>
+<section id="sec-mcc" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="sec-mcc"><span class="header-section-number">4.3</span> Multiscale Curvature Classification (MCC)</h2>
 <p>Multiscale Curvature Classification (MCC) uses the <a href="https://ieeexplore.ieee.org/document/4137852">Evans and Hudak 2016</a> algorithm originally implemented in the <a href="https://sourceforge.net/projects/mcclidar/">mcc-lidar</a> software.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="fu">mcc</span>(<span class="fl">1.5</span>,<span class="fl">0.3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -422,12 +428,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="sec-edge-artifact" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="sec-edge-artifact"><span class="header-section-number">3.4</span> Edge Artifacts</h2>
-<p>No matter which algorithm is used in <code>lidR</code> or other software, ground classification will be weaker at the edges of point clouds as the algorithm must analyze the local neighbourhood (which is missing on edges). To find ground points, an algorithm need to analyze the local neighborhood or local context that is missing at edge areas. When processing point clouds it’s important to always consider a buffer around the region of interest to avoid edge artifacts. <code>lidR</code> has tools to manage buffered tiles and this advanced use of the package will be covered in <a href="engine.html" class="quarto-xref"><span>Chapter 14</span></a>).</p>
+<section id="sec-edge-artifact" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="sec-edge-artifact"><span class="header-section-number">4.4</span> Edge Artifacts</h2>
+<p>No matter which algorithm is used in <code>lidR</code> or other software, ground classification will be weaker at the edges of point clouds as the algorithm must analyze the local neighbourhood (which is missing on edges). To find ground points, an algorithm need to analyze the local neighborhood or local context that is missing at edge areas. When processing point clouds it’s important to always consider a buffer around the region of interest to avoid edge artifacts. <code>lidR</code> has tools to manage buffered tiles and this advanced use of the package will be covered in <a href="engine.html" class="quarto-xref"><span>Chapter 15</span></a>).</p>
 </section>
-<section id="sec-method-selection" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="sec-method-selection"><span class="header-section-number">3.5</span> How to Choose a Method and Its Parameters?</h2>
+<section id="sec-method-selection" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="sec-method-selection"><span class="header-section-number">4.5</span> How to Choose a Method and Its Parameters?</h2>
 <p>Identifying the optimal algorithm parameters is not a trivial task and often requires several trial runs. <code>lidR</code> proposes several algorithms and may introduce even more in future versions; however, the main goal is to provide a means to compare outputs. We don’t know which one is better or which parameters best suit a given terrain. It’s likely that parameters need to be dynamically adjusted to the local context, as parameters that work well in one file may yield inadequate results in another.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -443,9 +449,9 @@ Note
 </div>
 </div>
 </section>
-<section id="sec-other" class="level2" data-number="3.6">
-<h2 data-number="3.6" class="anchored" data-anchor-id="sec-other"><span class="header-section-number">3.6</span> Other Methods</h2>
-<p>Ground segmentation is not limited to the 3 methods described above. Many more have been presented and described in the literature. In <a href="plugins.html" class="quarto-xref"><span>Chapter 19</span></a> we will learn how to create a plugin algorithm and test it seamlessly in R with <code>lidR</code> using a syntax like:</p>
+<section id="sec-other" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="sec-other"><span class="header-section-number">4.6</span> Other Methods</h2>
+<p>Ground segmentation is not limited to the 3 methods described above. Many more have been presented and described in the literature. In <a href="plugins.html" class="quarto-xref"><span>Chapter 20</span></a> we will learn how to create a plugin algorithm and test it seamlessly in R with <code>lidR</code> using a syntax like:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="at">algorithm =</span> <span class="fu">my_new_method</span>(<span class="at">param1 =</span> <span class="fl">0.05</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
@@ -876,13 +882,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./io.html" class="pagination-link" aria-label="Reading, Plotting, Querying &amp; Validating">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Plotting, Querying &amp; Validating</span></span>
+      <a href="./view.html" class="pagination-link" aria-label="Plotting">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Plotting</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./dtm.html" class="pagination-link" aria-label="Digital terrain model">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Digital terrain model</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Digital terrain model</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

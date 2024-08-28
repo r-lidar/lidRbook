@@ -12,6 +12,7 @@ book:
   chapters:
     - index.qmd
     - io.qmd
+    - view.qmd
     - gnd.qmd
     - dtm.qmd
     - normalization.qmd

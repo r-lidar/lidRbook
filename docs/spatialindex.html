@@ -8,7 +8,7 @@
 
 <meta name="description" content="A guide to the lidR package">
 
-<title>18&nbsp; Spatial indexing – The lidR package</title>
+<title>19&nbsp; Spatial indexing – The lidR package</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -125,7 +125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./spatialindex.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Spatial indexing</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./spatialindex.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Spatial indexing</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -162,109 +162,115 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./io.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Plotting, Querying &amp; Validating</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Querying &amp; Validating</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./view.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Plotting</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./gnd.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ground Classification</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ground Classification</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dtm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Digital terrain model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Digital terrain model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./normalization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Height normalization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Height normalization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dsm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital Surface Model and Canopy Height model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Digital Surface Model and Canopy Height model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./itd.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Indivitual tree dectection and segmentation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Indivitual tree dectection and segmentation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Derived metrics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Derived metrics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cloud_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Derived metrics at the cloud level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Derived metrics at the cloud level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./grid_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Derived metrics at the pixel level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Derived metrics at the pixel level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tree_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Derived metrics at the tree level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Derived metrics at the tree level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./voxel_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Derived metrics at the voxel level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Derived metrics at the voxel level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./point_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Derived metrics at point level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Derived metrics at point level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./engine.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title"><code>LAScatalog</code> processing engine (1/2)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title"><code>LAScatalog</code> processing engine (1/2)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./engine2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">LAScatalog processing engine (2/2)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">LAScatalog processing engine (2/2)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./modelling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Area-Based Approach (ABA) to forest modelling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Area-Based Approach (ABA) to forest modelling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./outbox.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking outside the box</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Thinking outside the box</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./spatialindex.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Spatial indexing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Spatial indexing</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./plugins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title"><code>lidR</code> plugin system</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title"><code>lidR</code> plugin system</span></span></a>
   </div>
 </li>
     </ul>
@@ -277,15 +283,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-spatial-indexing-intro" id="toc-sec-spatial-indexing-intro" class="nav-link active" data-scroll-target="#sec-spatial-indexing-intro"><span class="header-section-number">18.1</span> Introduction to spatial indexes</a></li>
-  <li><a href="#sec-spatial-indexing-las" id="toc-sec-spatial-indexing-las" class="nav-link" data-scroll-target="#sec-spatial-indexing-las"><span class="header-section-number">18.2</span> Spatial indexes for LAS objects</a>
+  <li><a href="#sec-spatial-indexing-intro" id="toc-sec-spatial-indexing-intro" class="nav-link active" data-scroll-target="#sec-spatial-indexing-intro"><span class="header-section-number">19.1</span> Introduction to spatial indexes</a></li>
+  <li><a href="#sec-spatial-indexing-las" id="toc-sec-spatial-indexing-las" class="nav-link" data-scroll-target="#sec-spatial-indexing-las"><span class="header-section-number">19.2</span> Spatial indexes for LAS objects</a>
   <ul class="collapse">
   <li><a href="#sec-spatial-indexing-oveview" id="toc-sec-spatial-indexing-oveview" class="nav-link" data-scroll-target="#sec-spatial-indexing-oveview">Overview</a></li>
   <li><a href="#sec-spatial-indexing-strategies" id="toc-sec-spatial-indexing-strategies" class="nav-link" data-scroll-target="#sec-spatial-indexing-strategies">Spatial indexes and selection strategies</a></li>
   <li><a href="#sec-spatial-indexing-cpp-api" id="toc-sec-spatial-indexing-cpp-api" class="nav-link" data-scroll-target="#sec-spatial-indexing-cpp-api">C++ API</a></li>
   <li><a href="#sec-spatial-indexing-benchmark" id="toc-sec-spatial-indexing-benchmark" class="nav-link" data-scroll-target="#sec-spatial-indexing-benchmark">Benchmark</a></li>
   </ul></li>
-  <li><a href="#sec-spatial-indexing-files" id="toc-sec-spatial-indexing-files" class="nav-link" data-scroll-target="#sec-spatial-indexing-files"><span class="header-section-number">18.3</span> Spatial index for LAS files</a></li>
+  <li><a href="#sec-spatial-indexing-files" id="toc-sec-spatial-indexing-files" class="nav-link" data-scroll-target="#sec-spatial-indexing-files"><span class="header-section-number">19.3</span> Spatial index for LAS files</a></li>
   </ul>
 </nav>
     </div>
@@ -294,7 +300,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-spatial-indexing" class="quarto-section-identifier"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Spatial indexing</span></span></h1>
+<h1 class="title"><span id="sec-spatial-indexing" class="quarto-section-identifier"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Spatial indexing</span></span></h1>
 </div>
 
 
@@ -312,10 +318,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Spatial indexing is a key feature for performing spatial queries over a large point cloud. Any search for points of interest in the absence of indexing would require a “sequential scan” of every point - this could take <em>a lot</em> of time. In brief, spatial indexing organizes data into a search structure that can be quickly traversed to find specific records. Some algorithms would take unreasonable amounts of time to complete without spatial indexing.</p>
-<section id="sec-spatial-indexing-intro" class="level2" data-number="18.1">
-<h2 data-number="18.1" class="anchored" data-anchor-id="sec-spatial-indexing-intro"><span class="header-section-number">18.1</span> Introduction to spatial indexes</h2>
+<section id="sec-spatial-indexing-intro" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="sec-spatial-indexing-intro"><span class="header-section-number">19.1</span> Introduction to spatial indexes</h2>
 <p>This section presents a layman overview of how spatial indexing works. If the reader is already knowledgeable about spatial indexing, they can skip this section.</p>
-<p>Imagine we have a lidar point cloud with 1 million points (sounds like alot… but it isn’t!). We want to query all points that fall within the extent of a circle centered on the coordinates <code>p = c(300, 350)</code> with a radius (<code>R</code>) of 25 meters. This is a typical query made thousands of times per second by many algorithms including the local maximum filter (<a href="itd.html#sec-lmffw" class="quarto-xref"><span>Section 7.1.1</span></a>) to locate individual trees. Without spatial indexing, the method consists of computing the distance to <code>p</code> for every single point. This is called a ‘sequential scan’, and it means that the computation for distance and comparisons must be conducted 1,000,000 times each.</p>
+<p>Imagine we have a lidar point cloud with 1 million points (sounds like alot… but it isn’t!). We want to query all points that fall within the extent of a circle centered on the coordinates <code>p = c(300, 350)</code> with a radius (<code>R</code>) of 25 meters. This is a typical query made thousands of times per second by many algorithms including the local maximum filter (<a href="itd.html#sec-lmffw" class="quarto-xref"><span>Section 8.1.1</span></a>) to locate individual trees. Without spatial indexing, the method consists of computing the distance to <code>p</code> for every single point. This is called a ‘sequential scan’, and it means that the computation for distance and comparisons must be conducted 1,000,000 times each.</p>
 <p>In R we can write:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">300</span>, <span class="dv">350</span>)</span>
@@ -351,8 +357,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In this example we can immediately exclude 75% of the points (750,000 points) in 4 operations at the top level (in red). The bounding box of our query being <code>[275,325]x[325,375]</code> we know that the POIs do not belong in top-left quadrant <code>([0,500] x [500,1000])</code> nor in top-right quadrant <code>([500,1000] x [500,1000])</code> nor in bottom-right quadrant. At the second level (in blue) in 4 more operations we can exclude another 75% of the remaining points to search only in one quadrant. At this stage we can perform a sequential scan on only 1/16<sup>th</sup> of the points (i.e.&nbsp;62,500 points) meaning that we discarded 937,500 points in 8 operations! Consequently our query is (roughly) 16 times faster and could be even faster yet with more subdivision levels. In <code>lidR</code> a typical quadtree has 8 levels i.e.&nbsp;the space is subdivided in (2<sup>8</sup>)<sup>2</sup> = 65,536 quadrants.</p>
 <p>As we can see, spatial indexing provides a way to dramatically speed-up many common spatial queries using discs, rectangles, polygons, 2D, 3D and so on. Different types of spatial indexes exist for different purposes but in all cases the use of a spatial index is not free and comes at the cost of greater memory usage.</p>
 </section>
-<section id="sec-spatial-indexing-las" class="level2" data-number="18.2">
-<h2 data-number="18.2" class="anchored" data-anchor-id="sec-spatial-indexing-las"><span class="header-section-number">18.2</span> Spatial indexes for LAS objects</h2>
+<section id="sec-spatial-indexing-las" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="sec-spatial-indexing-las"><span class="header-section-number">19.2</span> Spatial indexes for LAS objects</h2>
 <section id="sec-spatial-indexing-oveview" class="level3">
 <h3 class="anchored" data-anchor-id="sec-spatial-indexing-oveview">Overview</h3>
 <p><code>lidR</code> makes use of spatial indexes in many functions and can choose different types of spatial indexes on-the-fly. So far, the book only presented the function <code>readLAS()</code> (see <a href="io.html" class="quarto-xref"><span>Chapter 2</span></a>) but the package has some variations of <code>readLAS()</code> named <code>readALSLAS()</code>, <code>readTLSLAS()</code>, <code>readUAVLAS()</code> and so on that enable the registration of a point cloud type allowing <code>lidR</code> to adequately choose the most appropriated spatial indexing method to perform a given computation as fast as possible.</p>
@@ -446,7 +452,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="dap-and-uav-strategies" class="level4">
 <h4 class="anchored" data-anchor-id="dap-and-uav-strategies">DAP and UAV strategies</h4>
-<p>For digital photogrammetry and UAV data we apply the same rules as TLS. When encountering a data set that does not follow these rules, it may be optimal to manually select a spatial index. This is the case of the data set seen in chapter <a href="point_metrics.html#sec-pba-applications-roof" class="quarto-xref"><span>Section 13.2.1</span></a>, which is an ALS data set but in practice it’s a small subset in which we can no longer say that more than 99% of the point dispersion is in <code>XY</code> only. In that sense it’s more of a TLS <em>ish</em> point cloud. But in the meantime the points are uniformly spread on <code>XY</code> because it’s actually an ALS data set. Thus making 3D queries using a 3D index most viable. Let’s try it:</p>
+<p>For digital photogrammetry and UAV data we apply the same rules as TLS. When encountering a data set that does not follow these rules, it may be optimal to manually select a spatial index. This is the case of the data set seen in chapter <a href="point_metrics.html#sec-pba-applications-roof" class="quarto-xref"><span>Section 14.2.1</span></a>, which is an ALS data set but in practice it’s a small subset in which we can no longer say that more than 99% of the point dispersion is in <code>XY</code> only. In that sense it’s more of a TLS <em>ish</em> point cloud. But in the meantime the points are uniformly spread on <code>XY</code> because it’s actually an ALS data set. Thus making 3D queries using a 3D index most viable. Let’s try it:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"data/chap11/building_WilliamsAZ_Urban_normalized.laz"</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -567,8 +573,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We don’t know any R library providing such capability to produce benchmark comparisons. Moreover, <code>lidR</code> leverages the C++ classes to allow the creation of efficient third party applications. This functionality is heavily used in the <a href="https://github.com/Jean-Romain/lidRplugins">lidRplugins</a> package.</p>
 </section>
 </section>
-<section id="sec-spatial-indexing-files" class="level2" data-number="18.3">
-<h2 data-number="18.3" class="anchored" data-anchor-id="sec-spatial-indexing-files"><span class="header-section-number">18.3</span> Spatial index for LAS files</h2>
+<section id="sec-spatial-indexing-files" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="sec-spatial-indexing-files"><span class="header-section-number">19.3</span> Spatial index for LAS files</h2>
 <p>Previous sections were dedicated to explaining spatial indexing for <code>LAS</code> objects i.e.&nbsp;point clouds read with <code>readLAS()</code> and loaded in memory. This section focuses on spatial indexing for LAS files i.e.&nbsp;point clouds stored in las/laz files and not (yet) loaded in memory. The problem of spatial queries at read time is the same but the solution is different because it was developed in an independent context.</p>
 <p>Fast spatial queries are made possible by indexing the <code>.las</code> or <code>.laz</code> files with <code>.lax</code> files. A <code>.lax</code> file is a tiny file associated with a <code>.las</code> or <code>.laz</code> file that spatially indexes the points. This file type was created by Martin Isenburg in <a href="https://rapidlasso.com/">LAStools</a>. For a better understanding of how it works one can refer to a talk given by Martin Isenburg about <a href="https://rapidlasso.com/2012/12/03/lasindex-spatial-indexing-of-lidar-data/">lasindex</a>. In short it uses quadtree.</p>
 <p>By adding <code>.lax</code> files along with your <code>.las</code>/<code>.laz</code> files it is possible to make fast 2D queries <strong>without reading the whole file</strong>. The best way to create a <code>.lax</code> file is to use <a href="https://www.cs.unc.edu/~isenburg/lastools/download/lasindex_README.txt">laxindex</a> from <a href="https://rapidlasso.com/lastools/">LAStools</a>. It is a free and open-source part of LAStools. If you cannot or do not want to use LAStools the <code>rlas</code> package has a function to creates lax files but <code>lasindex</code> should be preferred.</p>
@@ -582,7 +588,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 45 sec</span></span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">clip_circle</span>(noindex, xc, yc, <span class="at">radius =</span> <span class="dv">12</span>)</span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 sec</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If the reader did not skip <a href="#sec-spatial-indexing-cpp-api" class="quarto-xref"><span>Section 18.2.3</span></a> they might have noticed that <code>clip_circle()</code> can use a spatial index with a <code>LAScatalog</code> but not with a <code>LAS</code>. This is because they behave very differently internally and rely on two independent mechanisms. With a <code>LAScatalog</code> it inherits the capabilities of the library used to read the files while with a <code>LAS</code> object nothing has been implemented (yet) for taking advantage of spatial indexing at the R level (but the section above provide the solution).</p>
+<p>If the reader did not skip <a href="#sec-spatial-indexing-cpp-api" class="quarto-xref"><span>Section 19.2.3</span></a> they might have noticed that <code>clip_circle()</code> can use a spatial index with a <code>LAScatalog</code> but not with a <code>LAS</code>. This is because they behave very differently internally and rely on two independent mechanisms. With a <code>LAScatalog</code> it inherits the capabilities of the library used to read the files while with a <code>LAS</code> object nothing has been implemented (yet) for taking advantage of spatial indexing at the R level (but the section above provide the solution).</p>
 <p>It’s easy to guess that every <code>clip_something()</code> function can take advantage of spatial indexing with <code>.lax</code> files but the <code>LAScatalog</code> processing engine also makes heavy usage of such features. Users can significantly reduce the processing time by loading a buffer faster. Indeed loading a buffer implies spatial queries. This topic is covered by the vignette: <a href="https://cran.r-project.org/web/packages/lidR/vignettes/lidR-computation-speed-LAScatalog.html">Speed-up the computations on a LAScatalog</a>.</p>
 
 
@@ -1014,12 +1020,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./outbox.html" class="pagination-link" aria-label="Thinking outside the box">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking outside the box</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Thinking outside the box</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./plugins.html" class="pagination-link" aria-label="`lidR` plugin system">
-        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title"><code>lidR</code> plugin system</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title"><code>lidR</code> plugin system</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

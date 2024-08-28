@@ -8,7 +8,7 @@
 
 <meta name="description" content="A guide to the lidR package">
 
-<title>13&nbsp; Derived metrics at the voxel level – The lidR package</title>
+<title>3&nbsp; Plotting – The lidR package</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./point_metrics.html" rel="next">
-<link href="./tree_metrics.html" rel="prev">
+<link href="./gnd.html" rel="next">
+<link href="./io.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -125,7 +125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./voxel_metrics.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Derived metrics at the voxel level</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./view.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Plotting</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -167,7 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./view.html" class="sidebar-item-text sidebar-link">
+  <a href="./view.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Plotting</span></span></a>
   </div>
 </li>
@@ -227,7 +227,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./voxel_metrics.html" class="sidebar-item-text sidebar-link active">
+  <a href="./voxel_metrics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Derived metrics at the voxel level</span></span></a>
   </div>
 </li>
@@ -283,8 +283,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-vba-overview" id="toc-sec-vba-overview" class="nav-link active" data-scroll-target="#sec-vba-overview"><span class="header-section-number">13.1</span> Overview</a></li>
-  <li><a href="#sec-vba-applications" id="toc-sec-vba-applications" class="nav-link" data-scroll-target="#sec-vba-applications"><span class="header-section-number">13.2</span> Applications</a></li>
+  <li><a href="#d-rendering-with-rgl" id="toc-d-rendering-with-rgl" class="nav-link active" data-scroll-target="#d-rendering-with-rgl"><span class="header-section-number">3.1</span> 3D Rendering with <code>rgl</code></a>
+  <ul class="collapse">
+  <li><a href="#sec-plot-3d" id="toc-sec-plot-3d" class="nav-link" data-scroll-target="#sec-plot-3d">Basic 3D rendering</a></li>
+  <li><a href="#sec-plot-overlay" id="toc-sec-plot-overlay" class="nav-link" data-scroll-target="#sec-plot-overlay">Overlays</a></li>
+  <li><a href="#sec-plot-advanced" id="toc-sec-plot-advanced" class="nav-link" data-scroll-target="#sec-plot-advanced">Advanced 3D Rendering</a></li>
+  <li><a href="#voxel-rendering" id="toc-voxel-rendering" class="nav-link" data-scroll-target="#voxel-rendering">Voxel rendering</a></li>
+  </ul></li>
+  <li><a href="#sec-plot-lidRviewer" id="toc-sec-plot-lidRviewer" class="nav-link" data-scroll-target="#sec-plot-lidRviewer"><span class="header-section-number">3.2</span> 3D Rendering with <code>lidRviewer</code></a>
+  <ul class="collapse">
+  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
+  <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
+  <li><a href="#drawbacks" id="toc-drawbacks" class="nav-link" data-scroll-target="#drawbacks">Drawbacks</a></li>
+  </ul></li>
+  <li><a href="#sec-plot-crossection" id="toc-sec-plot-crossection" class="nav-link" data-scroll-target="#sec-plot-crossection"><span class="header-section-number">3.3</span> 2D Rendering with <code>ggplot</code></a></li>
   </ul>
 </nav>
     </div>
@@ -293,7 +305,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-vba" class="quarto-section-identifier"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Derived metrics at the voxel level</span></span></h1>
+<h1 class="title"><span id="sec-plot" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Plotting</span></span></h1>
 </div>
 
 
@@ -310,42 +322,234 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="sec-vba-overview" class="level2" data-number="13.1">
-<h2 data-number="13.1" class="anchored" data-anchor-id="sec-vba-overview"><span class="header-section-number">13.1</span> Overview</h2>
-<p>The “voxel” level of regularization corresponds to the computation of derived metrics for regularly spaced location in 3D. The <code>voxel_metrics()</code> function allows calculation of voxel-based metrics on provided point clouds and works like <code>cloud_metrics()</code>, <code>grid_metrics()</code>, and <code>tree_metrics()</code> seen in <a href="metrics.html" class="quarto-xref"><span>Chapter 9</span></a>, <a href="cloud_metrics.html" class="quarto-xref"><span>Chapter 10</span></a>, <a href="grid_metrics.html" class="quarto-xref"><span>Chapter 11</span></a> and <a href="tree_metrics.html" class="quarto-xref"><span>Chapter 12</span></a>. In the examples below we use the <code>Megaplot.laz</code> data set, but the potential to use <code>voxel_metrics()</code> is particularly interesting for dense point clouds such as those produced by terrestrial lidar, or digital photogrammetry.</p>
-</section>
-<section id="sec-vba-applications" class="level2" data-number="13.2">
-<h2 data-number="13.2" class="anchored" data-anchor-id="sec-vba-applications"><span class="header-section-number">13.2</span> Applications</h2>
-<p>We can count the number of points inside each 4 x 4 x 4 m voxel:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"Megaplot.laz"</span>, <span class="at">package=</span><span class="st">"lidR"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile) <span class="co"># read file</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>vox_met <span class="ot">&lt;-</span> <span class="fu">voxel_metrics</span>(las, <span class="sc">~</span><span class="fu">list</span>(<span class="at">N =</span> <span class="fu">length</span>(Z)), <span class="dv">4</span>) <span class="co"># calculate voxel metrics</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>In this example the point cloud is first converted into 4 m voxels, then the function <code>length(Z)</code> is applied to all points located inside every voxel. The output is a <code>data.table</code> that contains the X, Y, and Z coordinates of voxels, and the calculated number of points and can be visualized in 3D using the <code>plot()</code> function as follows:</p>
+<p>The <code>lidR</code> package has two 3D rendering modes:</p>
+<ol type="1">
+<li><p><code>rgl</code> mode: This mode utilizes the <a href="https://cran.r-project.org/package=rgl"><code>rgl</code></a> package to provide a versatile and interactive 3D viewer. <code>rgl</code> is excellent for creating custom and publication-ready images, but it struggles to handle the visualization of massive point clouds.</p></li>
+<li><p><code>lidRviewer</code> mode: This mode relies on the <a href="https://github.com/r-lidar/lidRviewer"><code>lidRviewer</code></a> package, which is designed to handle point clouds of arbitrary size in memory. It is more powerful and convenient for basic rendering tasks of large point cloud, but it is less versatile than <code>rgl</code>.</p></li>
+</ol>
+<section id="d-rendering-with-rgl" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="d-rendering-with-rgl"><span class="header-section-number">3.1</span> 3D Rendering with <code>rgl</code></h2>
+<section id="sec-plot-3d" class="level3">
+<h3 class="anchored" data-anchor-id="sec-plot-3d">Basic 3D rendering</h3>
+<p>The very basic way to render a point cloud is the function <code>plot()</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell" data-layout-align="center" data-rgl="true">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vox_met, <span class="at">color=</span><span class="st">"N"</span>, <span class="at">pal =</span> heat.colors, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">voxel =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="voxel_metrics_files/figure-html/plot-vox-metrics-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384"></p>
+<p><img src="view_files/figure-html/plot-las-1.png" class="img-fluid figure-img" width="384"></p>
+<figcaption>Simple 3D interactive plot of a point cloud</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Similarly to other <code>*_metrics()</code> functions designed to calculate derived metrics, <code>voxel_metrics()</code> can be used to calculate any number of pre- or user-defined summaries. For example, to calculate minimum, mean, maximum, and standard deviation of intensity in each voxel we can create a following function:</p>
+<p>Users can change the attributes used for coloring by providing the name of the attribute used to colorize the points. The background color of the viewer can also be changed by assigning a color using the <code>bg</code> argument. Axes can also be added and point sizes can be changed.</p>
+<div class="cell" data-layout-align="center" data-rgl="true">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot las object by scan angle, </span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># make the background white, </span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># display XYZ axis and  scale colors</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">"ScanAngleRank"</span>, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">axis =</span> <span class="cn">TRUE</span>, <span class="at">legend =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="view_files/figure-html/plot-las-custom-1.png" class="img-fluid figure-img" width="384"></p>
+<figcaption>Simple 3D interactive plot of a point cloud colored by scan angle, with a white background and a color scale</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Note that if your file contains RGB data the string <code>"RGB"</code> is supported:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">"RGB"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The argument <code>breaks</code> enables to defined more adequate breaks in the color palette for example when intensity contains large outliers. Otherwise the palette range would be too large and most of the values would be considered as “very low”, so everything would appear in the same color.</p>
+<div class="cell" data-layout-align="center" data-rgl="true">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">"Intensity"</span>, <span class="at">breaks =</span> <span class="st">"quantile"</span>, <span class="at">bg =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="view_files/figure-html/plot-las-fail-1.png" class="img-fluid figure-img" width="384"></p>
+<figcaption>Using quantiles to color the intensity provides a clear display despite outliers.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-plot-overlay" class="level3">
+<h3 class="anchored" data-anchor-id="sec-plot-overlay">Overlays</h3>
+<p>The package also provides some easy to use functions for common overlay. For example <code>add_dtm3d()</code> to add a digital terrain model (section <a href="dtm.html" class="quarto-xref"><span>Chapter 5</span></a>)) and <code>add_treetops3d()</code> to visualize the output of an individual tree detection (section <a href="itd.html#sec-itd" class="quarto-xref"><span>Section 8.1</span></a>))</p>
+<div class="cell" data-layout-align="center" data-rgl="true">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="dv">3</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">add_dtm3d</span>(x, dtm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="view_files/figure-html/plot-las-dtm-1.png" class="img-fluid figure-img" width="384"></p>
+<figcaption>3D interactive rendering of a point cloud with a digital terrain model overlaid.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center" data-rgl="true">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="dv">3</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">add_treetops3d</span>(x, ttops)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="view_files/figure-html/plot-las-trees-1.png" class="img-fluid figure-img" width="384"></p>
+<figcaption>3D interactive rendering of a point cloud with segmented tree tops overlaid.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>It is also possible to combine two point clouds with different color palettes. In the following example we are using a previously classified point cloud. We first separate the vegetation and non vegetation points using <code>filter_poi()</code> and then plot both on top of each other with different colour schemes using <code>add</code> options in <code>plot()</code></p>
+<div class="cell" data-layout-align="center" data-rgl="true">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>nonveg <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, Classification <span class="sc">!=</span> LASHIGHVEGETATION)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>veg <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, Classification <span class="sc">==</span> LASHIGHVEGETATION)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">plot</span>(nonveg, <span class="at">color =</span> <span class="st">"Classification"</span>, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="dv">3</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(veg, <span class="at">add =</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="view_files/figure-html/plot-las-add-1.png" class="img-fluid figure-img" width="768"></p>
+<figcaption>3D interactive rendering of two point clouds overlaid with different color palettes.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-plot-advanced" class="level3">
+<h3 class="anchored" data-anchor-id="sec-plot-advanced">Advanced 3D Rendering</h3>
+<p>Since <code>lidR</code> is based on <code>rgl</code>, it is easy to add objects to the main rendering using <code>rgl</code> functions such as <code>rgl::point3d()</code>, <code>rgl::text()</code>, <code>rgl::surface3d()</code>, and so on to produce publication-ready renderings. However, <code>lidR</code> introduces an additional challenge: it does not display the points with their actual coordinates. Instead, the points are shifted to be rendered close to (0, 0) due to accuracy issues, as <code>rgl</code> uses <code>float</code> (32-bit decimal numbers) rather than <code>double</code> (64-bit decimal numbers). When <code>plot()</code> is used, it invisibly returns the shift values, which can later be used to realign other objects.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>custom_metrics <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { <span class="co"># user-defined function</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">i_min =</span> <span class="fu">min</span>(x),</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">i_mean =</span> <span class="fu">mean</span>(x),</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">i_max =</span> <span class="fu">max</span>(x),</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">i_sd =</span> <span class="fu">sd</span>(x)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(m) <span class="co"># output</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>vox_met <span class="ot">&lt;-</span> <span class="fu">voxel_metrics</span>(las, <span class="sc">~</span><span class="fu">custom_metrics</span>(Intensity), <span class="dv">4</span>) <span class="co"># calculate voxel metrics</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>offsets <span class="ot">&lt;-</span> <span class="fu">plot</span>(las)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(offsets)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]  391867.8 3901019.3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The coordinates of the objects must be corrected to align with the point cloud. In the following we will add lines to render the trunks. We read a file, we locate the trees (see <a href="itd.html#sec-itd" class="quarto-xref"><span>Section 8.1</span></a>)), we extract the coordinates and sizes of the trees and plot lines with <code>rgl::segment3d()</code>.</p>
+<div class="cell" data-layout-align="center" data-rgl="true" data-webgl="false" data-snapshot="true">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"MixedConifer.laz"</span>, <span class="at">package=</span><span class="st">"lidR"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile, <span class="at">select =</span> <span class="st">"xyzc"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get the location of the trees</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">locate_trees</span>(las, <span class="fu">lmf</span>(<span class="at">ws =</span> <span class="dv">5</span>)) </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the point cloud</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>offsets <span class="ot">&lt;-</span> <span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="dv">3</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">add_treetops3d</span>(offsets, ttops)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the coordinates of the trees and</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># apply the shift to display the lines</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># in the rendering coordinate system</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_coordinates</span>(ttops)[,<span class="dv">1</span>] <span class="sc">-</span> offsets[<span class="dv">1</span>] </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_coordinates</span>(ttops)[,<span class="dv">2</span>] <span class="sc">-</span> offsets[<span class="dv">2</span>] </span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> ttops<span class="sc">$</span>Z</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a GL_LINES matrix for fast rendering</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rep</span>(x, <span class="at">each =</span> <span class="dv">2</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rep</span>(y, <span class="at">each =</span> <span class="dv">2</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">2</span><span class="sc">*</span><span class="fu">length</span>(z)) </span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>tmp[<span class="dv">2</span><span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(z)] <span class="ot">&lt;-</span> z</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> tmp</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">cbind</span>(x,y,z)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Display lines</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>rgl<span class="sc">::</span><span class="fu">segments3d</span>(M, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="view_files/figure-html/plot-las-trunks-1-rgl.png" class="img-fluid figure-img" width="384"></p>
+<figcaption>3D interactive rendering of a point cloud with segmented tree tops and trunks overlaid.</figcaption>
+</figure>
+</div>
+</div>
+<p>../../../../../../tmp/Rtmp8WxUoO/file23efd2b867b1c.png</p>
+</div>
+</section>
+<section id="voxel-rendering" class="level3">
+<h3 class="anchored" data-anchor-id="voxel-rendering">Voxel rendering</h3>
+<p>It is possible to render voxels. This is useful to render the output of the function <code>voxelise_points()</code> or <code>voxel_metrics()</code> for examples.</p>
+<div class="cell" data-layout-align="center" data-rgl="true">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vox <span class="ot">&lt;-</span> <span class="fu">voxelize_points</span>(las, <span class="dv">6</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vox, <span class="at">voxel =</span> <span class="cn">TRUE</span>, <span class="at">bg =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="view_files/figure-html/plot-voxels-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-plot-lidRviewer" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="sec-plot-lidRviewer"><span class="header-section-number">3.2</span> 3D Rendering with <code>lidRviewer</code></h2>
+<section id="installation" class="level3">
+<h3 class="anchored" data-anchor-id="installation">Installation</h3>
+<p><code>lidRviewer</code> is not a package on CRAN. You can install it with:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'lidRviewer'</span>, <span class="at">repos =</span> <span class="st">'https://r-lidar.r-universe.dev'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="usage" class="level3">
+<h3 class="anchored" data-anchor-id="usage">Usage</h3>
+<p>When loading <code>lidRviewer</code> with <code>library(lidRviewer)</code>, it overrides the <code>plot()</code> function from <code>lidR</code>. You can now use:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>and get a powerful viewer with more command to interact and visualize the point cloud interactively.</p>
+<p><img src="images/autzen-screen.jpg" class="img-fluid"></p>
+<p>You can:</p>
+<ol type="1">
+<li>Rotate with the left mouse button.</li>
+<li>Zoom with the mouse wheel.</li>
+<li>Pan with the right mouse button.</li>
+<li>Colorize with RGB using keys <kbd>r</kbd>, <kbd>g</kbd>, or <kbd>b</kbd> (default if RGB is present).</li>
+<li>Colorize with Z using key <kbd>z</kbd> (default if no RGB is present).</li>
+<li>Colorize with Intensity using key <kbd>i</kbd>.</li>
+<li>Colorize with Classification using key <kbd>c</kbd>.</li>
+<li>Change the point size with <kbd>+</kbd> or <kbd>-</kbd>.</li>
+<li>Enable/disable eye-dome lighting with key <kbd>l</kbd>.</li>
+<li>Increase/decrease the point display budget with <kbd>ctrl</kbd> + <kbd>wheel</kbd>.</li>
+<li>Render hundreds of millions of points (if you have enough memory).</li>
+</ol>
+<p>Actions 1, 2, and 3 were possible with <code>rgl</code>. Actions 4 to 8 were also possible with <code>rgl</code>, but they were cumbersome because you needed to rerun the plot function with a new argument each time. Actions 9 to 11 were entirely impossible with <code>rgl</code>.</p>
+<p>Especially point 11: On my laptop (13th Gen Intel© Core™ i7-1355U), <code>rgl</code> handles up to a solid 10 million points but starts struggling beyond that. In contrast, <code>lidRviewer</code> has been tested with up to 200 million points on the same laptop without any issues and up to 800 millions point on a computer with more RAM.</p>
+<p>Thus, <code>lidRviewer</code> should be preferred, right?</p>
+</section>
+<section id="drawbacks" class="level3">
+<h3 class="anchored" data-anchor-id="drawbacks">Drawbacks</h3>
+<p>To create this powerful viewer, we had to make some design choices that do not play well with how R internally works. Thus, <code>lidRviewer</code> has some limitations, which is why it is not on CRAN. In order to avoid creating a copy of the point cloud, which might be several GBs of memory, and to work with the raw memory already loaded, we have to:</p>
+<ol type="1">
+<li>Block the R session when using <code>lidRviewer</code>. Users can no longer work in R without closing the window first.</li>
+<li>Limit rendering to 1 window, which is a direct effect of point 1.</li>
+</ol>
+<p>Also <code>lidRviewer</code> is not intended to replace <code>rgl</code>. In <code>lidR</code> viewer you cannot draw/add/remove your own geometries. It is only a point cloud viewer.</p>
+</section>
+</section>
+<section id="sec-plot-crossection" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="sec-plot-crossection"><span class="header-section-number">3.3</span> 2D Rendering with <code>ggplot</code></h2>
+<p>To better visualize the vertical structure of a point cloud, investigate classification results, or compare the results of different interpolation routines, a cross section can be plotted. To do this, we first need to decide where the cross section will be located (i.e., define the beginning and end) and specify its width. The point cloud can then be clipped, and the <code>X</code> and <code>Z</code> coordinates used to create the plot.</p>
+<p>For example, to create a 200 m long cross section, we might define the beginning and end, and then use the <code>clip_transect()</code> function to subset the point cloud.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">273457</span>, <span class="dv">5274357</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">273542</span>, <span class="dv">5274542</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>las_tr <span class="ot">&lt;-</span> <span class="fu">clip_transect</span>(las, p1, p2, <span class="at">width =</span> <span class="dv">5</span>, <span class="at">xz =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Rendering can be achieved with base plot or <code>ggplot2</code>. Notice the use of <code>payload()</code> to extract the <code>data.frame</code> from the <code>LAS</code> object.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">payload</span>(las_tr), <span class="fu">aes</span>(X,Z, <span class="at">color =</span> Z)) <span class="sc">+</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>() <span class="sc">+</span> </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradientn</span>(<span class="at">colours =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="view_files/figure-html/ggplot-transect-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768"></p>
+</figure>
+</div>
+</div>
 </div>
 
 
@@ -776,13 +980,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./tree_metrics.html" class="pagination-link" aria-label="Derived metrics at the tree level">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Derived metrics at the tree level</span></span>
+      <a href="./io.html" class="pagination-link" aria-label="Reading, Querying &amp; Validating">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Querying &amp; Validating</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./point_metrics.html" class="pagination-link" aria-label="Derived metrics at point level">
-        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Derived metrics at point level</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./gnd.html" class="pagination-link" aria-label="Ground Classification">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ground Classification</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

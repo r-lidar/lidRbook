@@ -2,7 +2,7 @@
 
 `lidR` is an R package for manipulating and visualizing airborne laser scanning (ALS) data with an emphasis on research & development for forestry and ecology applications. The package is entirely open source and is integrated within the geospatial R ecosystem (i.e., `raster/terra/stars` and `sp/sf`). This guide has been written to help both the ALS novice and seasoned point cloud processing veterans. Key functionality of `lidR` includes functions to:
 
--   Read and write `.las` and `.laz` files and render customized point-cloud displays (chapter [-@sec-io])
+-   Read and write `.las` and `.laz` files (chapter [-@sec-io]) and render customized point-cloud displays (chapter [-@sec-plot])
 -   Process point clouds, including point classification (chapter [-@sec-gnd]), digital terrain models (chapter [-@sec-dtm]), normalization (chapter [-@sec-norm]), and digital surface models (chapter [-@sec-chm])
 -   Perform individual tree segmentation (chapter [-@sec-itd-its])
 -   Compute standard metrics at different levels of regularization (chapters [-@sec-metrics], [-@sec-cba], [-@sec-aba], [-@sec-tba], [-@sec-vba], [-@sec-pba])
@@ -16,7 +16,7 @@
 
 The current release version of `lidR` can be found on [CRAN](https://cran.r-project.org/web/packages/lidR/), and the source code is hosted on [GitHub](https://github.com/r-lidar/lidR). Development of the `lidR` package was made possible thanks to the financial support of:
 
--   **2015-2018:** the AWARE project [NSERC CRDPJ 462973-14](https://aware.forestry.ubc.ca/); grantee [Prof. Nicholas C. Coops](https://profiles.forestry.ubc.ca/person/nicholas-coops/) and [Laval University](https://www.ulaval.ca/en).
+-   **2015-2018:** the [AWARE project](https://aware.forestry.ubc.ca/); grantee [Prof. Nicholas C. Coops](https://profiles.forestry.ubc.ca/person/nicholas-coops/) and [Laval University](https://www.ulaval.ca/en).
 -   **2018-2021:** the financial support of the [Ministère des Forêts, de la Faune et des Parcs of Québec](https://mffp.gouv.qc.ca/) and [Laval University](https://www.ulaval.ca/en).
 -   **2021-2024:** [Laval University](https://www.ulaval.ca/en).
 
@@ -24,28 +24,29 @@ The current release version of `lidR` can be found on [CRAN](https://cran.r-proj
 Since 2024, the `lidR` package (as well as the [`lasR`](https://github.com/r-lidar/lasR) package) is no longer supported by Laval University. While the software will remain free and open-source, `r-lidar` has transitioned into a company to ensure sustainability. We now offer independent services for training courses, consulting, and development. For more information, please visit our website: [r-lidar.com](https://www.r-lidar.com/).
 :::
 
+As `lidR` is freeware, you can help maintaining through your [generous donations](https://github.com/sponsors/Jean-Romain). It helps free my time and work more on `lidR`.
+
 # Other Lidar Packages
 
-For a package focused on production rather than R&D, the reader can look at the [`lasR`](https://github.com/r-lidar/lasR) package, which is not covered in this book. The `lasR` package is much more powerful than `lidR` and is designed to process terabytes of data. However, the counterpart is that it does not allow easy and handy manipulation of the point cloud in R like `lidR`. Both tools tagert different usages.
+For a package focused on production rather than research and development, consider the [`lasR`](https://github.com/r-lidar/lasR) package, which is not covered in this book. The `lasR` package is much more powerful than `lidR` and is designed to process terabytes of data. However, the trade-off is that it does not allow for easy and convenient manipulation of point clouds in R like `lidR`. Both tools are intended for different use cases.
 
 # Installation
 
 In R simply type:
 
-```r
+``` r
 install.packages("lidR")
 ```
 
 For linux user you need some external libraries
 
-```bash
+``` bash
 # Ubuntu
 sudo apt-get install libgdal-dev libgeos++-dev libudunits2-dev libproj-dev libx11-dev libgl1-mesa-dev libglu1-mesa-dev libfreetype6-dev libxt-dev libfftw3-dev
 
 # Fedora
 sudo dnf install gdal-devel geos-devel udunits2-devel proj-devel mesa-libGL-devel mesa-libGLU-devel freetype-devel libjpeg-turbo-devel
 ```
-
 
 The book is shared under [CC-BY-NC-SA 2.0](https://creativecommons.org/licenses/by-nc-sa/2.0/)
 

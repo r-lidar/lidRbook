@@ -8,7 +8,7 @@
 
 <meta name="description" content="A guide to the lidR package">
 
-<title>2&nbsp; Reading, Plotting, Querying &amp; Validating – The lidR package</title>
+<title>2&nbsp; Reading, Querying &amp; Validating – The lidR package</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./gnd.html" rel="next">
+<link href="./view.html" rel="next">
 <link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -125,7 +125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./io.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Plotting, Querying &amp; Validating</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./io.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Querying &amp; Validating</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -162,109 +162,115 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./io.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Plotting, Querying &amp; Validating</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Querying &amp; Validating</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./view.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Plotting</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./gnd.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ground Classification</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ground Classification</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dtm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Digital terrain model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Digital terrain model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./normalization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Height normalization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Height normalization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dsm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital Surface Model and Canopy Height model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Digital Surface Model and Canopy Height model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./itd.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Indivitual tree dectection and segmentation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Indivitual tree dectection and segmentation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Derived metrics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Derived metrics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cloud_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Derived metrics at the cloud level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Derived metrics at the cloud level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./grid_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Derived metrics at the pixel level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Derived metrics at the pixel level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tree_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Derived metrics at the tree level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Derived metrics at the tree level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./voxel_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Derived metrics at the voxel level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Derived metrics at the voxel level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./point_metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Derived metrics at point level</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Derived metrics at point level</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./engine.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title"><code>LAScatalog</code> processing engine (1/2)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title"><code>LAScatalog</code> processing engine (1/2)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./engine2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">LAScatalog processing engine (2/2)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">LAScatalog processing engine (2/2)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./modelling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Area-Based Approach (ABA) to forest modelling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Area-Based Approach (ABA) to forest modelling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./outbox.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Thinking outside the box</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Thinking outside the box</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./spatialindex.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Spatial indexing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Spatial indexing</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./plugins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title"><code>lidR</code> plugin system</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title"><code>lidR</code> plugin system</span></span></a>
   </div>
 </li>
     </ul>
@@ -283,14 +289,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sec-filter" id="toc-sec-filter" class="nav-link" data-scroll-target="#sec-filter">Parameter <code>filter</code></a></li>
   </ul></li>
   <li><a href="#sec-asprs-compliance" id="toc-sec-asprs-compliance" class="nav-link" data-scroll-target="#sec-asprs-compliance"><span class="header-section-number">2.2</span> Validating LiDAR Data</a></li>
-  <li><a href="#sec-plot" id="toc-sec-plot" class="nav-link" data-scroll-target="#sec-plot"><span class="header-section-number">2.3</span> Plotting</a>
-  <ul class="collapse">
-  <li><a href="#sec-plot-3d" id="toc-sec-plot-3d" class="nav-link" data-scroll-target="#sec-plot-3d">Basic 3D rendering</a></li>
-  <li><a href="#sec-plot-overlay" id="toc-sec-plot-overlay" class="nav-link" data-scroll-target="#sec-plot-overlay">Overlays</a></li>
-  <li><a href="#sec-plot-advanced" id="toc-sec-plot-advanced" class="nav-link" data-scroll-target="#sec-plot-advanced">Advanced 3D Rendering</a></li>
-  <li><a href="#voxel-rendering" id="toc-voxel-rendering" class="nav-link" data-scroll-target="#voxel-rendering">Voxel rendering</a></li>
-  <li><a href="#sec-plot-crossection" id="toc-sec-plot-crossection" class="nav-link" data-scroll-target="#sec-plot-crossection">Cross Sections 2D Rendering</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -299,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-io" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Plotting, Querying &amp; Validating</span></span></h1>
+<h1 class="title"><span id="sec-io" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reading, Querying &amp; Validating</span></span></h1>
 </div>
 
 
@@ -329,37 +327,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The function <code>readLAS()</code> reads and creates an object that contains both the header and the payload.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"files.las"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>When printed it displays a summary of its content.</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(las)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class        : LAS (v1.2 format 1)</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; memory       : 4.4 Mb </span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extent       : 684766.4, 684993.3, 5017773, 5018007 (xmin, xmax, ymin, ymax)</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coord. ref.  : NAD83 / UTM zone 17N </span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; area         : 51572 m²</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; points       : 81.6 thousand points</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 1.58 points/m²</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; density      : 1.08 pulses/m²</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(las)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class        : LAS (v1.2 format 1)
+memory       : 4.4 Mb 
+extent       : 684766.4, 684993.3, 5017773, 5018007 (xmin, xmax, ymin, ymax)
+coord. ref.  : NAD83 / UTM zone 17N 
+area         : 51572 m²
+points       : 81.6 thousand points
+density      : 1.58 points/m²
+density      : 1.08 pulses/m²</code></pre>
+</div>
 </div>
 <p>For a more in-depth print out of the data use the function <code>summary()</code> instead of <code>print()</code>.</p>
 <section id="sec-select" class="level3">
 <h3 class="anchored" data-anchor-id="sec-select">Parameter <code>select</code></h3>
 <p>A LAS file stores the <code>X Y Z</code> coordinates of each point as well as many other data such as intensity, incidence angle, and return sequence position. These data are called <em>attributes</em>. In practice, many attributes are not actually useful but are loaded by default. This can consume a lot of processing memory because R does not allow for choosing data storage modes (see <a href="https://cran.r-project.org/web/packages/lidR/vignettes/lidR-LAS-class.html">this vignette</a> for more details).</p>
 <p>To save memory, <code>readLAS()</code> can take an optional parameter <code>select</code>, which enables the user to selectively load the attributes of interest. For example, one can choose to load only the <code>X Y Z</code> attributes.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"file.las"</span>, <span class="at">select =</span> <span class="st">"xyz"</span>)  <span class="co"># load XYZ only</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"file.las"</span>, <span class="at">select =</span> <span class="st">"xyzi"</span>) <span class="co"># load XYZ and intensity only</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"file.las"</span>, <span class="at">select =</span> <span class="st">"xyz"</span>)  <span class="co"># load XYZ only</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"file.las"</span>, <span class="at">select =</span> <span class="st">"xyzi"</span>) <span class="co"># load XYZ and intensity only</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Examples of other attribute abbreviations are: <code>t</code> - gpstime, <code>a</code> - scan angle, <code>n</code> - number of returns, <code>r</code> - return number, <code>c</code> - classification, <code>s</code> - synthetic flag, <code>k</code> - keypoint flag, <code>w</code> - withheld flag, <code>o</code> - overlap flag (format 6+), <code>u</code> - user data, <code>p</code> - point source ID, <code>e</code> - edge of flight line flag, <code>d</code> - direction of scan flag</p>
 </section>
 <section id="sec-filter" class="level3">
 <h3 class="anchored" data-anchor-id="sec-filter">Parameter <code>filter</code></h3>
 <p>While <code>select</code> enables the user to choose “columns” (or attributes) while reading files, <code>filter</code> allows selection of “rows” (or points) during the reading process. Removing superfluous data at read time saves memory and increases computation speed. For example, it’s common practice in forestry to process only the first returns.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"file.las"</span>, <span class="at">filter =</span> <span class="st">"-keep_first"</span>) <span class="co"># Read only first returns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"file.las"</span>, <span class="at">filter =</span> <span class="st">"-keep_first"</span>) <span class="co"># Read only first returns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>It is important to understand that the <code>filter</code> option in <code>readLAS()</code> keeps or discards points <strong>at read time</strong>, i.e., while reading at the C++ level, without involving any R code. For example, the R function <code>filter_poi()</code> may return the same output as the <code>filter</code> option in <code>readLAS()</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>las1 <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"file.las"</span>, <span class="at">filter =</span> <span class="st">"-keep_first"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>las2 <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"file.las"</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>las2 <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las2, ReturnNumber <span class="sc">==</span> <span class="dv">1</span>L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>las1 <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"file.las"</span>, <span class="at">filter =</span> <span class="st">"-keep_first"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>las2 <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"file.las"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>las2 <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las2, ReturnNumber <span class="sc">==</span> <span class="dv">1</span>L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In the example above, we are (1) reading only the first returns or (2) reading all the points and then filtering the first returns in R. Both outputs are strictly identical, but the first method is faster and more memory-efficient because it doesn’t load the entire file into R and avoids using extra processing memory. It should always be preferred when possible. Multiple filter commands can be used simultaneously to, for example, read only the first returns between 5 and 50 meters.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span>  <span class="fu">readLAS</span>(<span class="st">"file.las"</span>, <span class="at">filter =</span> <span class="st">"-keep_first -drop_z_below 5 -drop_z_above 50"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span>  <span class="fu">readLAS</span>(<span class="st">"file.las"</span>, <span class="at">filter =</span> <span class="st">"-keep_first -drop_z_below 5 -drop_z_above 50"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The full list of available commands can be obtained by using <code>readLAS(filter = "-help")</code>. Users of <code>LAStools</code> may recognize these commands, as both <code>LAStools</code> and <code>lidR</code> use the same libraries (<code>LASlib</code> and <code>LASzip</code>) to read and write LAS and LAZ files.</p>
 </section>
 </section>
@@ -367,209 +367,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="2.2" class="anchored" data-anchor-id="sec-asprs-compliance"><span class="header-section-number">2.2</span> Validating LiDAR Data</h2>
 <p>An important first step in ALS data processing is ensuring that your data is complete and valid according to the <a href="http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf">ASPRS LAS specifications</a>. Users commonly report bugs arising from invalid data. This is why we introduced the <code>las_check()</code> function to perform a thorough inspection of <code>LAS</code> objects. This function checks whether a <code>LAS</code> object meets the ASPRS LAS specifications and whether it is valid for processing, providing warnings if it does not.</p>
 <p>A common issue is that a <code>LAS</code> file contains duplicate points. This can lead to problems such as trees being detected twice, invalid metrics, or errors in DTM generation. We may also encounter invalid return numbers, incoherent return numbers and number of returns attributes, and invalid coordinate reference systems, among other issues. Always make sure to run the <code>las_check()</code> function before delving deeply into your data.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">las_check</span>(las)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Checking the data</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Checking coordinates... ✓</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Checking coordinates type... ✓</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Checking coordinates range... ✓</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Checking coordinates quantization... ✓</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Checking attributes type... ✓</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Checking ReturnNumber validity...</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     ⚠ Invalid data: 1 points with a return number equal to 0 found.</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [...]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">las_check</span>(las)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Checking the data</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Checking coordinates... ✓</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Checking coordinates type... ✓</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Checking coordinates range... ✓</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Checking coordinates quantization... ✓</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Checking attributes type... ✓</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Checking ReturnNumber validity...</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     ⚠ Invalid data: 1 points with a return number equal to 0 found.</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [...]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>A check is performed at read time regardless, but the read time check is not as thorough as <code>las_check()</code> for computation time reasons. For example duplicated points are not checked at read time.</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"data/chap1/corrupted.laz"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: Invalid data: 174638 points with a 'return number' greater than the</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 'number of returns'.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="sec-plot" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="sec-plot"><span class="header-section-number">2.3</span> Plotting</h2>
-<p>The <code>lidR</code> package takes advantage of the <a href="https://cran.r-project.org/package=rgl"><code>rgl</code></a> package to provide a versatile and interactive 3D viewer with points colored by Z coordinates on a black background as default.</p>
-<section id="sec-plot-3d" class="level3">
-<h3 class="anchored" data-anchor-id="sec-plot-3d">Basic 3D rendering</h3>
-<p>The very basic way to render a point cloud is the function <code>plot()</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell" data-layout-align="center" data-rgl="true">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="io_files/figure-html/plot-las-1.png" class="img-fluid figure-img" width="384"></p>
-<figcaption>Simple 3D interactive plot of a point cloud</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>Users can change the attributes used for coloring by providing the name of the attribute used to colorize the points. The background color of the viewer can also be changed by assigning a color using the <code>bg</code> argument. Axes can also be added and point sizes can be changed.</p>
-<div class="cell" data-layout-align="center" data-rgl="true">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot las object by scan angle, </span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># make the background white, </span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># display XYZ axis and  scale colors</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">"ScanAngleRank"</span>, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">axis =</span> <span class="cn">TRUE</span>, <span class="at">legend =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="io_files/figure-html/plot-las-custom-1.png" class="img-fluid figure-img" width="384"></p>
-<figcaption>Simple 3D interactive plot of a point cloud colored by scan angle, with a white background and a color scale</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>Note that if your file contains RGB data the string <code>"RGB"</code> is supported:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">"RGB"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The argument <code>breaks</code> enables to defined more adequate breaks in the color palette for example when intensity contains large outliers. Otherwise the palette range would be too large and most of the values would be considered as “very low”, so everything would appear in the same color.</p>
-<div class="cell" data-layout-align="center" data-rgl="true">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">"Intensity"</span>, <span class="at">breaks =</span> <span class="st">"quantile"</span>, <span class="at">bg =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="io_files/figure-html/plot-las-fail-1.png" class="img-fluid figure-img" width="384"></p>
-<figcaption>Using quantiles to color the intensity provides a clear display despite outliers.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="sec-plot-overlay" class="level3">
-<h3 class="anchored" data-anchor-id="sec-plot-overlay">Overlays</h3>
-<p>The package also provides some easy to use functions for common overlay. For example <code>add_dtm3d()</code> to add a digital terrain model (section <a href="dtm.html" class="quarto-xref"><span>Chapter 4</span></a>)) and <code>add_treetops3d()</code> to visualize the output of an individual tree detection (section <a href="itd.html#sec-itd" class="quarto-xref"><span>Section 7.1</span></a>))</p>
-<div class="cell" data-layout-align="center" data-rgl="true">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="dv">3</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">add_dtm3d</span>(x, dtm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="io_files/figure-html/plot-las-dtm-1.png" class="img-fluid figure-img" width="384"></p>
-<figcaption>3D interactive rendering of a point cloud with a digital terrain model overlaid.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell" data-layout-align="center" data-rgl="true">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="dv">3</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">add_treetops3d</span>(x, ttops)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="io_files/figure-html/plot-las-trees-1.png" class="img-fluid figure-img" width="384"></p>
-<figcaption>3D interactive rendering of a point cloud with segmented tree tops overlaid.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>It is also possible to combine two point clouds with different color palettes. In the following example we are using a previously classified point cloud. We first separate the vegetation and non vegetation points using <code>filter_poi()</code> and then plot both on top of each other with different colour schemes using <code>add</code> options in <code>plot()</code></p>
-<div class="cell" data-layout-align="center" data-rgl="true">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>nonveg <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, Classification <span class="sc">!=</span> LASHIGHVEGETATION)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>veg <span class="ot">&lt;-</span> <span class="fu">filter_poi</span>(las, Classification <span class="sc">==</span> LASHIGHVEGETATION)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">plot</span>(nonveg, <span class="at">color =</span> <span class="st">"Classification"</span>, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="dv">3</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(veg, <span class="at">add =</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="io_files/figure-html/plot-las-add-1.png" class="img-fluid figure-img" width="768"></p>
-<figcaption>3D interactive rendering of two point clouds overlaid with different color palettes.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="sec-plot-advanced" class="level3">
-<h3 class="anchored" data-anchor-id="sec-plot-advanced">Advanced 3D Rendering</h3>
-<p>Since <code>lidR</code> is based on <code>rgl</code>, it is easy to add objects to the main rendering using <code>rgl</code> functions such as <code>rgl::point3d()</code>, <code>rgl::text()</code>, <code>rgl::surface3d()</code>, and so on to produce publication-ready renderings. However, <code>lidR</code> introduces an additional challenge: it does not display the points with their actual coordinates. Instead, the points are shifted to be rendered close to (0, 0) due to accuracy issues, as <code>rgl</code> uses <code>float</code> (32-bit decimal numbers) rather than <code>double</code> (64-bit decimal numbers). When <code>plot()</code> is used, it invisibly returns the shift values, which can later be used to realign other objects.</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>offsets <span class="ot">&lt;-</span> <span class="fu">plot</span>(las)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(offsets)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]  391867.8 3901019.3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The coordinates of the objects must be corrected to align with the point cloud. In the following we will add lines to render the trunks. We read a file, we locate the trees (see <a href="itd.html#sec-itd" class="quarto-xref"><span>Section 7.1</span></a>)), we extract the coordinates and sizes of the trees and plot lines with <code>rgl::segment3d()</code>.</p>
-<div class="cell" data-layout-align="center" data-rgl="true" data-webgl="false" data-snapshot="true">
-<details class="code-fold">
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"MixedConifer.laz"</span>, <span class="at">package=</span><span class="st">"lidR"</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile, <span class="at">select =</span> <span class="st">"xyzc"</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get the location of the trees</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">locate_trees</span>(las, <span class="fu">lmf</span>(<span class="at">ws =</span> <span class="dv">5</span>)) </span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the point cloud</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>offsets <span class="ot">&lt;-</span> <span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="dv">3</span>)</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">add_treetops3d</span>(offsets, ttops)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the coordinates of the trees and</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co"># apply the shift to display the lines</span></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># in the rendering coordinate system</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_coordinates</span>(ttops)[,<span class="dv">1</span>] <span class="sc">-</span> offsets[<span class="dv">1</span>] </span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_coordinates</span>(ttops)[,<span class="dv">2</span>] <span class="sc">-</span> offsets[<span class="dv">2</span>] </span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> ttops<span class="sc">$</span>Z</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a GL_LINES matrix for fast rendering</span></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rep</span>(x, <span class="at">each =</span> <span class="dv">2</span>)</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rep</span>(y, <span class="at">each =</span> <span class="dv">2</span>)</span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">2</span><span class="sc">*</span><span class="fu">length</span>(z)) </span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>tmp[<span class="dv">2</span><span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(z)] <span class="ot">&lt;-</span> z</span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> tmp</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">cbind</span>(x,y,z)</span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Display lines</span></span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>rgl<span class="sc">::</span><span class="fu">segments3d</span>(M, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="io_files/figure-html/plot-las-trunks-1-rgl.png" class="img-fluid figure-img" width="384"></p>
-<figcaption>3D interactive rendering of a point cloud with segmented tree tops and trunks overlaid.</figcaption>
-</figure>
-</div>
-</div>
-<p>../../../../../../tmp/RtmpNMWMOm/file1737024096ea6.png</p>
-</div>
-</section>
-<section id="voxel-rendering" class="level3">
-<h3 class="anchored" data-anchor-id="voxel-rendering">Voxel rendering</h3>
-<p>It is possible to render voxels. This is useful to render the output of the function <code>voxelise_points()</code> or <code>voxel_metrics()</code> for examples.</p>
-<div class="cell" data-layout-align="center" data-rgl="true">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>vox <span class="ot">&lt;-</span> <span class="fu">voxelize_points</span>(las, <span class="dv">6</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vox, <span class="at">voxel =</span> <span class="cn">TRUE</span>, <span class="at">bg =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="io_files/figure-html/plot-voxels-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="sec-plot-crossection" class="level3">
-<h3 class="anchored" data-anchor-id="sec-plot-crossection">Cross Sections 2D Rendering</h3>
-<p>To better visualize the vertical structure of a point cloud, investigate classification results, or compare the results of different interpolation routines, a cross section can be plotted. To do this, we first need to decide where the cross section will be located (i.e., define the beginning and end) and specify its width. The point cloud can then be clipped, and the <code>X</code> and <code>Z</code> coordinates used to create the plot.</p>
-<p>For example, to create a 200 m long cross section, we might define the beginning and end, and then use the <code>clip_transect()</code> function to subset the point cloud.</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">273457</span>, <span class="dv">5274357</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">273542</span>, <span class="dv">5274542</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>las_tr <span class="ot">&lt;-</span> <span class="fu">clip_transect</span>(las, p1, p2, <span class="at">width =</span> <span class="dv">5</span>, <span class="at">xz =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Rendering can be achieved with base plot or <code>ggplot2</code>. Notice the use of <code>payload()</code> to extract the <code>data.frame</code> from the <code>LAS</code> object.</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">payload</span>(las_tr), <span class="fu">aes</span>(X,Z, <span class="at">color =</span> Z)) <span class="sc">+</span> </span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>() <span class="sc">+</span> </span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradientn</span>(<span class="at">colours =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="io_files/figure-html/ggplot-transect-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768"></p>
-</figure>
-</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(<span class="st">"data/chap1/corrupted.laz"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Invalid data: 174638 points with a 'return number' greater than the
+'number of returns'.</code></pre>
 </div>
 </div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1002,8 +819,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./gnd.html" class="pagination-link" aria-label="Ground Classification">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ground Classification</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./view.html" class="pagination-link" aria-label="Plotting">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Plotting</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
