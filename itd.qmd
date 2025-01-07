@@ -18,7 +18,7 @@ library(lidR)
 options(lidR.progress = F)
 ```
 
-# Indivitual tree dectection and segmentation {#sec-itd-its}
+# Individual tree detection and segmentation {#sec-itd-its}
 
 **Individual Tree Detection (ITD)** is the process of spatially locating trees and extracting height information. **Individual Tree Segmentation (ITS)** is the process of individually delineating detected trees. In `lidR`, detection and segmentation functions are decoupled to maximize flexibility. Tree tops are first detected using the `locate_trees()` function, followed by crown delineation using `segment_trees()`. In the following section, we will use the `MixedConifer.laz` data set, which is included internally within `lidR`, to demonstrate both ITD and ITS with reproducible examples. We will also generate a CHM (@sec-chm) to help visualize the results.
 
@@ -36,7 +36,7 @@ Tree tops can be detected by applying a Local Maximum Filter (LMF) on the loaded
 
 ### Local Maximum Filter with fixed windows size {#sec-lmffw}
 
-The LMF can be applied with a constant size windows. Here with a windows size of `ws = 5` meters meaning that for a given point the algorithm looks to the neigbourhood points within a 2.5 radius circle to figure out if the point is the local highest. While the algorithm does not need any CHM to work we chose to display the results on top of a CHM for better visualization.
+The LMF can be applied with a constant size windows. Here with a windows size of `ws = 5` meters meaning that for a given point the algorithm looks to the neighbourhood points within a 2.5 radius circle to figure out if the point is the local highest. While the algorithm does not need any CHM to work we chose to display the results on top of a CHM for better visualization.
 
 ```{r plot-chm-tree-itd, fig.height=6, fig.width=7}
 ttops <- locate_trees(las, lmf(ws = 5))
