@@ -15,13 +15,14 @@ options(lidR.progress = FALSE)
 
 # Derived metrics at point level {#sec-pba}
 
-::: {.callout-important}
-Due to a new CRAN policy affecting numerous packages, we have temporarily removed the `point_metrics()` function. This function relies on internal R functions that package developers are no longer permitted to use. To allow us time to find a workaround and prevent the package from being removed from CRAN, some examples in this section may not work with `lidR v4.1.2`. To obtain a version of the package with this function enabled, please contact us.
+::: callout-important
+Due to a new CRAN policy affecting numerous packages, we have temporarily removed the `point_metrics()` function. This function relies on internal R functions that package developers are no longer permitted to use. To allow us time to find a workaround and prevent the package from being removed from CRAN, some examples in this section may not work with `lidR v4.1.2`. To obtain a version of the package with this function enabled, you can install from [r-universe](https://r-lidar.r-universe.dev/builds) rather than from CRAN.\
+`install.packages('lidR', repos = c('https://r-lidar.r-universe.dev', 'https://cloud.r-project.org'))`
 :::
 
 ## Overview {#sec-pba-overview}
 
-The "point" level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The `point_metrics()` function allows calculation of point-based metrics and works like `cloud_metrics()`, `grid_metrics()`, `tree_metrics()` or `voxel_metrics()` seen in  @sec-metrics, @sec-cba, @sec-aba, @sec-tba and @sec-vba. Refer to these sections for a more comprehensive overview.
+The "point" level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The `point_metrics()` function allows calculation of point-based metrics and works like `cloud_metrics()`, `grid_metrics()`, `tree_metrics()` or `voxel_metrics()` seen in @sec-metrics, @sec-cba, @sec-aba, @sec-tba and @sec-vba. Refer to these sections for a more comprehensive overview.
 
 For each point, the neighbourhood can be either:
 
