@@ -1,3 +1,9 @@
+
+<br/>
+**Recent updates:**
+
+- January 2026: significant update of the ground classification chapter with the introduction of the progressive TIN densification.
+
 # Introduction
 
 `lidR` is an R package for manipulating and visualizing airborne laser scanning (ALS) data with an emphasis on research & development for forestry and ecology applications. The package is entirely open source and is integrated within the geospatial R ecosystem (i.e., `raster/terra/stars` and `sp/sf`). This guide has been written to help both the ALS novice and seasoned point cloud processing veterans. Key functionality of `lidR` includes functions to:
