@@ -198,7 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./itd.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Indivitual tree dectection and segmentation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Individual tree detection and segmentation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -285,9 +285,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#sec-pmf" id="toc-sec-pmf" class="nav-link active" data-scroll-target="#sec-pmf"><span class="header-section-number">4.1</span> Progressive Morphological Filter</a></li>
   <li><a href="#sec-csf" id="toc-sec-csf" class="nav-link" data-scroll-target="#sec-csf"><span class="header-section-number">4.2</span> Cloth Simulation Function</a></li>
-  <li><a href="#sec-mcc" id="toc-sec-mcc" class="nav-link" data-scroll-target="#sec-mcc"><span class="header-section-number">4.3</span> Multiscale Curvature Classification (MCC)</a></li>
-  <li><a href="#sec-edge-artifact" id="toc-sec-edge-artifact" class="nav-link" data-scroll-target="#sec-edge-artifact"><span class="header-section-number">4.4</span> Edge Artifacts</a></li>
-  <li><a href="#sec-method-selection" id="toc-sec-method-selection" class="nav-link" data-scroll-target="#sec-method-selection"><span class="header-section-number">4.5</span> How to Choose a Method and Its Parameters?</a></li>
+  <li><a href="#sec-mcc" id="toc-sec-mcc" class="nav-link" data-scroll-target="#sec-mcc"><span class="header-section-number">4.3</span> Multiscale Curvature Classification</a></li>
+  <li><a href="#sec-ptd" id="toc-sec-ptd" class="nav-link" data-scroll-target="#sec-ptd"><span class="header-section-number">4.4</span> Progressive TIN Densification</a>
+  <ul class="collapse">
+  <li><a href="#ptd-seeds" id="toc-ptd-seeds" class="nav-link" data-scroll-target="#ptd-seeds">PTD seeds</a></li>
+  <li><a href="#ptd-densification" id="toc-ptd-densification" class="nav-link" data-scroll-target="#ptd-densification">PTD densification</a></li>
+  <li><a href="#low-outliers" id="toc-low-outliers" class="nav-link" data-scroll-target="#low-outliers">Low outliers</a></li>
+  <li><a href="#comparisons" id="toc-comparisons" class="nav-link" data-scroll-target="#comparisons">Comparisons</a></li>
+  </ul></li>
+  <li><a href="#sec-edge-artifact" id="toc-sec-edge-artifact" class="nav-link" data-scroll-target="#sec-edge-artifact"><span class="header-section-number">4.5</span> Edge Artifacts</a></li>
   <li><a href="#sec-other" id="toc-sec-other" class="nav-link" data-scroll-target="#sec-other"><span class="header-section-number">4.6</span> Other Methods</a></li>
   </ul>
 </nav>
@@ -314,7 +320,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows creation of a continuous model of terrain elevation (see <a href="dtm.html" class="quarto-xref"><span>Chapter 5</span></a>)). Many algorithms have been reported in the literature and <code>lidR</code> currently provides three of them: Progressive Morphological Filter (PMF), Cloth Simulation Function (CSF) and Multiscale Curvature Classification (MCC) usable with the function <code>classify_ground()</code>.</p>
+<p>Classification of ground points is an important step in processing point cloud data. Distinguishing between ground and non-ground points allows creation of a continuous model of terrain elevation (see <a href="dtm.html" class="quarto-xref"><span>Chapter 5</span></a>)). Many algorithms have been reported in the literature and <code>lidR</code> currently provides four of them: Progressive Morphological Filter (PMF), Cloth Simulation Function (CSF), Multiscale Curvature Classification (MCC) and Progressive TIN densification (PTD) usable with the function <code>classify_ground()</code>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Progressive TIN densification
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In January 2026, we added Progressive TIN Densification (PTD) to lidR. We strongly recommend using this algorithm exclusively, as it outperforms all others. For legacy reasons, the algorithms described in Sections <a href="#sec-pmf" class="quarto-xref"><span>Section 4.1</span></a>, <a href="#sec-csf" class="quarto-xref"><span>Section 4.2</span></a>, and <a href="#sec-mcc" class="quarto-xref"><span>Section 4.3</span></a> are still included in the book and are maintained as is, but new readers can move on <a href="#sec-ptd" class="quarto-xref"><span>Section 4.4</span></a>.</p>
+</div>
+</div>
 <section id="sec-pmf" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="sec-pmf"><span class="header-section-number">4.1</span> Progressive Morphological Filter</h2>
 <p>The implementation of PMF algorithm in <code>lidR</code> is based on the method described in <a href="https://ieeexplore.ieee.org/document/1202973">Zhang et al.&nbsp;(2003)</a> with some technical modifications. The original method is raster-based, while <code>lidR</code> performs point-based morphological operations because <code>lidR</code> is a point cloud oriented software. The main step of the methods are summarised in the figure below:</p>
@@ -324,12 +343,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <code>pmf()</code> function requires defining the following input parameters: <code>ws</code> (window size or sequence of window sizes), and <code>th</code> (threshold size or sequence of threshold heights). More experienced users may experiment with these parameters to achieve best classification accuracy, however <code>lidR</code> contains <code>util_makeZhangParam()</code> function that includes the default parameter values described in <a href="https://ieeexplore.ieee.org/document/1202973">Zhang et al.&nbsp;(2003)</a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"Topography.laz"</span>, <span class="at">package=</span><span class="st">"lidR"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile, <span class="at">select =</span> <span class="st">"xyzrn"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="at">algorithm =</span> <span class="fu">pmf</span>(<span class="at">ws =</span> <span class="dv">5</span>, <span class="at">th =</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile, <span class="at">select =</span> <span class="st">"xyzrn"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="at">algorithm =</span> <span class="fu">pmf</span>(<span class="at">ws =</span> <span class="dv">5</span>, <span class="at">th =</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can now visualize the result:</p>
 <div class="cell" data-layout-align="center" data-rgl="true">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">"Classification"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">"white"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las, <span class="at">color =</span> <span class="st">"Classification"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">"white"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -350,9 +369,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We can see that although the classification worked, there are multiple points above terrain that are classified <code>2</code> (i.e.&nbsp;“ground” according to <a href="http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf">ASPRS specifications</a>). This clearly indicates that additional filtering steps are needed and that both <code>ws</code> and <code>th</code> parameters should be adjusted. Below we use multiple values for the two parameters instead of a single value in the example above.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ws <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">3</span>, <span class="dv">12</span>, <span class="dv">3</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>th <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.1</span>, <span class="fl">1.5</span>, <span class="at">length.out =</span> <span class="fu">length</span>(ws))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="at">algorithm =</span> <span class="fu">pmf</span>(<span class="at">ws =</span> ws, <span class="at">th =</span> th))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ws <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">3</span>, <span class="dv">12</span>, <span class="dv">3</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>th <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.1</span>, <span class="fl">1.5</span>, <span class="at">length.out =</span> <span class="fu">length</span>(ws))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="at">algorithm =</span> <span class="fu">pmf</span>(<span class="at">ws =</span> ws, <span class="at">th =</span> th))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>After this adjustment the classification result changed, and points in the canopy are no longer classified as “ground”.</p>
 <div class="cell" data-layout-align="center">
@@ -373,7 +392,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </center>
 <p>The <code>csf()</code> functions use the default values proposed by <a href="http://www.mdpi.com/2072-4292/8/6/501/htm">Zhang et al 2016</a> and can be used without providing any arguments.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="at">algorithm =</span> <span class="fu">csf</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="at">algorithm =</span> <span class="fu">csf</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Similar to the previous examples, classification results can be assessed using a cross section:</p>
 <div class="cell" data-layout-align="center">
@@ -387,8 +406,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>While the default parameters of <code>csf()</code> are designed to be universal and provide accurate classification results, according to the original paper, it’s apparent that the algorithm did not work properly in our example because a significant portion of points located in the ground were not classified. In such cases the algorithm parameters need to be tuned to improve the result. For this particular data set a set of parameters that resulted in an improved classification result were formulated as follows:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mycsf <span class="ot">&lt;-</span> <span class="fu">csf</span>(<span class="at">sloop_smooth =</span> <span class="cn">TRUE</span>, <span class="at">class_threshold =</span> <span class="dv">1</span>, <span class="at">cloth_resolution =</span> <span class="dv">1</span>, <span class="at">time_step =</span> <span class="dv">1</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, mycsf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mycsf <span class="ot">&lt;-</span> <span class="fu">csf</span>(<span class="at">sloop_smooth =</span> <span class="cn">TRUE</span>, <span class="at">class_threshold =</span> <span class="dv">1</span>, <span class="at">cloth_resolution =</span> <span class="dv">1</span>, <span class="at">time_step =</span> <span class="dv">1</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, mycsf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -401,8 +420,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We can also subset only the ground points to display the results in 3D</p>
 <div class="cell" data-layout-align="center" data-rgl="true">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gnd <span class="ot">&lt;-</span> <span class="fu">filter_ground</span>(las)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gnd, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">"white"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>gnd <span class="ot">&lt;-</span> <span class="fu">filter_ground</span>(las)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gnd, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">bg =</span> <span class="st">"white"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -413,10 +432,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 <section id="sec-mcc" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="sec-mcc"><span class="header-section-number">4.3</span> Multiscale Curvature Classification (MCC)</h2>
+<h2 data-number="4.3" class="anchored" data-anchor-id="sec-mcc"><span class="header-section-number">4.3</span> Multiscale Curvature Classification</h2>
 <p>Multiscale Curvature Classification (MCC) uses the <a href="https://ieeexplore.ieee.org/document/4137852">Evans and Hudak 2016</a> algorithm originally implemented in the <a href="https://sourceforge.net/projects/mcclidar/">mcc-lidar</a> software.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="fu">mcc</span>(<span class="fl">1.5</span>,<span class="fl">0.3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="fu">mcc</span>(<span class="fl">1.5</span>,<span class="fl">0.3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -428,31 +447,91 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="sec-edge-artifact" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="sec-edge-artifact"><span class="header-section-number">4.4</span> Edge Artifacts</h2>
-<p>No matter which algorithm is used in <code>lidR</code> or other software, ground classification will be weaker at the edges of point clouds as the algorithm must analyze the local neighbourhood (which is missing on edges). To find ground points, an algorithm need to analyze the local neighborhood or local context that is missing at edge areas. When processing point clouds it’s important to always consider a buffer around the region of interest to avoid edge artifacts. <code>lidR</code> has tools to manage buffered tiles and this advanced use of the package will be covered in <a href="engine.html" class="quarto-xref"><span>Chapter 15</span></a>).</p>
-</section>
-<section id="sec-method-selection" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="sec-method-selection"><span class="header-section-number">4.5</span> How to Choose a Method and Its Parameters?</h2>
-<p>Identifying the optimal algorithm parameters is not a trivial task and often requires several trial runs. <code>lidR</code> proposes several algorithms and may introduce even more in future versions; however, the main goal is to provide a means to compare outputs. We don’t know which one is better or which parameters best suit a given terrain. It’s likely that parameters need to be dynamically adjusted to the local context, as parameters that work well in one file may yield inadequate results in another.</p>
-<div class="callout callout-style-default callout-note callout-titled">
+<section id="sec-ptd" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="sec-ptd"><span class="header-section-number">4.4</span> Progressive TIN Densification</h2>
+<p>Progressive TIN Densification (PTD) was proposed by <a href="https://www.isprs.org/proceedings/xxxiii/congress/part4/111_xxxiii-part4.pdf">Axelsson (2000)</a>. It the most widely used algorithms in industry and in closed-source software such as LAStools or TerraScan (with potentially undocumented variations). It generally outperforms PMF, CSF, and MCC, especially in complex terrain such as mountains.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>lidR</code> is an research and development package, not a production package. The goal of lidR is to provide numerous and handy ways to manipulate, test, compare point cloud processing methods. If available, we recommend using classifications provided by the data provider. The <code>classify_ground()</code> function is useful for small to medium-sized unclassified regions of interest because it is feasible to visually assess classification results. For large acquisitions where visual assessment is no longer feasible, we do not recommend performing ground classification without first studying its accuracy.</p>
+<p>In early 2026, we added PTD to lidR and we now recommend using it exclusively.</p>
 </div>
 </div>
+<p>PTD starts with a small set of points that are very likely to be on the ground (called <em>seeds</em>), usually the lowest points in the area, and uses them to create an initial Triangulated Irregular Network (TIN). Then, other points are tested one by one and added to the TIN if they fit the shape of the current surface, based on simple rules such as maximum slope or height difference with the current TIN. Points that are too high or that create sharp angles are rejected as non-ground objects (trees, buildings, etc.). By progressively adding only compatible points, the TIN gradually adapts to the true terrain, producing a reliable ground model even in complex landscapes.</p>
+<center>
+<img src="images/GND/PTD.png" class="img-fluid">
+</center>
+<p>Unlike PMF, CSF, or RMCC, which classify all ground points based on a buffer above a reference surface (e.g.&nbsp;+10 cm) and therefore classify ground points without spacing limits, PTD can stop the densification when triangles become too small. This effectively introduces a maximum spacing between ground points, avoiding useless (and even harmful for computational purposes) over-densification of ground points.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="fu">ptd</span>(<span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="ptd-seeds" class="level3">
+<h3 class="anchored" data-anchor-id="ptd-seeds">PTD seeds</h3>
+<p>PTD starts by selecting seeds. A seed is the lowest point found within each cell of a grid with resolution <code>res</code>. This parameter is very important because all seeds must be actual ground points. If some seeds are not ground points, the final classification will be incorrect (some low noise points are tolerated; see later). The resolution must be chosen large enough so that the lowest point in each cell is actually a ground point and not, for example, a rooftop or a tree (see figure below). At the same time, we want to have as many seeds as possible to capture steep variations in the terrain. If the seeds are too widely spaced, PTD may miss and truncate some mountain tops (see figure below).</p>
+<center>
+<img src="images/GND/PTD2.png" class="img-fluid" width="450">
+</center>
+<p><br></p>
+<p>In urban environments, we recommend using <code>res = 50</code> or larger to ensure that rooftops are not captured as seeds. In forested environments with <em>standard</em> condition, we recommend <code>res = 20</code>. In steep mountainous terrain, we recommend <code>res = 10</code>. In some cases, depending on the acquisition settings and forest cover, the point cloud may contain very few ground points. In this case, <code>res</code> must be increased to avoid capturing non-ground points.</p>
+</section>
+<section id="ptd-densification" class="level3">
+<h3 class="anchored" data-anchor-id="ptd-densification">PTD densification</h3>
+<p>The densification is governed by two criteria. For each triangle, a new point is inserted into the triangulation if the angle is below a threshold (parameter <code>angle</code>) and if its distance is below a threshold (parameter <code>distance</code>). The default settings work well in most standard contexts. For the definition of angle and distance the reader can refer to the PTD publication linked above.</p>
+<p>Changing <code>distance</code> and <code>angle</code> is, however, mandatory in very steep mountainous areas, where PTD must tolerate strong local variations and therefore be less conservative. In mountainous terrain, we recommend using <code>angle = 40</code> and <code>distance = 3</code>.</p>
+<p>In very flat terrain, in order to reduce the risk of misclassification, users can make PTD more conservative with, for example, <code>angle = 10</code> and <code>distance = 1</code>.</p>
+</section>
+<section id="low-outliers" class="level3">
+<h3 class="anchored" data-anchor-id="low-outliers">Low outliers</h3>
+<p>In the original PTD, low outliers are, by construction, a serious issue. Low outliers are almost systematically the lowest points of each grid cell but are not ground points. Consequently, at the end of the densification, even in the best case, the ground classification contains outliers that will generate spikes in the DTM.</p>
+<center>
+<img src="images/GND/PTD3.png" class="img-fluid" width="450">
+</center>
+<p><br></p>
+<p>The best way to avoid this problem is, of course, to feed PTD with a clean point cloud from which outliers have already been removed upstream. However, lidR’s PTD is equipped with and enhanced by an internal outlier removal system that detects and cleans ground outliers. This procedure is robust and has produced very satisfactory results on all datasets tested.</p>
+</section>
+<section id="comparisons" class="level3">
+<h3 class="anchored" data-anchor-id="comparisons">Comparisons</h3>
+<p>See <a href="dtm.html" class="quarto-xref"><span>Chapter 5</span></a> to learn how to build a DTM. Below are the results of the best ground classifications and DTMs we were able to achieve with CSF, PMF, and PTD in a complex mountainous scene with sharp ridges and steep slopes. Although the images are rendered small in this book, we can observe that ridges and slopes are better classified with PTD and that PTD does not produce the numerous bumps caused by outlier misclassification in vegetated areas, which often result from overly permissive parameter settings required to handle such complex scenes.</p>
+<p>Overall, PTD outperforms the other methods in all contexts and is much easier to configure, as the effects of its parameters are easy to understand and anticipate.</p>
+<ul>
+<li>PTD: 20 seconds</li>
+<li>CSF: 156 seconds (x8)</li>
+<li>PMF: 1800 seconds (x90)</li>
+</ul>
+<center>
+<img src="images/GND/mountain.png" class="img-fluid">
+</center>
+<ul>
+<li>PTD: 15 seconds</li>
+<li>CSF: 192 seconds (x12)</li>
+<li>PMF: 840 seconds (x56)</li>
+</ul>
+<center>
+<img src="images/GND/ridges.png" class="img-fluid">
+</center>
+</section>
+</section>
+<section id="sec-edge-artifact" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="sec-edge-artifact"><span class="header-section-number">4.5</span> Edge Artifacts</h2>
+<p>No matter which algorithm is used in <code>lidR</code> or other software, ground classification will be weaker at the edges of point clouds as the algorithm must analyze the local neighbourhood (which is missing on edges). To find ground points, an algorithm need to analyze the local neighborhood or local context that is missing at edge areas. When processing point clouds it’s important to always consider a buffer around the region of interest to avoid edge artifacts. <code>lidR</code> has tools to manage buffered tiles and this advanced use of the package will be covered in <a href="engine.html" class="quarto-xref"><span>Chapter 15</span></a>).</p>
+<!-- 
+## How to Choose a Method and Its Parameters? {#sec-method-selection}
+
+Identifying the optimal algorithm parameters is not a trivial task and often requires several trial runs. `lidR` proposes several algorithms and may introduce even more in future versions; however, the main goal is to provide a means to compare outputs. We don’t know which one is better or which parameters best suit a given terrain. It’s likely that parameters need to be dynamically adjusted to the local context, as parameters that work well in one file may yield inadequate results in another.
+
+::: callout-note
+`lidR` is an research and development package, not a production package. The goal of lidR is to provide numerous and handy ways to manipulate, test, compare point cloud processing methods. If available, we recommend using classifications provided by the data provider. The `classify_ground()` function is useful for small to medium-sized unclassified regions of interest because it is feasible to visually assess classification results. For large acquisitions where visual assessment is no longer feasible, we do not recommend performing ground classification without first studying its accuracy.
+:::
+-->
 </section>
 <section id="sec-other" class="level2" data-number="4.6">
 <h2 data-number="4.6" class="anchored" data-anchor-id="sec-other"><span class="header-section-number">4.6</span> Other Methods</h2>
 <p>Ground segmentation is not limited to the 3 methods described above. Many more have been presented and described in the literature. In <a href="plugins.html" class="quarto-xref"><span>Chapter 20</span></a> we will learn how to create a plugin algorithm and test it seamlessly in R with <code>lidR</code> using a syntax like:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="at">algorithm =</span> <span class="fu">my_new_method</span>(<span class="at">param1 =</span> <span class="fl">0.05</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">classify_ground</span>(las, <span class="at">algorithm =</span> <span class="fu">my_new_method</span>(<span class="at">param1 =</span> <span class="fl">0.05</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

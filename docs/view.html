@@ -198,7 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./itd.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Indivitual tree dectection and segmentation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Individual tree detection and segmentation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -430,50 +430,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>LASfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"MixedConifer.laz"</span>, <span class="at">package=</span><span class="st">"lidR"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile, <span class="at">select =</span> <span class="st">"xyzc"</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get the location of the trees</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">locate_trees</span>(las, <span class="fu">lmf</span>(<span class="at">ws =</span> <span class="dv">5</span>)) </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the point cloud</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>offsets <span class="ot">&lt;-</span> <span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="dv">3</span>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">add_treetops3d</span>(offsets, ttops)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the coordinates of the trees and</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># apply the shift to display the lines</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># in the rendering coordinate system</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_coordinates</span>(ttops)[,<span class="dv">1</span>] <span class="sc">-</span> offsets[<span class="dv">1</span>] </span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_coordinates</span>(ttops)[,<span class="dv">2</span>] <span class="sc">-</span> offsets[<span class="dv">2</span>] </span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> ttops<span class="sc">$</span>Z</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a GL_LINES matrix for fast rendering</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rep</span>(x, <span class="at">each =</span> <span class="dv">2</span>)</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rep</span>(y, <span class="at">each =</span> <span class="dv">2</span>)</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">2</span><span class="sc">*</span><span class="fu">length</span>(z)) </span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>tmp[<span class="dv">2</span><span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(z)] <span class="ot">&lt;-</span> z</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> tmp</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">cbind</span>(x,y,z)</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Display lines</span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>rgl<span class="sc">::</span><span class="fu">segments3d</span>(M, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(LASfile, <span class="at">select =</span> <span class="st">"xyzc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># get the location of the trees</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ttops <span class="ot">&lt;-</span> <span class="fu">locate_trees</span>(las, <span class="fu">lmf</span>(<span class="at">ws =</span> <span class="dv">5</span>)) </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the point cloud</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>offsets <span class="ot">&lt;-</span> <span class="fu">plot</span>(las, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="dv">3</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">add_treetops3d</span>(offsets, ttops)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the coordinates of the trees and</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># apply the shift to display the lines</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co"># in the rendering coordinate system</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_coordinates</span>(ttops)[,<span class="dv">1</span>] <span class="sc">-</span> offsets[<span class="dv">1</span>] </span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_coordinates</span>(ttops)[,<span class="dv">2</span>] <span class="sc">-</span> offsets[<span class="dv">2</span>] </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> ttops<span class="sc">$</span>Z</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a GL_LINES matrix for fast rendering</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rep</span>(x, <span class="at">each =</span> <span class="dv">2</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rep</span>(y, <span class="at">each =</span> <span class="dv">2</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">2</span><span class="sc">*</span><span class="fu">length</span>(z)) </span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>tmp[<span class="dv">2</span><span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(z)] <span class="ot">&lt;-</span> z</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> tmp</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">cbind</span>(x,y,z)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Display lines</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>rgl<span class="sc">::</span><span class="fu">segments3d</span>(M, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="view_files/figure-html/plot-las-trunks-1-rgl.png" class="img-fluid figure-img" width="384"></p>
+<p><img src="view_files/figure-html/plot-las-trunks-1.-rgl.png" class="img-fluid figure-img" width="384"></p>
 <figcaption>3D interactive rendering of a point cloud with segmented tree tops and trunks overlaid.</figcaption>
 </figure>
 </div>
 </div>
-<p>../../../../../../tmp/Rtmp8WxUoO/file23efd2b867b1c.png</p>
+<p>../../../../../../tmp/RtmpMf2R6y/fileb58914bdff108.png</p>
 </div>
 </section>
 <section id="voxel-rendering" class="level3">
 <h3 class="anchored" data-anchor-id="voxel-rendering">Voxel rendering</h3>
 <p>It is possible to render voxels. This is useful to render the output of the function <code>voxelise_points()</code> or <code>voxel_metrics()</code> for examples.</p>
 <div class="cell" data-layout-align="center" data-rgl="true">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vox <span class="ot">&lt;-</span> <span class="fu">voxelize_points</span>(las, <span class="dv">6</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vox, <span class="at">voxel =</span> <span class="cn">TRUE</span>, <span class="at">bg =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>vox <span class="ot">&lt;-</span> <span class="fu">voxelize_points</span>(las, <span class="dv">6</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vox, <span class="at">voxel =</span> <span class="cn">TRUE</span>, <span class="at">bg =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -489,12 +492,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="installation" class="level3">
 <h3 class="anchored" data-anchor-id="installation">Installation</h3>
 <p><code>lidRviewer</code> is not a package on CRAN. You can install it with:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'lidRviewer'</span>, <span class="at">repos =</span> <span class="st">'https://r-lidar.r-universe.dev'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'lidRviewer'</span>, <span class="at">repos =</span> <span class="st">'https://r-lidar.r-universe.dev'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="usage" class="level3">
 <h3 class="anchored" data-anchor-id="usage">Usage</h3>
 <p>When loading <code>lidRviewer</code> with <code>library(lidRviewer)</code>, it overrides the <code>plot()</code> function from <code>lidR</code>. You can now use:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(las)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>and get a powerful viewer with more command to interact and visualize the point cloud interactively.</p>
 <p><img src="images/autzen-screen.jpg" class="img-fluid"></p>
 <p>You can:</p>
@@ -530,19 +533,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>To better visualize the vertical structure of a point cloud, investigate classification results, or compare the results of different interpolation routines, a cross section can be plotted. To do this, we first need to decide where the cross section will be located (i.e., define the beginning and end) and specify its width. The point cloud can then be clipped, and the <code>X</code> and <code>Z</code> coordinates used to create the plot.</p>
 <p>For example, to create a 200 m long cross section, we might define the beginning and end, and then use the <code>clip_transect()</code> function to subset the point cloud.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">273457</span>, <span class="dv">5274357</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">273542</span>, <span class="dv">5274542</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>las_tr <span class="ot">&lt;-</span> <span class="fu">clip_transect</span>(las, p1, p2, <span class="at">width =</span> <span class="dv">5</span>, <span class="at">xz =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">273457</span>, <span class="dv">5274357</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">273542</span>, <span class="dv">5274542</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>las_tr <span class="ot">&lt;-</span> <span class="fu">clip_transect</span>(las, p1, p2, <span class="at">width =</span> <span class="dv">5</span>, <span class="at">xz =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Rendering can be achieved with base plot or <code>ggplot2</code>. Notice the use of <code>payload()</code> to extract the <code>data.frame</code> from the <code>LAS</code> object.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">payload</span>(las_tr), <span class="fu">aes</span>(X,Z, <span class="at">color =</span> Z)) <span class="sc">+</span> </span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>() <span class="sc">+</span> </span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradientn</span>(<span class="at">colours =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">payload</span>(las_tr), <span class="fu">aes</span>(X,Z, <span class="at">color =</span> Z)) <span class="sc">+</span> </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>() <span class="sc">+</span> </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradientn</span>(<span class="at">colours =</span> <span class="fu">height.colors</span>(<span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
