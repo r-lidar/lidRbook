@@ -2,7 +2,9 @@
 <br/>
 **Recent updates:**
 
-- January 2026: significant update of the ground classification chapter with the introduction of the progressive TIN densification.
+- March 2026: significant update of the ground classification chapter with the introduction of the progressive TIN densification.
+- March 2026: update of the CHM chapter with the introduction of the spike-free algorithm.
+- March 2026: update of the CHM chapter with post-processing methods.
 
 # Introduction
 
@@ -32,9 +34,9 @@ Since 2024, the `lidR` package (as well as the [`lasR`](https://github.com/r-lid
 
 As `lidR` is freeware, you can help maintaining through your [generous donations](https://github.com/sponsors/Jean-Romain). It helps free my time and work more on `lidR`.
 
-# Other Lidar Packages
+# Other lidar Packages
 
-For a package focused on production rather than research and development, consider the [`lasR`](https://github.com/r-lidar/lasR) package, which is not covered in this book. The `lasR` package is much more powerful than `lidR` and is designed to process terabytes of data. However, the trade-off is that it does not allow for easy and convenient manipulation of point clouds in R like `lidR`. Both tools are intended for different use cases.
+For a package focused on production rather than research and development, consider the [`lasR`](https://github.com/r-lidar/lasR) package, which is not covered in this book. The `lasR` package is much more powerful than `lidR`, can be used in `python` and is designed to process terabytes of data. However, the trade-off is that it does not allow for easy and convenient manipulation of point clouds in R like `lidR`. Both tools are intended for different use cases.
 
 # Installation
 

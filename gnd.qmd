@@ -27,7 +27,7 @@ Classification of ground points is an important step in processing point cloud d
 ::: callout-tip
 ## Progressive TIN densification
 
-In January 2026, we added Progressive TIN Densification (PTD) to lidR. We strongly recommend using this algorithm exclusively, as it outperforms all others. For legacy reasons, the algorithms described in Sections @sec-pmf, @sec-csf, and @sec-mcc are still included in the book and are maintained as is, but new readers can move on @sec-ptd.
+In January 2026, we added Progressive TIN Densification (PTD) to lidR 4.3.0. We strongly recommend using this algorithm exclusively, as it outperforms all others. For legacy reasons, the algorithms described in Sections @sec-pmf, @sec-csf, and @sec-mcc are still included in the book and are maintained as is, but new readers can move on @sec-ptd.
 :::
 
 ## Progressive Morphological Filter {#sec-pmf}

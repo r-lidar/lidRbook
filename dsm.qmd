@@ -129,7 +129,7 @@ plot(chm, col = col)
 
 ## Pit-free algorithm {#sec-pitfree}
 
-More advanced algorithms have also been designed that avoid pits during the computation step instead of requiring post-processing. [Khosravipour et al. (2014)](https://www.ingentaconnect.com/content/asprs/pers/2014/00000080/00000009/art00003?crawler=true) proposed a ‘pit-free’ algorithm, which consists of a series of sequential height thresholds where Delaunay triangulations are applied to first returns. For each threshold, the triangulation is cleaned of triangles that are too large, similar to the example given in the previous section. In a final step, the partial rasters are stacked and only the highest pixels of each raster are retained (figure below). The output is a DSM that is expected to be natively free of pits without using any post-processing or correction methods.
+More advanced algorithms have also been designed that avoid pits during the computation step instead of requiring post-processing. [Khosravipour et al. (2014)](https://www.sciencedirect.com/science/article/abs/pii/S0303243416300873) proposed a ‘pit-free’ algorithm, which consists of a series of sequential height thresholds where Delaunay triangulations are applied to first returns. For each threshold, the triangulation is cleaned of triangles that are too large, similar to the example given in the previous section. In a final step, the partial rasters are stacked and only the highest pixels of each raster are retained (figure below). The output is a DSM that is expected to be natively free of pits without using any post-processing or correction methods.
 
 <center>![](images/DSM/pitfree.png)</center>
 
@@ -172,14 +172,26 @@ plot(chm, col = col)
 
 Similarly to point-to-raster, the pit-free algorithm in `lidR` also includes a `subcircle` option that replaces each first return by a disk made of 8 points. Because it would be too computationally demanding to triangulate 8 times more points, the choice was made to select only the highest point of each pixel after subcircling to perform the triangulation.
 
-```{r plot-chm-pitfree-subcirc, fig.height=5.9, fig.width=6.9}
-chm <- rasterize_canopy(las, res = 0.5, pitfree(subcircle = 0.15))
+## Spike-free algorithm {#sec-spikefree}
+
+Another more advanced algorithm has also been designed that avoids pits during the computation step instead of requiring post-processing. [Khosravipour et al. (2016)](https://www.sciencedirect.com/science/article/abs/pii/S0303243416300873) proposed a “spike-free” algorithm, which consists of an incremental Delaunay triangulation of all returns with constraints on the subdivision of the triangles to locally “freeze” the triangular irregular network (TIN).
+
+The algorithm has two parameters. `freeze_distance` should be set to **three times** the point spacing (or slightly more than three). The `buffer_distance` parameter must be kept as is.
+
+
+
+```{r plot-chm-spikefree, fig.height=5.9, fig.width=6.9}
+chm <- rasterize_canopy(las, res = 0.5, spikefree(1.5))
 plot(chm, col = col)
 ```
 
 ## Post-processing a CHM {#sec-chm-post-process}
 
-CHMs are usually post-processed to smooth or to fill empty pixels. This is mainly because most publications use a point-to-raster approach without any tweaks. One may want to apply a post-processing step to the CHM. Sadly `lidR` does not provide any tools for that. `lidR` is a point cloud oriented software. Once a function has returned a raster, the job of the `lidR` package has ended. Further work requires other dedicated tools to process rasters. The `terra` package is one of those. The code below presents a simple option to fill NAs and smooth a CHM with the `terra` package. For more details see the documentation of the package `terra`.
+CHMs are usually post-processed to smooth or to fill empty pixels. This can be avoided with the `Pitfree` and the `Spikefree` but it is sometime mandatory with other methods.
+
+### Using `terra`
+
+One may want to apply a post-processing step to their CHM. The `terra` package allows simple raster processing. The code below presents a simple option to fill NAs and smooth a CHM with the `terra` package. For more details see the documentation of the package `terra`.
 
 ```{r plot-chm-postprod, fig.height=6.8, fig.width=7.4}
 fill.na <- function(x, i=5) { if (is.na(x)[i]) { return(mean(x, na.rm = TRUE)) } else { return(x[i]) }}
@@ -192,4 +204,12 @@ smoothed <- terra::focal(chm, w, fun = mean, na.rm = TRUE)
 chms <- c(chm, filled, smoothed)
 names(chms) <- c("Base", "Filled", "Smoothed")
 plot(chms, col = col)
+```
+
+### Using St-Onge 2008 method
+
+Another option is to use the CHM oriented raster enhancement algorithm by [St-Onge (2008)](https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=81365288221f3ac34b51a82e2cfed8d58defb10e).
+
+```r
+chm = pitfill_stonge2008(chm)
 ```
