@@ -2,6 +2,7 @@
 <br/>
 **Recent updates:**
 
+- April 2026: new section about COPC and remote files in @sec-copc
 - March 2026: significant update of the ground classification chapter with the introduction of the progressive TIN densification.
 - March 2026: update of the CHM chapter with the introduction of the spike-free algorithm.
 - March 2026: update of the CHM chapter with post-processing methods.

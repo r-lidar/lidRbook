@@ -584,12 +584,12 @@ Tip
 <p>We can check the files that were written on disk and see that the names match the template.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>rois<span class="sc">$</span>filename</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "/tmp/Rtmp9NhLWN/339348.8_5239254_1.las"</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] "/tmp/Rtmp9NhLWN/339141.9_5238717_2.las"</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] "/tmp/Rtmp9NhLWN/338579.6_5238169_3.las"</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] "/tmp/Rtmp9NhLWN/338520.8_5239318_4.las"</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] "/tmp/Rtmp9NhLWN/338110_5239247_5.las"  </span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] "/tmp/Rtmp9NhLWN/339385_5239290_6.las"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "/tmp/RtmpcXBIZQ/339348.8_5239254_1.las"</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] "/tmp/RtmpcXBIZQ/339141.9_5238717_2.las"</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] "/tmp/RtmpcXBIZQ/338579.6_5238169_3.las"</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] "/tmp/RtmpcXBIZQ/338520.8_5239318_4.las"</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] "/tmp/RtmpcXBIZQ/338110_5239247_5.las"  </span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] "/tmp/RtmpcXBIZQ/339385_5239290_6.las"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="sec-engine-options-index" class="level3">
@@ -708,29 +708,7 @@ Tip
 <h3 class="anchored" data-anchor-id="sec-engine-dtm-inmemory">In memory DTM</h3>
 <p>Generating a DTM that encompasses an entire ALS acquisition is as easy as generating a DTM that encompasses a single point cloud file. The following generates a DTM with default parameters (i.e.&nbsp;processing by file with a 30 m buffer). In each chunk <code>rasterize_terrain()</code> computes a DTM. The result is a collection of rasters, however one feature of the engine is to merge everything in single, seamless, manipulable object. A raster is usually less memory intensive that a point cloud, so returning everything in memory is feasible if the raster is not too large.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(ctg, <span class="dv">2</span>, <span class="fu">tin</span>(), <span class="at">pkg =</span> <span class="st">"terra"</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>[<span class="sc">&gt;</span>                                                 ] <span class="dv">1</span>% ETA<span class="sc">:</span> <span class="dv">150</span>s     </span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>[<span class="sc">&gt;</span>                                                 ] <span class="dv">1</span>% ETA<span class="sc">:</span> <span class="dv">177</span>s     </span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>                                                                                </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(ctg, <span class="dv">2</span>, <span class="fu">tin</span>(), <span class="at">pkg =</span> <span class="st">"terra"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can render a shaded DTM like that from <a href="dtm.html#sec-hillshade" class="quarto-xref"><span>Section 5.6</span></a>) to better visualize the output:</p>
 <div class="cell" data-layout-align="center">
@@ -750,7 +728,7 @@ Tip
 <h3 class="anchored" data-anchor-id="sec-engine-dtm-ondisk">On disk DTM</h3>
 <p>When the DTM is too big for memory storage it can be written on disk. In this case users will have one raster file per chunk. The buffer is used to perform a valid computation but is removed after the computation, leaving no overlap between files. It is possible to build a virtual raster from multiple files to return a lightweight raster that references on disk files.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">"/{*}_dtm"</span>)</span>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">"/{*}_dtm"</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">rasterize_terrain</span>(ctg, <span class="dv">1</span>, <span class="fu">tin</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>dtm</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class       : SpatRaster </span></span>
@@ -782,43 +760,7 @@ Tip
 <p>Previous sections detail considerations for using the <code>LAScatalog</code> engine to perform point cloud normalization using <code>normalize_height()</code> (see <a href="normalization.html" class="quarto-xref"><span>Chapter 6</span></a>. We created a DTM in the previous section, so we use it here to normalize.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span>  <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">"/{*}_norm"</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>ctg_norm <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(ctg, dtm)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">========&gt;</span>                                       ] <span class="dv">20</span>% ETA<span class="sc">:</span> <span class="dv">8</span>s     </span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">=======&gt;</span>                                        ] <span class="dv">18</span>% ETA<span class="sc">:</span> <span class="dv">8</span>s     </span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">====&gt;</span>                                           ] <span class="dv">13</span>% ETA<span class="sc">:</span> <span class="dv">12</span>s     </span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">====&gt;</span>                                           ] <span class="dv">13</span>% ETA<span class="sc">:</span> <span class="dv">13</span>s     </span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">====&gt;</span>                                           ] <span class="dv">13</span>% ETA<span class="sc">:</span> <span class="dv">13</span>s     </span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">====&gt;</span>                                           ] <span class="dv">13</span>% ETA<span class="sc">:</span> <span class="dv">13</span>s     </span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">====&gt;</span>                                           ] <span class="dv">13</span>% ETA<span class="sc">:</span> <span class="dv">13</span>s     </span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">=====&gt;</span>                                          ] <span class="dv">14</span>% ETA<span class="sc">:</span> <span class="dv">14</span>s     </span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">=====&gt;</span>                                          ] <span class="dv">14</span>% ETA<span class="sc">:</span> <span class="dv">14</span>s     </span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">=====&gt;</span>                                          ] <span class="dv">14</span>% ETA<span class="sc">:</span> <span class="dv">14</span>s     </span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">=====&gt;</span>                                          ] <span class="dv">14</span>% ETA<span class="sc">:</span> <span class="dv">14</span>s     </span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">=====&gt;</span>                                          ] <span class="dv">14</span>% ETA<span class="sc">:</span> <span class="dv">14</span>s     </span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">=====&gt;</span>                                          ] <span class="dv">14</span>% ETA<span class="sc">:</span> <span class="dv">15</span>s     </span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">=====&gt;</span>                                          ] <span class="dv">14</span>% ETA<span class="sc">:</span> <span class="dv">15</span>s     </span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">=====&gt;</span>                                          ] <span class="dv">14</span>% ETA<span class="sc">:</span> <span class="dv">16</span>s     </span>
-<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">=======&gt;</span>                                        ] <span class="dv">19</span>% ETA<span class="sc">:</span> <span class="dv">9</span>s     </span>
-<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">=======&gt;</span>                                        ] <span class="dv">19</span>% ETA<span class="sc">:</span> <span class="dv">8</span>s     </span>
-<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">=======&gt;</span>                                        ] <span class="dv">19</span>% ETA<span class="sc">:</span> <span class="dv">8</span>s     </span>
-<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>                                                                                </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>ctg_norm <span class="ot">&lt;-</span> <span class="fu">normalize_height</span>(ctg, dtm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A point cloud-based normalization without a raster is also possible:</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span>  <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">"/{*}_norm"</span>)</span>
@@ -921,15 +863,15 @@ Tip
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg_norm) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">"/{*}"</span>)</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">locate_trees</span>(ctg_norm, <span class="fu">lmf</span>(<span class="dv">4</span>), <span class="at">uniqueness =</span> <span class="st">"bitmerge"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre><code>#&gt; [1] "/tmp/Rtmp9NhLWN/tiles_338000_5238000_1_norm.shp"
-#&gt; [2] "/tmp/Rtmp9NhLWN/tiles_338000_5238500_1_norm.shp"
-#&gt; [3] "/tmp/Rtmp9NhLWN/tiles_338000_5239000_1_norm.shp"
-#&gt; [4] "/tmp/Rtmp9NhLWN/tiles_338500_5238000_1_norm.shp"
-#&gt; [5] "/tmp/Rtmp9NhLWN/tiles_338500_5238500_1_norm.shp"
-#&gt; [6] "/tmp/Rtmp9NhLWN/tiles_338500_5239000_1_norm.shp"
-#&gt; [7] "/tmp/Rtmp9NhLWN/tiles_339000_5238000_1_norm.shp"
-#&gt; [8] "/tmp/Rtmp9NhLWN/tiles_339000_5238500_1_norm.shp"
-#&gt; [9] "/tmp/Rtmp9NhLWN/tiles_339000_5239000_1_norm.shp"</code></pre>
+<pre><code>#&gt; [1] "/tmp/RtmpcXBIZQ/tiles_338000_5238000_1_norm.shp"
+#&gt; [2] "/tmp/RtmpcXBIZQ/tiles_338000_5238500_1_norm.shp"
+#&gt; [3] "/tmp/RtmpcXBIZQ/tiles_338000_5239000_1_norm.shp"
+#&gt; [4] "/tmp/RtmpcXBIZQ/tiles_338500_5238000_1_norm.shp"
+#&gt; [5] "/tmp/RtmpcXBIZQ/tiles_338500_5238500_1_norm.shp"
+#&gt; [6] "/tmp/RtmpcXBIZQ/tiles_338500_5239000_1_norm.shp"
+#&gt; [7] "/tmp/RtmpcXBIZQ/tiles_339000_5238000_1_norm.shp"
+#&gt; [8] "/tmp/RtmpcXBIZQ/tiles_339000_5238500_1_norm.shp"
+#&gt; [9] "/tmp/RtmpcXBIZQ/tiles_339000_5239000_1_norm.shp"</code></pre>
 </div>
 <section id="summary-4" class="level3">
 <h3 class="anchored" data-anchor-id="summary-4">Summary</h3>
@@ -1020,30 +962,7 @@ Tip
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_chunk_size</span>(ctg) <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># no change to chunk size</span></span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">opt_output_files</span>(ctg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">"/{ORIGINALFILENAME}_buffered"</span>) <span class="co"># name outputs with original name and "_buffered"</span></span>
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>buffered <span class="ot">&lt;-</span> <span class="fu">catalog_retile</span>(ctg) <span class="co"># apply buffer</span></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">====&gt;</span>                                           ] <span class="dv">13</span>% ETA<span class="sc">:</span> <span class="dv">13</span>s     </span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">====&gt;</span>                                           ] <span class="dv">13</span>% ETA<span class="sc">:</span> <span class="dv">13</span>s     </span>
-<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">====&gt;</span>                                           ] <span class="dv">13</span>% ETA<span class="sc">:</span> <span class="dv">13</span>s     </span>
-<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">====&gt;</span>                                           ] <span class="dv">13</span>% ETA<span class="sc">:</span> <span class="dv">13</span>s     </span>
-<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">====&gt;</span>                                           ] <span class="dv">13</span>% ETA<span class="sc">:</span> <span class="dv">13</span>s     </span>
-<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>                                                                                </span>
-<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(buffered) <span class="co"># some plotting</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(buffered) <span class="co"># some plotting</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">

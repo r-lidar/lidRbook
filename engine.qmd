@@ -305,7 +305,7 @@ plot(dtm_hillshade, col = gray(0:50/50), legend = FALSE)
 When the DTM is too big for memory storage it can be written on disk. In this case users will have one raster file per chunk. The buffer is used to perform a valid computation but is removed after the computation, leaving no overlap between files. It is possible to build a virtual raster from multiple files to return a lightweight raster that references on disk files.
 
 ```{r dtmdisk, warning=FALSE}
-opt_output_files(ctg) <- opt_output_files(ctg) <- paste0(tempdir(), "/{*}_dtm")
+opt_output_files(ctg) <- paste0(tempdir(), "/{*}_dtm")
 dtm <- rasterize_terrain(ctg, 1, tin())
 dtm
 class(dtm)
@@ -323,7 +323,8 @@ In this section we learned several the following about the engine in this sectio
 
 Previous sections detail considerations for using the `LAScatalog` engine to perform point cloud normalization using `normalize_height()` (see @sec-norm. We created a DTM in the previous section, so we use it here to normalize.
 
-```{r normalize}
+
+```{r normalize, results='hide'}
 opt_output_files(ctg) <-  paste0(tempdir(), "/{*}_norm")
 ctg_norm <- normalize_height(ctg, dtm)
 ```
@@ -484,7 +485,7 @@ plot(small) # some plotting
 
 `catalog_retile()` is a special case where the buffer **is not** removed after computation. The function does not compute anything, but only streams point from inputs files to output files. It can be used to add a buffer around each file.
 
-```{r plot-retiled-buffer, fig.height=4, fig.width=4}
+```{r plot-retiled-buffer, fig.height=4, fig.width=4, results='hide'}
 opt_chunk_buffer(ctg) <- 20 # set buffer to 20
 opt_chunk_size(ctg) <- 0 # no change to chunk size
 opt_output_files(ctg) <- paste0(tempdir(), "/{ORIGINALFILENAME}_buffered") # name outputs with original name and "_buffered"
