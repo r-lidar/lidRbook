@@ -105,11 +105,15 @@ plot(ctg)
 opt_progress(ctg) <- FALSE
 ```
 
+:::{.callout-tip}
+`readLAScatalog()` also accepts VPC files as input, as well as urls to remotes files.
+:::
+
 ## Validation {#sec-engine-asprs-compliance}
 
 Similar to @sec-io, an important first step in ALS data processing is ensuring that your data is complete and valid. The `las_check()` function performs an inspection of `LAScatalog` objects for file consistency.
 
-```r
+``` r
 las_check(ctg)
 #>  Checking headers consistency
 #>   - Checking file version consistency... ✓
