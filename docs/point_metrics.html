@@ -316,20 +316,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Important
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Due to a new CRAN policy affecting numerous packages, we have temporarily removed the <code>point_metrics()</code> function. This function relies on internal R functions that package developers are no longer permitted to use. To allow us time to find a workaround and prevent the package from being removed from CRAN, some examples in this section may not work with <code>lidR v4.1.2</code>. To obtain a version of the package with this function enabled, you can install from <a href="https://r-lidar.r-universe.dev/builds">r-universe</a> rather than from CRAN.<br>
-<code>install.packages('lidR', repos = c('https://r-lidar.r-universe.dev', 'https://cloud.r-project.org'))</code></p>
-</div>
-</div>
+<!--::: callout-important
+Due to a new CRAN policy affecting numerous packages, we have temporarily removed the `point_metrics()` function. This function relies on internal R functions that package developers are no longer permitted to use. To allow us time to find a workaround and prevent the package from being removed from CRAN, some examples in this section may not work with `lidR v4.1.2`. To obtain a version of the package with this function enabled, you can install from [r-universe](https://r-lidar.r-universe.dev/builds) rather than from CRAN.\
+`install.packages('lidR', repos = c('https://r-lidar.r-universe.dev', 'https://cloud.r-project.org'))`
+:::-->
 <section id="sec-pba-overview" class="level2" data-number="14.1">
 <h2 data-number="14.1" class="anchored" data-anchor-id="sec-pba-overview"><span class="header-section-number">14.1</span> Overview</h2>
 <p>The “point” level of regularization corresponds to the computation of derived metrics for each point of the point cloud using its neighborhood to define a local subset. The <code>point_metrics()</code> function allows calculation of point-based metrics and works like <code>cloud_metrics()</code>, <code>grid_metrics()</code>, <code>tree_metrics()</code> or <code>voxel_metrics()</code> seen in <a href="metrics.html" class="quarto-xref"><span>Chapter 9</span></a>, <a href="cloud_metrics.html" class="quarto-xref"><span>Chapter 10</span></a>, <a href="grid_metrics.html" class="quarto-xref"><span>Chapter 11</span></a>, <a href="tree_metrics.html" class="quarto-xref"><span>Chapter 12</span></a> and <a href="voxel_metrics.html" class="quarto-xref"><span>Chapter 13</span></a>. Refer to these sections for a more comprehensive overview.</p>
