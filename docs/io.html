@@ -289,6 +289,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sec-filter" id="toc-sec-filter" class="nav-link" data-scroll-target="#sec-filter">Parameter <code>filter</code></a></li>
   </ul></li>
   <li><a href="#sec-asprs-compliance" id="toc-sec-asprs-compliance" class="nav-link" data-scroll-target="#sec-asprs-compliance"><span class="header-section-number">2.2</span> Validating LiDAR Data</a></li>
+  <li><a href="#sec-copc" id="toc-sec-copc" class="nav-link" data-scroll-target="#sec-copc"><span class="header-section-number">2.3</span> Reading COPC and Remote COPC Files</a></li>
   </ul>
 </nav>
     </div>
@@ -386,6 +387,16 @@ density      : 1.08 pulses/m²</code></pre>
 'number of returns'.</code></pre>
 </div>
 </div>
+</section>
+<section id="sec-copc" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="sec-copc"><span class="header-section-number">2.3</span> Reading COPC and Remote COPC Files</h2>
+<p>COPC files are standard LAZ files with special metadata and a specific point ordering that enables efficient partial reads across a network. COPC stands for <strong>Cloud Optimized Point Cloud</strong>. Usually, their extension is <code>.copc.laz</code>.</p>
+<p>Using <code>rlas (v &gt;= 1.9.0)</code>, <code>lidR</code> can read any file processed over a network, but it is preferable to work with COPC files. Everything in this book applies to remote files, but COPC files offer functionality that regular LAS and LAZ files do not. In a COPC file, it is possible to perform <strong>depth queries</strong>, i.e., reading only a subset of the point cloud at a given resolution.</p>
+<p>In the following code snippet, we are reading “depth 0” of a COPC file via a URL, which provides the coarsest resolution. Despite the original file being large, this is virtually instantaneous because we are only downloading 60,000 points out of millions.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"[https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz](https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz)"</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(url, <span class="at">filter =</span> <span class="st">"-max_depth 0"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can load more points using, for example, <code>filter = "-max_depth 1"</code>, but it will take more time to download the points as we increase the number of points to be read. You can find more about the COPC format at <a href="https://copc.io/">https://copc.io/</a>.</p>
+<p>Since COPC is a natively spatially indexed point cloud, spatial queries with functions like <code>clip_roi()</code> (not presented in this book) are natively fast both locally and remotely. It is also possible to use <code>readLAScatalog()</code> on remote files (see Chapter <a href="engine.html" class="quarto-xref"><span>Chapter 15</span></a>).</p>
 
 
 </section>

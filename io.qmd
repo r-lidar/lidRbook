@@ -106,3 +106,21 @@ A check is performed at read time regardless, but the read time check is not as 
 ```{r read-corrupted, warning = TRUE}
 las <- readLAS("data/chap1/corrupted.laz")
 ```
+
+
+## Reading COPC and Remote COPC Files {#sec-copc}
+
+COPC files are standard LAZ files with special metadata and a specific point ordering that enables efficient partial reads across a network. COPC stands for **Cloud Optimized Point Cloud**. Usually, their extension is `.copc.laz`.
+
+Using `rlas (v >= 1.9.0)`, `lidR` can read any file processed over a network, but it is preferable to work with COPC files. Everything in this book applies to remote files, but COPC files offer functionality that regular LAS and LAZ files do not. In a COPC file, it is possible to perform **depth queries**, i.e., reading only a subset of the point cloud at a given resolution.
+
+In the following code snippet, we are reading "depth 0" of a COPC file via a URL, which provides the coarsest resolution. Despite the original file being large, this is virtually instantaneous because we are only downloading 60,000 points out of millions.
+
+```r
+url <- "[https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz](https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz)"
+las <- readLAS(url, filter = "-max_depth 0")
+```
+
+We can load more points using, for example, `filter = "-max_depth 1"`, but it will take more time to download the points as we increase the number of points to be read. You can find more about the COPC format at [https://copc.io/](https://copc.io/).
+
+Since COPC is a natively spatially indexed point cloud, spatial queries with functions like `clip_roi()` (not presented in this book) are natively fast both locally and remotely. It is also possible to use `readLAScatalog()` on remote files (see Chapter @sec-engine).
