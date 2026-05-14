@@ -289,7 +289,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sec-filter" id="toc-sec-filter" class="nav-link" data-scroll-target="#sec-filter">Parameter <code>filter</code></a></li>
   </ul></li>
   <li><a href="#sec-asprs-compliance" id="toc-sec-asprs-compliance" class="nav-link" data-scroll-target="#sec-asprs-compliance"><span class="header-section-number">2.2</span> Validating LiDAR Data</a></li>
-  <li><a href="#sec-copc" id="toc-sec-copc" class="nav-link" data-scroll-target="#sec-copc"><span class="header-section-number">2.3</span> Reading COPC and Remote COPC Files</a></li>
+  <li><a href="#sec-copc" id="toc-sec-copc" class="nav-link" data-scroll-target="#sec-copc"><span class="header-section-number">2.3</span> Reading COPC and Remote COPC Files</a>
+  <ul class="collapse">
+  <li><a href="#protocols-supported" id="toc-protocols-supported" class="nav-link" data-scroll-target="#protocols-supported">Protocols supported</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -397,8 +400,62 @@ density      : 1.08 pulses/m²</code></pre>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">readLAS</span>(url, <span class="at">filter =</span> <span class="st">"-max_depth 0"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We can load more points using, for example, <code>filter = "-max_depth 1"</code>, but it will take more time to download the points as we increase the number of points to be read. You can find more about the COPC format at <a href="https://copc.io/">https://copc.io/</a>.</p>
 <p>Since COPC is a natively spatially indexed point cloud, spatial queries with functions like <code>clip_roi()</code> (not presented in this book) are natively fast both locally and remotely. It is also possible to use <code>readLAScatalog()</code> on remote files (see Chapter <a href="engine.html" class="quarto-xref"><span>Chapter 15</span></a>).</p>
+<section id="protocols-supported" class="level3">
+<h3 class="anchored" data-anchor-id="protocols-supported">Protocols supported</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 29%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Prefix</th>
+<th>Protocol</th>
+<th>Authentication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>/vsicurl/</code></td>
+<td>HTTP/HTTPS</td>
+<td>None, or <code>.netrc</code></td>
+</tr>
+<tr class="even">
+<td><code>/vsis3/</code></td>
+<td>Amazon S3</td>
+<td><code>AWS_ACCESS_KEY_ID</code> + <code>AWS_SECRET_ACCESS_KEY</code> env vars</td>
+</tr>
+<tr class="odd">
+<td><code>/vsigs/</code></td>
+<td>Google Cloud Storage</td>
+<td><code>GOOGLE_APPLICATION_CREDENTIALS</code> env var</td>
+</tr>
+<tr class="even">
+<td><code>/vsiaz/</code></td>
+<td>Azure Blob Storage</td>
+<td><code>AZURE_STORAGE_ACCOUNT</code> + <code>AZURE_STORAGE_ACCESS_KEY</code> env vars</td>
+</tr>
+<tr class="odd">
+<td><code>/vsiadls/</code></td>
+<td>Azure Data Lake Storage Gen2</td>
+<td>Same as <code>/vsiaz/</code></td>
+</tr>
+<tr class="even">
+<td><code>/vsioss/</code></td>
+<td>Alibaba Cloud OSS</td>
+<td><code>OSS_ACCESS_KEY_ID</code> + <code>OSS_SECRET_ACCESS_KEY</code> env vars</td>
+</tr>
+<tr class="odd">
+<td><code>/vsiswift/</code></td>
+<td>OpenStack Swift (OVH, Rackspace)</td>
+<td><code>SWIFT_AUTH_TOKEN</code> + <code>SWIFT_STORAGE_URL</code> env vars</td>
+</tr>
+</tbody>
+</table>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

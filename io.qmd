@@ -124,3 +124,16 @@ las <- readLAS(url, filter = "-max_depth 0")
 We can load more points using, for example, `filter = "-max_depth 1"`, but it will take more time to download the points as we increase the number of points to be read. You can find more about the COPC format at [https://copc.io/](https://copc.io/).
 
 Since COPC is a natively spatially indexed point cloud, spatial queries with functions like `clip_roi()` (not presented in this book) are natively fast both locally and remotely. It is also possible to use `readLAScatalog()` on remote files (see Chapter @sec-engine).
+
+### Protocols supported
+
+| Prefix | Protocol | Authentication |
+|--------|----------|----------------|
+| `/vsicurl/` | HTTP/HTTPS | None, or `.netrc` |
+| `/vsis3/` | Amazon S3 | `AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY` env vars |
+| `/vsigs/` | Google Cloud Storage | `GOOGLE_APPLICATION_CREDENTIALS` env var |
+| `/vsiaz/` | Azure Blob Storage | `AZURE_STORAGE_ACCOUNT` + `AZURE_STORAGE_ACCESS_KEY` env vars |
+| `/vsiadls/` | Azure Data Lake Storage Gen2 | Same as `/vsiaz/` |
+| `/vsioss/` | Alibaba Cloud OSS | `OSS_ACCESS_KEY_ID` + `OSS_SECRET_ACCESS_KEY` env vars |
+| `/vsiswift/` | OpenStack Swift (OVH, Rackspace) | `SWIFT_AUTH_TOKEN` + `SWIFT_STORAGE_URL` env vars |
+
