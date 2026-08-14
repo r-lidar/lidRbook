@@ -1,11 +1,9 @@
+<br/> **Recent updates:**
 
-<br/>
-**Recent updates:**
-
-- April 2026: new section about COPC and remote files in @sec-copc
-- March 2026: significant update of the ground classification chapter with the introduction of the progressive TIN densification.
-- March 2026: update of the CHM chapter with the introduction of the spike-free algorithm.
-- March 2026: update of the CHM chapter with post-processing methods.
+-   April 2026: new section about COPC and remote files in @sec-copc
+-   March 2026: significant update of the ground classification chapter with the introduction of the progressive TIN densification.
+-   March 2026: update of the CHM chapter with the introduction of the spike-free algorithm.
+-   March 2026: update of the CHM chapter with post-processing methods.
 
 # Introduction
 
@@ -29,11 +27,9 @@ The current release version of `lidR` can be found on [CRAN](https://cran.r-proj
 -   **2018-2021:** the financial support of the [Ministère des Forêts, de la Faune et des Parcs of Québec](https://mffp.gouv.qc.ca/) and [Laval University](https://www.ulaval.ca/en).
 -   **2021-2024:** [Laval University](https://www.ulaval.ca/en).
 
-::: {style="border: 2px solid #f39c12; background-color: #fef5e7; padding: 15px; margin: 20px 0; border-radius: 5px;"}
+::: {.callout-note}
 Since 2024, the `lidR` package (as well as the [`lasR`](https://github.com/r-lidar/lasR) package) is no longer supported by Laval University. While the software will remain free and open-source, `r-lidar` has transitioned into a company to ensure sustainability. We now offer independent services for training courses, consulting, and development. For more information, please visit our website: [r-lidar.com](https://www.r-lidar.com/).
 :::
-
-As `lidR` is freeware, you can help maintaining through your [generous donations](https://github.com/sponsors/Jean-Romain). It helps free my time and work more on `lidR`.
 
 # Other lidar Packages
 
@@ -41,10 +37,14 @@ For a package focused on production rather than research and development, consid
 
 # Installation
 
+::: {.callout-warning}
+Since august 2026, the `lidR` package is no longer on CRAN.
+:::
+
 In R simply type:
 
 ``` r
-install.packages("lidR")
+install.packages("lidR", repos = c("https://r-lidar.r-universe.dev", "https://cloud.r-project.org"))
 ```
 
 For linux user you need some external libraries
