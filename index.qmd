@@ -1,33 +1,33 @@
 <br/> **Recent updates:**
 
--   April 2026: new section about COPC and remote files in @sec-copc
--   March 2026: significant update of the ground classification chapter with the introduction of the progressive TIN densification.
--   March 2026: update of the CHM chapter with the introduction of the spike-free algorithm.
--   March 2026: update of the CHM chapter with post-processing methods.
+- April 2026: new section about COPC and remote files in @sec-copc
+- March 2026: significant update of the ground classification chapter with the introduction of the progressive TIN densification.
+- March 2026: update of the CHM chapter with the introduction of the spike-free algorithm.
+- March 2026: update of the CHM chapter with post-processing methods.
 
 # Introduction
 
 `lidR` is an R package for manipulating and visualizing airborne laser scanning (ALS) data with an emphasis on research & development for forestry and ecology applications. The package is entirely open source and is integrated within the geospatial R ecosystem (i.e., `raster/terra/stars` and `sp/sf`). This guide has been written to help both the ALS novice and seasoned point cloud processing veterans. Key functionality of `lidR` includes functions to:
 
--   Read and write `.las` and `.laz` files (chapter [-@sec-io]) and render customized point-cloud displays (chapter [-@sec-plot])
--   Process point clouds, including point classification (chapter [-@sec-gnd]), digital terrain models (chapter [-@sec-dtm]), normalization (chapter [-@sec-norm]), and digital surface models (chapter [-@sec-chm])
--   Perform individual tree segmentation (chapter [-@sec-itd-its])
--   Compute standard metrics at different levels of regularization (chapters [-@sec-metrics], [-@sec-cba], [-@sec-aba], [-@sec-tba], [-@sec-vba], [-@sec-pba])
--   Manage processing for sets of point-cloud files - referred to as a `LAScatalog` (chapters [-@sec-engine], [-@sec-engine2])
--   Implement guidelines for area-based approaches to forest modeling using ALS data (chapter [-@sec-modeling-aba])
--   Facilitate user-defined processing streams for research and development (chapter [-@sec-outbox])
--   Understand spatial indexing (chapter [-@sec-spatial-indexing])
--   Discover the plugin system (chapter [-@sec-plugins])
+- Read and write `.las` and `.laz` files (chapter [-@sec-io]) and render customized point-cloud displays (chapter [-@sec-plot])
+- Process point clouds, including point classification (chapter [-@sec-gnd]), digital terrain models (chapter [-@sec-dtm]), normalization (chapter [-@sec-norm]), and digital surface models (chapter [-@sec-chm])
+- Perform individual tree segmentation (chapter [-@sec-itd-its])
+- Compute standard metrics at different levels of regularization (chapters [-@sec-metrics], [-@sec-cba], [-@sec-aba], [-@sec-tba], [-@sec-vba], [-@sec-pba])
+- Manage processing for sets of point-cloud files - referred to as a `LAScatalog` (chapters [-@sec-engine], [-@sec-engine2])
+- Implement guidelines for area-based approaches to forest modeling using ALS data (chapter [-@sec-modeling-aba])
+- Facilitate user-defined processing streams for research and development (chapter [-@sec-outbox])
+- Understand spatial indexing (chapter [-@sec-spatial-indexing])
+- Discover the plugin system (chapter [-@sec-plugins])
 
 # Development
 
 The current release version of `lidR` can be found on [CRAN](https://cran.r-project.org/web/packages/lidR/), and the source code is hosted on [GitHub](https://github.com/r-lidar/lidR). Development of the `lidR` package was made possible thanks to the financial support of:
 
--   **2015-2018:** the [AWARE project](https://aware.forestry.ubc.ca/); grantee [Prof. Nicholas C. Coops](https://profiles.forestry.ubc.ca/person/nicholas-coops/) and [Laval University](https://www.ulaval.ca/en).
--   **2018-2021:** the financial support of the [Ministère des Forêts, de la Faune et des Parcs of Québec](https://mffp.gouv.qc.ca/) and [Laval University](https://www.ulaval.ca/en).
--   **2021-2024:** [Laval University](https://www.ulaval.ca/en).
+- **2015-2018:** the [AWARE project](https://aware.forestry.ubc.ca/); grantee [Prof. Nicholas C. Coops](https://profiles.forestry.ubc.ca/person/nicholas-coops/) and [Laval University](https://www.ulaval.ca/en).
+- **2018-2021:** the financial support of the [Ministère des Forêts, de la Faune et des Parcs of Québec](https://mffp.gouv.qc.ca/) and [Laval University](https://www.ulaval.ca/en).
+- **2021-2024:** [Laval University](https://www.ulaval.ca/en).
 
-::: {.callout-note}
+::: callout-note
 Since 2024, the `lidR` package (as well as the [`lasR`](https://github.com/r-lidar/lasR) package) is no longer supported by Laval University. While the software will remain free and open-source, `r-lidar` has transitioned into a company to ensure sustainability. We now offer independent services for training courses, consulting, and development. For more information, please visit our website: [r-lidar.com](https://www.r-lidar.com/).
 :::
 
@@ -37,14 +37,10 @@ For a package focused on production rather than research and development, consid
 
 # Installation
 
-::: {.callout-warning}
-Since august 2026, the `lidR` package is no longer on CRAN.
-:::
-
 In R simply type:
 
 ``` r
-install.packages("lidR", repos = c("https://r-lidar.r-universe.dev", "https://cloud.r-project.org"))
+install.packages("lidR")
 ```
 
 For linux user you need some external libraries
